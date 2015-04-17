@@ -98,7 +98,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\gacutil.exe" -if "$(TargetDir)$(TargetName).dll"
+    <PostBuildEvent>"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\gacutil.exe" -if "$(TargetDir)$(TargetName).dll"
 
 </PostBuildEvent>
   </PropertyGroup>
