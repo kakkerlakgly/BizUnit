@@ -28,7 +28,7 @@ namespace BizUnit.MQSeriesSteps
 	/// <para>The following shows an example of the Xml representation of this test step.</para>
 	/// 
 	/// <code escaped="true">
-    ///	<TestStep assemblyPath="" typeName="BizUnit.MQSeriesSteps.MQSeriesClearQueueStep, BizUnit.MQSeriesSteps", Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
+    ///	<TestStep assemblyPath="" typeName="BizUnit.MQSeriesSteps.MQSeriesClearQueueStep, BizUnit.MQSeriesSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
 	/// 	<QueueManager>QM_server</QueueManager>
 	/// 	<Queue>QUEUE_1</Queue>
 	/// 	<Queue>QUEUE_2</Queue>

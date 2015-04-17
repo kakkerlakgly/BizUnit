@@ -22,7 +22,7 @@ namespace BizUnit.TestSteps.BizTalk.Port
 	/// <summary>
 	/// The ReceivePortConductorStep enables/dissables a recieve location.
 	/// </summary>
-
+    ///
 	/// <remarks>
 	/// The following shows an example of the Xml representation of this test step.
 	/// 

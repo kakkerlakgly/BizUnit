@@ -32,7 +32,9 @@ namespace BizUnit
         /// TestStepExecutionException constructor.
         /// </summary>
         /// <param name="message">The message associated with this exception.</param>
+        /// <param name="stage"></param>
         /// <param name="testCaseName">The name of the BizUnit test case executing whilst the validation step failed.</param>
+        /// <param name="testStepName"></param>
         /// 
         /// <remarks>
         /// The following example demonstrates how to create and call BizUnit using 
@@ -50,7 +52,10 @@ namespace BizUnit
         /// TestStepExecutionException constructor.
         /// </summary>
         /// <param name="message">The message associated with this exception.</param>
+        /// <param name="innerException"></param>
+        /// <param name="stage"></param>
         /// <param name="testCaseName">The name of the BizUnit test case executing whilst the validation step failed.</param>
+        /// <param name="testStepName"></param>
         /// 
         /// <remarks>
         /// The following example demonstrates how to create and call BizUnit using 
