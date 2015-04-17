@@ -14,13 +14,13 @@
 
 using BizUnit.BizUnitOM;
 using BizUnit.Common;
+using System;
+using System.IO;
+using System.Xml;
+using System.Collections.Concurrent;
 
 namespace BizUnit
 {
-    using System;
-    using System.IO;
-    using System.Xml;
-    using System.Collections;
 
     /// <summary>
     /// Represents a state object that is passed between BizUnit test steps.
@@ -36,7 +36,7 @@ namespace BizUnit
     ///	</remarks>
     public class Context
     {
-        private Hashtable _context;
+        private ConcurrentDictionary<string, object> _context;
         private BizUnit _bizUnit;
         private readonly ILogger _logger;
         private readonly DateTime _startTime;
@@ -61,7 +61,7 @@ namespace BizUnit
         ///	</remarks>
         public Context()
         {
-            _context = new Hashtable();
+            _context = new ConcurrentDictionary<string, object>();
             _startTime = DateTime.Now;
             _logger = new Logger();
         }
@@ -69,7 +69,7 @@ namespace BizUnit
         internal Context(BizUnit bizUnit)
         {
             _bizUnit = bizUnit;
-            _context = new Hashtable();
+            _context = new ConcurrentDictionary<string, object>();
             _logger = new Logger();
             _startTime = DateTime.Now;
         }
@@ -77,7 +77,7 @@ namespace BizUnit
         public Context(ILogger logger)
         {
             _logger = logger;
-            _context = new Hashtable();
+            _context = new ConcurrentDictionary<string, object>();
             _startTime = DateTime.Now;
         }
 
@@ -111,11 +111,11 @@ namespace BizUnit
         {
             _bizUnit = bizUnit;
             _logger = logger;
-            _context = new Hashtable();
+            _context = new ConcurrentDictionary<string, object>();
             _startTime = DateTime.Now;
         }
 
-        private Context(BizUnit bizUnit, Hashtable ctx, ILogger logger, DateTime t)
+        private Context(BizUnit bizUnit, ConcurrentDictionary<string, object> ctx, ILogger logger, DateTime t)
         {
             _bizUnit = bizUnit;
             _logger = logger;
@@ -202,15 +202,13 @@ namespace BizUnit
             ArgumentValidation.CheckForNullReference(key, "key");
 
             LogInfo(string.Format("Adding context property: {0}, value: {1}", key, newValue));
-
-            lock (_context.SyncRoot)
+            if (updateIfExists)
             {
-                if (updateIfExists && _context.ContainsKey(key))
-                {
-                    LogInfo(string.Format("Adding context property: {0} already existed, property will be updated", key));
-                    _context.Remove(key);
-                }
-                _context.Add(key, newValue);
+                _context.AddOrUpdate(key, newValue, (k, oldValue) => newValue);
+            }
+            else
+            {
+                _context.TryAdd(key, newValue);
             }
         }
 
@@ -232,11 +230,8 @@ namespace BizUnit
             ArgumentValidation.CheckForNullReference(key, "key");
 
             LogInfo(string.Format("Removing context property: {0}", key));
-
-            lock (_context.SyncRoot)
-            {
-                    _context.Remove(key);
-            }
+            object value;
+            _context.TryRemove(key, out value);
         }
 
         /// <summary>
@@ -256,11 +251,9 @@ namespace BizUnit
         public string GetValue(string key)
         {
             ArgumentValidation.CheckForNullReference(key, "key");
-
-            lock (_context.SyncRoot)
-            {
-                return (string)_context[key];
-            }
+            object value;
+            if (_context.TryGetValue(key, out value)) return value.ToString();
+            else return null;
         }
 
         /// <summary>
@@ -280,11 +273,9 @@ namespace BizUnit
         public object GetObject(string key)
         {
             ArgumentValidation.CheckForNullReference(key, "key");
-
-            lock (_context.SyncRoot)
-            {
-                return _context[key];
-            }
+            object value;
+            if (_context.TryGetValue(key, out value)) return value;
+            else return null;
         }
 
         /// <summary>
@@ -601,10 +592,9 @@ namespace BizUnit
                     string s = fromCtx.Value;
                     if (0 < s.Length)
                     {
-                        lock (_context.SyncRoot)
-                        {
-                            return _context[s];
-                        }
+                        object value;
+                        if (_context.TryGetValue(s, out value)) return value;
+                        else return null;
                     }
                 }
 
@@ -633,7 +623,9 @@ namespace BizUnit
                 if(strArg.Contains(TAKE_FROM_CONTEXT))
                 {
                     string key = strArg.Substring(TAKE_FROM_CONTEXT.Length);
-                    return _context[key];
+                    object value;
+                    if (_context.TryGetValue(key, out value)) return value;
+                    else return null;
                 }
                 else
                 {
@@ -1004,10 +996,9 @@ namespace BizUnit
                 string s = fromCtx.Value;
                 if (0 < s.Length)
                 {
-                    lock (_context.SyncRoot)
-                    {
-                        return (string)_context[s];
-                    }
+                    object value;
+                    if (_context.TryGetValue(s, out value)) return value.ToString();
+                    else return null;
                 }
             }
 
@@ -1447,7 +1438,7 @@ namespace BizUnit
     
         private void DisposeDisposableMembers()
         {
-            foreach (DictionaryEntry dictionaryEntry in _context)
+            foreach (var dictionaryEntry in _context)
             {
                 var disposableObject = dictionaryEntry.Value as IDisposable;
                 if (disposableObject != null)

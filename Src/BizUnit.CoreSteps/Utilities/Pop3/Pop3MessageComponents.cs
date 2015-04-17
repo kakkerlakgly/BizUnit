@@ -15,18 +15,23 @@
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
 	using System.Text;
-	using System.Collections;
+    using System.Collections;
+    using System.Collections.Generic;
 
 	/// <summary>
 	/// Summary description for Pop3MessageBody.
 	/// </summary>
-	internal class Pop3MessageComponents
+    internal class Pop3MessageComponents : IEnumerable<Pop3Component>
 	{
-		private readonly ArrayList _component = new ArrayList();
+        private readonly IList<Pop3Component> _component = new List<Pop3Component>();
 
-		internal IEnumerator ComponentEnumerator
+        public IEnumerator<Pop3Component> GetEnumerator()
 		{
-			get { return _component.GetEnumerator(); }
+			return _component.GetEnumerator();
+		}
+        IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 
 		internal int NumberOfComponents

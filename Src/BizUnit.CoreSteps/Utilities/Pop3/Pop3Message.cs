@@ -15,7 +15,8 @@
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
 	using System;
-	using System.Collections;
+    using System.Collections;
+    using System.Collections.Generic;
 	using System.Net.Sockets;
 	using System.Threading;
 	using System.Text;
@@ -26,7 +27,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 	/// within an email. Binary attachments are Base64-decoded
 	/// </summary>
 
-	internal class Pop3Message
+    internal class Pop3Message : IEnumerable<Pop3Component>
 	{
 		private readonly Socket _client;
 		private Pop3MessageComponents _messageComponents;
@@ -60,12 +61,17 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
         Pop3StateObject _pop3State;
         readonly ManualResetEvent _manualEvent = new ManualResetEvent(false);
 
-		internal IEnumerator MultipartEnumerator
+		public IEnumerator<Pop3Component> GetEnumerator()
 		{
-			get { return _messageComponents.ComponentEnumerator; }
+            return _messageComponents.GetEnumerator();
 		}
 
-		internal bool IsMultipart
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        internal bool IsMultipart
 		{
 			get { return _isMultipart; }
 		}
@@ -324,14 +330,8 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 			LoadEmail();
 
 			// get body (if it exists) ...
-			IEnumerator multipartEnumerator =
-				MultipartEnumerator;
-
-			while( multipartEnumerator.MoveNext() )
+            foreach(var multipart in this)
 			{
-				var multipart = (Pop3Component)
-					multipartEnumerator.Current;
-
 				if( multipart.IsBody )
 				{
 					_body = multipart.Data;
@@ -342,16 +342,14 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
 		public override string ToString()
 		{
-			IEnumerator enumerator = MultipartEnumerator;
-
 			string ret = 
 				"From    : "+_from+ "\r\n"+
 				"To      : "+_to+ "\r\n"+
 				"Subject : "+_subject+"\r\n";
 
-			while( enumerator.MoveNext() )
+			foreach(var enumerator in this)
 			{
-				ret += enumerator.Current+"\r\n";
+				ret += enumerator+"\r\n";
 			}
 	
 			return ret;

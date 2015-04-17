@@ -84,7 +84,7 @@ namespace BizUnit.TestSteps.BizTalk.Common
                                MessagePart = mipimpl.ToArray()
                            };
 
-            var items = new ArrayList {mici, mipi};
+            var items = new List<object> {mici, mipi};
 
             var mi = new MessageInfo {Items = items.ToArray()};
             return mi;

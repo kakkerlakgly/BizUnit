@@ -15,7 +15,7 @@
 using System;
 using System.IO;
 using System.Xml;
-using System.Collections;
+using System.Collections.Concurrent;
 using System.Threading;
 using System.Collections.Generic;
 using BizUnit.BizUnitOM;
@@ -99,7 +99,7 @@ namespace BizUnit
         Exception _executionException;
         Context _context;
         internal ILogger _logger;
-        readonly Queue _completedConcurrentSteps = new Queue();
+        readonly ConcurrentQueue<ConcurrentTestStepWrapper> _completedConcurrentSteps = new ConcurrentQueue<ConcurrentTestStepWrapper>();
         int _inflightQueueDepth;
         TestGroupPhase _testGroupPhase = TestGroupPhase.Unknown;
         private BizUnitTestCase _testCaseObjectModel;
@@ -1334,26 +1334,11 @@ namespace BizUnit
 
             while ((_completedConcurrentSteps.Count > 0) || waitingToFinish)
             {
-                object obj = null;
+                ConcurrentTestStepWrapper step;
+                _completedConcurrentSteps.TryDequeue(out step);
 
-                lock (_completedConcurrentSteps.SyncRoot)
+                if (null != step)
                 {
-                    if (_completedConcurrentSteps.Count > 0)
-                    {
-                        try
-                        {
-                            obj = _completedConcurrentSteps.Dequeue();
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogException(ex);
-                        }
-                    }
-                }
-
-                if (null != obj)
-                {
-                    var step = (ConcurrentTestStepWrapper)obj;
                     _logger.LogBufferedText(step.Logger);
 
                     _logger.TestStepEnd(step.Name, DateTime.Now, step.FailureException);
@@ -1399,10 +1384,7 @@ namespace BizUnit
             step.Execute();
 
             // This step is completed, add to queue
-            lock (_completedConcurrentSteps.SyncRoot)
-            {
-                _completedConcurrentSteps.Enqueue(step);
-            }
+            _completedConcurrentSteps.Enqueue(step);
         }
 
         static private IValidationStep CreateValidatorStep(string typeName, string assemblyPath)

@@ -14,7 +14,7 @@
 
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Xml;
 using BizUnit.CoreSteps.Utilities.Pop3;
 
@@ -132,11 +132,8 @@ namespace BizUnit.CoreSteps.TestSteps
 						if (attachments > 0 && email.IsMultipart)
 						{
 							int a = 0;
-							IEnumerator enumerator = email.MultipartEnumerator;
-							while(enumerator.MoveNext())
+                            foreach(var multipart in email)
 							{
-								var multipart = (Pop3Component)
-									enumerator.Current;
 								if( multipart.IsBody )
 								{
 									if (showBody)

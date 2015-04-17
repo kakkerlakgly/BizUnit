@@ -15,13 +15,14 @@
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
 	using System;
-	using System.Collections;
+    using System.Collections;
+    using System.Collections.Generic;
 	using System.Net;
 	using System.Net.Sockets;
 	using System.Text;
 	using System.Text.RegularExpressions;
 
-	internal class Pop3Client
+    internal class Pop3Client : IEnumerable<Pop3Component>
 	{
 		private Pop3Credential _credential;
 		private const int Pop3Port = 110;
@@ -57,12 +58,17 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 			get { return _pop3Message.Body; }
 		}
 
-		internal IEnumerator MultipartEnumerator
+        public IEnumerator<Pop3Component> GetEnumerator()
 		{
-			get { return _pop3Message.MultipartEnumerator; }
+			return _pop3Message.GetEnumerator();
 		}
 
-		internal bool IsMultipart
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        internal bool IsMultipart
 		{
 			get { return _pop3Message.IsMultipart; }
 		}

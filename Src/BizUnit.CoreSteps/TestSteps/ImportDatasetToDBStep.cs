@@ -16,7 +16,7 @@ namespace BizUnit.CoreSteps.TestSteps
 {
 	using System;
 	using System.IO ;
-	using System.Collections;
+	using System.Collections.Generic;
 	using System.Xml;
 	using System.Text;
 	using System.Data;
@@ -70,11 +70,11 @@ namespace BizUnit.CoreSteps.TestSteps
     [Obsolete("ImportDatasetToDBStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
     public class ImportDatasetToDBStep: ITestStep 
 	{
-		private Hashtable _sqlServerDbType;
+		private IDictionary<string, SqlDbType> _sqlServerDbType;
 
 		private void LoadTypeHashTable()
 		{
-			_sqlServerDbType = new Hashtable();
+            _sqlServerDbType = new Dictionary<string, SqlDbType>();
 			_sqlServerDbType.Add(typeof(bool).FullName,SqlDbType.Bit);
 			_sqlServerDbType.Add(typeof(int).FullName,SqlDbType.Int);
 			_sqlServerDbType.Add(typeof(string).FullName,SqlDbType.VarChar);
@@ -112,7 +112,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
 			int startIndex = 0;
 			bool matchExists = true;
-			var htGetDateIndices = new Hashtable();
+			var htGetDateIndices = new Dictionary<string, string>();
 
 			while(matchExists)
 			{
@@ -133,9 +133,9 @@ namespace BizUnit.CoreSteps.TestSteps
 			}
 
 			//for each found key, simply replace the corresponding match in filecontents
-            foreach (string getDateIndex in htGetDateIndices.Keys)
+            foreach (var getDate in htGetDateIndices)
             {
-                fileContents = fileContents.Replace(getDateIndex, htGetDateIndices[getDateIndex].ToString());
+                fileContents = fileContents.Replace(getDate.Key, getDate.Value);
             }
 			
 			var stringReader = new StringReader(fileContents);
@@ -187,7 +187,7 @@ namespace BizUnit.CoreSteps.TestSteps
 				{
 					if(dc.AutoIncrement == false && dc.ReadOnly == false) //if the call is set to auto-increment or it is read-only (perhaps a computed column)
 					{
-						var param = new SqlParameter("@"+dc.ColumnName,(SqlDbType)_sqlServerDbType[dc.DataType.FullName])
+						var param = new SqlParameter("@"+dc.ColumnName,_sqlServerDbType[dc.DataType.FullName])
 						                {SourceColumn = dc.ColumnName};
 					    command.Parameters.Add(param);
 						columnsList.Append(",@"+dc.ColumnName);

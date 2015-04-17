@@ -17,7 +17,7 @@ using System.IO;
 using System.Xml;
 using System.Reflection;
 using System.Xml.Serialization;
-using System.Collections;
+using System.Collections.Generic;
 using BizUnit.CoreSteps.Utilities;
 
 namespace BizUnit.CoreSteps.TestSteps
@@ -91,7 +91,7 @@ namespace BizUnit.CoreSteps.TestSteps
 			var mi = obj.GetType().GetMethod(methodToInvoke);
 			var pi = mi.GetParameters();
 			
-			var parameterArray = new ArrayList();
+			var parameterArray = new List<object>();
 
 			for( int c = 0; c < pi.Length; c++)
 			{

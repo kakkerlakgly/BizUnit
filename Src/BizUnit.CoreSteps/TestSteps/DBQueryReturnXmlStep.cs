@@ -16,7 +16,8 @@ namespace BizUnit.CoreSteps.TestSteps
 {
 	using System;
 	using System.IO;
-	using System.Collections;
+	using System.Collections.Generic;
+    using System.Linq;
 	using System.Xml;
 	using System.Data;
 	using System.Data.SqlClient;
@@ -197,7 +198,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
 			if ( null != sqlParams )
 			{
-				var paramArray = new ArrayList();
+				var paramArray = new List<string>();
 				//context
 
 				foreach(XmlNode sqlParam in sqlParams)
@@ -206,7 +207,7 @@ namespace BizUnit.CoreSteps.TestSteps
 					paramArray.Add( p );
 				}
 
-				var paramObjs = (object[])paramArray.ToArray(typeof(object));
+				var paramObjs = paramArray.Cast<object>().ToArray();
 
 				return string.Format( rawSqlQuery, paramObjs );
 			}
