@@ -64,12 +64,12 @@
     </Reference>
     <Reference Include="Microsoft.BizTalk.Pipeline.Components, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ReferencedAssemblies\Microsoft.BizTalk.Pipeline.Components.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft BizTalk Server 2013 R2\Pipeline Components\Microsoft.BizTalk.Pipeline.Components.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="PipelineObjects, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ReferencedAssemblies\PipelineObjects.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft BizTalk Server 2013 R2\SDK\Utilities\PipelineTools\PipelineObjects.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
