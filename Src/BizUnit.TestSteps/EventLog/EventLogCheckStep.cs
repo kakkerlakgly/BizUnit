@@ -15,7 +15,7 @@
 using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.EventLog
@@ -64,14 +64,14 @@ namespace BizUnit.TestSteps.EventLog
         ///<summary>
         /// Regular expression used to check the event message.
         ///</summary>
-        public Collection<string> ValidationRegExs { get; set; }
+        public List<string> ValidationRegExs { get; set; }
 
         ///<summary>
         /// Default constructor
         ///</summary>
         public EventLogCheckStep()
         {
-            ValidationRegExs = new Collection<string>();
+            ValidationRegExs = new List<string>();
         }
 
         /// <summary>

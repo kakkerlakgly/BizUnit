@@ -16,7 +16,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using BizUnit.Common;
 
@@ -100,9 +99,9 @@ namespace BizUnit.Xaml
     ///	</remarks>
     public class TestCase
     {
-        private Collection<TestStepBase> _setupSteps;
-        private Collection<TestStepBase> _executionSteps;
-        private Collection<TestStepBase> _cleanupSteps;
+        private List<TestStepBase> _setupSteps;
+        private List<TestStepBase> _executionSteps;
+        private List<TestStepBase> _cleanupSteps;
 
         ///<summary>
         /// The name of the test case
@@ -157,11 +156,11 @@ namespace BizUnit.Xaml
         /// The test steps to be executed in the Setup stage of the test
         ///</summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Collection<TestStepBase> SetupSteps 
+        public List<TestStepBase> SetupSteps 
         {
             get 
             {
-                return _setupSteps ?? (_setupSteps = new Collection<TestStepBase>()); 
+                return _setupSteps ?? (_setupSteps = new List<TestStepBase>()); 
             } 
         }
 
@@ -169,11 +168,11 @@ namespace BizUnit.Xaml
         /// The test steps to be executed in the Execution stage of the test
         ///</summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Collection<TestStepBase> ExecutionSteps
+        public List<TestStepBase> ExecutionSteps
         {
             get
             {
-                return _executionSteps ?? (_executionSteps = new Collection<TestStepBase>());
+                return _executionSteps ?? (_executionSteps = new List<TestStepBase>());
             }
         }
 
@@ -182,11 +181,11 @@ namespace BizUnit.Xaml
         /// these will always be executed even if the test fails
         ///</summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public Collection<TestStepBase> CleanupSteps
+        public List<TestStepBase> CleanupSteps
         {
             get
             {
-                return _cleanupSteps ?? (_cleanupSteps = new Collection<TestStepBase>());
+                return _cleanupSteps ?? (_cleanupSteps = new List<TestStepBase>());
             }
         }
 

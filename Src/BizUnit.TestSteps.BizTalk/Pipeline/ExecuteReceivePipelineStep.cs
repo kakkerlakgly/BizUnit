@@ -16,7 +16,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using Winterdom.BizTalk.PipelineTesting;
-using System.Collections.ObjectModel;
 using BizUnit.Common;
 using BizUnit.TestSteps.BizTalk.Common;
 using BizUnit.Xaml;
@@ -75,7 +74,7 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
     {
         private string _pipelineAssemblyPath;
         private string _pipelineTypeName;
-        private Collection<DocSpecDefinition> _docSpecsRawList = new Collection<DocSpecDefinition>();
+        private List<DocSpecDefinition> _docSpecsRawList = new List<DocSpecDefinition>();
         private Type[] _docSpecs;
         private string _instanceConfigFile;
         private string _source;
@@ -106,7 +105,7 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
         ///<summary>
         /// Gets and sets the docspecs for the pipeline to be executed. Pairs of typeName, assemblyPath.
         ///</summary>
-        public Collection<DocSpecDefinition> DocSpecs
+        public List<DocSpecDefinition> DocSpecs
         {
             get { return _docSpecsRawList; }
             private set { _docSpecsRawList = value; }

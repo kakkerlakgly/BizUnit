@@ -2,7 +2,7 @@
 namespace BizUnit.TestSteps.Sql
 {
     using System;
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
     using BizUnitOM;
 
     ///<summary>
@@ -18,14 +18,14 @@ namespace BizUnit.TestSteps.Sql
         ///<summary>
         /// The parameters to substitute into the the cref="RawSqlQuery"
         ///</summary>
-        public Collection<object> QueryParameters { get; set; }
+        public List<object> QueryParameters { get; set; }
 
         ///<summary>
         /// Default constructor
         ///</summary>
         public SqlQuery() 
         {
-            QueryParameters = new Collection<object>();
+            QueryParameters = new List<object>();
         }
 
         ///<summary>

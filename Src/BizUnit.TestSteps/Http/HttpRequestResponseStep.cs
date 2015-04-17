@@ -1,6 +1,6 @@
 ﻿
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.IO;
 using BizUnit.Common;
 using BizUnit.TestSteps.Common;
@@ -33,7 +33,7 @@ namespace BizUnit.TestSteps.Http
         ///</summary>
         public HttpRequestResponseStep()
         {
-            SubSteps = new Collection<SubStepBase>();
+            SubSteps = new List<SubStepBase>();
         }
 
         /// <summary>

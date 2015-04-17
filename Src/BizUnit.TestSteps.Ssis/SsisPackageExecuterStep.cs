@@ -14,7 +14,7 @@
 
 using BizUnit.Xaml;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace BizUnit.TestSteps.Ssis
 {
@@ -31,14 +31,14 @@ namespace BizUnit.TestSteps.Ssis
         ///<summary>
         /// The package variables 
         ///</summary>
-        public Collection<PackageVariable> Variables { get; set; }
+        public List<PackageVariable> Variables { get; set; }
 
         ///<summary>
         /// Constructor
         ///</summary>
         public SsisPackageExecuterStep()
         {
-            Variables = new Collection<PackageVariable>();
+            Variables = new List<PackageVariable>();
         }
 
         ///<summary>

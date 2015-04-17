@@ -14,7 +14,7 @@
 
 using System;
 using System.ComponentModel;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace BizUnit.Xaml
 {
@@ -41,7 +41,7 @@ namespace BizUnit.Xaml
         /// zero or more sub-steps. Each sub-step is called, with the data being 
         /// passed from one to the next typically.
         ///</summary>
-        public Collection<SubStepBase> SubSteps { get; set; }
+        public List<SubStepBase> SubSteps { get; set; }
 
         ///<summary>
         /// The exception details should execution fail

@@ -15,7 +15,7 @@
 using System;
 using System.IO;
 using System.Threading;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using BizUnit.Common;
 using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
@@ -36,7 +36,7 @@ namespace BizUnit.TestSteps.File
     {
         public FileReadMultipleStep()
         {
-            SubSteps = new Collection<SubStepBase>();
+            SubSteps = new List<SubStepBase>();
         }
 
         ///<summary>

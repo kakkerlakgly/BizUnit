@@ -1,7 +1,7 @@
 ﻿
 namespace BizUnit.TestSteps.Sql 
 {
-    using System.Collections.ObjectModel;
+    using System.Collections.Generic;
 
     ///<summary>
     /// Database row to be validated
@@ -11,14 +11,14 @@ namespace BizUnit.TestSteps.Sql
         ///<summary>
         /// The cells to be validated
         ///</summary>
-        public Collection<DbCellToValidate> Cells { get; set; }
+        public List<DbCellToValidate> Cells { get; set; }
 
         ///<summary>
         /// Default constructor
         ///</summary>
         public DbRowToValidate()
         {
-            Cells = new Collection<DbCellToValidate>(); 
+            Cells = new List<DbCellToValidate>(); 
         }
     }
 }

@@ -15,7 +15,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.Sql
@@ -26,13 +26,13 @@ namespace BizUnit.TestSteps.Sql
     {
         public string ConnectionString { get; set; }
         public SqlQuery SQLQuery { get; set; }
-        public Collection<DbRowToValidate> DbRowsToValidate { get; set; }
+        public List<DbRowToValidate> DbRowsToValidate { get; set; }
         public int NumberOfRowsExpected { get; set; }
         public int DelayBeforeCheck { get; set; }
 
         public DbQueryStep()
         {
-            DbRowsToValidate = new Collection<DbRowToValidate>();
+            DbRowsToValidate = new List<DbRowToValidate>();
         }
 
         /// <summary>

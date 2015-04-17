@@ -18,7 +18,7 @@ using System.Xml;
 using Microsoft.RuleEngine;
 using System.Data.SqlClient;
 using System.Data;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
 
@@ -68,7 +68,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
     ///		</item>
     ///		<item>
     ///			<term>RuleSetInfoCollectionName</term>
-    ///			<description>The name of the rule set collection</description>
+    ///			<description>The name of the rule set List</description>
     ///		</item>
     ///		<item>
     ///			<term>DebugTracking</term>
@@ -87,7 +87,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
     public class FactBasedRuleEngineStep : TestStepBase
     {
-        private Collection<Fact> _factsList = new Collection<Fact>(); 
+        private List<Fact> _factsList = new List<Fact>(); 
         
         public string RuleStoreName { get; set; }
         public string RuleSetInfoCollectionName { get; set; }
@@ -95,10 +95,10 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
         public FactBasedRuleEngineStep()
         {
-            SubSteps = new Collection<SubStepBase>();            
+            SubSteps = new List<SubStepBase>();            
         }
 
-        public Collection<Fact> FactsList 
+        public List<Fact> FactsList 
         { 
             get
             {

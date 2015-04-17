@@ -16,7 +16,7 @@ using System;
 using System.Xml;
 using System.IO;
 using System.Xml.XPath;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using BizUnit.Common;
 using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
@@ -74,7 +74,7 @@ namespace BizUnit.TestSteps.DataLoaders.Xml
     /// </remarks>
     public class XmlDataLoader : DataLoaderBase
     {
-        private Collection<XPathDefinition> _updateXml = new Collection<XPathDefinition>();
+        private List<XPathDefinition> _updateXml = new List<XPathDefinition>();
 
         ///<summary>
         /// The file path of the data to be loaded
@@ -84,7 +84,7 @@ namespace BizUnit.TestSteps.DataLoaders.Xml
         ///<summary>
         /// A collection of XPathDefinition's to be applied to the data fetched from FilePath
         ///</summary>
-        public Collection<XPathDefinition> UpdateXml
+        public List<XPathDefinition> UpdateXml
         {
             get
             {

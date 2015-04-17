@@ -14,7 +14,7 @@
 
 using System;
 using System.IO;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.File
@@ -24,10 +24,11 @@ namespace BizUnit.TestSteps.File
     ///</summary>
     public class DeleteStep : TestStepBase
     {
+        private IList<string> _filePathsToDelete = new List<string>();
         ///<summary>
         /// Collection of file paths to delete. May be the full file path, or a directory path with a wild card to search for. e.g. C:\Temp\Foo.xml or C:\Temp\*.xml
         ///</summary>
-        public Collection<string> FilePathsToDelete { get; set; }
+        public IList<string> FilePathsToDelete { get {return _filePathsToDelete;} }
 
         /// <summary>
         /// TestStepBase.Execute() implementation

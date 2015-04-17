@@ -17,7 +17,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.XPath;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using BizUnit.Common;
 using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
@@ -63,12 +63,12 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
     ///	</remarks>	
     public class XmlValidationStep : SubStepBase
     {
-        private Collection<XPathDefinition> _xPathValidations = new Collection<XPathDefinition>();
-        private Collection<SchemaDefinition> _xmlSchemas = new Collection<SchemaDefinition>();
+        private List<XPathDefinition> _xPathValidations = new List<XPathDefinition>();
+        private List<SchemaDefinition> _xmlSchemas = new List<SchemaDefinition>();
         private Exception _validationException;
         private Context _context;
 
-        public Collection<SchemaDefinition> XmlSchemas
+        public List<SchemaDefinition> XmlSchemas
         {
             set
             {
@@ -80,7 +80,7 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
             }
         }
 
-        public Collection<XPathDefinition> XPathValidations
+        public List<XPathDefinition> XPathValidations
         {
             get
             {

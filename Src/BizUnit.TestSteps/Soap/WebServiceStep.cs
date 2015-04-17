@@ -17,7 +17,7 @@ using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Xml;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
 
@@ -27,7 +27,7 @@ namespace BizUnit.TestSteps.Soap
     {
         private Stream _request;
         private Stream _response;
-        private Collection<SoapHeader> _soapHeaders = new Collection<SoapHeader>();
+        private List<SoapHeader> _soapHeaders = new List<SoapHeader>();
 
         public DataLoaderBase RequestBody { get; set; }
         public string ServiceUrl { get; set; }
@@ -37,10 +37,10 @@ namespace BizUnit.TestSteps.Soap
 
         public WebServiceStep()
         {
-            SubSteps = new Collection<SubStepBase>();
+            SubSteps = new List<SubStepBase>();
         }
 
-        public Collection<SoapHeader> SoapHeaders
+        public List<SoapHeader> SoapHeaders
         {
             set
             {
