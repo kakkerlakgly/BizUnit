@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9113A748-D891-4DCB-AC1C-2720C2865CBF}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
@@ -8,18 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightUpgrade", "Src\FlightUpgrade\FlightUpgrade.btproj", "{EA616BF2-1839-4154-89E7-E66C6E6022FF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{BDB62E3F-C9C1-4985-8E01-929869FE8DA0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{172884CE-6772-49B3-A0F3-860F49E24769}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightUpgrade", "Src\FlightUpgrade\FlightUpgrade.btproj", "{EA616BF2-1839-4154-89E7-E66C6E6022FF}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlightUpgrade.Tests", "Tests\FlightUpgrade.Tests\FlightUpgrade.Tests.csproj", "{48780862-5068-4B41-88A8-3FE5A58C9869}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = SampleProject.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -42,5 +41,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EA616BF2-1839-4154-89E7-E66C6E6022FF} = {BDB62E3F-C9C1-4985-8E01-929869FE8DA0}
 		{48780862-5068-4B41-88A8-3FE5A58C9869} = {172884CE-6772-49B3-A0F3-860F49E24769}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = SampleProject.vsmdi
 	EndGlobalSection
 EndGlobal

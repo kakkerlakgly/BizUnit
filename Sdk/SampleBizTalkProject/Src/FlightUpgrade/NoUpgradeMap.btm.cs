@@ -6,7 +6,7 @@ namespace SampleProject {
     public sealed class NoUpgradeMap : global::Microsoft.XLANGs.BaseTypes.TransformBase {
         
         private const string _strMap = @"<?xml version=""1.0"" encoding=""UTF-16""?>
-<xsl:stylesheet xmlns:xsl=""http://www.w3.org/1999/XSL/Transform"" xmlns:msxsl=""urn:schemas-microsoft-com:xslt"" xmlns:var=""http://schemas.microsoft.com/BizTalk/2003/var"" exclude-result-prefixes=""msxsl var s0"" version=""1.0"" xmlns:s0=""http://bizUnit.sdk.flightUpgrade/upgradeRequest"" xmlns:ns0=""http://bizUnit.sdk.flightUpgrade/upgradeResponse"">
+<xsl:stylesheet xmlns:xsl=""http://www.w3.org/1999/XSL/Transform"" xmlns:msxsl=""urn:schemas-microsoft-com:xslt"" xmlns:var=""http://schemas.microsoft.com/BizTalk/2003/var"" exclude-result-prefixes=""msxsl var s0"" version=""1.0"" xmlns:ns0=""http://bizUnit.sdk.flightUpgrade/upgradeResponse"" xmlns:s0=""http://bizUnit.sdk.flightUpgrade/upgradeRequest"">
   <xsl:output omit-xml-declaration=""yes"" method=""xml"" version=""1.0"" />
   <xsl:template match=""/"">
     <xsl:apply-templates select=""/s0:UpgradeRequest"" />
@@ -43,7 +43,11 @@ namespace SampleProject {
         
         private const string _strSrcSchemasList0 = @"SampleProject.RequestMsg";
         
+        private const global::SampleProject.RequestMsg _srcSchemaTypeReference0 = null;
+        
         private const string _strTrgSchemasList0 = @"SampleProject.ResponseMsg";
+        
+        private const global::SampleProject.ResponseMsg _trgSchemaTypeReference0 = null;
         
         public override string XmlContent {
             get {
