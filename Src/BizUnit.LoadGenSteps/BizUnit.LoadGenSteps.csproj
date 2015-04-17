@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{348DDB68-8608-483A-B837-16C14AC9A64F}</ProjectGuid>
+    <ProjectGuid>{653A41FE-138A-417E-A1BA-871AA86332B3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BizUnit.LoadGenSteps</RootNamespace>
@@ -63,6 +63,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BizUnit, Version=4.0.154.0, Culture=neutral, PublicKeyToken=8ab3cc29608bfce0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Bin\BizUnit.dll</HintPath>
+    </Reference>
     <Reference Include="LoadGen, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ReferencedAssemblies\LoadGen.dll</HintPath>
@@ -98,12 +102,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BizUnit\BizUnit.csproj">
-      <Project>{7C85248A-15D4-4A17-A496-AECF789E0F10}</Project>
-      <Name>BizUnit</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
