@@ -71,9 +71,7 @@ namespace BizUnit.TestSteps.File
 		public override void Execute(Context context)
         {
             var endTime = DateTime.Now.AddMilliseconds(Timeout);
-            bool found = false;
             string[] filelist;
-            int timesLogged = 0;
 
             context.LogInfo("Searching directory: {0}, search pattern: {1}", DirectoryPath, SearchPattern);
 

@@ -109,7 +109,6 @@ namespace BizUnit.TestSteps.Soap
                 genericContract channel;
                 Message request;
                 Message response;
-                string responseString;
 
                 try
                 {

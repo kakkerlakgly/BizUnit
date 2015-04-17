@@ -122,7 +122,6 @@ namespace BizUnit.TestDocumentor
         private static string GetTestCaseDependancies(TestCase test, string testCaseDirectory, bool searchRecursively)
         {
             var sb = new StringBuilder();
-            int numberImports = 0;
 
             bool importFound = AddImportedTestCases(test.SetupSteps, sb, "Setup test cases: ", false, testCaseDirectory, searchRecursively);
             importFound = AddImportedTestCases(test.ExecutionSteps, sb, "Execution test cases: ", importFound, testCaseDirectory, searchRecursively);
@@ -175,7 +174,7 @@ namespace BizUnit.TestDocumentor
             {
                 itc = TestCase.LoadFromFile(importContainer.TestCasePath);
             }
-            catch (DirectoryNotFoundException ex) {;}
+            catch (DirectoryNotFoundException) {;}
 
             if(null == itc)
             {

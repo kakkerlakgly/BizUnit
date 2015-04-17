@@ -1359,7 +1359,7 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// Sets a value indicating whether members, which implement <see cref="IDispoable"/>, are disposed on test case completion.
+        /// Sets a value indicating whether members, which implement <see cref="IDisposable"/>, are disposed on test case completion.
         /// </summary>
         /// <value>
         /// 	<c>true</c> if members should be disposed; otherwise, <c>false</c> (default).

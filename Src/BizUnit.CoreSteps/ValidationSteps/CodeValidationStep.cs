@@ -234,7 +234,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 								args[x++] = Convert.ChangeType(val,pi.ParameterType);
 							}
 						}
-						catch (FormatException e)
+						catch (FormatException)
 						{
 							Console.WriteLine(String.Format("The method parameter {0} with value {1} could not be cast to {2}",pi.Name,val,pi.ParameterType.Name));
 							throw;
