@@ -23,7 +23,7 @@ namespace BizUnit.TestSteps.Tests.ImportTestCase
             var createFileStep = new CreateStep {CreationPath = @"File2.xml"};
             var dl = new FileDataLoader
                          {
-                             FilePath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml"
+                             FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml"
                          };
             createFileStep.DataSource = dl;
 
@@ -44,7 +44,7 @@ namespace BizUnit.TestSteps.Tests.ImportTestCase
             var schemaPurchaseOrder = new SchemaDefinition
             {
                 XmlSchemaPath =
-                    @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder.xsd",
+                    @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder.xsd",
                 XmlSchemaNameSpace =
                     "http://SendMail.PurchaseOrder"
             };
@@ -75,7 +75,7 @@ namespace BizUnit.TestSteps.Tests.ImportTestCase
             var step = new CreateStep();
             step.CreationPath = @"File1.xml";
             var dl = new FileDataLoader();
-            dl.FilePath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
+            dl.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
             step.DataSource = dl;
             step.Execute(new Context());
 

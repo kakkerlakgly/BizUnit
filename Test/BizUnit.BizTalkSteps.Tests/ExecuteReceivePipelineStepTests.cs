@@ -18,16 +18,16 @@ namespace BizUnit.BizTalkSteps.Tests
             tc.Name = "ExecuteReceivePiplineWithXmlDisAsmTest";
 
             var pipeStep = new ExecuteReceivePipelineStep();
-            pipeStep.PipelineAssemblyPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
+            pipeStep.PipelineAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
             pipeStep.PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline1";
             var ds = new DocSpecDefinition
                          {
                              AssemblyPath =
-                                 @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                                 @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
                              TypeName = "BizUnit.BizTalkTestArtifacts.Schema2"
                          };
             pipeStep.DocSpecs.Add(ds);
-            pipeStep.Source = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema2.xml";
+            pipeStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema2.xml";
             pipeStep.DestinationFileFormat = "Output010.{0}.xml";
             pipeStep.DestinationFileFormat = "Output010.{0}.xml";
             pipeStep.OutputContextFileFormat = "Context010.{0}.xml";
@@ -57,7 +57,7 @@ namespace BizUnit.BizTalkSteps.Tests
 
             var validation = new XmlValidationStep();
             var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
+            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
             sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
             validation.XmlSchemas.Add(sd);
             // Add validation to FileReadMultipleStep
@@ -80,16 +80,16 @@ namespace BizUnit.BizTalkSteps.Tests
             tc.Name = "ExecuteReceivePiplineWithXmlDisAsmTestInterchangeOfThree";
 
             var pipeStep = new ExecuteReceivePipelineStep();
-            pipeStep.PipelineAssemblyPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
+            pipeStep.PipelineAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
             pipeStep.PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline1";
             var ds = new DocSpecDefinition
             {
                 AssemblyPath =
-                    @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
                 TypeName = "BizUnit.BizTalkTestArtifacts.Schema3Env"
             };
             pipeStep.DocSpecs.Add(ds);
-            pipeStep.Source = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema3Env.xml";
+            pipeStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema3Env.xml";
             pipeStep.DestinationFileFormat = "Output011.{0}.xml";
             pipeStep.DestinationFileFormat = "Output011.{0}.xml";
             pipeStep.OutputContextFileFormat = "Context011.{0}.xml";
@@ -119,7 +119,7 @@ namespace BizUnit.BizTalkSteps.Tests
 
             var validation = new XmlValidationStep();
             var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
+            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
             sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
             validation.XmlSchemas.Add(sd);
             // Add validation to FileReadMultipleStep
@@ -142,12 +142,12 @@ namespace BizUnit.BizTalkSteps.Tests
             tc.Name = "ExecuteReceivePipeDocSpecEnvSpecXmlDisAsmWithImportedSchemaTest";
 
             var pipeStep = new ExecuteReceivePipelineStep();
-            pipeStep.PipelineAssemblyPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
+            pipeStep.PipelineAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
             pipeStep.PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline3";
             var ds = new DocSpecDefinition
             {
                 AssemblyPath =
-                    @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
                 TypeName = "BizUnit.BizTalkTestArtifacts.Schema0"
             };
             pipeStep.DocSpecs.Add(ds);
@@ -155,12 +155,12 @@ namespace BizUnit.BizTalkSteps.Tests
             ds = new DocSpecDefinition
             {
                 AssemblyPath =
-                    @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
                 TypeName = "BizUnit.BizTalkTestArtifacts.Schema3Env"
             };
             pipeStep.DocSpecs.Add(ds);
 
-            pipeStep.Source = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema3Env.xml";
+            pipeStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema3Env.xml";
             pipeStep.DestinationFileFormat = "Output013.{0}.xml";
             pipeStep.DestinationFileFormat = "Output013.{0}.xml";
             pipeStep.OutputContextFileFormat = "Context013.{0}.xml";
@@ -190,7 +190,7 @@ namespace BizUnit.BizTalkSteps.Tests
 
             var validation = new XmlValidationStep();
             var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema0.xsd";
+            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema0.xsd";
             sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema0";
             validation.XmlSchemas.Add(sd);
             // Add validation to FileReadMultipleStep

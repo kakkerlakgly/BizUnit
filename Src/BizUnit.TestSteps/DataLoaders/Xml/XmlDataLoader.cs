@@ -56,7 +56,7 @@ namespace BizUnit.TestSteps.DataLoaders.Xml
     /// 
     /// // Create the dataloader and configure...
     /// var xdl = new XmlDataLoader();
-    /// xdl.FilePath = @"..\..\..\Tests\Affinus.TradeServices.BVTs\TradeFlow\BookTrade_RQ.xml";
+    /// xdl.FilePath = @"..\..\..\..\Tests\Affinus.TradeServices.BVTs\TradeFlow\BookTrade_RQ.xml";
     /// var xpd = new XPathDefinition();
     /// xpd.Description = "Booking Reference";
     /// 

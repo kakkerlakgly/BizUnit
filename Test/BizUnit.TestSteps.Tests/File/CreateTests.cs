@@ -65,21 +65,21 @@ namespace BizUnit.TestSteps.Tests.File
         public void CreateFileTest()
         {
             var step = new CreateStep();
-            step.CreationPath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\FileCreateStepTest.testdelxml";
+            step.CreationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\FileCreateStepTest.testdelxml";
             var dl = new FileDataLoader();
-            dl.FilePath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
+            dl.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
             step.DataSource = dl;
             step.Execute(new Context());
 
             var readStep = new FileReadMultipleStep();
-            readStep.DirectoryPath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\.";
+            readStep.DirectoryPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\.";
             readStep.SearchPattern = "*.testdelxml";
 
             var validation = new XmlValidationStep();
             var schemaPurchaseOrder = new SchemaDefinition
             {
                 XmlSchemaPath =
-                    @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder.xsd",
+                    @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder.xsd",
                 XmlSchemaNameSpace =
                     "http://SendMail.PurchaseOrder"
             };

@@ -38,11 +38,11 @@ namespace BizUnit.BizUnitOM
     /// 
     /// // Set the properties on the test step...
     /// object[] args = new object[1];
-    /// args[0] = @"..\..\..\Test\BizUnit.Tests\Data\LoadGenScript001.xml";
+    /// args[0] = @"..\..\..\..\Test\BizUnit.Tests\Data\LoadGenScript001.xml";
     /// tsb.SetProperty("SourcePath", args);
     /// 
     /// args = new object[1];
-    /// args[0] = @"..\..\..\Test\BizUnit.Tests\Out\Data_%Guid%.xml";
+    /// args[0] = @"..\..\..\..\Test\BizUnit.Tests\Out\Data_%Guid%.xml";
     /// tsb.SetProperty("CreationPath", args);
     /// 
     /// // Create the BizUnitTestCase

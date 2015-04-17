@@ -61,12 +61,12 @@ namespace BizUnit.TestDocumentor.Tests
             var foo = testContextInstance.TestDir;
 
             documentor.GenerateDocumentation(
-                @"..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\TestReportTemplate0.2.xml",
-                @"..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\CategoryTemplate.xml",
-                @"..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\TestCaseTemplate.xml",
-                @"..\..\..\Test\BizUnit.TestDocumentor.Tests\Tests",
-                @"..\..\..\Test\BizUnit.TestDocumentor.Tests\Output\BizUnitTestReport_v1.0.xml",
-                @"..\..\..\Test\BizUnit.TestDocumentor.Tests\Bins",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\TestReportTemplate0.2.xml",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\CategoryTemplate.xml",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\TestCaseTemplate.xml",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Tests",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Output\BizUnitTestReport_v1.0.xml",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Bins",
                 true);
         }
     }

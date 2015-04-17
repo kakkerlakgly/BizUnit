@@ -63,19 +63,19 @@ namespace BizUnit.TestSteps.Tests.File
         [TestMethod]
         public void MoveFileTest()
         {
-            TestHelper.DeleteFile(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml");
-            TestHelper.DeleteFile(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
+            TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml");
+            TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
-            System.IO.File.Copy(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
-                @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
+            System.IO.File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
+                @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
             var step = new MoveStep();
-            step.SourcePath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml";
-            step.DestinationPath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml";
+            step.SourcePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml";
+            step.DestinationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml";
 
             step.Execute(new Context());
 
-            Assert.IsTrue(System.IO.File.Exists(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"));
+            Assert.IsTrue(System.IO.File.Exists(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"));
          
         }
 
@@ -85,8 +85,8 @@ namespace BizUnit.TestSteps.Tests.File
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml");
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
-            System.IO.File.Copy(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
-                @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
+            System.IO.File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
+                @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
             var step = new MoveStep();
             step.SourcePath = string.Empty;

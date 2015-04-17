@@ -67,19 +67,19 @@ namespace BizUnit.TestSteps.Tests.File
         public void DeleteFileTest()
         {
             var step = new CreateStep();
-            step.CreationPath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml";
+            step.CreationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml";
             var dl = new FileDataLoader();
-            dl.FilePath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
+            dl.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
             step.DataSource = dl;
             step.Execute(new Context());
 
             var deleteStep = new DeleteStep();
-            deleteStep.FilePathsToDelete.Add(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml");
+            deleteStep.FilePathsToDelete.Add(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml");
             deleteStep.Execute(new Context());
 
             try
             {
-                var deletedFile = System.IO.File.Open(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml", FileMode.Open,
+                var deletedFile = System.IO.File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml", FileMode.Open,
                                     FileAccess.Read);
             }
             catch (System.IO.FileNotFoundException)
@@ -92,22 +92,22 @@ namespace BizUnit.TestSteps.Tests.File
         public void DeleteFileByWildCardTest()
         {
             var step = new CreateStep();
-            step.CreationPath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted1.wildCardTestxml";
+            step.CreationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted1.wildCardTestxml";
             var dl = new FileDataLoader();
-            dl.FilePath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
+            dl.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
             step.DataSource = dl;
             step.Execute(new Context());
 
-            step.CreationPath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted2.wildCardTestxml";
+            step.CreationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted2.wildCardTestxml";
             step.Execute(new Context());
 
             var deleteStep = new DeleteStep();
-            deleteStep.FilePathsToDelete.Add(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\*.wildCardTestxml");
+            deleteStep.FilePathsToDelete.Add(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\*.wildCardTestxml");
             deleteStep.Execute(new Context());
 
             try
             {
-                var deletedFile = System.IO.File.Open(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.wildCardTestxml", FileMode.Open,
+                var deletedFile = System.IO.File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.wildCardTestxml", FileMode.Open,
                                     FileAccess.Read);
             }
             catch (System.IO.FileNotFoundException)

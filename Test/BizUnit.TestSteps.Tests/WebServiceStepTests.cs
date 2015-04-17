@@ -74,7 +74,7 @@ namespace BizUnit.TestSteps.Tests
             ws.Action = "http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/2009/IAncillarySalesBook/GetProductTermsAndConditions";
             FileDataLoader dataLoader;
             dataLoader = new FileDataLoader();
-            dataLoader.FilePath = @"..\..\..\Test\BizUnit.TestSteps.Tests\TestData\GetProductTermsAndConditions_RQ.xml";
+            dataLoader.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\GetProductTermsAndConditions_RQ.xml";
             ws.RequestBody = dataLoader;
             ws.ServiceUrl = "http://localhost/AncillarySalesBook/AncillarySalesBook.svc";
             ws.Username = @"newkydog001\kevinsmi";
@@ -132,7 +132,7 @@ namespace BizUnit.TestSteps.Tests
         [TestMethod]
         public void WebServiceInvoke_LoadFromXaml()
         {
-            var tc = TestCase.LoadFromFile(@"..\..\..\Test\BizUnit.TestSteps.Tests\TestCases\WebServiceInvokeTest.xml");
+            var tc = TestCase.LoadFromFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestCases\WebServiceInvokeTest.xml");
             BizUnit bu = new BizUnit(tc);
             bu.RunTest();
         }

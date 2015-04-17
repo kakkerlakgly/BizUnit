@@ -35,7 +35,7 @@ namespace BizUnit.Xaml
     /// 
     /// // Create the dataloader and configure...
     /// FileDataLoader dl = new FileDataLoader();
-    /// dl.FilePath = @"..\..\..\Tests\Affinus.TradeServices.BVTs\TradeFlow\BookTrade_RQ.xml";
+    /// dl.FilePath = @"..\..\..\..\Tests\Affinus.TradeServices.BVTs\TradeFlow\BookTrade_RQ.xml";
     /// 
     /// // Assign the dataloader to the RequestBody
     /// ws.RequestBody = dl;

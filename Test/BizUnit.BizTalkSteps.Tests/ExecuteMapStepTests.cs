@@ -14,8 +14,8 @@ namespace BizUnit.BizTalkSteps.Tests
         public void MapDocumentInstanceTest()
         {
             var mapStep = new ExecuteMapStep();
-            mapStep.MapAssemblyPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            mapStep.Source = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml";
+            mapStep.MapAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
+            mapStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml";
             mapStep.MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2";
             mapStep.Destination = "Schema2.001.xml";
 
@@ -34,14 +34,14 @@ namespace BizUnit.BizTalkSteps.Tests
         public void MapDocumentInstanceTestAndValidate()
         {
             var mapStep = new ExecuteMapStep();
-            mapStep.MapAssemblyPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            mapStep.Source = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml";
+            mapStep.MapAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
+            mapStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml";
             mapStep.MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2";
             mapStep.Destination = "Schema2.002.xml";
 
             var validation = new XmlValidationStep();
             var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
+            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
             sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
             validation.XmlSchemas.Add(sd);
             var xpd = new XPathDefinition();
@@ -67,14 +67,14 @@ namespace BizUnit.BizTalkSteps.Tests
         public void MapDocumentInstanceTestAndValidateAndAddValueToCtx()
         {
             var mapStep = new ExecuteMapStep();
-            mapStep.MapAssemblyPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            mapStep.Source = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml";
+            mapStep.MapAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
+            mapStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml";
             mapStep.MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2";
             mapStep.Destination = "Schema2.003.xml";
 
             var validation = new XmlValidationStep();
             var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
+            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
             sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
             validation.XmlSchemas.Add(sd);
             var xpd = new XPathDefinition();
@@ -104,14 +104,14 @@ namespace BizUnit.BizTalkSteps.Tests
         public void MapDocumentInstanceTestAndValidateInvalidDocument()
         {
             var mapStep = new ExecuteMapStep();
-            mapStep.MapAssemblyPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            mapStep.Source = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.error.xml";
+            mapStep.MapAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
+            mapStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.error.xml";
             mapStep.MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2";
             mapStep.Destination = "Schema2.005.xml";
 
             var validation = new XmlValidationStep();
             var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
+            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
             sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
             validation.XmlSchemas.Add(sd);
             var xpd = new XPathDefinition();
