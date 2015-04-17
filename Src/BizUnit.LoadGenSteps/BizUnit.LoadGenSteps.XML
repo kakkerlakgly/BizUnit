@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BizUnit.LoadGenSteps</name>
+    </assembly>
+    <members>
+        <member name="T:BizUnit.LoadGenSteps.LoadGenExecuteStep">
+             <summary>
+             The LoadGenExecuteStep step executes a LoadGen test
+             </summary>
+              
+             <remarks>
+             
+             <code escaped="true">
+            	<TestStep assemblyPath="" typeName="BizUnit.LoadGenSteps.LoadGenExecuteStep, BizUnit.LoadGenSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
+            		<LoadGenTestConfig>c:\LoadTests\MemphisFeedPerfTest001.xml</LoadGenTestConfig>
+            	</TestStep>
+             </code>
+            
+            	<list type="table">
+            		<listheader>
+            			<term>Tag</term>
+            			<description>Description</description>
+            		</listheader>
+            		<item>
+            			<term>LoadGenTestConfig</term>
+            			<description>The path to the LoadGen test configuration</description>
+            		</item>
+            	</list>
+            	</remarks>
+        </member>
+        <member name="M:BizUnit.LoadGenSteps.LoadGenExecuteStep.Execute(System.Xml.XmlNode,BizUnit.Context)">
+            <summary>
+            ITestStep.Execute() implementation
+            </summary>
+            <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
+            <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{EF7E3281-CD33-11D4-8326-00C04FA0CE8D}") = "StockQuoteService", "StockQuoteService.btproj", "{10C0DB58-01D5-4DBD-924B-70F12B60C0BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Deployment|.NET = Deployment|.NET
+		Development|.NET = Development|.NET
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10C0DB58-01D5-4DBD-924B-70F12B60C0BA}.Deployment|.NET.ActiveCfg = Deployment|.NET
+		{10C0DB58-01D5-4DBD-924B-70F12B60C0BA}.Deployment|.NET.Build.0 = Deployment|.NET
+		{10C0DB58-01D5-4DBD-924B-70F12B60C0BA}.Deployment|.NET.Deploy.0 = Deployment|.NET
+		{10C0DB58-01D5-4DBD-924B-70F12B60C0BA}.Development|.NET.ActiveCfg = Development|.NET
+		{10C0DB58-01D5-4DBD-924B-70F12B60C0BA}.Development|.NET.Build.0 = Development|.NET
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
