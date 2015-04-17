@@ -65,27 +65,27 @@
   <ItemGroup>
     <Reference Include="Microsoft.BizTalk.CrossReferencing, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft BizTalk Server 2006\Microsoft.BizTalk.CrossReferencing.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft BizTalk Server 2013 R2\Microsoft.BizTalk.CrossReferencing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.BizTalk.Messaging, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft BizTalk Server 2006\Microsoft.BizTalk.Messaging.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft BizTalk Server 2013 R2\Microsoft.BizTalk.Messaging.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.BizTalk.Pipeline, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft BizTalk Server 2006\Microsoft.BizTalk.Pipeline.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft BizTalk Server 2013 R2\Microsoft.BizTalk.Pipeline.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Biztalk.RuleEngineExtensions, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft BizTalk Server 2006\Microsoft.Biztalk.RuleEngineExtensions.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft BizTalk Server 2013 R2\Microsoft.Biztalk.RuleEngineExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.RuleEngine, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft BizTalk Server 2006\Microsoft.RuleEngine.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft BizTalk Server 2013 R2\Microsoft.RuleEngine.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.XLANGs.BaseTypes, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft BizTalk Server 2006\Microsoft.XLANGs.BaseTypes.dll</HintPath>
+      <HintPath>C:\Program Files (x86)\Microsoft BizTalk Server 2013 R2\Microsoft.XLANGs.BaseTypes.dll</HintPath>
     </Reference>
     <Reference Include="PipelineObjects, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
