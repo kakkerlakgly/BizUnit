@@ -6,7 +6,7 @@ namespace BizUnit.BizTalkTestArtifacts {
     public sealed class MapSchema1ToSchema2 : global::Microsoft.XLANGs.BaseTypes.TransformBase {
         
         private const string _strMap = @"<?xml version=""1.0"" encoding=""UTF-16""?>
-<xsl:stylesheet xmlns:xsl=""http://www.w3.org/1999/XSL/Transform"" xmlns:msxsl=""urn:schemas-microsoft-com:xslt"" xmlns:var=""http://schemas.microsoft.com/BizTalk/2003/var"" exclude-result-prefixes=""msxsl var s1 s0 ScriptNS0"" version=""1.0"" xmlns:ns0=""http://BizUnit.BizTalkTestArtifacts.Schema2"" xmlns:s1=""http://BizUnit.BizTalkTestArtifacts.Schema1"" xmlns:s0=""http://BizUnit.BizTalkTestArtifacts.Schema0"" xmlns:ScriptNS0=""http://schemas.microsoft.com/BizTalk/2003/ScriptNS0"">
+<xsl:stylesheet xmlns:xsl=""http://www.w3.org/1999/XSL/Transform"" xmlns:msxsl=""urn:schemas-microsoft-com:xslt"" xmlns:var=""http://schemas.microsoft.com/BizTalk/2003/var"" exclude-result-prefixes=""msxsl var s1 s0 ScriptNS0"" version=""1.0"" xmlns:s1=""http://BizUnit.BizTalkTestArtifacts.Schema1"" xmlns:s0=""http://BizUnit.BizTalkTestArtifacts.Schema0"" xmlns:ns0=""http://BizUnit.BizTalkTestArtifacts.Schema2"" xmlns:ScriptNS0=""http://schemas.microsoft.com/BizTalk/2003/ScriptNS0"">
   <xsl:output omit-xml-declaration=""yes"" method=""xml"" version=""1.0"" />
   <xsl:template match=""/"">
     <xsl:apply-templates select=""/s1:Schema1Root"" />
@@ -47,7 +47,11 @@ namespace BizUnit.BizTalkTestArtifacts {
         
         private const string _strSrcSchemasList0 = @"BizUnit.BizTalkTestArtifacts.Schema1";
         
+        private const global::BizUnit.BizTalkTestArtifacts.Schema1 _srcSchemaTypeReference0 = null;
+        
         private const string _strTrgSchemasList0 = @"BizUnit.BizTalkTestArtifacts.Schema2";
+        
+        private const global::BizUnit.BizTalkTestArtifacts.Schema2 _trgSchemaTypeReference0 = null;
         
         public override string XmlContent {
             get {

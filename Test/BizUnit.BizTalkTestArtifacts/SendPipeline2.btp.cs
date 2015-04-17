@@ -42,7 +42,7 @@ namespace BizUnit.BizTalkTestArtifacts
 "curs=\"0\" maxOccurs=\"-1\" execMethod=\"All\" stageId=\"9d0e4108-4cce-4536-83fa-4a5040674ad6\" />      <Com"+
 "ponents />    </Stage>  </Stages></Document>";
         
-        private const string _versionDependentGuid = "7b90aad5-2753-44c6-875e-796ec1367674";
+        private const string _versionDependentGuid = "dd46b35b-c154-430c-96bc-238b50bd01fd";
         
         public SendPipeline2()
         {

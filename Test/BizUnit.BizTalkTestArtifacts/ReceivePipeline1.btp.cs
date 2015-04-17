@@ -39,7 +39,7 @@ namespace BizUnit.BizTalkTestArtifacts
 " Name=\"ResolveParty\" minOccurs=\"0\" maxOccurs=\"-1\" execMethod=\"All\" stageId=\"9d0e410e-4cce-4536-83fa-"+
 "4a5040674ad6\" />      <Components />    </Stage>  </Stages></Document>";
         
-        private const string _versionDependentGuid = "bb037530-b896-4c7d-b0b7-3d25de914c6d";
+        private const string _versionDependentGuid = "4cef7d2a-1632-4aa9-a2c3-4cd46a64c24a";
         
         public ReceivePipeline1()
         {

@@ -41,7 +41,7 @@ namespace BizUnit.BizTalkTestArtifacts
 "lveParty\" minOccurs=\"0\" maxOccurs=\"-1\" execMethod=\"All\" stageId=\"9d0e410e-4cce-4536-83fa-4a5040674ad"+
 "6\" />      <Components />    </Stage>  </Stages></Document>";
         
-        private const string _versionDependentGuid = "a807f36d-e315-44f0-9a52-4b71daab694b";
+        private const string _versionDependentGuid = "bed6a3d9-1bfc-4232-b2e4-44dc36116334";
         
         public ReceivePipeline3()
         {
