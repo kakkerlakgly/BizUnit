@@ -1,12 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoapTestWebService", "Test\BizUnit.Tests\SoapTestWebService\SoapTestWebService.csproj", "{A46D7CE3-70CC-4C97-9001-73D89DD40ADB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizUnit", "Src\BizUnit\BizUnit.csproj", "{7C85248A-15D4-4A17-A496-AECF789E0F10}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizUnit.BizTalkSteps.Tests", "Test\BizUnit.BizTalkSteps.Tests\BizUnit.BizTalkSteps.Tests.csproj", "{D0377D64-9108-4FA9-B64F-60445B49971B}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestStepLibraries", "TestStepLibraries", "{24EF14F4-1468-4D14-8DB3-ACB59601B161}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{440CA47C-25F0-41AB-86E6-AB36909520C4}"
@@ -20,6 +16,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		BizUnit.vsmdi = BizUnit.vsmdi
 		Local.testsettings = Local.testsettings
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoapTestWebService", "Test\BizUnit.Tests\SoapTestWebService\SoapTestWebService.csproj", "{A46D7CE3-70CC-4C97-9001-73D89DD40ADB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizUnit", "Src\BizUnit\BizUnit.csproj", "{7C85248A-15D4-4A17-A496-AECF789E0F10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizUnit.BizTalkSteps.Tests", "Test\BizUnit.BizTalkSteps.Tests\BizUnit.BizTalkSteps.Tests.csproj", "{D0377D64-9108-4FA9-B64F-60445B49971B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizUnit.TestSteps.BizTalk", "Src\BizUnit.TestSteps.BizTalk\BizUnit.TestSteps.BizTalk.csproj", "{772A474B-0D95-4002-BF5B-910986D1326B}"
 EndProject
@@ -51,79 +53,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BizUnit.MQSeriesSteps", "Src\BizUnit.MQSeriesSteps\BizUnit.MQSeriesSteps.csproj", "{91790EE8-448A-4C68-8555-5BC7FEA9D325}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 17
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://xxxxx.xxxxx.xxx:8080/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Test\\BizUnit.Tests\\SoapTestWebService\\SoapTestWebService.csproj
-		SccProjectTopLevelParentUniqueName1 = BizUnit.sln
-		SccProjectName1 = Test/BizUnit.Tests/SoapTestWebService
-		SccLocalPath1 = Test\\BizUnit.Tests\\SoapTestWebService
-		SccProjectUniqueName2 = Src\\BizUnit\\BizUnit.csproj
-		SccProjectTopLevelParentUniqueName2 = BizUnit.sln
-		SccProjectName2 = Src/BizUnit
-		SccLocalPath2 = Src\\BizUnit
-		SccProjectUniqueName3 = Test\\BizUnit.BizTalkSteps.Tests\\BizUnit.BizTalkSteps.Tests.csproj
-		SccProjectTopLevelParentUniqueName3 = BizUnit.sln
-		SccProjectName3 = Test/BizUnit.BizTalkSteps.Tests
-		SccLocalPath3 = Test\\BizUnit.BizTalkSteps.Tests
-		SccProjectUniqueName4 = Src\\BizUnit.TestDocumentor\\BizUnit.TestDocumentor.csproj
-		SccProjectTopLevelParentUniqueName4 = BizUnit.sln
-		SccProjectName4 = Src/BizUnit.TestDocumentor
-		SccLocalPath4 = Src\\BizUnit.TestDocumentor
-		SccProjectUniqueName5 = Src\\BizUnit.TestSteps.BizTalk\\BizUnit.TestSteps.BizTalk.csproj
-		SccProjectTopLevelParentUniqueName5 = BizUnit.sln
-		SccProjectName5 = Src/BizUnit.TestSteps.BizTalk
-		SccLocalPath5 = Src\\BizUnit.TestSteps.BizTalk
-		SccProjectUniqueName6 = Src\\BizUnit.TestSteps\\BizUnit.TestSteps.csproj
-		SccProjectTopLevelParentUniqueName6 = BizUnit.sln
-		SccProjectName6 = Src/BizUnit.TestSteps
-		SccLocalPath6 = Src\\BizUnit.TestSteps
-		SccProjectUniqueName7 = Src\\BizUnit.TestSteps.Ssis\\BizUnit.TestSteps.Ssis.csproj
-		SccProjectTopLevelParentUniqueName7 = BizUnit.sln
-		SccProjectName7 = Src/BizUnit.TestSteps.Ssis
-		SccLocalPath7 = Src\\BizUnit.TestSteps.Ssis
-		SccProjectUniqueName8 = Test\\BizUnit.TestSteps.Tests\\BizUnit.TestSteps.Tests.csproj
-		SccProjectTopLevelParentUniqueName8 = BizUnit.sln
-		SccProjectName8 = Test/BizUnit.TestSteps.Tests
-		SccLocalPath8 = Test\\BizUnit.TestSteps.Tests
-		SccProjectUniqueName9 = Src\\BizUnit.TestDocumentor.Console\\BizUnit.TestDocumentor.Console.csproj
-		SccProjectTopLevelParentUniqueName9 = BizUnit.sln
-		SccProjectName9 = Src/BizUnit.TestDocumentor.Console
-		SccLocalPath9 = Src\\BizUnit.TestDocumentor.Console
-		SccProjectUniqueName10 = Test\\BizUnit.TestDocumentor.Tests\\BizUnit.TestDocumentor.Tests.csproj
-		SccProjectTopLevelParentUniqueName10 = BizUnit.sln
-		SccProjectName10 = Test/BizUnit.TestDocumentor.Tests
-		SccLocalPath10 = Test\\BizUnit.TestDocumentor.Tests
-		SccProjectUniqueName11 = Src\\BizUnit.TestDocumentor.GUI\\BizUnit.TestDocumentor.GUI.csproj
-		SccProjectTopLevelParentUniqueName11 = BizUnit.sln
-		SccProjectName11 = Src/BizUnit.TestDocumentor.GUI
-		SccLocalPath11 = Src\\BizUnit.TestDocumentor.GUI
-		SccProjectUniqueName12 = Test\\BizUnit.BizTalkTestArtifacts.Components\\BizUnit.BizTalkTestArtifacts.Components.csproj
-		SccProjectTopLevelParentUniqueName12 = BizUnit.sln
-		SccProjectName12 = Test/BizUnit.BizTalkTestArtifacts.Components
-		SccLocalPath12 = Test\\BizUnit.BizTalkTestArtifacts.Components
-		SccProjectUniqueName13 = Test\\BizUnit.BizTalkTestArtifacts\\BizUnit.BizTalkTestArtifacts.btproj
-		SccProjectTopLevelParentUniqueName13 = BizUnit.sln
-		SccProjectName13 = Test/BizUnit.BizTalkTestArtifacts
-		SccLocalPath13 = Test\\BizUnit.BizTalkTestArtifacts
-		SccProjectUniqueName14 = Src\\BizUnit.CoreSteps\\BizUnit.CoreSteps.csproj
-		SccProjectTopLevelParentUniqueName14 = BizUnit.sln
-		SccProjectName14 = Src/BizUnit.CoreSteps
-		SccLocalPath14 = Src\\BizUnit.CoreSteps
-		SccProjectUniqueName15 = Src\\BizUnit.LoadGenSteps\\BizUnit.LoadGenSteps.csproj
-		SccProjectTopLevelParentUniqueName15 = BizUnit.sln
-		SccProjectName15 = Src/BizUnit.LoadGenSteps
-		SccLocalPath15 = Src\\BizUnit.LoadGenSteps
-		SccProjectUniqueName16 = Src\\BizUnit.MQSeriesSteps\\BizUnit.MQSeriesSteps.csproj
-		SccProjectTopLevelParentUniqueName16 = BizUnit.sln
-		SccProjectName16 = Src/BizUnit.MQSeriesSteps
-		SccLocalPath16 = Src\\BizUnit.MQSeriesSteps
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = BizUnit.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -302,24 +231,27 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D0377D64-9108-4FA9-B64F-60445B49971B} = {1080D171-00B5-472F-A97E-CE66080F898D}
-		{A46D7CE3-70CC-4C97-9001-73D89DD40ADB} = {1080D171-00B5-472F-A97E-CE66080F898D}
-		{AB291EBC-66BE-4CE0-9527-0726BF0EB5AD} = {1080D171-00B5-472F-A97E-CE66080F898D}
-		{FA142C8C-FA7C-43BF-B79E-155972102532} = {1080D171-00B5-472F-A97E-CE66080F898D}
-		{02BFF6AB-8004-4727-BD06-FECF4AA0FD87} = {1080D171-00B5-472F-A97E-CE66080F898D}
-		{AD8A0483-D45F-47DC-96A4-76DA1F80E261} = {1080D171-00B5-472F-A97E-CE66080F898D}
-		{51F702A0-93CF-4829-92DE-C8B6DB2A7825} = {1080D171-00B5-472F-A97E-CE66080F898D}
 		{24EF14F4-1468-4D14-8DB3-ACB59601B161} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
-		{7C85248A-15D4-4A17-A496-AECF789E0F10} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
 		{12EBB423-15A8-4FED-BD1D-729C37180B86} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
-		{049EFBBC-F7F8-4C7D-BDA6-865033D74057} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
-		{49B2AF80-5D7F-41AB-94CE-2B138A02B114} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
-		{B7324189-EAFD-4259-92F6-3D75432EC268} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
+		{AB291EBC-66BE-4CE0-9527-0726BF0EB5AD} = {1080D171-00B5-472F-A97E-CE66080F898D}
+		{A46D7CE3-70CC-4C97-9001-73D89DD40ADB} = {1080D171-00B5-472F-A97E-CE66080F898D}
+		{7C85248A-15D4-4A17-A496-AECF789E0F10} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
+		{D0377D64-9108-4FA9-B64F-60445B49971B} = {1080D171-00B5-472F-A97E-CE66080F898D}
 		{772A474B-0D95-4002-BF5B-910986D1326B} = {24EF14F4-1468-4D14-8DB3-ACB59601B161}
 		{5BFEF184-0834-4FBA-ADDB-AD798CE0B58D} = {24EF14F4-1468-4D14-8DB3-ACB59601B161}
 		{B664CBA0-0D34-4328-AF3F-BBD0D13CC21A} = {24EF14F4-1468-4D14-8DB3-ACB59601B161}
+		{FA142C8C-FA7C-43BF-B79E-155972102532} = {1080D171-00B5-472F-A97E-CE66080F898D}
+		{049EFBBC-F7F8-4C7D-BDA6-865033D74057} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
+		{49B2AF80-5D7F-41AB-94CE-2B138A02B114} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
+		{02BFF6AB-8004-4727-BD06-FECF4AA0FD87} = {1080D171-00B5-472F-A97E-CE66080F898D}
+		{B7324189-EAFD-4259-92F6-3D75432EC268} = {440CA47C-25F0-41AB-86E6-AB36909520C4}
+		{AD8A0483-D45F-47DC-96A4-76DA1F80E261} = {1080D171-00B5-472F-A97E-CE66080F898D}
+		{51F702A0-93CF-4829-92DE-C8B6DB2A7825} = {1080D171-00B5-472F-A97E-CE66080F898D}
 		{B336B2AF-BAEB-424F-9463-CA3034EADC2D} = {12EBB423-15A8-4FED-BD1D-729C37180B86}
 		{348DDB68-8608-483A-B837-16C14AC9A64F} = {12EBB423-15A8-4FED-BD1D-729C37180B86}
 		{91790EE8-448A-4C68-8555-5BC7FEA9D325} = {12EBB423-15A8-4FED-BD1D-729C37180B86}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = BizUnit.vsmdi
 	EndGlobalSection
 EndGlobal
