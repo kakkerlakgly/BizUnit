@@ -64,7 +64,7 @@ namespace BizUnit.TestSteps.BizTalk.Map
         }
 
         /// <summary>
-        /// Execute the map
+        /// Execute the map, updated to use 'XSLCompiledTransform' for BizTalk 2013, This KB hints at this http://support.microsoft.com/kb/2887564
         /// </summary>
         /// <param name='source'>The input Xml instance to map</param>
         /// <param name='destination'>The ouput Xml instance produced by the map</param>
@@ -73,15 +73,9 @@ namespace BizUnit.TestSteps.BizTalk.Map
             using (var inReader = new StreamReader(source))
             {
                 var xpathdoc = new XPathDocument(inReader);
-                using (var outReader = Map.Transform.Transform(xpathdoc, Map.TransformArgs))
+                using (XmlWriter writer = XmlWriter.Create(destination))
                 {
-                    var xDoc = new XmlDocument();
-                    xDoc.Load(outReader);
-
-                    using (var writer = XmlWriter.Create(destination, BizTalkMapTester.WriterSettings))
-                    {
-                        xDoc.Save(writer);
-                    }
+                    Map.Transform.Transform(xpathdoc, Map.TransformArgs, writer);
                 }
             }
         }
