@@ -106,7 +106,7 @@ namespace BizUnit.TestSteps.Tests
             validation.Execute(data, ctx);
         }
 
-        [ExpectedException(typeof(XmlSchemaValidationException))]
+        [ExpectedException(typeof(ValidationStepExecutionException))]
         [TestMethod]
         public void XmlValidationStepTest_SchemaValidationFail()
         {
@@ -131,7 +131,7 @@ namespace BizUnit.TestSteps.Tests
             validation.Execute(data, ctx);
         }
 
-        [ExpectedException(typeof(XmlSchemaValidationException))]
+        [ExpectedException(typeof(ValidationStepExecutionException))]
         [TestMethod]
         public void XmlValidationStepTest_SchemaValidationFailMissingElem()
         {
