@@ -13,6 +13,7 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Reflection;
 using BizUnit.Common;
 
@@ -145,14 +146,7 @@ namespace BizUnit.BizUnitOM
         private PropertyInfo GetProperty(Type t)
         {
             PropertyInfo[] propertiesInfo = testStep.GetType().GetProperties();
-            foreach (PropertyInfo propertyInfo in propertiesInfo)
-            {
-                if (t == propertyInfo.PropertyType)
-                {
-                    return propertyInfo;
-                }
-            }
-            return null;
+            return propertiesInfo.FirstOrDefault(propertyInfo => t == propertyInfo.PropertyType);
         }
 
         internal void PrepareSubStepsForExecution(Context ctx)

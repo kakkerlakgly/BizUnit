@@ -64,18 +64,21 @@ namespace BizUnit
 				receiveQueue = queueManager.AccessQueue(queueName, MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING);
 			
 				MQMessage mqMsg = new MQMessage();
-				MQGetMessageOptions mqMsgOpts = new MQGetMessageOptions();
-				mqMsgOpts.WaitInterval = waitDelay*1000;  
-				mqMsgOpts.Options = MQC.MQGMO_WAIT;
+			    MQGetMessageOptions mqMsgOpts = new MQGetMessageOptions
+			    {
+			        WaitInterval = waitDelay*1000,
+			        Options = MQC.MQGMO_WAIT
+			    };
 
-				context.LogInfo("Reading message from queue '{0}'.", queueName);
+
+			    context.LogInfo("Reading message from queue '{0}'.", queueName);
 
 				receiveQueue.Get(mqMsg,mqMsgOpts);
 
 				if(mqMsg.Format.CompareTo(MQC.MQFMT_STRING)==0)
 				{
 					mqMsg.Seek(0);
-					message = System.Text.UTF8Encoding.UTF8.GetString(mqMsg.ReadBytes(mqMsg.MessageLength));
+					message = Encoding.UTF8.GetString(mqMsg.ReadBytes(mqMsg.MessageLength));
 					msgID = mqMsg.MessageId;
 				}
 				else
@@ -125,10 +128,8 @@ namespace BizUnit
 		{
 			MQQueueManager queueManager = null;
 			MQQueue sendQueue = null;
-			MQMessage mqMessage;
-			MQPutMessageOptions mqPutMsgOpts;
-			
-			try
+
+		    try
 			{
 				context.LogInfo("Opening queue manager: \"{0}\"", queueManagerName);
 				queueManager = new MQQueueManager(queueManagerName);
@@ -136,11 +137,11 @@ namespace BizUnit
 				context.LogInfo("Opening queue: '{0}'.", queueName);
 				sendQueue = queueManager.AccessQueue(queueName, MQC.MQOO_OUTPUT + MQC.MQOO_FAIL_IF_QUIESCING );
 				
-				mqMessage = new MQMessage();
+				var mqMessage = new MQMessage();
 				byte[] data = ConvertToBytes(message);
 				mqMessage.Write(data);
 				mqMessage.Format = MQC.MQFMT_STRING;
-				mqPutMsgOpts = new MQPutMessageOptions();
+				var mqPutMsgOpts = new MQPutMessageOptions();
 
 				context.LogInfo("Writing {0} byte message to queue '{1}'.", data.Length, queueName);
 
@@ -170,7 +171,7 @@ namespace BizUnit
 			byte[] data = null;
 			if (null != str)
 			{
-				data = UTF8Encoding.UTF8.GetBytes(str);
+				data = Encoding.UTF8.GetBytes(str);
 			}
 
 			return data;

@@ -16,6 +16,7 @@ using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Linq;
 using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.EventLog
@@ -64,7 +65,7 @@ namespace BizUnit.TestSteps.EventLog
         ///<summary>
         /// Regular expression used to check the event message.
         ///</summary>
-        public List<string> ValidationRegExs { get; set; }
+        public IList<string> ValidationRegExs { get; set; }
 
         ///<summary>
         /// Default constructor
@@ -111,18 +112,11 @@ namespace BizUnit.TestSteps.EventLog
                     if (((entry.Source == Source) && (entry.EntryType == EntryType)) &&
                          (((EventId > 0) && (entry.InstanceId == EventId)) || (EventId == 0)))
                     {
-                        foreach (string validationRegex in ValidationRegExs)
+                        if (ValidationRegExs.Select(matchPattern => Regex.Match(entry.Message, matchPattern)).Any(match => match.Success))
                         {
-                            string matchPattern = validationRegex;
-                            Match match = Regex.Match(entry.Message, matchPattern);
-
-                            if (match.Success)
-                            {
-                                found = true;
-                                context.LogInfo("Successfully matched event log entry generated at '{0}'.", entry.TimeGenerated);
-                                context.LogData("Event log entry.", entry.Message);
-                                break;
-                            }
+                            found = true;
+                            context.LogInfo("Successfully matched event log entry generated at '{0}'.", entry.TimeGenerated);
+                            context.LogData("Event log entry.", entry.Message);
                         }
                     }
 

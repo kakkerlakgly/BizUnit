@@ -73,13 +73,16 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
 
 				string seedSetupPath = node.InnerText;
 
-				ProcessStartInfo startinfo = new ProcessStartInfo(btsxrefimportPath, " -file=\"" + seedSetupPath + "\"");
-				startinfo.CreateNoWindow = true ;
-				startinfo.RedirectStandardError = true;
-				startinfo.RedirectStandardOutput = true;
-				startinfo.UseShellExecute = false; //set to false to redirect error
-			
-				BTSXref = Process.Start(startinfo);
+			    ProcessStartInfo startinfo = new ProcessStartInfo(btsxrefimportPath, " -file=\"" + seedSetupPath + "\"")
+			    {
+			        CreateNoWindow = true,
+			        RedirectStandardError = true,
+			        RedirectStandardOutput = true,
+			        UseShellExecute = false
+			    };
+			    //set to false to redirect error
+
+			    BTSXref = Process.Start(startinfo);
 				BTSXref.WaitForExit();
 				string processOutput = BTSXref.StandardOutput.ReadToEnd() ;
 

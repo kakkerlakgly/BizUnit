@@ -14,12 +14,14 @@ namespace BizUnit.BizTalkSteps.Tests
         public void ExecuteReceivePiplineWithXmlDisAsmTest()
         {
             // Create test case...
-            var tc = new TestCase();
-            tc.Name = "ExecuteReceivePiplineWithXmlDisAsmTest";
+            var tc = new TestCase {Name = "ExecuteReceivePiplineWithXmlDisAsmTest"};
 
-            var pipeStep = new ExecuteReceivePipelineStep();
-            pipeStep.PipelineAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            pipeStep.PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline1";
+            var pipeStep = new ExecuteReceivePipelineStep
+            {
+                PipelineAssemblyPath =
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline1"
+            };
             var ds = new DocSpecDefinition
                          {
                              AssemblyPath =
@@ -34,31 +36,39 @@ namespace BizUnit.BizTalkSteps.Tests
             // Add ExecuteReceivePipelineStep to test case
             tc.ExecutionSteps.Add(pipeStep);
 
-            var exists = new ExistsStep();
-            exists.DirectoryPath = ".";
-            exists.Timeout= 2000;
-            exists.SearchPattern = "Output010*.xml";
-            exists.ExpectedNoOfFiles=1;
+            var exists = new ExistsStep
+            {
+                DirectoryPath = ".",
+                Timeout = 2000,
+                SearchPattern = "Output010*.xml",
+                ExpectedNoOfFiles = 1
+            };
             // Add ExistsStep to test case
             tc.ExecutionSteps.Add(exists);
 
-            exists = new ExistsStep();
-            exists.DirectoryPath = ".";
-            exists.Timeout = 2000;
-            exists.SearchPattern = "Context010*.xml";
-            exists.ExpectedNoOfFiles = 1;
+            exists = new ExistsStep
+            {
+                DirectoryPath = ".",
+                Timeout = 2000,
+                SearchPattern = "Context010*.xml",
+                ExpectedNoOfFiles = 1
+            };
             // Add ExistsStep to test case
             tc.ExecutionSteps.Add(exists);
 
-            var fv = new FileReadMultipleStep();
-            fv.DirectoryPath = ".";
-            fv.SearchPattern = "Output010.0.xml";
-            fv.DeleteFiles = false;
+            var fv = new FileReadMultipleStep
+            {
+                DirectoryPath = ".",
+                SearchPattern = "Output010.0.xml",
+                DeleteFiles = false
+            };
 
             var validation = new XmlValidationStep();
-            var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
-            sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
+            var sd = new SchemaDefinition
+            {
+                XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd",
+                XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2"
+            };
             validation.XmlSchemas.Add(sd);
             // Add validation to FileReadMultipleStep
             fv.SubSteps.Add(validation);
@@ -76,12 +86,14 @@ namespace BizUnit.BizTalkSteps.Tests
         public void ExecuteReceivePiplineWithXmlDisAsmTestInterchangeOfThree()
         {
             // Create test case...
-            var tc = new TestCase();
-            tc.Name = "ExecuteReceivePiplineWithXmlDisAsmTestInterchangeOfThree";
+            var tc = new TestCase {Name = "ExecuteReceivePiplineWithXmlDisAsmTestInterchangeOfThree"};
 
-            var pipeStep = new ExecuteReceivePipelineStep();
-            pipeStep.PipelineAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            pipeStep.PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline1";
+            var pipeStep = new ExecuteReceivePipelineStep
+            {
+                PipelineAssemblyPath =
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline1"
+            };
             var ds = new DocSpecDefinition
             {
                 AssemblyPath =
@@ -96,31 +108,39 @@ namespace BizUnit.BizTalkSteps.Tests
             // Add ExecuteReceivePipelineStep to test case
             tc.ExecutionSteps.Add(pipeStep);
 
-            var exists = new ExistsStep();
-            exists.DirectoryPath = ".";
-            exists.Timeout = 2000;
-            exists.SearchPattern = "Output011*.xml";
-            exists.ExpectedNoOfFiles = 3;
+            var exists = new ExistsStep
+            {
+                DirectoryPath = ".",
+                Timeout = 2000,
+                SearchPattern = "Output011*.xml",
+                ExpectedNoOfFiles = 3
+            };
             // Add ExistsStep to test case
             tc.ExecutionSteps.Add(exists);
 
-            exists = new ExistsStep();
-            exists.DirectoryPath = ".";
-            exists.Timeout = 2000;
-            exists.SearchPattern = "Context011*.xml";
-            exists.ExpectedNoOfFiles = 3;
+            exists = new ExistsStep
+            {
+                DirectoryPath = ".",
+                Timeout = 2000,
+                SearchPattern = "Context011*.xml",
+                ExpectedNoOfFiles = 3
+            };
             // Add ExistsStep to test case
             tc.ExecutionSteps.Add(exists);
 
-            var fv = new FileReadMultipleStep();
-            fv.DirectoryPath = ".";
-            fv.SearchPattern = "Output011.0.xml";
-            fv.DeleteFiles = false;
+            var fv = new FileReadMultipleStep
+            {
+                DirectoryPath = ".",
+                SearchPattern = "Output011.0.xml",
+                DeleteFiles = false
+            };
 
             var validation = new XmlValidationStep();
-            var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
-            sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
+            var sd = new SchemaDefinition
+            {
+                XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd",
+                XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2"
+            };
             validation.XmlSchemas.Add(sd);
             // Add validation to FileReadMultipleStep
             fv.SubSteps.Add(validation);
@@ -138,12 +158,14 @@ namespace BizUnit.BizTalkSteps.Tests
         public void ExecuteReceivePipeDocSpecEnvSpecXmlDisAsmWithImportedSchemaTest()
         {
             // Create test case...
-            var tc = new TestCase();
-            tc.Name = "ExecuteReceivePipeDocSpecEnvSpecXmlDisAsmWithImportedSchemaTest";
+            var tc = new TestCase {Name = "ExecuteReceivePipeDocSpecEnvSpecXmlDisAsmWithImportedSchemaTest"};
 
-            var pipeStep = new ExecuteReceivePipelineStep();
-            pipeStep.PipelineAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            pipeStep.PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline3";
+            var pipeStep = new ExecuteReceivePipelineStep
+            {
+                PipelineAssemblyPath =
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline3"
+            };
             var ds = new DocSpecDefinition
             {
                 AssemblyPath =
@@ -167,31 +189,39 @@ namespace BizUnit.BizTalkSteps.Tests
             // Add ExecuteReceivePipelineStep to test case
             tc.ExecutionSteps.Add(pipeStep);
 
-            var exists = new ExistsStep();
-            exists.DirectoryPath = ".";
-            exists.Timeout = 2000;
-            exists.SearchPattern = "Output013*.xml";
-            exists.ExpectedNoOfFiles = 3;
+            var exists = new ExistsStep
+            {
+                DirectoryPath = ".",
+                Timeout = 2000,
+                SearchPattern = "Output013*.xml",
+                ExpectedNoOfFiles = 3
+            };
             // Add ExistsStep to test case
             tc.ExecutionSteps.Add(exists);
 
-            exists = new ExistsStep();
-            exists.DirectoryPath = ".";
-            exists.Timeout = 2000;
-            exists.SearchPattern = "Context013*.xml";
-            exists.ExpectedNoOfFiles = 3;
+            exists = new ExistsStep
+            {
+                DirectoryPath = ".",
+                Timeout = 2000,
+                SearchPattern = "Context013*.xml",
+                ExpectedNoOfFiles = 3
+            };
             // Add ExistsStep to test case
             tc.ExecutionSteps.Add(exists);
 
-            var fv = new FileReadMultipleStep();
-            fv.DirectoryPath = ".";
-            fv.SearchPattern = "Output013.0.xml";
-            fv.DeleteFiles = false;
+            var fv = new FileReadMultipleStep
+            {
+                DirectoryPath = ".",
+                SearchPattern = "Output013.0.xml",
+                DeleteFiles = false
+            };
 
             var validation = new XmlValidationStep();
-            var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema0.xsd";
-            sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema0";
+            var sd = new SchemaDefinition
+            {
+                XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema0.xsd",
+                XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema0"
+            };
             validation.XmlSchemas.Add(sd);
             // Add validation to FileReadMultipleStep
             fv.SubSteps.Add(validation);

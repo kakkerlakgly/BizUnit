@@ -13,15 +13,17 @@ namespace BizUnit.BizTalkSteps.Tests
         [TestMethod]
         public void MapDocumentInstanceTest()
         {
-            var mapStep = new ExecuteMapStep();
-            mapStep.MapAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            mapStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml";
-            mapStep.MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2";
-            mapStep.Destination = "Schema2.001.xml";
+            var mapStep = new ExecuteMapStep
+            {
+                MapAssemblyPath =
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml",
+                MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2",
+                Destination = "Schema2.001.xml"
+            };
 
             // Save the test case to ensure seralisation works as expected....
-            var tc = new TestCase();
-            tc.Name = "MapDocumentInstanceTest";
+            var tc = new TestCase {Name = "MapDocumentInstanceTest"};
             tc.ExecutionSteps.Add(mapStep);
             TestCase.SaveToFile(tc, "MapDocumentInstanceTest.xaml");
 
@@ -33,28 +35,35 @@ namespace BizUnit.BizTalkSteps.Tests
         [TestMethod]
         public void MapDocumentInstanceTestAndValidate()
         {
-            var mapStep = new ExecuteMapStep();
-            mapStep.MapAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            mapStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml";
-            mapStep.MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2";
-            mapStep.Destination = "Schema2.002.xml";
+            var mapStep = new ExecuteMapStep
+            {
+                MapAssemblyPath =
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml",
+                MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2",
+                Destination = "Schema2.002.xml"
+            };
 
             var validation = new XmlValidationStep();
-            var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
-            sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
+            var sd = new SchemaDefinition
+            {
+                XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd",
+                XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2"
+            };
             validation.XmlSchemas.Add(sd);
-            var xpd = new XPathDefinition();
-            xpd.XPath = "/*[local-name()='Schema2Root' and namespace-uri()='http://BizUnit.BizTalkTestArtifacts.Schema2']/*[local-name()='Child1' and namespace-uri()='']/@*[local-name()='Child1Attribute1' and namespace-uri()='']";
-            xpd.Value = "1";
+            var xpd = new XPathDefinition
+            {
+                XPath =
+                    "/*[local-name()='Schema2Root' and namespace-uri()='http://BizUnit.BizTalkTestArtifacts.Schema2']/*[local-name()='Child1' and namespace-uri()='']/@*[local-name()='Child1Attribute1' and namespace-uri()='']",
+                Value = "1"
+            };
             validation.XPathValidations.Add(xpd);
 
             // Add validation...
             mapStep.SubSteps.Add(validation);
 
             // Save the test case to ensure seralisation works as expected....
-            var tc = new TestCase();
-            tc.Name = "MapDocumentInstanceTest";
+            var tc = new TestCase {Name = "MapDocumentInstanceTest"};
             tc.ExecutionSteps.Add(mapStep);
             TestCase.SaveToFile(tc, "MapDocumentInstanceTestAndValidate.xaml");
 
@@ -66,29 +75,36 @@ namespace BizUnit.BizTalkSteps.Tests
         [TestMethod]
         public void MapDocumentInstanceTestAndValidateAndAddValueToCtx()
         {
-            var mapStep = new ExecuteMapStep();
-            mapStep.MapAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            mapStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml";
-            mapStep.MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2";
-            mapStep.Destination = "Schema2.003.xml";
+            var mapStep = new ExecuteMapStep
+            {
+                MapAssemblyPath =
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.xml",
+                MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2",
+                Destination = "Schema2.003.xml"
+            };
 
             var validation = new XmlValidationStep();
-            var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
-            sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
+            var sd = new SchemaDefinition
+            {
+                XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd",
+                XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2"
+            };
             validation.XmlSchemas.Add(sd);
-            var xpd = new XPathDefinition();
-            xpd.XPath = "/*[local-name()='Schema2Root' and namespace-uri()='http://BizUnit.BizTalkTestArtifacts.Schema2']/*[local-name()='Child1' and namespace-uri()='']/@*[local-name()='Child1Attribute1' and namespace-uri()='']";
-            xpd.Value = "1";
-            xpd.ContextKey = "Child1.Child1Attribute1";
+            var xpd = new XPathDefinition
+            {
+                XPath =
+                    "/*[local-name()='Schema2Root' and namespace-uri()='http://BizUnit.BizTalkTestArtifacts.Schema2']/*[local-name()='Child1' and namespace-uri()='']/@*[local-name()='Child1Attribute1' and namespace-uri()='']",
+                Value = "1",
+                ContextKey = "Child1.Child1Attribute1"
+            };
             validation.XPathValidations.Add(xpd);
 
             // Add validation...
             mapStep.SubSteps.Add(validation);
 
             // Save the test case to ensure seralisation works as expected....
-            var tc = new TestCase();
-            tc.Name = "MapDocumentInstanceTest";
+            var tc = new TestCase {Name = "MapDocumentInstanceTest"};
             tc.ExecutionSteps.Add(mapStep);
             TestCase.SaveToFile(tc, "MapDocumentInstanceTestAndValidateAndAddValueToCtx.xaml");
 
@@ -103,28 +119,35 @@ namespace BizUnit.BizTalkSteps.Tests
         [ExpectedException(typeof(ValidationStepExecutionException))]
         public void MapDocumentInstanceTestAndValidateInvalidDocument()
         {
-            var mapStep = new ExecuteMapStep();
-            mapStep.MapAssemblyPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll";
-            mapStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.error.xml";
-            mapStep.MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2";
-            mapStep.Destination = "Schema2.005.xml";
+            var mapStep = new ExecuteMapStep
+            {
+                MapAssemblyPath =
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema1.error.xml",
+                MapTypeName = "BizUnit.BizTalkTestArtifacts.MapSchema1ToSchema2",
+                Destination = "Schema2.005.xml"
+            };
 
             var validation = new XmlValidationStep();
-            var sd = new SchemaDefinition();
-            sd.XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd";
-            sd.XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2";
+            var sd = new SchemaDefinition
+            {
+                XmlSchemaPath = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Schema2.xsd",
+                XmlSchemaNameSpace = "http://BizUnit.BizTalkTestArtifacts.Schema2"
+            };
             validation.XmlSchemas.Add(sd);
-            var xpd = new XPathDefinition();
-            xpd.XPath = "/*[local-name()='Schema2Root' and namespace-uri()='http://BizUnit.BizTalkTestArtifacts.Schema2']/*[local-name()='Child1' and namespace-uri()='']/@*[local-name()='Child1Attribute1' and namespace-uri()='']";
-            xpd.Value = "1";
+            var xpd = new XPathDefinition
+            {
+                XPath =
+                    "/*[local-name()='Schema2Root' and namespace-uri()='http://BizUnit.BizTalkTestArtifacts.Schema2']/*[local-name()='Child1' and namespace-uri()='']/@*[local-name()='Child1Attribute1' and namespace-uri()='']",
+                Value = "1"
+            };
             validation.XPathValidations.Add(xpd);
 
             // Add validation...
             mapStep.SubSteps.Add(validation);
 
             // Save the test case to ensure seralisation works as expected....
-            var tc = new TestCase();
-            tc.Name = "MapDocumentInstanceTest";
+            var tc = new TestCase {Name = "MapDocumentInstanceTest"};
             tc.ExecutionSteps.Add(mapStep);
             TestCase.SaveToFile(tc, "MapDocumentInstanceTestAndValidateInvalidDocument.xaml");
 

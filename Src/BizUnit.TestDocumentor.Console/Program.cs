@@ -29,7 +29,7 @@ namespace BizUnit.TestDocumentor.Console
         private static void Usage(string[] args)
         {
             Console.WriteLine("Usage:");
-            Console.WriteLine(string.Format("{0} arguments were supplied.", args.Length));
+            Console.WriteLine("{0} arguments were supplied.", args.Length);
             Console.WriteLine("BizUnit.TestDocumentor.exe [Test Report Template] [Category Template] [Test Case Template] [BizUnit Test Directory] [Output File Name (.XML)] [Recursive]");
         }
     }

@@ -79,14 +79,8 @@ namespace BizUnit
             }
 
             WriteLine(" ");
-            if (null == stageException)
-            {
-                WriteLine("{0} Stage: ended @ {1}", stage, FormatDate(time));
-            }
-            else
-            {
-                WriteLine("{0} Stage: ended @ {1} with ERROR's", stage, FormatDate(time));
-            }
+            WriteLine(null == stageException ? "{0} Stage: ended @ {1}" : "{0} Stage: ended @ {1} with ERROR's", stage,
+                FormatDate(time));
         }
 
         public void LogException(Exception e)
@@ -138,7 +132,7 @@ namespace BizUnit
 
 				default:
 			        throw new ApplicationException("Invalid log level was set!");
-			};
+			}
 		}
 
         public void Log(LogLevel logLevel, string text, params object[] args)
@@ -191,27 +185,18 @@ namespace BizUnit
 
         public void TestStepEnd(string testStepName, DateTime time, Exception ex)
         {
-            if (null == ex)
-            {
-                WriteLine(string.Format("Step: {0} ended @ {1}", testStepName, FormatDate(time)));
-            }
-            else
-            {
-                WriteLine(string.Format("Step: {0} ended @ {1} with ERRORS, exception: {2}", testStepName, FormatDate(time), ex.GetType().ToString()));
-            }
+            WriteLine(null == ex
+                ? string.Format("Step: {0} ended @ {1}", testStepName, FormatDate(time))
+                : string.Format("Step: {0} ended @ {1} with ERRORS, exception: {2}", testStepName, FormatDate(time),
+                    ex.GetType()));
         }
 
-        public void ValidateTestSteps(TestStage stage, string testStepName, Exception ex)
+	    public void ValidateTestSteps(TestStage stage, string testStepName, Exception ex)
 	    {
-            if (null == ex)
-            {
-                WriteLine(string.Format("Test step validation for stage: {0}, step: {1} was successful.", stage, testStepName));
-            }
-            else
-            {
-                WriteLine(string.Format("Test step validation for stage: {0}, step: {1} failed: {2}", stage, testStepName, ex));
-            }
-        }
+	        WriteLine(null == ex
+	            ? string.Format("Test step validation for stage: {0}, step: {1} was successful.", stage, testStepName)
+	            : string.Format("Test step validation for stage: {0}, step: {1} failed: {2}", stage, testStepName, ex));
+	    }
 
 	    public void TestGroupStart(string testGroupName, TestGroupPhase testGroupPhase, DateTime time, string userName)
         {
@@ -281,14 +266,9 @@ namespace BizUnit
             WriteLine(new string('-', 79));
             WriteLine(string.Format("Test: {0} ended @ {1}", testName, FormatDate(time)));
             WriteLine("");
-            if (null != ex)
-            {
-                WriteLine("                             ****** F A I L ******");
-            }
-            else
-            {
-                WriteLine("                                    P A S S");
-            }
+            WriteLine(null != ex
+                ? "                             ****** F A I L ******"
+                : "                                    P A S S");
 
             WriteLine(new string('-', 79));
         }
@@ -301,18 +281,14 @@ namespace BizUnit
 
         public void ValidatorEnd(string validatorName, DateTime time, Exception ex)
         {
-            if(null == ex)
-            {
-                WriteLine(string.Format("Validation: {0} ended @ {1}", validatorName, FormatDate(time)));
-            }
-            else
-            {
-                WriteLine(string.Format("Validation: {0} ended @ {1} with ERRORS, exception: {2}", validatorName, FormatDate(time), ex.GetType().ToString()));
-            }
+            WriteLine(null == ex
+                ? string.Format("Validation: {0} ended @ {1}", validatorName, FormatDate(time))
+                : string.Format("Validation: {0} ended @ {1} with ERRORS, exception: {2}", validatorName,
+                    FormatDate(time), ex.GetType()));
             WriteLine("");
         }
 
-        public void ContextLoaderStart(string contextLoaderName, DateTime time)
+	    public void ContextLoaderStart(string contextLoaderName, DateTime time)
         {
             WriteLine("");
             WriteLine(string.Format("ContextLoad: {0} started @ {1}", contextLoaderName, FormatDate(time)));
@@ -320,18 +296,14 @@ namespace BizUnit
 
         public void ContextLoaderEnd(string contextLoaderName, DateTime time, Exception ex)
         {
-            if (null == ex)
-            {
-                WriteLine(string.Format("ContextLoad: {0} ended @ {1}", contextLoaderName, FormatDate(time)));
-            }
-            else
-            {
-                WriteLine(string.Format("ContextLoad: {0} ended @ {1} with ERRORS, exception: {2}", contextLoaderName, FormatDate(time), ex.GetType().ToString()));
-            }
+            WriteLine(null == ex
+                ? string.Format("ContextLoad: {0} ended @ {1}", contextLoaderName, FormatDate(time))
+                : string.Format("ContextLoad: {0} ended @ {1} with ERRORS, exception: {2}", contextLoaderName,
+                    FormatDate(time), ex.GetType()));
             WriteLine("");
         }
-        
-        public object Clone()
+
+	    public object Clone()
 	    {
 	        return new Logger();
 	    }

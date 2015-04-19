@@ -107,7 +107,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 			}
 
 			object fact = context.ReadConfigAsObject(validatorConfig.SelectSingleNode("TypeName"), ".",true);
-			if (fact as string == null)
+			if (!(fact is string))
 			{
 				type = fact.GetType();
 			}
@@ -236,7 +236,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 						}
 						catch (FormatException)
 						{
-							Console.WriteLine(String.Format("The method parameter {0} with value {1} could not be cast to {2}",pi.Name,val,pi.ParameterType.Name));
+							Console.WriteLine("The method parameter {0} with value {1} could not be cast to {2}", pi.Name, val, pi.ParameterType.Name);
 							throw;
 						}
 					}

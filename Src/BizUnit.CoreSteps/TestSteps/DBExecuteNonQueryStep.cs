@@ -203,7 +203,7 @@ namespace BizUnit.CoreSteps.TestSteps
                 int dst = 0;
                 for(int src = 1; src < objParameters.Length; src++)
                 {
-                    if (objParameters[src].GetType() == typeof(DateTime))
+                    if (objParameters[src] is DateTime)
                     {
                         // Convert to SQL Datetime
                         _objParams[dst++] = ((DateTime)objParameters[src]).ToString("yyyy-MM-dd HH:mm:ss.fff");
@@ -241,7 +241,7 @@ namespace BizUnit.CoreSteps.TestSteps
                 int c = 0;
                 foreach(object obj in _queryParameters)
                 {
-                    if (obj.GetType() == typeof(DateTime))
+                    if (obj is DateTime)
                     {
                         // Convert to SQL Datetime
                         _objParams[c++] = ((DateTime)obj).ToString("yyyy-MM-dd HH:mm:ss.fff");
@@ -293,14 +293,8 @@ namespace BizUnit.CoreSteps.TestSteps
 
             if (null != sqlParams)
             {
-                var paramArray = new List<string>();
+                var paramArray = (from XmlNode sqlParam in sqlParams select context.ReadConfigAsString(sqlParam, "."));
                 //context
-
-                foreach (XmlNode sqlParam in sqlParams)
-                {
-                    string p = context.ReadConfigAsString(sqlParam, ".");
-                    paramArray.Add(p);
-                }
 
                 var paramObjs = paramArray.Cast<object>().ToArray();
                 return new SqlQuery(rawSQLQuery, paramObjs);

@@ -12,6 +12,7 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Linq;
 using BizUnit.Common;
 
 namespace BizUnit.BizUnitOM
@@ -181,7 +182,7 @@ namespace BizUnit.BizUnitOM
         {
             if(null != args && 1 == args.Length)
             {
-                string str = args[0] as System.String;
+                string str = args[0] as String;
                 if(null != str)
                 {
                     if(str.StartsWith(Context.TAKE_FROM_CONTEXT))
@@ -240,15 +241,7 @@ namespace BizUnit.BizUnitOM
         public PropertyInfo GetPropertyInfo(string propertyName)
         {
             PropertyInfo[] propertiesInfo = testStep.GetType().GetProperties();
-            foreach (PropertyInfo propertyInfo in propertiesInfo)
-            {
-                if (propertyName == propertyInfo.Name)
-                {
-                    return propertyInfo;
-                }
-            }
-
-            return null;
+            return propertiesInfo.FirstOrDefault(propertyInfo => propertyName == propertyInfo.Name);
         }
     }
 }

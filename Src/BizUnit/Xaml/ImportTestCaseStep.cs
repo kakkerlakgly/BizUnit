@@ -44,7 +44,7 @@ namespace BizUnit.Xaml
 
         public override void Execute(Context context)
         {
-            ; // no op
+             // no op
         }
 
         public override void Validate(Context context)

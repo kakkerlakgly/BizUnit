@@ -368,21 +368,9 @@ namespace BizUnit
         /// <param name="data">The stream containing the data to validate.</param>
         /// <param name="validatorConfig">The Xml configuration for the validation test step, this configuration is passed onto the validation step by BizUnit (optional).</param>
         /// <param name="validationStep">The validation step implementing IValidationStepOM to execute (optional).</param>
-        [Obsolete("ExecuteValidator has been deprecated.")]
-        public void ExecuteValidator(Stream data, XmlNode validatorConfig, IValidationStepOM validationStep)
-        {
-            ExecuteValidator(data, validatorConfig, validationStep, false);
-        }
-
-        /// <summary>
-        /// Executes a validation test step, either the Xml configuration for the step or the BizUnit OM maybe supplied, but not both.
-        /// </summary>
-        /// <param name="data">The stream containing the data to validate.</param>
-        /// <param name="validatorConfig">The Xml configuration for the validation test step, this configuration is passed onto the validation step by BizUnit (optional).</param>
-        /// <param name="validationStep">The validation step implementing IValidationStepOM to execute (optional).</param>
         /// <param name="seekStream">True if the stream should be seeked to the begining.</param>
         [Obsolete("ExecuteValidator has been deprecated.")]
-        public void ExecuteValidator(Stream data, XmlNode validatorConfig, IValidationStepOM validationStep, bool seekStream)
+        public void ExecuteValidator(Stream data, XmlNode validatorConfig, IValidationStepOM validationStep, bool seekStream = false)
         {
             if (null != validationStep && null != validatorConfig)
             {
@@ -426,21 +414,9 @@ namespace BizUnit
         /// <param name="data">The stream containing the data to validate.</param>
         /// <param name="contextConfig">The Xml configuration for the context loader step, this configuration is passed onto the context loader step by BizUnit (optional).</param>
         /// <param name="contextLoaderStep">The context loader step implementing IContextLoaderStepOM to execute (optional).</param>
-        [Obsolete("ExecuteContextLoader has been deprecated.")]
-        public void ExecuteContextLoader(Stream data, XmlNode contextConfig, IContextLoaderStepOM contextLoaderStep)
-        {
-            ExecuteContextLoader(data, contextConfig, contextLoaderStep, false);
-        }
-
-        /// <summary>
-        /// Executes a validation test step, either the Xml configuration for the step or the BizUnit OM maybe supplied, but not both.
-        /// </summary>
-        /// <param name="data">The stream containing the data to validate.</param>
-        /// <param name="contextConfig">The Xml configuration for the context loader step, this configuration is passed onto the context loader step by BizUnit (optional).</param>
-        /// <param name="contextLoaderStep">The context loader step implementing IContextLoaderStepOM to execute (optional).</param>
         /// <param name="seekStream">True if the stream should be seeked to the begining.</param>
         [Obsolete("ExecuteContextLoader has been deprecated.")]
-        public void ExecuteContextLoader(Stream data, XmlNode contextConfig, IContextLoaderStepOM contextLoaderStep, bool seekStream)
+        public void ExecuteContextLoader(Stream data, XmlNode contextConfig, IContextLoaderStepOM contextLoaderStep, bool seekStream = false)
         {
             if (null != contextLoaderStep && null != contextConfig)
             {
@@ -485,24 +461,13 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// Executes a context loader step
-        /// </summary>
-        /// <param name="data">The stream containing the data to validate.</param>
-        /// <param name="contextLoaderStep">The context loader step implmenting IContextLoaderStepOM which will be executed (optional).</param>
-        [Obsolete("ExecuteContextLoader has been deprecated.")]
-        public void ExecuteContextLoader(Stream data, IContextLoaderStepOM contextLoaderStep)
-        {
-            ExecuteContextLoader(data, contextLoaderStep, false);
-        }
-
-        /// <summary>
         /// Executes a context loader step, with the option to seek the data stream to the beginning
         /// </summary>
         /// <param name="data">The stream containing the data to validate.</param>
         /// <param name="contextLoaderStep">The context loader step implmenting IContextLoaderStepOM which will be executed (optional).</param>
         /// <param name="seekStream">True if the stream should be seeked to the begining.</param>
         [Obsolete("ExecuteContextLoader has been deprecated.")]
-        public void ExecuteContextLoader(Stream data, IContextLoaderStepOM contextLoaderStep, bool seekStream)
+        public void ExecuteContextLoader(Stream data, IContextLoaderStepOM contextLoaderStep, bool seekStream = false)
         {
             if (seekStream && null != data)
             {
@@ -617,9 +582,10 @@ namespace BizUnit
         {
             ArgumentValidation.CheckForNullReference(arg, "arg");
 
-            if (arg is System.String)
+            var s = arg as string;
+            if (s != null)
             {
-                string strArg = (string) arg;
+                string strArg = s;
                 if(strArg.Contains(TAKE_FROM_CONTEXT))
                 {
                     string key = strArg.Substring(TAKE_FROM_CONTEXT.Length);
@@ -1066,29 +1032,6 @@ namespace BizUnit
         /// </summary>
         /// <param name="description">The description of what the data being logged is.</param>
         /// <param name="data">The stream containing the data to log.</param>
-        /// 
-        /// <remarks>
-        /// The following example demonstrates how to use the method:
-        /// 
-        /// <code escaped="true">
-        ///	public void Execute(XmlNode testConfig, Context context)
-        ///	{
-        ///	
-        ///		...
-        ///		context.LogData( "HTTP Response:", data );
-        ///	</code>
-        ///	
-        ///	</remarks>
-        public void LogData(string description, Stream data)
-        {
-            LogData(description, data, false);
-        }
-
-        /// <summary>
-        /// Used by a test step to log test Data, this will be logged in the test output.
-        /// </summary>
-        /// <param name="description">The description of what the data being logged is.</param>
-        /// <param name="data">The stream containing the data to log.</param>
         /// <param name="seekStream">Seek the stream back to the beginning.</param>
         /// 
         /// <remarks>
@@ -1103,7 +1046,7 @@ namespace BizUnit
         ///	</code>
         ///	
         ///	</remarks>
-        public void LogData(string description, Stream data, bool seekStream)
+        public void LogData(string description, Stream data, bool seekStream = false)
         {
             ArgumentValidation.CheckForNullReference(description, "description");
             ArgumentValidation.CheckForNullReference(data, "data");
@@ -1148,29 +1091,6 @@ namespace BizUnit
         /// </summary>
         /// <param name="description">The description of what the data being logged is.</param>
         /// <param name="data">The stream containing the data to log.</param>
-        /// 
-        /// <remarks>
-        /// The following example demonstrates how to use the method:
-        /// 
-        /// <code escaped="true">
-        ///	public void Execute(XmlNode testConfig, Context context)
-        ///	{
-        ///	
-        ///		...
-        ///		context.LogXmlData( "HTTP Response:", data );
-        ///	</code>
-        ///	
-        ///	</remarks>
-        public void LogXmlData(string description, Stream data)
-        {
-            LogXmlData(description, data, false);
-        }
-
-        /// <summary>
-        /// Used by a test step to log Xml test Data, this will be logged in the test output.
-        /// </summary>
-        /// <param name="description">The description of what the data being logged is.</param>
-        /// <param name="data">The stream containing the data to log.</param>
         /// <param name="seekStream">Seek the stream back to the beginning.</param>
         /// 
         /// <remarks>
@@ -1185,7 +1105,7 @@ namespace BizUnit
         ///	</code>
         ///	
         ///	</remarks>
-        public void LogXmlData(string description, Stream data, bool seekStream)
+        public void LogXmlData(string description, Stream data, bool seekStream = false)
         {
             ArgumentValidation.CheckForNullReference(description, "description");
             ArgumentValidation.CheckForNullReference(data, "data");

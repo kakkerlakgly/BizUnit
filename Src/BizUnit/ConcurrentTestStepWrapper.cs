@@ -33,8 +33,7 @@ namespace BizUnit
         public ConcurrentTestStepWrapper(TestStepBase testStep, Context ctx )
         {
             _testStep = testStep;
-            _logger = new Logger();
-		    _logger.ConcurrentExecutionMode = true;
+            _logger = new Logger {ConcurrentExecutionMode = true};
             _context = ctx.CloneForConcurrentUse(_logger);
         }
 
@@ -42,9 +41,8 @@ namespace BizUnit
 		{
             _stepWrapper = stepWrapper;
             // TODO:.... ILogger
-            _logger = new Logger();
-		    _logger.ConcurrentExecutionMode = true;
-            _context = ctx.CloneForConcurrentUse(_logger);
+		    _logger = new Logger {ConcurrentExecutionMode = true};
+		    _context = ctx.CloneForConcurrentUse(_logger);
         }
 
 	    
@@ -109,9 +107,10 @@ namespace BizUnit
                 if(null != _testStep)
                 {
                     _logger.TestStepStart(_testStep.GetType().ToString(), DateTime.Now, true, _testStep.FailOnError);
-                    if (_testStep is ImportTestCaseStep)
+                    var step = _testStep as ImportTestCaseStep;
+                    if (step != null)
                     {
-                        ExecuteImportedTestCase(_testStep as ImportTestCaseStep, _context);
+                        ExecuteImportedTestCase(step, _context);
                     }
                     else
                     {

@@ -44,7 +44,7 @@ namespace BizUnit.TestSteps.Common
 
 				if ( read1 != read2 )
 				{
-					throw new ApplicationException( String.Format( "Streams do not contain identical data!" ) );
+					throw new ApplicationException( "Streams do not contain identical data!" );
 				}
 
 				if ( 0 == read1 )
@@ -56,7 +56,7 @@ namespace BizUnit.TestSteps.Common
 				{
 					if ( buff1[c] != buff2[c] )
 					{
-						throw new ApplicationException( String.Format( "Streams do not contain identical data!" ) );
+						throw new ApplicationException( "Streams do not contain identical data!" );
 					}
 				}
 

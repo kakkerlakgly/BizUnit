@@ -18,6 +18,7 @@ using System.Xml;
 using System.Reflection;
 using System.Xml.Serialization;
 using System.Collections.Generic;
+using System.Linq;
 using BizUnit.CoreSteps.Utilities;
 
 namespace BizUnit.CoreSteps.TestSteps
@@ -91,16 +92,9 @@ namespace BizUnit.CoreSteps.TestSteps
 			var mi = obj.GetType().GetMethod(methodToInvoke);
 			var pi = mi.GetParameters();
 			
-			var parameterArray = new List<object>();
+			var parameterArray = pi.Select(t1 => t1.ParameterType).Select(t => new XmlSerializer(t)).Select((xs, c) => xs.Deserialize(new XmlTextReader(StreamHelper.LoadMemoryStream(context.GetInnerXml(parameters[c]))))).ToList();
 
-			for( int c = 0; c < pi.Length; c++)
-			{
-				var t = pi[c].ParameterType;
-				var xs = new XmlSerializer(t);
-                parameterArray.Add(xs.Deserialize(new XmlTextReader(StreamHelper.LoadMemoryStream(context.GetInnerXml(parameters[c])))));
-			}
-
-			var paramsForCall = new object[parameterArray.Count];
+		    var paramsForCall = new object[parameterArray.Count];
 			for( int c = 0; c < parameterArray.Count; c++ )
 			{
 				paramsForCall[c] = parameterArray[c];

@@ -103,7 +103,6 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
 
 	    public override void Validate(Context context)
 	    {
-	        ;
 	    }
 
 	    private static void Start(string assemblyName, string orchestrationName, Context context)
@@ -114,18 +113,20 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
 
 			var enumOptions = new EnumerationOptions {ReturnImmediately = false};
 
-	        var OrchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",	wmiQuery, enumOptions);							
+	        using (var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", wmiQuery, enumOptions))
+	        {
+	            foreach( var o in orchestrationSearcher.Get())
+	            {
+	                var orchestrationInstance = (ManagementObject) o;
+	                context.LogInfo("Starting Orchestration: {0}", orchestrationName);
+	                orchestrationInstance.InvokeMethod("Start", new object[] {2,2});
 
-			foreach( ManagementObject OrchestrationInstance in OrchestrationSearcher.Get())
-			{
-				context.LogInfo("Starting Orchestration: {0}", orchestrationName);
-				OrchestrationInstance.InvokeMethod("Start", new object[] {2,2});
+	                context.LogInfo("Orchestration: {0} was successfully started", orchestrationName);
+	                started = true;
+	            }
+	        }
 
-				context.LogInfo("Orchestration: {0} was successfully started", orchestrationName);
-				started = true;
-			}				
-			
-			if ( !started )
+	        if ( !started )
 			{
 				throw new ApplicationException(string.Format("Failed to start the orchestration: \"{0}\"", orchestrationName));
 			}							
@@ -139,17 +140,19 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
 
 			var enumOptions = new EnumerationOptions {ReturnImmediately = false};
 
-		    var OrchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",	wmiQuery, enumOptions);							
+		    using (var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", wmiQuery, enumOptions))
+		    {
+		        foreach( var o in orchestrationSearcher.Get())
+		        {
+		            var orchestrationInstance = (ManagementObject) o;
+		            orchestrationInstance.InvokeMethod("Stop", new object[] {2,2});
 
-			foreach( ManagementObject OrchestrationInstance in OrchestrationSearcher.Get())
-			{
-				OrchestrationInstance.InvokeMethod("Stop", new object[] {2,2});
+		            context.LogInfo("Orchestration: {0} was successfully stopped", orchestrationName);
+		            stopped = true;
+		        }
+		    }
 
-				context.LogInfo("Orchestration: {0} was successfully stopped", orchestrationName);
-				stopped = true;
-			}	
-			
-			if ( !stopped )
+		    if ( !stopped )
 			{
 				throw new ApplicationException(string.Format("Failed to stop the orchestration: \"{0}\"", orchestrationName));
 			}																									

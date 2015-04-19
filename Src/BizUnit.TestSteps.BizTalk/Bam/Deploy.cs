@@ -69,12 +69,12 @@ namespace BizUnit.TestSteps.BizTalk.Bam
             if (Action == BamDeploymentAction.Deploy)
             {
                 context.LogInfo("Deploying BAM definition file {0}", BamDefinitionXmlFilePath);
-                bamProcess.StartInfo.Arguments = "deploy-all -DefinitionFile:" + sb.ToString();
+                bamProcess.StartInfo.Arguments = "deploy-all -DefinitionFile:" + sb;
             }
             else
             {
                 context.LogInfo("Undeploying BAM definition file {0}", BamDefinitionXmlFilePath);
-                bamProcess.StartInfo.Arguments = "remove-all -DefinitionFile:" + sb.ToString();
+                bamProcess.StartInfo.Arguments = "remove-all -DefinitionFile:" + sb;
             }
 
 			bamProcess.StartInfo.UseShellExecute = true;
@@ -100,7 +100,6 @@ namespace BizUnit.TestSteps.BizTalk.Bam
 
 	    public override void Validate(Context context)
 	    {
-	        ;
 	    }
 	}
 }

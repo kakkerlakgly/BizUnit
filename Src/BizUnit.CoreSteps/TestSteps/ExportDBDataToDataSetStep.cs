@@ -13,12 +13,14 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Threading;
+using System.Xml;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System.Xml;
-	using System.Data;
-	using System.Data.SqlClient;
+
 
 	/// <summary>
 	/// ExportDBDataToDataSetStep exports data contained in a list of tables to a Xml file. The export is carried out using the WriteXml capability of the DataSet.
@@ -80,7 +82,7 @@ namespace BizUnit.CoreSteps.TestSteps
 			var tableNames = context.ReadConfigAsString(testConfig, "TableNames");
 
 			// Sleep for delay seconds...
-			System.Threading.Thread.Sleep(delayBeforeCheck);
+			Thread.Sleep(delayBeforeCheck);
 
 			var ds = GetDataSet(connectionString, tableNames);
 
@@ -90,38 +92,29 @@ namespace BizUnit.CoreSteps.TestSteps
 
 		private static DataSet GetDataSet(string connectionString, string tableNames)
 		{
-			var arrtableName = tableNames.Split(new[] {','} );
+			var arrtableName = tableNames.Split(',');
 			var ds = new DataSet("DataStore");
-			var connection = new SqlConnection(connectionString);
+			
 
-			using ( connection ) 
-			{
-				try
-				{
-					foreach(string tableName in arrtableName)
-					{
-						var comm = new SqlCommand
-						               {
-						                   Connection = connection,
-						                   CommandType = CommandType.Text,
-						                   CommandText = "SELECT * FROM " + tableName
-						               };
-
-					    var da = new SqlDataAdapter {SelectCommand = comm};
-					    da.Fill(ds,tableName);
-						da.FillSchema(ds,SchemaType.Source);
-					}
-				}
-				finally
-				{
-                    if (connection.State == ConnectionState.Open)
+            using (var connection = new SqlConnection(connectionString))
+            {
+                foreach(string tableName in arrtableName)
+                {
+                    using (var comm = new SqlCommand
                     {
-                        connection.Close();
+                        Connection = connection, CommandType = CommandType.Text, CommandText = "SELECT * FROM " + tableName
+                    })
+                    {
+                        using (var da = new SqlDataAdapter {SelectCommand = comm})
+                        {
+                            da.Fill(ds,tableName);
+                            da.FillSchema(ds,SchemaType.Source);
+                        }
                     }
-				}
-			}
+                }
+            }
 
-			return ds;
+		    return ds;
 		}
 	}
 }

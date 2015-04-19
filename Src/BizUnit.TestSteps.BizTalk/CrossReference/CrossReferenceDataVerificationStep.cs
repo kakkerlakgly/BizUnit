@@ -54,7 +54,7 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
 		/// </summary>
 		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(System.Xml.XmlNode testConfig, Context context)
+		public void Execute(XmlNode testConfig, Context context)
 		{
 			XmlNodeList nodelist = testConfig.SelectNodes("VerifyId");
 
@@ -66,7 +66,7 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
 
 				string commonId = CrossReferencing.GetCommonID(entity,appinstance,valueToVerify);
 
-				if(commonId == null ||commonId == string.Empty)
+				if(string.IsNullOrEmpty(commonId))
 				{
 					throw new ApplicationException("AppId " + valueToVerify + " not found" );
 				}
@@ -84,7 +84,7 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
 
 				string commonValue = CrossReferencing.GetCommonValue(entity,appType,valueToVerify);
 
-				if(commonValue == null ||commonValue == string.Empty)
+				if(string.IsNullOrEmpty(commonValue))
 				{
 					throw new ApplicationException("AppValue " + valueToVerify + " not found" );
 				}

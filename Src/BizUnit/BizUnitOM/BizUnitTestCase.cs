@@ -162,22 +162,11 @@ namespace BizUnit.BizUnitOM
         /// 
         /// <param name='testStep'>The test step to add to the test case.</param>
         /// <param name='stage'>The stage of the test case in which to add the test step</param>
-        public void AddTestStep(ITestStepOM testStep, TestStage stage)
-        {
-            AddTestStep(testStep, stage, false, true);
-        }
-
-        /// <summary>
-        /// Used to add a test step to a test case at a specific stage of the test.
-        /// </summary>
-        /// 
-        /// <param name='testStep'>The test step to add to the test case.</param>
-        /// <param name='stage'>The stage of the test case in which to add the test step</param>
         /// <param name='runConcurrently'>Specifies whether the test step 
         /// should run concurrently to other test steps. Defaults to false if not specified.</param>
         /// <param name='failOnError'>Specifies whether the entire test case 
         /// should fail if this individual test step fails, defaults to true if not specified.</param>
-        public void AddTestStep(ITestStepOM testStep, TestStage stage, bool runConcurrently, bool failOnError)
+        public void AddTestStep(ITestStepOM testStep, TestStage stage, bool runConcurrently = false, bool failOnError = true)
         {
             ArgumentValidation.CheckForNullReference(testStep, "testStep");
             ArgumentValidation.CheckForNullReference(stage, "stage");

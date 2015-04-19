@@ -23,23 +23,11 @@ namespace BizUnit.TestSteps.Tests.File
             //
         }
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -66,10 +54,14 @@ namespace BizUnit.TestSteps.Tests.File
         [TestMethod]
         public void DeleteFileTest()
         {
-            var step = new CreateStep();
-            step.CreationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml";
-            var dl = new FileDataLoader();
-            dl.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
+            var step = new CreateStep
+            {
+                CreationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml"
+            };
+            var dl = new FileDataLoader
+            {
+                FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml"
+            };
             step.DataSource = dl;
             step.Execute(new Context());
 
@@ -79,22 +71,27 @@ namespace BizUnit.TestSteps.Tests.File
 
             try
             {
-                var deletedFile = System.IO.File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml", FileMode.Open,
+                var deletedFile = File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml", FileMode.Open,
                                     FileAccess.Read);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (FileNotFoundException)
             {
-                ; // Expected!                
+                // Expected!                
             }
         }
 
         [TestMethod]
         public void DeleteFileByWildCardTest()
         {
-            var step = new CreateStep();
-            step.CreationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted1.wildCardTestxml";
-            var dl = new FileDataLoader();
-            dl.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
+            var step = new CreateStep
+            {
+                CreationPath =
+                    @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted1.wildCardTestxml"
+            };
+            var dl = new FileDataLoader
+            {
+                FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml"
+            };
             step.DataSource = dl;
             step.Execute(new Context());
 
@@ -107,12 +104,12 @@ namespace BizUnit.TestSteps.Tests.File
 
             try
             {
-                var deletedFile = System.IO.File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.wildCardTestxml", FileMode.Open,
+                var deletedFile = File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.wildCardTestxml", FileMode.Open,
                                     FileAccess.Read);
             }
-            catch (System.IO.FileNotFoundException)
+            catch (FileNotFoundException)
             {
-                ; // Expected!                
+                // Expected!                
             }
         }
 

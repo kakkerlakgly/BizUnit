@@ -12,6 +12,8 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Linq;
+
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
 	using System;
@@ -130,7 +132,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 			{
 				_client.BeginReceive(_pop3State.Buffer,0,
 					Pop3StateObject.BufferSize,0,
-					new AsyncCallback(ReceiveCallback),
+					ReceiveCallback,
 					_pop3State);
 			}
 			else
@@ -181,7 +183,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 			// start receiving data ...
 			_client.BeginReceive(_pop3State.Buffer,0,
 				Pop3StateObject.BufferSize,0,
-				new AsyncCallback(ReceiveCallback),
+				ReceiveCallback,
 				_pop3State);
 
 			// wait until no more data to be read ...
@@ -313,7 +315,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
 			// parse email ...
 			ParseEmail(
-				_pop3State.Sb.ToString().Split(new[] { '\r'}));
+				_pop3State.Sb.ToString().Split('\r'));
 
 			// remove reading pop3State ...
 			_pop3State = null;
@@ -347,12 +349,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 				"To      : "+_to+ "\r\n"+
 				"Subject : "+_subject+"\r\n";
 
-			foreach(var enumerator in this)
-			{
-				ret += enumerator+"\r\n";
-			}
-	
-			return ret;
+		    return this.Aggregate(ret, (current, enumerator) => current + (enumerator + "\r\n"));
 		}
 	}
 }

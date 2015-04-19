@@ -12,6 +12,7 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Linq;
 using BizUnit.BizUnitOM;
 
 namespace BizUnit.CoreSteps.TestSteps
@@ -225,18 +226,11 @@ namespace BizUnit.CoreSteps.TestSteps
                         if (((entry.Source == _source) && (entry.EntryType == entryType)) &&
                              (((_eventId > 0) && (entry.InstanceId == _eventId)) || (_eventId == 0)))
                         {
-                            foreach (string validationRegex in _validationRegexs)
+                            if (_validationRegexs.Select(matchPattern => Regex.Match(entry.Message, matchPattern)).Any(match => match.Success))
                             {
-                                string matchPattern = validationRegex;
-                                Match match = Regex.Match(entry.Message, matchPattern);
-
-                                if (match.Success)
-                                {
-                                    found = true;
-                                    context.LogInfo("Successfully matched event log entry generated at '{0}'.", entry.TimeGenerated);
-                                    context.LogData("Event log entry.", entry.Message);
-                                    break;
-                                }
+                                found = true;
+                                context.LogInfo("Successfully matched event log entry generated at '{0}'.", entry.TimeGenerated);
+                                context.LogData("Event log entry.", entry.Message);
                             }
                         }
 

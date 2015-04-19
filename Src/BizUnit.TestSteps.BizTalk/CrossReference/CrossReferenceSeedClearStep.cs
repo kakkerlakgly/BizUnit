@@ -56,60 +56,44 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
 		/// </summary>
 		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(System.Xml.XmlNode testConfig, Context context)
+		public void Execute(XmlNode testConfig, Context context)
 		{
-			RegistryKey rk = null ;
-			SqlConnection conn = null ;
-			SqlCommand command = null ;
-			try
-			{
-				rk = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\BizTalk Server\\3.0\\Administration\\");
-				string dbname = rk.GetValue("MgmtDBName").ToString();
-				string server = rk.GetValue("MgmtDBServer").ToString();
-				string connection = "Initial Catalog=" + dbname + " ;Data Source=" + server + ";Integrated Security=SSPI;";
-				XmlNode loginNode = testConfig.SelectSingleNode("LoginId");
-				XmlNode passwordNode = testConfig.SelectSingleNode("password");
+		    string dbname;
+		    string server;
+		    using (var rk = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\BizTalk Server\\3.0\\Administration\\"))
+		    {
+		        dbname = rk.GetValue("MgmtDBName").ToString();
+		        server = rk.GetValue("MgmtDBServer").ToString();
+		    }
+		    string connection = "Initial Catalog=" + dbname + " ;Data Source=" + server + ";Integrated Security=SSPI;";
+		    XmlNode loginNode = testConfig.SelectSingleNode("LoginId");
+		    XmlNode passwordNode = testConfig.SelectSingleNode("password");
 
-				if(loginNode != null && passwordNode != null)
-				{
-					connection = "Initial Catalog=" + dbname + " ;Data Source=" + server + ";User Id="+ loginNode.InnerText +";password=" + passwordNode.InnerText + ";";
-				}
-				else if(loginNode != null && passwordNode == null) //blank password !
-				{
-					connection = "Initial Catalog=" + dbname + " ;Data Source=" + server + ";User Id="+ loginNode.InnerText +";password=" + string.Empty + ";";
-				}
+		    if(loginNode != null && passwordNode != null)
+		    {
+		        connection = "Initial Catalog=" + dbname + " ;Data Source=" + server + ";User Id="+ loginNode.InnerText +";password=" + passwordNode.InnerText + ";";
+		    }
+		    else if(loginNode != null && passwordNode == null) //blank password !
+		    {
+		        connection = "Initial Catalog=" + dbname + " ;Data Source=" + server + ";User Id="+ loginNode.InnerText +";password=" + string.Empty + ";";
+		    }
 
-				conn = new SqlConnection(connection);
-				conn.Open();
+		    using (var conn = new SqlConnection(connection))
+		    {
+		        conn.Open();
 
-				command = new SqlCommand();
-				command.Connection = conn;
+		        using (var command = new SqlCommand
+		        {
+		            Connection = conn,
+		            CommandType = CommandType.StoredProcedure,
+		            CommandText = "xref_Cleanup"
+		        })
+		        {
+		            command.ExecuteNonQuery();
+		        }
+		    }
 
-				command.CommandType = CommandType.StoredProcedure;
-				command.CommandText = "xref_Cleanup";
-
-				command.ExecuteNonQuery();
-
-				context.LogInfo("Cross reference tables were cleared.");
-			}
-			finally
-			{
-				if(rk != null)
-				{
-					rk.Close();
-				}
-
-				if(command != null)
-				{
-					command.Dispose();
-				}
-
-                if (null != conn && conn.State != ConnectionState.Closed)
-				{
-					conn.Close();
-					conn.Dispose();
-				}
-			}
+		    context.LogInfo("Cross reference tables were cleared.");
 		}
 	}
 }

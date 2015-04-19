@@ -23,7 +23,7 @@ namespace BizUnit.TestSteps.BizTalk
     {
         public void MergeIntoMessage(IBaseMessage message)
         {
-            foreach (MessageInfoContextInfoProperty prop in this.MessageContextProperties)
+            foreach (MessageInfoContextInfoProperty prop in MessageContextProperties)
             {
                 if (prop.Promoted)
                 {
@@ -40,9 +40,9 @@ namespace BizUnit.TestSteps.BizTalk
         {
             get
             {
-                if (null != this.MessageInfoContextInfo)
+                if (null != MessageInfoContextInfo)
                 {
-                    return this.MessageInfoContextInfo.Property;
+                    return MessageInfoContextInfo.Property;
                 }
                 return null;
             }
@@ -57,10 +57,10 @@ namespace BizUnit.TestSteps.BizTalk
                 {
                     bool found = false;
                     int index = 0;
-                    while (!found && (index < this.Items.Length))
+                    while (!found && (index < Items.Length))
                     {
-                        _mici = this.Items[index] as MessageInfoContextInfo;
-                        found = (null == _mici) ? false : true;
+                        _mici = Items[index] as MessageInfoContextInfo;
+                        found = (null != _mici);
                         index++;
                     }
                 }
@@ -77,10 +77,10 @@ namespace BizUnit.TestSteps.BizTalk
                 {
                     bool found = false;
                     int index = 0;
-                    while (!found && (index < this.Items.Length))
+                    while (!found && (index < Items.Length))
                     {
-                        _mipi = this.Items[index] as MessageInfoPartInfo;
-                        found = (null == _mipi) ? false : true;
+                        _mipi = Items[index] as MessageInfoPartInfo;
+                        found = (null != _mipi);
                         index++;
                     }
                 }

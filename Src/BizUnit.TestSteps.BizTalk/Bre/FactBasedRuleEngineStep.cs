@@ -19,6 +19,8 @@ using Microsoft.RuleEngine;
 using System.Data.SqlClient;
 using System.Data;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
 
@@ -87,7 +89,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
     public class FactBasedRuleEngineStep : TestStepBase
     {
-        private List<Fact> _factsList = new List<Fact>(); 
+        private IList<Fact> _factsList = new List<Fact>(); 
         
         public string RuleStoreName { get; set; }
         public string RuleSetInfoCollectionName { get; set; }
@@ -98,7 +100,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
             SubSteps = new List<SubStepBase>();            
         }
 
-        public List<Fact> FactsList 
+        public IList<Fact> FactsList 
         { 
             get
             {
@@ -116,7 +118,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
         {
-            var fi = new System.IO.FileInfo(RuleStoreName);
+            var fi = new FileInfo(RuleStoreName);
 
             if (!fi.Exists)
             {
@@ -154,14 +156,13 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                             object[] objectArgs = null;
                             if (null != fact.Args)
                             {
-                                objectArgs = fact.Args.Split(new char[] { ',' });
+                                objectArgs = fact.Args.Split(',');
                             }
 
-                            System.Reflection.Assembly asm;
                             Type type;
                             if (fact.AssemblyPath.Length > 0)
                             {
-                                asm = System.Reflection.Assembly.LoadWithPartialName(fact.AssemblyPath);
+                                var asm = Assembly.LoadWithPartialName(fact.AssemblyPath);
                                 if (asm == null)
                                 {
                                     // fail
@@ -256,11 +257,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                             // HACK: We need to prevent ExecuteValidator for /each/ TypedXmlDocument
                             if (txd.DocumentType == "UBS.CLAS.PoC.Schemas.INSERTS")
                             {
-                                foreach (var subStep in SubSteps)
-                                {
-                                    data = subStep.Execute(data, context);
-                                }
-
+                                data = SubSteps.Aggregate(data, (current, subStep) => subStep.Execute(current, context));
                             }
 
                             break;
@@ -289,7 +286,6 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
         public override void Validate(Context context)
         {
-            ;
         }
     }
 }

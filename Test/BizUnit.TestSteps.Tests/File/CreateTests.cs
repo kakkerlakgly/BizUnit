@@ -21,23 +21,11 @@ namespace BizUnit.TestSteps.Tests.File
             //
         }
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -64,16 +52,22 @@ namespace BizUnit.TestSteps.Tests.File
         [TestMethod]
         public void CreateFileTest()
         {
-            var step = new CreateStep();
-            step.CreationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\FileCreateStepTest.testdelxml";
-            var dl = new FileDataLoader();
-            dl.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
+            var step = new CreateStep
+            {
+                CreationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\FileCreateStepTest.testdelxml"
+            };
+            var dl = new FileDataLoader
+            {
+                FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml"
+            };
             step.DataSource = dl;
             step.Execute(new Context());
 
-            var readStep = new FileReadMultipleStep();
-            readStep.DirectoryPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\.";
-            readStep.SearchPattern = "*.testdelxml";
+            var readStep = new FileReadMultipleStep
+            {
+                DirectoryPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\.",
+                SearchPattern = "*.testdelxml"
+            };
 
             var validation = new XmlValidationStep();
             var schemaPurchaseOrder = new SchemaDefinition
@@ -85,10 +79,13 @@ namespace BizUnit.TestSteps.Tests.File
             };
             validation.XmlSchemas.Add(schemaPurchaseOrder);
 
-            var xpathProductId = new XPathDefinition();
-            xpathProductId.Description = "PONumber";
-            xpathProductId.XPath = "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']";
-            xpathProductId.Value = "12323";
+            var xpathProductId = new XPathDefinition
+            {
+                Description = "PONumber",
+                XPath =
+                    "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']",
+                Value = "12323"
+            };
             validation.XPathValidations.Add(xpathProductId);
 
             readStep.SubSteps.Add(validation);

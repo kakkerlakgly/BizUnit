@@ -74,7 +74,7 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
     {
         private string _pipelineAssemblyPath;
         private string _pipelineTypeName;
-        private List<DocSpecDefinition> _docSpecsRawList = new List<DocSpecDefinition>();
+        private IList<DocSpecDefinition> _docSpecsRawList = new List<DocSpecDefinition>();
         private Type[] _docSpecs;
         private string _instanceConfigFile;
         private string _source;
@@ -105,7 +105,7 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
         ///<summary>
         /// Gets and sets the docspecs for the pipeline to be executed. Pairs of typeName, assemblyPath.
         ///</summary>
-        public List<DocSpecDefinition> DocSpecs
+        public IList<DocSpecDefinition> DocSpecs
         {
             get { return _docSpecsRawList; }
             private set { _docSpecsRawList = value; }
@@ -185,7 +185,7 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
                 var ds = new List<Type>(_docSpecsRawList.Count);
                 foreach (var docSpec in _docSpecsRawList)
                 {
-                    var ass = AssemblyHelper.LoadAssembly((string)docSpec.AssemblyPath);
+                    var ass = AssemblyHelper.LoadAssembly(docSpec.AssemblyPath);
                     context.LogInfo("Loading DocumentSpec {0} from location {1}.", docSpec.TypeName, ass.Location);
                     var type = ass.GetType(docSpec.TypeName);
 

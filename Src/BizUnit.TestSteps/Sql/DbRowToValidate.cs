@@ -11,7 +11,7 @@ namespace BizUnit.TestSteps.Sql
         ///<summary>
         /// The cells to be validated
         ///</summary>
-        public List<DbCellToValidate> Cells { get; set; }
+        public IList<DbCellToValidate> Cells { get; set; }
 
         ///<summary>
         /// Default constructor

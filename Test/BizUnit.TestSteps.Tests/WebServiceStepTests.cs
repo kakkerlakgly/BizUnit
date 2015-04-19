@@ -22,23 +22,11 @@ namespace BizUnit.TestSteps.Tests
             //
         }
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -65,30 +53,40 @@ namespace BizUnit.TestSteps.Tests
         [TestMethod]
         public void WebServiceInvoke()
         {
-            TestCase btc = new TestCase();
-            btc.Name = "Serialization Test";
-            btc.Description = "Test to blah blah blah, yeah really!";
-            btc.BizUnitVersion = "4.0.0.1";
+            TestCase btc = new TestCase
+            {
+                Name = "Serialization Test",
+                Description = "Test to blah blah blah, yeah really!",
+                BizUnitVersion = "4.0.0.1"
+            };
 
-            var ws = new WebServiceStep();
-            ws.Action = "http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/2009/IAncillarySalesBook/GetProductTermsAndConditions";
-            FileDataLoader dataLoader;
-            dataLoader = new FileDataLoader();
-            dataLoader.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\GetProductTermsAndConditions_RQ.xml";
+            var ws = new WebServiceStep
+            {
+                Action =
+                    "http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/2009/IAncillarySalesBook/GetProductTermsAndConditions"
+            };
+            var dataLoader = new FileDataLoader
+            {
+                FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\GetProductTermsAndConditions_RQ.xml"
+            };
             ws.RequestBody = dataLoader;
             ws.ServiceUrl = "http://localhost/AncillarySalesBook/AncillarySalesBook.svc";
             ws.Username = @"newkydog001\kevinsmi";
-            var header = new SoapHeader();
-            header.HeaderName = "ServiceCallingContext";
-            header.HeaderNameSpace = "http://schemas.virgin-atlantic.com/Services/ServiceCallingContext/2009";
+            var header = new SoapHeader
+            {
+                HeaderName = "ServiceCallingContext",
+                HeaderNameSpace = "http://schemas.virgin-atlantic.com/Services/ServiceCallingContext/2009"
+            };
 
-            var ctx = new ServiceCallingContext();
-            ctx.ApplicationName = "BVT Tests";
-            ctx.GUid = "{1705141E-F530-4657-BA2F-23F0F4A8BCB0}";
-            ctx.RequestId = "{59ACDBB4-3FAF-4056-9459-49D43C4128F9}";
-            ctx.UserId = "kevin";
-            ctx.UTCTransactionStartDate = DateTime.UtcNow;
-            ctx.UTCTransactionStartTime = DateTime.UtcNow.ToString("HH:mm:ss.fff");
+            var ctx = new ServiceCallingContext
+            {
+                ApplicationName = "BVT Tests",
+                GUid = "{1705141E-F530-4657-BA2F-23F0F4A8BCB0}",
+                RequestId = "{59ACDBB4-3FAF-4056-9459-49D43C4128F9}",
+                UserId = "kevin",
+                UTCTransactionStartDate = DateTime.UtcNow,
+                UTCTransactionStartTime = DateTime.UtcNow.ToString("HH:mm:ss.fff")
+            };
             header.HeaderInstance = ctx;
             ws.SoapHeaders.Add(header);
 
@@ -111,14 +109,20 @@ namespace BizUnit.TestSteps.Tests
                              };
             validation.XmlSchemas.Add(schema);
 
-            var xpathProductId = new XPathDefinition();
-            xpathProductId.XPath = "/*[local-name()='GetProductTermsAndConditions_RS' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/GetProductTermsAndConditions/2009']/*[local-name()='Message' and namespace-uri()='']/*[local-name()='TermsAndConditions' and namespace-uri()='']/@*[local-name()='productId' and namespace-uri()='']";
-            xpathProductId.Value = "1";
+            var xpathProductId = new XPathDefinition
+            {
+                XPath =
+                    "/*[local-name()='GetProductTermsAndConditions_RS' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/GetProductTermsAndConditions/2009']/*[local-name()='Message' and namespace-uri()='']/*[local-name()='TermsAndConditions' and namespace-uri()='']/@*[local-name()='productId' and namespace-uri()='']",
+                Value = "1"
+            };
             validation.XPathValidations.Add(xpathProductId);
 
-            var xpathContent = new XPathDefinition();
-            xpathContent.XPath = "/*[local-name()='GetProductTermsAndConditions_RS' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/GetProductTermsAndConditions/2009']/*[local-name()='Message' and namespace-uri()='']/*[local-name()='TermsAndConditions' and namespace-uri()='']/*[local-name()='Content' and namespace-uri()='']";
-            xpathContent.Value = "Terms and Conditions: this product is non-refundable....";
+            var xpathContent = new XPathDefinition
+            {
+                XPath =
+                    "/*[local-name()='GetProductTermsAndConditions_RS' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/GetProductTermsAndConditions/2009']/*[local-name()='Message' and namespace-uri()='']/*[local-name()='TermsAndConditions' and namespace-uri()='']/*[local-name()='Content' and namespace-uri()='']",
+                Value = "Terms and Conditions: this product is non-refundable...."
+            };
             validation.XPathValidations.Add(xpathContent);
 
             ws.SubSteps.Add(validation);

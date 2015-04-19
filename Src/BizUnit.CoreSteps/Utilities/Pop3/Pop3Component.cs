@@ -130,7 +130,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 		{
 			get 
 			{ return
-				(_contentDisposition==null)?true:false; 
+				_contentDisposition==null; 
 			}
 		}
 

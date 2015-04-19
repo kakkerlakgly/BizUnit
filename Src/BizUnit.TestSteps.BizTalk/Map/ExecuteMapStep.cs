@@ -15,6 +15,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using BizUnit.Common;
 using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
@@ -154,10 +155,7 @@ namespace BizUnit.TestSteps.BizTalk.Map
             }
 
             data.Seek(0, SeekOrigin.Begin);
-            foreach (var subStep in SubSteps)
-            {
-                data = subStep.Execute(data, context);
-            }
+            data = SubSteps.Aggregate(data, (current, subStep) => subStep.Execute(current, context));
         }
 
         /// <summary>

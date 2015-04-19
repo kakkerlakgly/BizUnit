@@ -156,7 +156,7 @@ namespace BizUnit.Xaml
         /// The test steps to be executed in the Setup stage of the test
         ///</summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public List<TestStepBase> SetupSteps 
+        public IList<TestStepBase> SetupSteps 
         {
             get 
             {
@@ -168,7 +168,7 @@ namespace BizUnit.Xaml
         /// The test steps to be executed in the Execution stage of the test
         ///</summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public List<TestStepBase> ExecutionSteps
+        public IList<TestStepBase> ExecutionSteps
         {
             get
             {
@@ -181,7 +181,7 @@ namespace BizUnit.Xaml
         /// these will always be executed even if the test fails
         ///</summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public List<TestStepBase> CleanupSteps
+        public IList<TestStepBase> CleanupSteps
         {
             get
             {

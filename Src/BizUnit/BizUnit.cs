@@ -1108,14 +1108,15 @@ namespace BizUnit
                 {
                     _context.LogInfo("Queuing concurrent step: {0} for execution", testStep.GetType().ToString());
                     Interlocked.Increment(ref _inflightQueueDepth);
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(WorkerThreadThunk), new ConcurrentTestStepWrapper(testStep, _context));
+                    ThreadPool.QueueUserWorkItem(WorkerThreadThunk, new ConcurrentTestStepWrapper(testStep, _context));
                 }
                 else
                 {
                     _logger.TestStepStart(testStep.GetType().ToString(), DateTime.Now, false, testStep.FailOnError);
-                    if (testStep is ImportTestCaseStep)
+                    var step = testStep as ImportTestCaseStep;
+                    if (step != null)
                     {
-                        ExecuteImportedTestCase(testStep as ImportTestCaseStep, _context);
+                        ExecuteImportedTestCase(step, _context);
                     }
                     else
                     {
@@ -1291,7 +1292,7 @@ namespace BizUnit
                 {
                     _logger.TestStepStart(stepWrapper.TypeName, DateTime.Now, true, stepWrapper.FailOnError);
                     Interlocked.Increment(ref _inflightQueueDepth);
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(WorkerThreadThunk), new ConcurrentTestStepWrapper(stepWrapper, _context));
+                    ThreadPool.QueueUserWorkItem(WorkerThreadThunk, new ConcurrentTestStepWrapper(stepWrapper, _context));
                 }
                 else
                 {

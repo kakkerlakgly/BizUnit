@@ -18,7 +18,7 @@ namespace BizUnit.TestSteps.Sql
         ///<summary>
         /// The parameters to substitute into the the cref="RawSqlQuery"
         ///</summary>
-        public List<object> QueryParameters { get; set; }
+        public IList<object> QueryParameters { get; set; }
 
         ///<summary>
         /// Default constructor
@@ -44,7 +44,7 @@ namespace BizUnit.TestSteps.Sql
                 {
                     object objValue = obj.GetType() == typeof(ContextProperty) ? ((ContextProperty)obj).GetPropertyValue(context) : obj;
 
-                    if (objValue.GetType() == typeof(DateTime))
+                    if (objValue is DateTime)
                     {
                         // Convert to SQL Datetime
                         objParams[c++] = ((DateTime)objValue).ToString("yyyy-MM-dd HH:mm:ss.fff");

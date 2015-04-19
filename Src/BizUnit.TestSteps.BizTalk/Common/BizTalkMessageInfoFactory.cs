@@ -74,7 +74,7 @@ namespace BizUnit.TestSteps.BizTalk.Common
             var mici = new MessageInfoContextInfo
                            {
                                PropertiesCount = message.Context.CountProperties.ToString(),
-                               ArrayProperty = new MessageInfoContextInfoArrayProperty[] {miciap},
+                               ArrayProperty = new[] {miciap},
                                Property = micipl.ToArray()
                            };
 

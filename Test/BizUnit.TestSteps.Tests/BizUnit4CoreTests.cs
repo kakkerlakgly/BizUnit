@@ -20,23 +20,11 @@ namespace BizUnit.TestSteps.Tests
             //
         }
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -63,11 +51,9 @@ namespace BizUnit.TestSteps.Tests
         [TestMethod]
         public void SerializationV4TestStepsOnly()
         {
-            TestCase btc = new TestCase();
-            btc.Name = "Serialization Test";
+            TestCase btc = new TestCase {Name = "Serialization Test"};
 
-            var fm = new DelayStep();
-            fm.DelayMilliSeconds = 35;
+            var fm = new DelayStep {DelayMilliSeconds = 35};
             btc.SetupSteps.Add(fm);
 
             string testCase = TestCase.Save(btc);
@@ -98,10 +84,12 @@ namespace BizUnit.TestSteps.Tests
         [TestMethod]
         public void ExecuteTestCase()
         {
-            TestCase btc = new TestCase();
-            btc.Name = "Serialization Test";
-            btc.Description = "Test to blah blah blah, yeah really!";
-            btc.BizUnitVersion = "4.0.0.1";
+            TestCase btc = new TestCase
+            {
+                Name = "Serialization Test",
+                Description = "Test to blah blah blah, yeah really!",
+                BizUnitVersion = "4.0.0.1"
+            };
 
             var fm = new DelayStep {DelayMilliSeconds = 35};
             btc.SetupSteps.Add(fm);

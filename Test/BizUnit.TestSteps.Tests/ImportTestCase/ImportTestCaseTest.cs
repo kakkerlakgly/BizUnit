@@ -72,11 +72,14 @@ namespace BizUnit.TestSteps.Tests.ImportTestCase
         {
             var testCase1 = new TestCase {Name = "Copy First File Test"};
 
-            var step = new CreateStep();
-            step.CreationPath = @"File1.xml";
-            var dl = new FileDataLoader();
-            dl.FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml";
-            step.DataSource = dl;
+            var step = new CreateStep
+            {
+                CreationPath = @"File1.xml",
+                DataSource = new FileDataLoader
+                {
+                    FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml"
+                }
+            };
             step.Execute(new Context());
 
             testCase1.ExecutionSteps.Add(step);

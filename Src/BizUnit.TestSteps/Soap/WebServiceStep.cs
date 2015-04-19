@@ -18,6 +18,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Xml;
 using System.Collections.Generic;
+using System.Linq;
 using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
 
@@ -27,7 +28,7 @@ namespace BizUnit.TestSteps.Soap
     {
         private Stream _request;
         private Stream _response;
-        private List<SoapHeader> _soapHeaders = new List<SoapHeader>();
+        private IList<SoapHeader> _soapHeaders = new List<SoapHeader>();
 
         public DataLoaderBase RequestBody { get; set; }
         public string ServiceUrl { get; set; }
@@ -40,7 +41,7 @@ namespace BizUnit.TestSteps.Soap
             SubSteps = new List<SubStepBase>();
         }
 
-        public List<SoapHeader> SoapHeaders
+        public IList<SoapHeader> SoapHeaders
         {
             set
             {
@@ -66,11 +67,7 @@ namespace BizUnit.TestSteps.Soap
                 Password,
                 context);
 
-            Stream responseForPostProcessing = _response;
-            foreach(var subStep in SubSteps)
-            {
-                responseForPostProcessing = subStep.Execute(responseForPostProcessing, context);
-            }
+            Stream responseForPostProcessing = SubSteps.Aggregate(_response, (current, subStep) => subStep.Execute(current, context));
         }
 
         public override void Validate(Context context)
@@ -106,9 +103,6 @@ namespace BizUnit.TestSteps.Soap
                 var epa = new EndpointAddress(new Uri(serviceUrl));
 
                 ChannelFactory<genericContract> cf = null;
-                genericContract channel;
-                Message request;
-                Message response;
 
                 try
                 {
@@ -117,7 +111,9 @@ namespace BizUnit.TestSteps.Soap
                     cf.Credentials.UserName.Password = password;
                     
                     cf.Open();
-                    channel = cf.CreateChannel();
+                    var channel = cf.CreateChannel();
+                    Message request;
+                    Message response;
                     using (new OperationContextScope((IContextChannel)channel))
                     {
                         XmlReader r = new XmlTextReader(requestData);

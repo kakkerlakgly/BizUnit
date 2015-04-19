@@ -173,7 +173,7 @@ namespace BizUnit.TestDocumentor
             {
                 itc = TestCase.LoadFromFile(importContainer.TestCasePath);
             }
-            catch (DirectoryNotFoundException) {;}
+            catch (DirectoryNotFoundException) {}
 
             if(null == itc)
             {

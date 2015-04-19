@@ -13,6 +13,7 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Xml;
 
 namespace BizUnit.CoreSteps.TestSteps
@@ -69,16 +70,12 @@ namespace BizUnit.CoreSteps.TestSteps
 			foreach (XmlNode ctxItem in ctxItems)
 			{
 				string newCtxNode = ctxItem.SelectSingleNode( "@contextKey" ).Value;
-				string newValue = "";
 
-                XmlNodeList items = ctxItem.SelectNodes("ItemTest");
+			    XmlNodeList items = ctxItem.SelectNodes("ItemTest");
 
-				foreach (XmlNode item in items)
-				{
-                    newValue += context.ReadConfigAsString(item, ".");
-				}
+			    string newValue = items.Cast<XmlNode>().Aggregate("", (current, item) => current + context.ReadConfigAsString(item, "."));
 
-				context.Add( newCtxNode, newValue );
+			    context.Add( newCtxNode, newValue );
 			}
 		}
 	}

@@ -31,7 +31,7 @@ namespace BizUnit.TestSteps.Ssis
         ///<summary>
         /// The package variables 
         ///</summary>
-        public List<PackageVariable> Variables { get; set; }
+        public IList<PackageVariable> Variables { get; set; }
 
         ///<summary>
         /// Constructor

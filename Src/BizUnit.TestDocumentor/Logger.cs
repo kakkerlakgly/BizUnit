@@ -7,17 +7,17 @@ namespace BizUnit.TestDocumentor
     {
         public void Info(string message, params object[] args)
         {
-            System.Console.WriteLine("Info: {0}", string.Format(message, args));
+            Console.WriteLine("Info: {0}", string.Format(message, args));
         }
 
         public void Warning(string message, params object[] args)
         {
-            System.Console.WriteLine("Warning: {0}", string.Format(message, args));
+            Console.WriteLine("Warning: {0}", string.Format(message, args));
         }
 
         public void Error(Exception ex)
         {
-            System.Console.WriteLine("Error: {0}", ex);
+            Console.WriteLine("Error: {0}", ex);
         }
     }
 }

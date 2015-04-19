@@ -113,8 +113,6 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 						s = tempSocket;
 						break;
 					}
-
-                    continue;
 				}
 			}
 			catch(Exception e)
@@ -319,10 +317,10 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 			_inboxPosition = pos;
 
 			// strip out CRLF ...
-			string[] noCr = returned.Split(new[]{ '\r' });
+			string[] noCr = returned.Split('\r');
 
 			// get size ...
-			string[] elements = noCr[0].Split(new[]{ ' ' });
+			string[] elements = noCr[0].Split(' ');
 
 			long size = long.Parse(elements[2]);
 

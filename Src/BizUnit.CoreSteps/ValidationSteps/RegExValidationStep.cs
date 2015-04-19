@@ -55,7 +55,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 	    {
 	        set
 	        {
-                this.validationRegExs = value;
+                validationRegExs = value;
 	        }
 	    }
 
@@ -71,7 +71,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 
 			foreach (XmlNode validationNode in validationNodes)
 			{
-				this.validationRegExs.Add(validationNode.InnerText);
+				validationRegExs.Add(validationNode.InnerText);
 			}
 
             ExecuteValidation(data, context);
@@ -82,7 +82,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
             StreamReader sr = new StreamReader(data);
             string strData = sr.ReadToEnd();
 
-            foreach (string validationRegEx in this.validationRegExs)
+            foreach (string validationRegEx in validationRegExs)
             {
                 Match match = Regex.Match(strData, validationRegEx);
 

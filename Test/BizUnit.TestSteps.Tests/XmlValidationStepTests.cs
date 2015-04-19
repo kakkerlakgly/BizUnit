@@ -17,23 +17,11 @@ namespace BizUnit.TestSteps.Tests
         {
         }
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -70,10 +58,13 @@ namespace BizUnit.TestSteps.Tests
             };
             validation.XmlSchemas.Add(schemaPurchaseOrder);
 
-            var xpathProductId = new XPathDefinition();
-            xpathProductId.Description = "PONumber";
-            xpathProductId.XPath = "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']";
-            xpathProductId.Value = "12323";
+            var xpathProductId = new XPathDefinition
+            {
+                Description = "PONumber",
+                XPath =
+                    "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']",
+                Value = "12323"
+            };
             validation.XPathValidations.Add(xpathProductId);
 
             Context ctx = new Context();
@@ -95,10 +86,13 @@ namespace BizUnit.TestSteps.Tests
             };
             validation.XmlSchemas.Add(schemaPurchaseOrder);
 
-            var xpathProductId = new XPathDefinition();
-            xpathProductId.Description = "PONumber";
-            xpathProductId.XPath = "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']";
-            xpathProductId.Value = "12323";
+            var xpathProductId = new XPathDefinition
+            {
+                Description = "PONumber",
+                XPath =
+                    "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']",
+                Value = "12323"
+            };
             validation.XPathValidations.Add(xpathProductId);
 
             Context ctx = new Context();
@@ -120,10 +114,13 @@ namespace BizUnit.TestSteps.Tests
             };
             validation.XmlSchemas.Add(schemaPurchaseOrder);
 
-            var xpathProductId = new XPathDefinition();
-            xpathProductId.Description = "PONumber";
-            xpathProductId.XPath = "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']";
-            xpathProductId.Value = "12323";
+            var xpathProductId = new XPathDefinition
+            {
+                Description = "PONumber",
+                XPath =
+                    "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']",
+                Value = "12323"
+            };
             validation.XPathValidations.Add(xpathProductId);
 
             Context ctx = new Context();
@@ -145,10 +142,13 @@ namespace BizUnit.TestSteps.Tests
             };
             validation.XmlSchemas.Add(schemaPurchaseOrder);
 
-            var xpathProductId = new XPathDefinition();
-            xpathProductId.Description = "PONumber";
-            xpathProductId.XPath = "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']";
-            xpathProductId.Value = "12323";
+            var xpathProductId = new XPathDefinition
+            {
+                Description = "PONumber",
+                XPath =
+                    "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']",
+                Value = "12323"
+            };
             validation.XPathValidations.Add(xpathProductId);
 
             Context ctx = new Context();

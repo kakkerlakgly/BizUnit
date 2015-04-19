@@ -163,14 +163,7 @@ namespace BizUnit.BizUnitOM
             }
 
             _typeName = typeNameNode.Value;
-            if (null != assemblyPathNode)
-            {
-                _assemblyPath = assemblyPathNode.Value;
-            }
-            else
-            {
-                _assemblyPath = string.Empty;
-            }
+            _assemblyPath = null != assemblyPathNode ? assemblyPathNode.Value : string.Empty;
         }
 
         /// <summary>

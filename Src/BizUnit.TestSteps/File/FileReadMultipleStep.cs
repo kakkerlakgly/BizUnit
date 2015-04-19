@@ -92,7 +92,7 @@ namespace BizUnit.TestSteps.File
             if (filelist.Length == 0)
             {
                 // Expecting more than one file 
-                throw new ApplicationException(String.Format("Directory contains no files matching the pattern!"));
+                throw new ApplicationException("Directory contains no files matching the pattern!");
             }
 
             if (0 < ExpectedNumberOfFiles && filelist.Length != ExpectedNumberOfFiles)

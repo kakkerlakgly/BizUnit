@@ -366,9 +366,9 @@ namespace BizUnit.CoreSteps.TestSteps
             var ret = "";
             var attributes = t.GetCustomAttributes(false);
 
-            for (var i = 0; i < attributes.Length; i++)
+            foreach (object t1 in attributes)
             {
-                var att = (Attribute)attributes[i];
+                var att = (Attribute)t1;
 
                 if (att.ToString().Equals("System.Xml.Serialization.XmlTypeAttribute"))
                 {

@@ -12,6 +12,8 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Linq;
+
 namespace BizUnit.BizUnitOM
 {
     using System;
@@ -27,13 +29,8 @@ namespace BizUnit.BizUnitOM
 
             if (typeof(IList<string>) == type)
             {
-                IList<string> argsAsstringList = new List<string>();
-                foreach (object arg in args)
-                {
-                    argsAsstringList.Add((string)ctx.ReadArgument(arg));
-                }
-                retVal = new object[1];
-                retVal[0] = argsAsstringList;
+                IList<string> argsAsstringList = args.Select(arg => ctx.ReadArgument(arg).ToString()).ToList();
+                retVal = new object[] { argsAsstringList };
             }
             else if (typeof(IList<Pair>) == type)
             {
@@ -42,8 +39,7 @@ namespace BizUnit.BizUnitOM
                 {
                     argsAsPairList.Add(new Pair(ctx.ReadArgument(args[c]), ctx.ReadArgument(args[c + 1])));
                 }
-                retVal = new object[1];
-                retVal[0] = argsAsPairList;
+                retVal = new object[] { argsAsPairList };
             }
             else
             {

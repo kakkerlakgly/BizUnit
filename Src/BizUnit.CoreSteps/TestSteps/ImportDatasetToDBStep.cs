@@ -12,6 +12,8 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Linq;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
 	using System;
@@ -74,12 +76,14 @@ namespace BizUnit.CoreSteps.TestSteps
 
 		private void LoadTypeHashTable()
 		{
-            _sqlServerDbType = new Dictionary<string, SqlDbType>();
-			_sqlServerDbType.Add(typeof(bool).FullName,SqlDbType.Bit);
-			_sqlServerDbType.Add(typeof(int).FullName,SqlDbType.Int);
-			_sqlServerDbType.Add(typeof(string).FullName,SqlDbType.VarChar);
-			_sqlServerDbType.Add(typeof(DateTime).FullName,SqlDbType.DateTime);
-			_sqlServerDbType.Add(typeof(System.Int16 ).FullName,SqlDbType.SmallInt );
+		    _sqlServerDbType = new Dictionary<string, SqlDbType>
+		    {
+		        {typeof (bool).FullName, SqlDbType.Bit},
+		        {typeof (int).FullName, SqlDbType.Int},
+		        {typeof (string).FullName, SqlDbType.VarChar},
+		        {typeof (DateTime).FullName, SqlDbType.DateTime},
+		        {typeof (Int16).FullName, SqlDbType.SmallInt}
+		    };
 		}
 
         /// <summary>
@@ -133,12 +137,9 @@ namespace BizUnit.CoreSteps.TestSteps
 			}
 
 			//for each found key, simply replace the corresponding match in filecontents
-            foreach (var getDate in htGetDateIndices)
-            {
-                fileContents = fileContents.Replace(getDate.Key, getDate.Value);
-            }
-			
-			var stringReader = new StringReader(fileContents);
+		    fileContents = htGetDateIndices.Aggregate(fileContents, (current, getDate) => current.Replace(getDate.Key, getDate.Value));
+
+		    var stringReader = new StringReader(fileContents);
 			var ds = new DataSet("DataStore");
 			ds.ReadXmlSchema(datasetSchemaFile);
 			ds.ReadXml(stringReader);
@@ -198,22 +199,14 @@ namespace BizUnit.CoreSteps.TestSteps
 				columnsList.Remove(0,1);
 				command.CommandText   = query + "(" + columnsList.ToString().Replace('@',' ') + ") VALUES (" + columnsList + ") " ;
 
-				var connection = new SqlConnection(connectionString);
-				using ( connection )
+				
+                using (var connection = new SqlConnection(connectionString))
 				{
-					try
-					{
-						var sqlda = new SqlDataAdapter {InsertCommand = command};
-					    sqlda.InsertCommand.Connection = connection;
-						sqlda.Update(ds,dt.TableName);
-					}
-					finally
-					{
-                        if (connection.State == ConnectionState.Open)
-                        {
-                            connection.Close();
-                        }
-					}
+				    using (var sqlda = new SqlDataAdapter {InsertCommand = command})
+				    {
+				        sqlda.InsertCommand.Connection = connection;
+				        sqlda.Update(ds,dt.TableName);
+				    }
 				}
 			}
 		}

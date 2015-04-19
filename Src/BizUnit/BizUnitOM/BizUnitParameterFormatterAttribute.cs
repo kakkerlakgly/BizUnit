@@ -49,7 +49,7 @@ namespace BizUnit.BizUnitOM
     ///	
     ///	</remarks>
     [Obsolete("BizUnitParameterFormatterAttribute has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public sealed class BizUnitParameterFormatterAttribute : Attribute
     {
         private readonly string _typeName;

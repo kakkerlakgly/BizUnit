@@ -12,6 +12,8 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Linq;
+
 namespace BizUnit.BizUnitOM
 {
     using System;
@@ -25,45 +27,40 @@ namespace BizUnit.BizUnitOM
         {
             object[] retVal;
 
-            if (typeof(System.Double) == type)
+            if (typeof(Double) == type)
             {
                 retVal = new object[1];
                 retVal[0] = Convert.ToDouble(ctx.ReadArgument(args[0]));
             }
-            else if (typeof(System.Boolean) == type)
+            else if (typeof(Boolean) == type)
             {
                 retVal = new object[1];
                 retVal[0] = Convert.ToBoolean(ctx.ReadArgument(args[0]));
             }
-            else if (typeof(System.Int16) == type)
+            else if (typeof(Int16) == type)
             {
                 retVal = new object[1];
                 retVal[0] = Convert.ToInt16(ctx.ReadArgument(args[0]));
             }
-            else if (typeof(System.Int32) == type)
+            else if (typeof(Int32) == type)
             {
                 retVal = new object[1];
                 retVal[0] = Convert.ToInt32(ctx.ReadArgument(args[0]));
             }
-            else if (typeof(System.Int64) == type)
+            else if (typeof(Int64) == type)
             {
                 retVal = new object[1];
                 retVal[0] = Convert.ToInt64(ctx.ReadArgument(args[0]));
             }
-            else if (typeof(System.String) == type)
+            else if (typeof(String) == type)
             {
                 retVal = new object[1];
                 retVal[0] = ctx.ReadArgument(args[0]);
             }
             else if (typeof(IList<string>) == type)
             {
-                IList<string> argsAsstringList = new List<string>();
-                foreach (object arg in args)
-                {
-                    argsAsstringList.Add((string)ctx.ReadArgument(arg));
-                }
-                retVal = new object[1];
-                retVal[0] = argsAsstringList;
+                IList<string> argsAsstringList = args.Select(arg => ctx.ReadArgument(arg).ToString()).ToList();
+                retVal = new object[] {argsAsstringList};
             }
             else if (typeof(IList<Pair>) == type)
             {

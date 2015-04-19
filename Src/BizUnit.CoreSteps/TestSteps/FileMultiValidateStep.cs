@@ -104,13 +104,13 @@ namespace BizUnit.CoreSteps.TestSteps
             if ( filelist.Length == 0)
             {
                 // Expecting more than one file 
-                throw new ApplicationException( String.Format( "Directory contains no files matching the pattern!" ) );
+                throw new ApplicationException( "Directory contains no files matching the pattern!" );
             }
 
             if ( filelist.Length == 1 )
             {
                 // Expecting more than one file 
-                throw new ApplicationException( String.Format( "Directory only contains one file matching the pattern!" ) );
+                throw new ApplicationException( "Directory only contains one file matching the pattern!" );
             }
 
             // Get the validate steps
@@ -163,7 +163,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
             if ( foundSteps != filelist.Length )
             {
-                throw new MultiUnknownException(string.Format( "FileMultiValidateStep failed, did not match all the files to those specifed in the validate steps." ) );
+                throw new MultiUnknownException("FileMultiValidateStep failed, did not match all the files to those specifed in the validate steps." );
             }
         }
     }

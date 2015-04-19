@@ -63,12 +63,12 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
     ///	</remarks>	
     public class XmlValidationStep : SubStepBase
     {
-        private List<XPathDefinition> _xPathValidations = new List<XPathDefinition>();
-        private List<SchemaDefinition> _xmlSchemas = new List<SchemaDefinition>();
+        private IList<XPathDefinition> _xPathValidations = new List<XPathDefinition>();
+        private IList<SchemaDefinition> _xmlSchemas = new List<SchemaDefinition>();
         private Exception _validationException;
         private Context _context;
 
-        public List<SchemaDefinition> XmlSchemas
+        public IList<SchemaDefinition> XmlSchemas
         {
             set
             {
@@ -80,7 +80,7 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
             }
         }
 
-        public List<XPathDefinition> XPathValidations
+        public IList<XPathDefinition> XPathValidations
         {
             get
             {

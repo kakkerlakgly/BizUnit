@@ -20,23 +20,11 @@ namespace BizUnit.TestSteps.Tests.File
             //
         }
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -66,16 +54,18 @@ namespace BizUnit.TestSteps.Tests.File
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml");
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
-            System.IO.File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
+            File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
                 @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
-            var step = new MoveStep();
-            step.SourcePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml";
-            step.DestinationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml";
+            var step = new MoveStep
+            {
+                SourcePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml",
+                DestinationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"
+            };
 
             step.Execute(new Context());
 
-            Assert.IsTrue(System.IO.File.Exists(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"));
+            Assert.IsTrue(File.Exists(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"));
          
         }
 
@@ -85,12 +75,14 @@ namespace BizUnit.TestSteps.Tests.File
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml");
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
-            System.IO.File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
+            File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
                 @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
-            var step = new MoveStep();
-            step.SourcePath = string.Empty;
-            step.DestinationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml";
+            var step = new MoveStep
+            {
+                SourcePath = string.Empty,
+                DestinationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"
+            };
 
             try
             {
