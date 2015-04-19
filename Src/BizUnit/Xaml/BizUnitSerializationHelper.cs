@@ -46,7 +46,7 @@ namespace BizUnit.Xaml
             ms.Flush();
             ms.Seek(0, SeekOrigin.Begin);
 
-            using (var fs = File.Open(filePath, FileMode.CreateNew, FileAccess.ReadWrite))
+            using (var fs = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite))
             {
                 int read = ms.Read(buff, 0, buff.Length);
                 do

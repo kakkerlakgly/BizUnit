@@ -9,8 +9,6 @@ namespace BizUnit.TestDocumentor.Tests
     [TestClass]
     public class DocumentBuilderTests
     {
-        public DocumentBuilderTests() {}
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.

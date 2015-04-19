@@ -15,13 +15,6 @@ namespace BizUnit.TestSteps.Tests.Time
     [TestClass]
     public class DelayTests
     {
-        public DelayTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.

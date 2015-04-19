@@ -56,11 +56,10 @@ namespace BizUnit.TestDocumentor
                 return; 
             }
 
-            var assemblies = Directory.GetFiles(bizUnitAssemblyPath);
+            var assemblies = Directory.GetFiles(bizUnitAssemblyPath, "*.dll");
 
             foreach (var assembly in assemblies)
             {
-                // TODO: only load .DLLS
                 Assembly.LoadFrom(assembly);
             }
 

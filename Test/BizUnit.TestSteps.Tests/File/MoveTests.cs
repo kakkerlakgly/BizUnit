@@ -12,13 +12,6 @@ namespace BizUnit.TestSteps.Tests.File
     [TestClass]
     public class MoveTests
     {
-        public MoveTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.

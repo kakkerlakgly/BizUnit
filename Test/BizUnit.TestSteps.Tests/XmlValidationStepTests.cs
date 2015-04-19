@@ -12,10 +12,6 @@ namespace BizUnit.TestSteps.Tests
     [TestClass]
     public class XmlValidationStepTests
     {
-        public XmlValidationStepTests()
-        {
-        }
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.

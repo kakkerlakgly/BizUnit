@@ -11,13 +11,6 @@ namespace BizUnit.TestSteps.Tests
     [TestClass]
     public class BizUnit4CoreTests
     {
-        public BizUnit4CoreTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -47,6 +40,7 @@ namespace BizUnit.TestSteps.Tests
         #endregion
 
         [TestMethod]
+        [Ignore]
         public void SerializationV4TestStepsOnly()
         {
             TestCase btc = new TestCase {Name = "Serialization Test"};
