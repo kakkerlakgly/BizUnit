@@ -82,66 +82,57 @@ namespace BizUnit.CoreSteps.TestSteps
     [Obsolete("DBExecuteNonQueryStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
     public class DBExecuteNonQueryStep : ITestStepOM
 	{
-	    private int _delayBeforeExecution;
-	    private string _connectionString;
-	    private int _numberOfRowsAffected;
-	    private SqlQuery _sqlQuery;
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    public int DelayBeforeExecution { set; get; }
 
-	    public int DelayBeforeExecution
-	    {
-	        set { _delayBeforeExecution = value; }
-            get { return _delayBeforeExecution; }
-	    }
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    public string ConnectionString { set; get; }
 
-	    public string ConnectionString
-	    {
-	        set { _connectionString = value; }
-            get { return _connectionString; }
-	    }
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    public int NumberOfRowsAffected { set; get; }
 
-	    public int NumberOfRowsAffected
-	    {
-	        set { _numberOfRowsAffected = value; }
-            get { return _numberOfRowsAffected; }
-	    }
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    [BizUnitParameterFormatter("BizUnit.SqlQueryParamFormatter")]
+	    public SqlQuery SQLQuery { set; get; }
 
-        [BizUnitParameterFormatter("BizUnit.SqlQueryParamFormatter")]
-	    public SqlQuery SQLQuery
-	    {
-	        set { _sqlQuery = value; }
-            get { return _sqlQuery; }
-	    }
-
-        /// <summary>
+	    /// <summary>
 		/// ITestStep.Execute() implementation
 		/// </summary>
 		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
 		public void Execute(XmlNode testConfig, Context context)
 		{
-            _delayBeforeExecution = context.ReadConfigAsInt32(testConfig, "DelayBeforeExecution");			
-			_connectionString = context.ReadConfigAsString( testConfig, "ConnectionString" );
-			_numberOfRowsAffected = testConfig.InnerXml.IndexOf("NumberOfRowsAffected", 0, testConfig.InnerXml.Length) != -1? context.ReadConfigAsInt32 (testConfig, "NumberOfRowsAffected") : -1;
+            DelayBeforeExecution = context.ReadConfigAsInt32(testConfig, "DelayBeforeExecution");			
+			ConnectionString = context.ReadConfigAsString( testConfig, "ConnectionString" );
+			NumberOfRowsAffected = testConfig.InnerXml.IndexOf("NumberOfRowsAffected", 0, testConfig.InnerXml.Length) != -1? context.ReadConfigAsInt32 (testConfig, "NumberOfRowsAffected") : -1;
             XmlNode queryConfig = testConfig.SelectSingleNode("SQLQuery");
-            _sqlQuery = SqlQuery.BuildSQLQuery(queryConfig, context);
+            SQLQuery = SqlQuery.BuildSQLQuery(queryConfig, context);
 
             Execute(context);
 		}
 
 	    public void Execute(Context context)
 	    {
-            context.LogInfo("Using database connection string: {0}", _connectionString);
-            context.LogInfo("Executing query: {0}", _sqlQuery.GetFormattedSqlQuery());
+            context.LogInfo("Using database connection string: {0}", ConnectionString);
+            context.LogInfo("Executing query: {0}", SQLQuery.GetFormattedSqlQuery());
 
             // Sleep for delay seconds...
-            Thread.Sleep(_delayBeforeExecution * 1000);
+            Thread.Sleep(DelayBeforeExecution * 1000);
 
-            int rowCount = DatabaseHelper.ExecuteNonQuery(_connectionString, _sqlQuery.GetFormattedSqlQuery());
+            int rowCount = DatabaseHelper.ExecuteNonQuery(ConnectionString, SQLQuery.GetFormattedSqlQuery());
 
-            if (_numberOfRowsAffected != -1)
+            if (NumberOfRowsAffected != -1)
             {
-                if (rowCount != _numberOfRowsAffected)
-                    throw new Exception("Number of rows affected by the query does not match the value specified in the teststep. Number of rows affected was " + rowCount + " and value specified was " + _numberOfRowsAffected);
+                if (rowCount != NumberOfRowsAffected)
+                    throw new Exception("Number of rows affected by the query does not match the value specified in the teststep. Number of rows affected was " + rowCount + " and value specified was " + NumberOfRowsAffected);
             }
             else
             {
@@ -153,33 +144,43 @@ namespace BizUnit.CoreSteps.TestSteps
 	    {
             // delayBeforeExecution - optional
 
-	    	if(string.IsNullOrEmpty(_connectionString))
+	    	if(string.IsNullOrEmpty(ConnectionString))
 	        {
                 throw new ArgumentNullException("ConnectionString is either null or of zero length");
 	        }
-            _connectionString = context.SubstituteWildCards(_connectionString);
+            ConnectionString = context.SubstituteWildCards(ConnectionString);
 
             // numberOfRowsAffected - no validation
 
-	    	if(null == _sqlQuery)
+	    	if(null == SQLQuery)
 	        {
                 throw new ArgumentNullException("ConnectionString is either null or of zero length");
 	        }
             else
 	    	{
-	    	    _sqlQuery.Validate(context);
+	    	    SQLQuery.Validate(context);
 	    	}
 	    }
 	}
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class SqlQuery
     {
         private string _rawSqlQuery;
         private readonly IList<object> _queryParameters = new List<object>();
         private object[] _objParams;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public SqlQuery() {}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rawSqlQuery"></param>
         public SqlQuery(string rawSqlQuery)
         {
             ArgumentValidation.CheckForEmptyString(rawSqlQuery, "rawSqlQuery");
@@ -188,6 +189,11 @@ namespace BizUnit.CoreSteps.TestSteps
             _objParams = null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objParameters"></param>
+        /// <exception cref="ArgumentException"></exception>
         public SqlQuery(object[] objParameters)
         {
             ArgumentValidation.CheckForNullReference(objParameters, "objParameters");
@@ -217,6 +223,11 @@ namespace BizUnit.CoreSteps.TestSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rawSqlQuery"></param>
+        /// <param name="objParams"></param>
         public SqlQuery(string rawSqlQuery, object[] objParams)
         {
             ArgumentValidation.CheckForEmptyString(rawSqlQuery, "rawSqlQuery");
@@ -226,6 +237,9 @@ namespace BizUnit.CoreSteps.TestSteps
             _objParams = objParams;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string RawSQLQuery
         {
             set
@@ -234,6 +248,10 @@ namespace BizUnit.CoreSteps.TestSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string GetFormattedSqlQuery()
         {
             if(_queryParameters.Count > 0)
@@ -261,6 +279,10 @@ namespace BizUnit.CoreSteps.TestSteps
             return string.Format(_rawSqlQuery, _objParams);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="param"></param>
         public void AddSqlParam(object param)
         {
             ArgumentValidation.CheckForNullReference(param, "param");
@@ -268,6 +290,11 @@ namespace BizUnit.CoreSteps.TestSteps
             _queryParameters.Add(param);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public void Validate(Context context)
         {
     	    string sqlQuery = GetFormattedSqlQuery();
@@ -287,6 +314,12 @@ namespace BizUnit.CoreSteps.TestSteps
             _rawSqlQuery = context.SubstituteWildCards(_rawSqlQuery);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queryConfig"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static SqlQuery BuildSQLQuery(XmlNode queryConfig, Context context)
         {
             string rawSQLQuery = context.ReadConfigAsString(queryConfig, "RawSQLQuery");
@@ -305,8 +338,19 @@ namespace BizUnit.CoreSteps.TestSteps
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class SqlQueryParamFormatter : ITestStepParameterFormatter
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="args"></param>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"></exception>
         public object[] FormatParameters(Type type, object[] args, Context ctx)
         {
             object[] retVal;

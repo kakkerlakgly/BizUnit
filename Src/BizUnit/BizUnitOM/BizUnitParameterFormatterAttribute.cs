@@ -55,12 +55,19 @@ namespace BizUnit.BizUnitOM
         private readonly string _typeName;
         private readonly string _assemblyPath;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public BizUnitParameterFormatterAttribute()
         {
             _typeName = "BizUnit.BizUnitOM.DefaultTestStepParameterFormatter";
             _assemblyPath = null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="typeName"></param>
         public BizUnitParameterFormatterAttribute(string typeName)
         {
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
@@ -69,6 +76,11 @@ namespace BizUnit.BizUnitOM
             _assemblyPath = null;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="assemblyPath"></param>
         public BizUnitParameterFormatterAttribute(string typeName, string assemblyPath)
         {
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
@@ -78,11 +90,17 @@ namespace BizUnit.BizUnitOM
             _assemblyPath = assemblyPath;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string TypeName
         {
             get { return _typeName; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string AssemblyPath
         {
             get { return _assemblyPath; }

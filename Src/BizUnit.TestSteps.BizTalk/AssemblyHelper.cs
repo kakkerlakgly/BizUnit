@@ -17,8 +17,16 @@ using System.Reflection;
 
 namespace BizUnit.TestSteps.BizTalk
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class AssemblyHelper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static Assembly LoadAssembly(string path)
         {
             string filename = Path.GetFileName(path);

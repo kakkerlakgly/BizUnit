@@ -55,6 +55,9 @@ namespace BizUnit.BizUnitOM
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IValidationStepOM ValidationStep
         {
             get

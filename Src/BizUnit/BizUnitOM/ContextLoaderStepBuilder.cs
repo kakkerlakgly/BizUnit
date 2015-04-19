@@ -56,6 +56,9 @@ namespace BizUnit.BizUnitOM
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IContextLoaderStepOM ContextLoaderStep
         {
             get

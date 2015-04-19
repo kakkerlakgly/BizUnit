@@ -56,6 +56,9 @@ namespace BizUnit.CoreSteps.ValidationSteps
 	    private string _comparisonDataPath;
 	    private bool _compareAsUtf8;
         
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public string ComparisonDataPath
 	    {
 	        set
@@ -64,6 +67,9 @@ namespace BizUnit.CoreSteps.ValidationSteps
 	        }
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public bool CompareAsUTF8
 	    {
 	        set

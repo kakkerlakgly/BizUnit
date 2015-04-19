@@ -63,34 +63,27 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
     ///	</remarks>	
     public class XmlValidationStep : SubStepBase
     {
-        private IList<XPathDefinition> _xPathValidations = new List<XPathDefinition>();
-        private IList<SchemaDefinition> _xmlSchemas = new List<SchemaDefinition>();
         private Exception _validationException;
         private Context _context;
 
-        public IList<SchemaDefinition> XmlSchemas
+        /// <summary>
+        /// 
+        /// </summary>
+        public XmlValidationStep()
         {
-            set
-            {
-                _xmlSchemas = value;
-            }
-            get
-            {
-                return _xmlSchemas;
-            }
+            XmlSchemas = new List<SchemaDefinition>();
+            XPathValidations = new List<XPathDefinition>();
         }
 
-        public IList<XPathDefinition> XPathValidations
-        {
-            get
-            {
-                return _xPathValidations;
-            }
-            set
-            {
-                _xPathValidations = value;
-            }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IList<SchemaDefinition> XmlSchemas { set; get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public IList<XPathDefinition> XPathValidations { get; set; }
 
         /// <summary>
         /// ITestStep.Execute() implementation
@@ -128,7 +121,7 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
             try
             {
                 var settings = new XmlReaderSettings();
-                foreach (var xmlSchema in _xmlSchemas)
+                foreach (var xmlSchema in XmlSchemas)
                 {
                     settings.Schemas.Add(xmlSchema.XmlSchemaNameSpace, xmlSchema.XmlSchemaPath);
                 }
@@ -153,7 +146,7 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
 
         private void ValidateXPathExpressions(XmlDocument doc, Context context)
         {
-            foreach (XPathDefinition validation in _xPathValidations)
+            foreach (XPathDefinition validation in XPathValidations)
             {
                 var xpathExp = validation.XPath;
                 var expectedValue = validation.Value;

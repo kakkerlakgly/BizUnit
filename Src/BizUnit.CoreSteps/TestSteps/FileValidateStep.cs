@@ -107,6 +107,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	        }
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public string Directory
 	    {
 	        set
@@ -115,6 +118,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	        }
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public string SearchPattern
 	    {
 	        set
@@ -123,6 +129,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	        }
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public bool DeleteFile
 	    {
 	        set
@@ -131,6 +140,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	        }
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public IValidationStepOM ValidationStep
 	    {
 	        set
@@ -139,6 +151,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	        }
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public IContextLoaderStepOM ContextLoaderStep
 	    {
 	        set

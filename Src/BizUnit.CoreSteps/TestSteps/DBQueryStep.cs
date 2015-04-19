@@ -107,56 +107,53 @@ namespace BizUnit.CoreSteps.TestSteps
     [Obsolete("DBQueryStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
     public class DBQueryStep : ITestStepOM
 	{
-	    private int _delayBeforeCheck;
-	    private string _connectionString;
-        private SqlQuery _sqlQuery;
-	    private DBRowsToValidate _dbRowsToValidate = new DBRowsToValidate();
-	    private int _numberOfRowsExpected;
-
-	    public int DelayBeforeExecution
-        {
-            set { _delayBeforeCheck = value; }
-            get { return _delayBeforeCheck; }
-        }
-
-        public string ConnectionString
-        {
-            set { _connectionString = value; }
-            get { return _connectionString; }
-        }
-
-        [BizUnitParameterFormatter("BizUnit.SqlQueryParamFormatter")]
-        public SqlQuery SQLQuery
-        {
-            set { _sqlQuery = value; }
-            get { return _sqlQuery; }
-        }
-
-        [BizUnitParameterFormatter("BizUnit.DBRowsToValidateParamFormatter")]
-        public DBRowsToValidate DBRowsToValidate
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    public DBQueryStep()
 	    {
-	        set { _dbRowsToValidate = value; }
-            get { return _dbRowsToValidate; }
+	        DBRowsToValidate = new DBRowsToValidate();
 	    }
 
-	    public int NumberOfRowsExpected
-	    {
-	        set { _numberOfRowsExpected = value; }
-            get { return _numberOfRowsExpected; }
-	    }
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    public int DelayBeforeExecution { set; get; }
 
-        /// <summary>
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    public string ConnectionString { set; get; }
+
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    [BizUnitParameterFormatter("BizUnit.SqlQueryParamFormatter")]
+        public SqlQuery SQLQuery { set; get; }
+
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    [BizUnitParameterFormatter("BizUnit.DBRowsToValidateParamFormatter")]
+        public DBRowsToValidate DBRowsToValidate { set; get; }
+
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    public int NumberOfRowsExpected { set; get; }
+
+	    /// <summary>
 		/// ITestStep.Execute() implementation
 		/// </summary>
 		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
 		public void Execute(XmlNode testConfig, Context context)
 		{
-			_delayBeforeCheck = context.ReadConfigAsInt32( testConfig, "DelayBeforeCheck" );			
-			_connectionString = context.ReadConfigAsString( testConfig, "ConnectionString" );
+			DelayBeforeExecution = context.ReadConfigAsInt32( testConfig, "DelayBeforeCheck" );			
+			ConnectionString = context.ReadConfigAsString( testConfig, "ConnectionString" );
 			var queryConfig = testConfig.SelectSingleNode( "SQLQuery" );
-            _sqlQuery = SqlQuery.BuildSQLQuery(queryConfig, context);
-            _numberOfRowsExpected = context.ReadConfigAsInt32(testConfig, "NumberOfRowsExpected", true);			
+            SQLQuery = SqlQuery.BuildSQLQuery(queryConfig, context);
+            NumberOfRowsExpected = context.ReadConfigAsInt32(testConfig, "NumberOfRowsExpected", true);			
 
             var rowCollection = testConfig.SelectSingleNode("Rows");
             var bamValidationRows = rowCollection.SelectNodes("*");
@@ -181,7 +178,7 @@ namespace BizUnit.CoreSteps.TestSteps
                     }
                 }
 
-                _dbRowsToValidate.AddRow(drtv);
+                DBRowsToValidate.AddRow(drtv);
             }
 
             Execute(context);
@@ -291,24 +288,24 @@ namespace BizUnit.CoreSteps.TestSteps
 
 	    public void Execute(Context context)
 	    {
-            context.LogInfo("Using database connection string: {0}", _connectionString);
-	        var sqlQueryToExecute = _sqlQuery.GetFormattedSqlQuery();
+            context.LogInfo("Using database connection string: {0}", ConnectionString);
+	        var sqlQueryToExecute = SQLQuery.GetFormattedSqlQuery();
             context.LogInfo("Executing database query: {0}", sqlQueryToExecute);
 
             // Sleep for delay seconds...
-            Thread.Sleep(_delayBeforeCheck * 1000);
+            Thread.Sleep(DelayBeforeExecution * 1000);
 
 
-            var ds = FillDataSet(_connectionString, sqlQueryToExecute);
+            var ds = FillDataSet(ConnectionString, sqlQueryToExecute);
 	        
-            if(_numberOfRowsExpected != ds.Tables[0].Rows.Count)
+            if(NumberOfRowsExpected != ds.Tables[0].Rows.Count)
             {
-                throw new ApplicationException(string.Format("Number of rows expected to be returned by the query does not match the value specified in the teststep. Number of rows the NnumberOfRowsExpected were: {0}, actual: {1}", _numberOfRowsExpected, ds.Tables[0].Rows.Count));
+                throw new ApplicationException(string.Format("Number of rows expected to be returned by the query does not match the value specified in the teststep. Number of rows the NnumberOfRowsExpected were: {0}, actual: {1}", NumberOfRowsExpected, ds.Tables[0].Rows.Count));
             }
 
-            context.LogInfo("NumberOfRowsExpected: {0}, actual number returned: {1}", _numberOfRowsExpected, ds.Tables[0].Rows.Count);
+            context.LogInfo("NumberOfRowsExpected: {0}, actual number returned: {1}", NumberOfRowsExpected, ds.Tables[0].Rows.Count);
 
-            if (0 == _numberOfRowsExpected)
+            if (0 == NumberOfRowsExpected)
             {
                 return;
             }
@@ -359,29 +356,42 @@ namespace BizUnit.CoreSteps.TestSteps
 	    {
             // delayBeforeCheck - optional
 
-            if (string.IsNullOrEmpty(_connectionString))
+            if (string.IsNullOrEmpty(ConnectionString))
             {
                 throw new ArgumentNullException("ConnectionString is either null or of zero length");
             }
-            _connectionString = context.SubstituteWildCards(_connectionString);
+            ConnectionString = context.SubstituteWildCards(ConnectionString);
 
-            if (null == _sqlQuery)
+            if (null == SQLQuery)
             {
                 throw new ArgumentNullException("ConnectionString is either null or of zero length");
             }
 
-            _sqlQuery.Validate(context);
+            SQLQuery.Validate(context);
         }
 	}
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class DBRowsToValidate
     {
-        private IList<DBRowToValidate> _rowsToValidate = new List<DBRowToValidate>();
+        /// <summary>
+        /// 
+        /// </summary>
+        public DBRowsToValidate()
+        {
+            RowsToValidate = new List<DBRowToValidate>();
+        }
 
-        public DBRowsToValidate() {}
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="validationArgs"></param>
+        /// <exception cref="ArgumentException"></exception>
         public DBRowsToValidate(object[] validationArgs)
         {
+            RowsToValidate = new List<DBRowToValidate>();
             ArgumentValidation.CheckForNullReference(validationArgs, "validationArgs");
             if (validationArgs.Length == 0)
             {
@@ -394,33 +404,49 @@ namespace BizUnit.CoreSteps.TestSteps
             {
                 drtv.AddCell(new DBCellToValidate((string)validationArgs[c], (string)validationArgs[c + 1]));    
             }
-            _rowsToValidate.Add(drtv);
+            RowsToValidate.Add(drtv);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbRowToValidate"></param>
         public void AddRow(DBRowToValidate dbRowToValidate)
         {
-            _rowsToValidate.Add(dbRowToValidate);
+            RowsToValidate.Add(dbRowToValidate);
         }
 
-        public IList<DBRowToValidate> RowsToValidate
-        {
-            set { _rowsToValidate = value; }
-            get { return _rowsToValidate; }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IList<DBRowToValidate> RowsToValidate { set; get; }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class DBRowToValidate
     {
         private readonly IList<DBCellToValidate> _cells = new List<DBCellToValidate>();
         private readonly DBCellToValidate _uniqueCell;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DBRowToValidate() {}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uniqueCell"></param>
         public DBRowToValidate(DBCellToValidate uniqueCell)
         {
             _uniqueCell = uniqueCell;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DBCellToValidate UniqueCell
         {
             get
@@ -429,6 +455,10 @@ namespace BizUnit.CoreSteps.TestSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cell"></param>
         public void AddCell(DBCellToValidate cell)
         {
             ArgumentValidation.CheckForNullReference(cell, "cell");
@@ -436,6 +466,10 @@ namespace BizUnit.CoreSteps.TestSteps
             _cells.Add(cell);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cell"></param>
         public void AddUniqueCell(DBCellToValidate cell)
         {
             ArgumentValidation.CheckForNullReference(cell, "cell");
@@ -443,6 +477,9 @@ namespace BizUnit.CoreSteps.TestSteps
             _cells.Add(cell);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IList<DBCellToValidate> Cells
         {
             get
@@ -452,11 +489,19 @@ namespace BizUnit.CoreSteps.TestSteps
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class DBCellToValidate
     {
         private readonly string _columnName;
         private readonly string _expectedValue;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <param name="expectedValue"></param>
         public DBCellToValidate(string columnName, string expectedValue)
         {
             ArgumentValidation.CheckForEmptyString(columnName, "columnName");
@@ -466,17 +511,26 @@ namespace BizUnit.CoreSteps.TestSteps
             _expectedValue = expectedValue;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string ColumnName
         {
             get { return _columnName; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string ExpectedValue
         {
             get { return _expectedValue; }
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class DBRowsToValidateParamFormatter : ITestStepParameterFormatter
     {
         public object[] FormatParameters(Type type, object[] args, Context ctx)

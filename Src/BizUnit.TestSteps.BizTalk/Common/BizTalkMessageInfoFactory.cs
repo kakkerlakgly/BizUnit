@@ -19,8 +19,17 @@ using Microsoft.Test.BizTalk.PipelineObjects;
 
 namespace BizUnit.TestSteps.BizTalk.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class BizTalkMessageInfoFactory
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="destination"></param>
+        /// <returns></returns>
         public static MessageInfo CreateMessageInfo(IBaseMessage message, string destination)
         {
             var mc = (MessageContext)message.Context;
@@ -29,7 +38,7 @@ namespace BizUnit.TestSteps.BizTalk.Common
             var mipimpl = new List<MessageInfoPartInfoMessagePart>(message.PartCount);
             for (int partIndex = 0; partIndex < message.PartCount; partIndex++)
             {
-                string partName = string.Empty;
+                string partName;
                 var mp = message.GetPartByIndex(partIndex, out partName);
 
                 var miciapae = new MessageInfoContextInfoArrayPropertyArrayElement1 {Value = partName};

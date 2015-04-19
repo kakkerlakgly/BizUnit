@@ -69,66 +69,53 @@ namespace BizUnit.TestSteps.BizTalk.Host
 	///	</remarks>	
     public class HostConductorStep : TestStepBase
 	{
-	    private string _action;
-	    private string _hostName;
-	    private string _servers;
-	    private string _logon;
-	    private string _passWord;
-	    private bool _grantLogOnAsService;
-        
-	    public string Action
-	    {
-	        get { return _action; }
-            set { _action = value; }
-	    }
+        /// <summary>
+	    /// 
+	    /// </summary>
+	    public string Action { get; set; }
 
-        public string HostInstanceName
-        {
-            get { return _hostName; }
-            set { _hostName = value; }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string HostInstanceName { get; set; }
 
-        public string Servers
-        {
-            get { return _servers; }
-            set { _servers = value; }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Servers { get; set; }
 
-        public string Logon
-        {
-            get { return _logon; }
-            set { _logon = value; }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Logon { get; set; }
 
-        public string PassWord
-        {
-            get { return _passWord; }
-            set { _passWord = value; }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string PassWord { get; set; }
 
-        public bool GrantLogOnAsService
-        {
-            get { return _grantLogOnAsService; }
-            set { _grantLogOnAsService = value; }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool GrantLogOnAsService { get; set; }
 
         public override void Execute(Context context)
         {
-            var listofServers = _servers.Split(',');
+            var listofServers = Servers.Split(',');
             foreach (var server in listofServers)
             {
-                var mo = GetHostInstanceWmiObject(server, _hostName);
+                var mo = GetHostInstanceWmiObject(server, HostInstanceName);
 
                 using (mo)
                 {
-                    if (_action.ToLower() == "start")
+                    if (Action.ToLower() == "start")
                     {
-                        if (!string.IsNullOrEmpty(_logon))
+                        if (!string.IsNullOrEmpty(Logon))
                         {
                             var creds = new object[3];
-                            creds[0] = _logon;
-                            creds[1] = _passWord;
-                            creds[2] = _grantLogOnAsService;
+                            creds[0] = Logon;
+                            creds[1] = PassWord;
+                            creds[2] = GrantLogOnAsService;
                             mo.InvokeMethod("Install", creds);
                         }
 
@@ -143,7 +130,7 @@ namespace BizUnit.TestSteps.BizTalk.Host
                         }
                     }
 
-                    if (_action.ToLower() == "stop")
+                    if (Action.ToLower() == "stop")
                     {
                         if (mo["ServiceState"].ToString() != "0")
                         {
@@ -161,24 +148,24 @@ namespace BizUnit.TestSteps.BizTalk.Host
 
         public override void Validate(Context context)
         {
-            if (string.IsNullOrEmpty(_action))
+            if (string.IsNullOrEmpty(Action))
             {
                 throw new ArgumentNullException("Action is either null or an empty string");
             }
 
-            if (string.IsNullOrEmpty(_hostName))
+            if (string.IsNullOrEmpty(HostInstanceName))
             {
                 throw new ArgumentNullException("HostName is either null or an empty string");
             }
 
-            if (string.IsNullOrEmpty(_servers))
+            if (string.IsNullOrEmpty(Servers))
             {
                 throw new ArgumentNullException("Servers is either null or an empty string");
             }
 
-            if (null != _logon && 0 < _servers.Length)
+            if (null != Logon && 0 < Servers.Length)
             {
-                if (string.IsNullOrEmpty(_passWord))
+                if (string.IsNullOrEmpty(PassWord))
                 {
                     throw new ArgumentNullException("PassWord is either null or an empty string");
                 }

@@ -90,6 +90,9 @@ namespace BizUnit.TestSteps.BizTalk.Map
         private string _source;
         private string _destination;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ExecuteMapStep()
         {
             SubSteps = new List<SubStepBase>();

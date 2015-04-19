@@ -49,11 +49,17 @@ namespace BizUnit.CoreSteps.ValidationSteps
     [Obsolete("RegExValidationStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
 	public class RegExValidationStep : IValidationStepOM
 	{
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public RegExValidationStep()
 	    {
 	        ValidationRegEx = new List<string>();
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public IList<string> ValidationRegEx { get; set; }
 
 	    /// <summary>

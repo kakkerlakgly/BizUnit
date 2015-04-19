@@ -21,6 +21,10 @@ namespace BizUnit.TestSteps.BizTalk
 {
     public partial class MessageInfo
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
         public void MergeIntoMessage(IBaseMessage message)
         {
             foreach (MessageInfoContextInfoProperty prop in MessageContextProperties)
@@ -36,6 +40,9 @@ namespace BizUnit.TestSteps.BizTalk
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public MessageInfoContextInfoProperty[] MessageContextProperties
         {
             get
@@ -49,6 +56,9 @@ namespace BizUnit.TestSteps.BizTalk
         }
 
         private MessageInfoContextInfo _mici;
+        /// <summary>
+        /// 
+        /// </summary>
         public MessageInfoContextInfo MessageInfoContextInfo
         {
             get
@@ -69,6 +79,9 @@ namespace BizUnit.TestSteps.BizTalk
         }
 
         private MessageInfoPartInfo _mipi;
+        /// <summary>
+        /// 
+        /// </summary>
         public MessageInfoPartInfo MessageInfoPartInfo
         {
             get
@@ -89,6 +102,11 @@ namespace BizUnit.TestSteps.BizTalk
         }
 
         private static XmlSerializer _messageInfoSerializer = new XmlSerializer(typeof(MessageInfo));
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static MessageInfo Deserialize(string path)
         {
             object obj = null;
@@ -100,6 +118,11 @@ namespace BizUnit.TestSteps.BizTalk
             return obj as MessageInfo;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mi"></param>
+        /// <param name="path"></param>
         public static void Serialize(MessageInfo mi, string path)
         {
             using (XmlWriter writer = XmlWriter.Create(path, BizTalkMapTester.WriterSettings))

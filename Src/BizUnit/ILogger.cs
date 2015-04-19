@@ -19,7 +19,21 @@ namespace BizUnit
     /// <summary>
     /// The LogLevel enum defines the level of logging. 
     /// </summary>
-    public enum LogLevel { INFO, WARNING, ERROR };
+    public enum LogLevel
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        INFO,
+        /// <summary>
+        /// 
+        /// </summary>
+        WARNING,
+        /// <summary>
+        /// 
+        /// </summary>
+        ERROR
+    };
 
     /// <summary>
     /// The ILogger interface is implemented by custom loggers. This enables the BizUnit log output 

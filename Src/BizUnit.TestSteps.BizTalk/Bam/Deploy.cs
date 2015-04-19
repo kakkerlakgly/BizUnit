@@ -28,7 +28,13 @@ namespace BizUnit.TestSteps.BizTalk.Bam
         ///</summary>
         public enum BamDeploymentAction 
 		{
+			/// <summary>
+			/// 
+			/// </summary>
 			Deploy,
+			/// <summary>
+			/// 
+			/// </summary>
 			Undeploy
 		}
 

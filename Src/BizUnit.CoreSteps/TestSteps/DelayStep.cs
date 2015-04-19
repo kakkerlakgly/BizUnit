@@ -48,6 +48,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	{
 	    private int _timeOut;
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public int Delay
 	    {
 	        set { _timeOut = value; }

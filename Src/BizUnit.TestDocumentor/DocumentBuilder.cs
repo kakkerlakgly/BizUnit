@@ -9,6 +9,9 @@ using BizUnit.Xaml;
 namespace BizUnit.TestDocumentor
 {
     
+    /// <summary>
+    /// 
+    /// </summary>
     public class DocumentBuilder
     {
         private const string XmlExtension = "*.xml";
@@ -16,11 +19,25 @@ namespace BizUnit.TestDocumentor
         readonly IDictionary<string, Exception> _testCaseLoadErrors = new Dictionary<string, Exception>();
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logger"></param>
         public DocumentBuilder(ILogger logger)
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="templateReportPath"></param>
+        /// <param name="templateCategoryPath"></param>
+        /// <param name="templateTestCasePath"></param>
+        /// <param name="testCaseDirectory"></param>
+        /// <param name="outpurFileName"></param>
+        /// <param name="searchRecursively"></param>
+        /// <returns></returns>
         public string GenerateDocumentation(
             string templateReportPath,
             string templateCategoryPath,
@@ -33,6 +50,17 @@ namespace BizUnit.TestDocumentor
                                   outpurFileName, null, searchRecursively);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="templateReportPath"></param>
+        /// <param name="templateCategoryPath"></param>
+        /// <param name="templateTestCasePath"></param>
+        /// <param name="testCaseDirectory"></param>
+        /// <param name="outpurFileName"></param>
+        /// <param name="bizUnitAssemblyPath"></param>
+        /// <param name="searchRecursively"></param>
+        /// <returns></returns>
         public string GenerateDocumentation(
             string templateReportPath, 
             string templateCategoryPath, 

@@ -55,6 +55,9 @@ namespace BizUnit.CoreSteps.TestSteps
         private string _sourcePath;
         private const string FileCreationPathContextKey = "FileCreateStep-CreationPath";
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string SourcePath
         {
            set
@@ -63,6 +66,9 @@ namespace BizUnit.CoreSteps.TestSteps
            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string CreationPath
         {
             set

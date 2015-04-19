@@ -3,6 +3,9 @@ using System;
 
 namespace BizUnit.TestDocumentor
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Logger : ILogger
     {
         public void Info(string message, params object[] args)

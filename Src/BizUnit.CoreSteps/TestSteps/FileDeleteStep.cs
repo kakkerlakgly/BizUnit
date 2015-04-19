@@ -49,6 +49,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	{
 	    private IList<string> _filesToDelete;
 
+        /// <summary>
+        /// 
+        /// </summary>
         [BizUnitParameterFormatter("BizUnit.BizUnitOM.ComplexTypeParameterFormatter")]
 	    public IList<string> FilesToDeletePath
 	    {

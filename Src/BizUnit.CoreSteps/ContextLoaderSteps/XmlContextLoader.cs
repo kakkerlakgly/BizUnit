@@ -57,6 +57,9 @@ namespace BizUnit.CoreSteps.ContextLoaderSteps
 	{
 	    private IList<Pair> _xPathExpressions = new List<Pair>();
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public IList<Pair> XPathExpressions
 	    {
 	        set

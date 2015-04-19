@@ -60,6 +60,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	    private string _processParams;
 	    private string _workingDirectory;
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public string ProcessName
 	    {
 	        set
@@ -68,6 +71,9 @@ namespace BizUnit.CoreSteps.TestSteps
             }
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public string ProcessParams
 	    {
 	        set
@@ -76,6 +82,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	        }
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public string WorkingDirectory
 	    {
 	        set

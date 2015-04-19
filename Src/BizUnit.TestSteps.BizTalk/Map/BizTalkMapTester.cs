@@ -58,6 +58,9 @@ namespace BizUnit.TestSteps.BizTalk.Map
             return Activator.CreateInstance(mapType) as TransformBase;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public TransformBase Map
         {
             get { return _map; }

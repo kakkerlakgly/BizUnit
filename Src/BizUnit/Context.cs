@@ -49,6 +49,9 @@ namespace BizUnit
         private TestStage _stage;
         private string _testName;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public const string TAKE_FROM_CONTEXT = "takeFromCtx:";
 
         /// <summary>
@@ -74,6 +77,10 @@ namespace BizUnit
             _startTime = DateTime.Now;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logger"></param>
         public Context(ILogger logger)
         {
             _logger = logger;
@@ -81,6 +88,9 @@ namespace BizUnit
             _startTime = DateTime.Now;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public TestStage CurrentTestStage
         {
             get
@@ -94,6 +104,9 @@ namespace BizUnit
             _stage = currentStage;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string TestName
         {
             get
@@ -578,6 +591,11 @@ namespace BizUnit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
         public object ReadArgument(object arg)
         {
             ArgumentValidation.CheckForNullReference(arg, "arg");

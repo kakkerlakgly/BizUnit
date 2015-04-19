@@ -3,6 +3,9 @@ using System;
 
 namespace BizUnit
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class TestStepEventArgs : EventArgs
     {
         private readonly TestStage _stage;
@@ -16,6 +19,9 @@ namespace BizUnit
             _testStepTypeName = testStepTypeName;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public TestStage Stage
         {
             get
@@ -24,6 +30,9 @@ namespace BizUnit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string TestCaseName
         {
             get
@@ -32,6 +41,9 @@ namespace BizUnit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string TestStepTypeName
         {
             get

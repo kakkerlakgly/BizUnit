@@ -16,8 +16,19 @@ using System;
 
 namespace BizUnit.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ArgumentValidation
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="var"></param>
+        /// <param name="varName"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static T CheckForNullReference<T>(T var, string varName)
         {
             if (varName == null)
@@ -29,6 +40,13 @@ namespace BizUnit.Common
             return var;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="variable"></param>
+        /// <param name="variableName"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public static string CheckForEmptyString(string variable, string variableName)
         {
             CheckForNullReference(variable, variableName);

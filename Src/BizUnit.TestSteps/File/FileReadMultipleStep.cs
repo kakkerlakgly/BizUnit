@@ -34,6 +34,9 @@ namespace BizUnit.TestSteps.File
     /// </summary>
     public class FileReadMultipleStep : TestStepBase
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public FileReadMultipleStep()
         {
             SubSteps = new List<SubStepBase>();

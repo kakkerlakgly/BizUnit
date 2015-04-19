@@ -94,6 +94,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	        private bool _failIfFound;
 	        private EventLogEntryType _entryType;
 
+	        /// <summary>
+	        /// 
+	        /// </summary>
 	        public int DelayBeforeCheck
 	        {
 	            set
@@ -102,6 +105,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	            }
 	        }
 
+	        /// <summary>
+	        /// 
+	        /// </summary>
 	        public string Machine
 	        {
 	            set
@@ -110,6 +116,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	            }
 	        }
 
+	        /// <summary>
+	        /// 
+	        /// </summary>
 	        public string EventLog
 	        {
 	            set
@@ -118,6 +127,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	            }
 	        }
 
+	        /// <summary>
+	        /// 
+	        /// </summary>
 	        public string Source
 	        {
 	            set
@@ -126,6 +138,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	            }
 	        }
 
+	        /// <summary>
+	        /// 
+	        /// </summary>
 	        public string EventType
 	        {
 	            set
@@ -134,6 +149,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	            }
 	        }
 
+	        /// <summary>
+	        /// 
+	        /// </summary>
 	        public int EventId
 	        {
 	            set
@@ -142,6 +160,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	            }
 	        }
 
+	        /// <summary>
+	        /// 
+	        /// </summary>
 	        public IList<string> ValidationRegexs
 	        {
 	            set
@@ -150,6 +171,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	            }
 	        }
 
+	        /// <summary>
+	        /// 
+	        /// </summary>
 	        public bool FailIfFound
 	        {
 	            set

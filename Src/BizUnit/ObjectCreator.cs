@@ -17,8 +17,17 @@ using System.Reflection;
 
 namespace BizUnit
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ObjectCreator
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="assemblyPath"></param>
+        /// <returns></returns>
         static public object CreateStep(string typeName, string assemblyPath)
         {
             object comp = null;
@@ -42,6 +51,12 @@ namespace BizUnit
             return comp;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="typeName"></param>
+        /// <param name="assemblyPath"></param>
+        /// <returns></returns>
         static public Type GetType(string typeName, string assemblyPath)
         {
             Type t;

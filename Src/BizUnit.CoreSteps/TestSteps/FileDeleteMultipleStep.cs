@@ -55,6 +55,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	    private string _searchPattern;
 
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public string Directory
 	    {
 	        set
@@ -63,6 +66,9 @@ namespace BizUnit.CoreSteps.TestSteps
 	        }
 	    }
 
+	    /// <summary>
+	    /// 
+	    /// </summary>
 	    public string SearchPattern
 	    {
 	        set

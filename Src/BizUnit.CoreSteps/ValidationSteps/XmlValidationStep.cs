@@ -63,10 +63,20 @@ namespace BizUnit.CoreSteps.ValidationSteps
     [Obsolete("XmlValidationStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
 	public class XmlValidationStep : IValidationStepOM
 	{
-        private IList<Pair> _xPathValidations = new List<Pair>();
         private string _xmlSchemaPath;
         private string _xmlSchemaNameSpace;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public XmlValidationStep()
+        {
+            XPathValidations = new List<Pair>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string XmlSchemaPath
         {
             set
@@ -75,6 +85,9 @@ namespace BizUnit.CoreSteps.ValidationSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string XmlSchemaNameSpace
         {
             set
@@ -83,18 +96,10 @@ namespace BizUnit.CoreSteps.ValidationSteps
             }
         }
 
-        public IList<Pair> XPathValidations
-        {
-            get
-            {
-                return _xPathValidations;
-            }
-
-            set
-            {
-                _xPathValidations = value;
-            }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IList<Pair> XPathValidations { get; set; }
 
         /// <summary>
 		/// IValidationStep.ExecuteValidation() implementation
@@ -107,14 +112,14 @@ namespace BizUnit.CoreSteps.ValidationSteps
 			_xmlSchemaPath = context.ReadConfigAsString( validatorConfig, "XmlSchemaPath", true );
 			_xmlSchemaNameSpace = context.ReadConfigAsString( validatorConfig, "XmlSchemaNameSpace", true );
 			var xpaths = validatorConfig.SelectNodes( "XPathList/*" );
-            _xPathValidations = new List<Pair>();
+            XPathValidations = new List<Pair>();
 
 			foreach( XmlNode xpath in xpaths)
 			{
                 string xpathExp = xpath.SelectSingleNode("@query").Value;
                 string expectedValue = xpath.SelectSingleNode(".").InnerText;
 
-                _xPathValidations.Add(new Pair(xpathExp, expectedValue));
+                XPathValidations.Add(new Pair(xpathExp, expectedValue));
 			}
 
             ExecuteValidation(data, context);
@@ -150,7 +155,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
             data.Seek(0, SeekOrigin.Begin);
             doc.Load(data);
 
-            foreach (Pair validation in _xPathValidations)
+            foreach (Pair validation in XPathValidations)
             {
                 var xpathExp = (string)validation.First;
                 var expectedValue = (string)validation.Second;

@@ -24,34 +24,48 @@ using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.Soap
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class WebServiceStep : TestStepBase
     {
         private Stream _request;
         private Stream _response;
-        private IList<SoapHeader> _soapHeaders = new List<SoapHeader>();
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DataLoaderBase RequestBody { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string ServiceUrl { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string Action { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string Username { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string Password { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public WebServiceStep()
         {
+            SoapHeaders = new List<SoapHeader>();
             SubSteps = new List<SubStepBase>();
         }
 
-        public IList<SoapHeader> SoapHeaders
-        {
-            set
-            {
-                _soapHeaders = value;
-            }
-            get
-            {
-                return _soapHeaders;
-            }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IList<SoapHeader> SoapHeaders { set; get; }
 
         public override void Execute(Context context)
         {
@@ -120,7 +134,7 @@ namespace BizUnit.TestSteps.Soap
 
                         request = Message.CreateMessage(MessageVersion.Soap11, action, r);
 
-                        foreach (var header in _soapHeaders)
+                        foreach (var header in SoapHeaders)
                         {
                             MessageHeader messageHeader = MessageHeader.CreateHeader(header.HeaderName, header.HeaderNameSpace, header.HeaderInstance);
                             OperationContext.Current.OutgoingMessageHeaders.Add(messageHeader);

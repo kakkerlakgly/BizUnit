@@ -61,14 +61,35 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
 
     public class OrchestrationConductorStep : TestStepBase
 	{
+        /// <summary>
+        /// 
+        /// </summary>
         public string AssemblyName { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string OrchestrationName { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public OrchestrationAction Action { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int DelayForCompletion { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public enum OrchestrationAction 
 		{
+			/// <summary>
+			/// 
+			/// </summary>
 			Start,
+			/// <summary>
+			/// 
+			/// </summary>
 			Stop,
 		}
 

@@ -107,7 +107,13 @@ namespace BizUnit
         internal const string BizUnitTestCaseStartTime = "BizUnitTestCaseStartTime";
         private const string BizUnitTestCaseName = "BizUnitTestCaseName";
 
+        /// <summary>
+        /// 
+        /// </summary>
         public event EventHandler<TestStepEventArgs> TestStepStartEvent;
+        /// <summary>
+        /// 
+        /// </summary>
         public event EventHandler<TestStepEventArgs> TestStepStopEvent;
         
         /// <summary>

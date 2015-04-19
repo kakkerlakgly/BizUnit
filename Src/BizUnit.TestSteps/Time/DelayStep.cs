@@ -23,25 +23,22 @@ namespace BizUnit.TestSteps.Time
 
     public class DelayStep : TestStepBase
 	{
-	    private int _timeOut;
+	    /// <summary>
+	    /// 
+	    /// </summary>
+	    public int DelayMilliSeconds { set; get; }
 
-        public int DelayMilliSeconds
-	    {
-	        set { _timeOut = value; }
-            get { return _timeOut; }
-	    }
-
-        /// <summary>
+	    /// <summary>
         /// TestStepBase.Execute() implementation
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
 	    {
-            context.LogInfo("About to wait for {0} milli seconds...", _timeOut.ToString());
+            context.LogInfo("About to wait for {0} milli seconds...", DelayMilliSeconds.ToString());
 
-            Thread.Sleep(_timeOut);
+            Thread.Sleep(DelayMilliSeconds);
 
-            context.LogInfo("A delay of {0} milli second has successfully completed.", _timeOut.ToString());
+            context.LogInfo("A delay of {0} milli second has successfully completed.", DelayMilliSeconds.ToString());
         }
 
         public override void Validate(Context context)

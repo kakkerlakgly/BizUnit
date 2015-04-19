@@ -25,12 +25,30 @@ namespace BizUnit.TestSteps.Sql
     ///</summary>
     public class DbQueryStep : TestStepBase
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public string ConnectionString { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public SqlQuery SQLQuery { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public IList<DbRowToValidate> DbRowsToValidate { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int NumberOfRowsExpected { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int DelayBeforeCheck { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DbQueryStep()
         {
             DbRowsToValidate = new List<DbRowToValidate>();

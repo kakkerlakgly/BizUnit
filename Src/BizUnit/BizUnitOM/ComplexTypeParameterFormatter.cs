@@ -19,9 +19,20 @@ using System.Web.UI;
 
 namespace BizUnit.BizUnitOM
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Obsolete("ComplexTypeParameterFormatter has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
     public class ComplexTypeParameterFormatter : ITestStepParameterFormatter
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="args"></param>
+        /// <param name="ctx"></param>
+        /// <returns></returns>
+        /// <exception cref="ApplicationException"></exception>
         public object[] FormatParameters(Type type, object[] args, Context ctx)
         {
             object[] retVal;

@@ -89,28 +89,32 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
     public class FactBasedRuleEngineStep : TestStepBase
     {
-        private IList<Fact> _factsList = new List<Fact>(); 
-        
+        /// <summary>
+        /// 
+        /// </summary>
         public string RuleStoreName { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string RuleSetInfoCollectionName { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string DebugTracking { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public FactBasedRuleEngineStep()
         {
-            SubSteps = new List<SubStepBase>();            
+            FactsList = new List<Fact>();
+            SubSteps = new List<SubStepBase>();
         }
 
-        public IList<Fact> FactsList 
-        { 
-            get
-            {
-                return _factsList;
-            } 
-            set
-            {
-                _factsList = value;
-            }
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public IList<Fact> FactsList { get; set; }
 
         /// <summary>
         /// TestStepBase.Execute() implementation
@@ -142,10 +146,10 @@ namespace BizUnit.TestSteps.BizTalk.Bre
             var policyTester = new PolicyTester(ruleset);
 
             // load the facts into array
-            var facts = new object[_factsList.Count]; 
+            var facts = new object[FactsList.Count]; 
             var i = 0;
 
-            foreach (var currentFact in _factsList)
+            foreach (var currentFact in FactsList)
             {
                 switch (currentFact.GetType().ToString())
                 {
