@@ -12,14 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 
 namespace BizUnit.BizUnitOM
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Web.UI;
-
     [Obsolete("DefaultTestStepParameterFormatter has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
     public class DefaultTestStepParameterFormatter : ITestStepParameterFormatter
     {

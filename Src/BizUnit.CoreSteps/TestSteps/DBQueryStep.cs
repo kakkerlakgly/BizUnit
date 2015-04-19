@@ -13,11 +13,12 @@
 //---------------------------------------------------------------------
 
 using System;
-using System.Xml;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Xml;
 using BizUnit.BizUnitOM;
 using BizUnit.Common;
 
@@ -295,7 +296,7 @@ namespace BizUnit.CoreSteps.TestSteps
             context.LogInfo("Executing database query: {0}", sqlQueryToExecute);
 
             // Sleep for delay seconds...
-            System.Threading.Thread.Sleep(_delayBeforeCheck * 1000);
+            Thread.Sleep(_delayBeforeCheck * 1000);
 
 
             var ds = FillDataSet(_connectionString, sqlQueryToExecute);
@@ -491,8 +492,7 @@ namespace BizUnit.CoreSteps.TestSteps
                     argsFetchedFromCtx[c++] = ctx.ReadArgument(arg);
                 }
 
-                retVal = new object[1];
-                retVal[0] = new DBRowsToValidate(argsFetchedFromCtx);
+                retVal = new object[]{new DBRowsToValidate(argsFetchedFromCtx)};
             }
             else
             {

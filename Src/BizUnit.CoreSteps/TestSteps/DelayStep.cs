@@ -13,14 +13,13 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Threading;
+using System.Xml;
+using BizUnit.BizUnitOM;
 
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System.Xml;
-	using System.Threading;
-    using BizUnitOM;
-
-	/// <summary>
+    /// <summary>
 	/// The DelayStep is used to perform a delay/sleep.
 	/// </summary>
 	/// 

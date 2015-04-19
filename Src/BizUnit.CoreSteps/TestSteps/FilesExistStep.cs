@@ -12,14 +12,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Threading;
+using System.Xml;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System;
-	using System.IO;
-	using System.Threading;
-	using System.Xml;
-
-	/// <summary>
+    /// <summary>
     /// The FilesExistStep step determines the number of file in the specified directory which match the search pattern
     /// and compares this to the expected result.
     /// </summary>

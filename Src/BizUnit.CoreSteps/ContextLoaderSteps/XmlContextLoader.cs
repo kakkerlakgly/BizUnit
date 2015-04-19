@@ -12,16 +12,16 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web.UI;
+using System.Xml;
+using BizUnit.BizUnitOM;
+
 namespace BizUnit.CoreSteps.ContextLoaderSteps
 {
-    using System;
-    using System.IO;
-	using System.Xml;
-    using System.Collections.Generic;
-    using System.Web.UI;
-    using BizUnitOM;
-
-	/// <summary>
+    /// <summary>
 	/// The XmlContextLoader evaluates an XPath expression to the source data and adds the value into the context.
 	/// </summary>
 	/// 

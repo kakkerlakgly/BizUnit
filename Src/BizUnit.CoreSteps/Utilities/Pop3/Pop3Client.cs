@@ -12,16 +12,16 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.RegularExpressions;
+
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-	using System;
-    using System.Collections;
-    using System.Collections.Generic;
-	using System.Net;
-	using System.Net.Sockets;
-	using System.Text;
-	using System.Text.RegularExpressions;
-
     internal class Pop3Client : IEnumerable<Pop3Component>
 	{
 		private Pop3Credential _credential;

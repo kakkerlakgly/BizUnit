@@ -12,13 +12,12 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Xml;
 using BizUnit.Common;
 
 namespace BizUnit.BizUnitOM
 {
-    using System;
-    using System.Xml;
-
     /// <summary>
     /// BizUnitTestStepWrapper wraps BizUnit test steps and provides access to any exceptions raised at runtime.
     /// </summary>

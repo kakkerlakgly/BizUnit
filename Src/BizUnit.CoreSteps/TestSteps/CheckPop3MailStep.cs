@@ -14,7 +14,7 @@
 
 
 using System;
-using System.Collections.Generic;
+using System.Threading;
 using System.Xml;
 using BizUnit.CoreSteps.Utilities.Pop3;
 
@@ -117,7 +117,7 @@ namespace BizUnit.CoreSteps.TestSteps
 			if ( delayBeforeCheck > 0 )
 			{
 				context.LogInfo("Waiting for {0} seconds before checking the mail.", delayBeforeCheck);
-				System.Threading.Thread.Sleep(delayBeforeCheck*1000);
+				Thread.Sleep(delayBeforeCheck*1000);
 			}			
 
 			var email = new Pop3Client(user, password, server);

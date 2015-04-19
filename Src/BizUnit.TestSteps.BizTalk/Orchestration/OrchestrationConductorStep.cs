@@ -14,6 +14,8 @@
 
 using System;
 using System.Management;
+using System.Runtime.InteropServices;
+using System.Threading;
 using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.BizTalk.Orchestration
@@ -91,10 +93,10 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
                 if (DelayForCompletion > 0)
                 {
                     context.LogInfo("Waiting for {0} seconds before recommencing testing.", DelayForCompletion);
-                    System.Threading.Thread.Sleep(DelayForCompletion * 1000);
+                    Thread.Sleep(DelayForCompletion * 1000);
                 }
             }
-            catch (System.Runtime.InteropServices.COMException e)
+            catch (COMException e)
             {
                 context.LogException(e);
                 throw;

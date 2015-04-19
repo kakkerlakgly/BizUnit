@@ -12,10 +12,10 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+
 namespace BizUnit
 {
-    using System;
-
     /// <summary>
     /// The LogLevel enum defines the level of logging. 
     /// </summary>

@@ -13,12 +13,12 @@
 //---------------------------------------------------------------------
 
 using System;
-using System.IO;
 using System.Collections.Generic;
-using Winterdom.BizTalk.PipelineTesting;
+using System.IO;
 using BizUnit.Common;
 using BizUnit.TestSteps.BizTalk.Common;
 using BizUnit.Xaml;
+using Winterdom.BizTalk.PipelineTesting;
 
 namespace BizUnit.TestSteps.BizTalk.Pipeline
 {

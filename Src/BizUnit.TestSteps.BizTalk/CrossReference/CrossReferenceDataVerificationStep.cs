@@ -12,13 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Xml;
+using Microsoft.BizTalk.CrossReferencing;
+
 namespace BizUnit.TestSteps.BizTalk.CrossReference
 {
-	using System;
-	using System.Xml;
-	using Microsoft.BizTalk.CrossReferencing;
-
-	/// <summary>
+    /// <summary>
 	/// The CrossReferenceDataVerificationStep reads email from a POP3 server.
 	/// </summary>
 	/// 

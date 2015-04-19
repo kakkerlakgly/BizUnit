@@ -12,12 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Text;
+using System.Text.RegularExpressions;
+
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-	using System;
-	using System.Text.RegularExpressions;
-
-	/// <summary>
+    /// <summary>
 	/// Summary description for Pop3ParseMessage.
 	/// </summary>
 	internal class Pop3Parse
@@ -95,7 +96,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 				if (match.Groups["encoding"].Value == "B")
 				{
 					byte[] data = Convert.FromBase64String(match.Groups["data"].Value);
-					subject = System.Text.Encoding.ASCII.GetString(data);
+					subject = Encoding.ASCII.GetString(data);
 				}
 				else
 				{

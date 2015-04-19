@@ -1,9 +1,8 @@
 ﻿
 using System;
-using System.Xml.Schema;
+using BizUnit.TestSteps.Common;
 using BizUnit.TestSteps.ValidationSteps.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BizUnit.TestSteps.Common;
 
 namespace BizUnit.TestSteps.Tests
 {

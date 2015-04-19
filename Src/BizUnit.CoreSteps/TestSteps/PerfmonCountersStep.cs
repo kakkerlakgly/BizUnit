@@ -11,12 +11,12 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Xml;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-    using System;
-    using System.Xml;
-    using System.Diagnostics;
-
     /// <summary>
     /// The PerfmonCountersStep controls perfmon counters, it maybe used to start, and stop 
     /// a set of perfmon counters

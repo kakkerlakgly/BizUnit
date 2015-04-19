@@ -12,12 +12,12 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
-using BizUnit.BizUnitOM;
-using BizUnit.Common;
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Xml;
-using System.Collections.Concurrent;
+using BizUnit.BizUnitOM;
+using BizUnit.Common;
 
 namespace BizUnit
 {
@@ -45,7 +45,7 @@ namespace BizUnit
         private const string SERVER_NAME = "%ServerName%";
         private const string GUID = "%Guid%";
         private const string TEST_START_DATE_TIME = "%Test_Start_DateTime%";
-        private bool _disposeMembersOnTestCaseCompletion = false;
+        private bool _disposeMembersOnTestCaseCompletion;
         private TestStage _stage;
         private string _testName;
 

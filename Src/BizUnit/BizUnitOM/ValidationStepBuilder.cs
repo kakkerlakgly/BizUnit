@@ -48,7 +48,7 @@ namespace BizUnit.BizUnitOM
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
             // assemblyPath - optional
 
-            _validationStep = testStep as IValidationStepOM;
+            _validationStep = TestStep as IValidationStepOM;
             if (null == _validationStep)
             {
                 throw new ArgumentException(string.Format("The validation step type: {0}, created is invalid: IValidationStepOM is not implemented", typeName));

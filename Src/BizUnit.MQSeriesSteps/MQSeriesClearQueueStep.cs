@@ -12,11 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Xml;
+using IBM.WMQ;
+
 namespace BizUnit.MQSeriesSteps
 {
-	using System;
-	using System.Xml;
-	using IBM.WMQ; // $:\Program Files\IBM\WebSphere MQ\bin\amqmdnet.dll - Requires Patch Level > CSD07
+    // $:\Program Files\IBM\WebSphere MQ\bin\amqmdnet.dll - Requires Patch Level > CSD07
 
 	/// <summary>
 	/// The MQSeriesClearQueueStep test step clears one or more MQ Series queues, this test step is typically used to cleanup a test case.

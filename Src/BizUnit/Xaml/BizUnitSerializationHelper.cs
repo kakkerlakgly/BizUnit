@@ -12,11 +12,11 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.IO;
+using System.Xaml;
+
 namespace BizUnit.Xaml
 {
-    using System.Xaml;
-    using System.IO;
-
     internal static class BizUnitSerializationHelper
     {
         private const int FileBufferSize = 4048;

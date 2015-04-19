@@ -14,8 +14,8 @@
 
 using System.Xml;
 using System.Xml.Serialization;
-using Microsoft.BizTalk.Message.Interop;
 using BizUnit.TestSteps.BizTalk.Map;
+using Microsoft.BizTalk.Message.Interop;
 
 namespace BizUnit.TestSteps.BizTalk
 {
@@ -48,7 +48,7 @@ namespace BizUnit.TestSteps.BizTalk
             }
         }
 
-        private MessageInfoContextInfo _mici = null;
+        private MessageInfoContextInfo _mici;
         public MessageInfoContextInfo MessageInfoContextInfo
         {
             get
@@ -68,7 +68,7 @@ namespace BizUnit.TestSteps.BizTalk
             }
         }
 
-        private MessageInfoPartInfo _mipi = null;
+        private MessageInfoPartInfo _mipi;
         public MessageInfoPartInfo MessageInfoPartInfo
         {
             get
@@ -88,13 +88,13 @@ namespace BizUnit.TestSteps.BizTalk
             }
         }
 
-        private static XmlSerializer messageInfoSerializer = new XmlSerializer(typeof(MessageInfo));
+        private static XmlSerializer _messageInfoSerializer = new XmlSerializer(typeof(MessageInfo));
         public static MessageInfo Deserialize(string path)
         {
             object obj = null;
             using (XmlReader reader = XmlReader.Create(path))
             {
-                obj = messageInfoSerializer.Deserialize(reader);
+                obj = _messageInfoSerializer.Deserialize(reader);
             }
 
             return obj as MessageInfo;
@@ -104,7 +104,7 @@ namespace BizUnit.TestSteps.BizTalk
         {
             using (XmlWriter writer = XmlWriter.Create(path, BizTalkMapTester.WriterSettings))
             {
-                messageInfoSerializer.Serialize(writer, mi);
+                _messageInfoSerializer.Serialize(writer, mi);
             }
         }
     }

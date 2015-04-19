@@ -12,12 +12,12 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.IO;
+using System.Xml;
+
 namespace BizUnit
 {
-	using System.IO;
-	using System.Xml;
-
-	/// <summary>
+    /// <summary>
 	/// The IContextLoaderStep interface is implemented by test steps which need to load data into the context.
 	/// </summary>
 	/// 

@@ -1,8 +1,8 @@
 ﻿
+using System;
+
 namespace BizUnit.TestDocumentor
 {
-    using System;
-
     public class Logger : ILogger
     {
         public void Info(string message, params object[] args)

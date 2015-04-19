@@ -12,14 +12,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Xml;
+using BizUnit.BizUnitOM;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-    using System;
-    using System.Xml;
-	using System.IO;
-    using BizUnitOM;
-
-	/// <summary>
+    /// <summary>
 	/// The FileDeleteMultipleStep deletes a FILE specified at a given location.
 	/// </summary>
 	/// 

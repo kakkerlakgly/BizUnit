@@ -12,10 +12,10 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+
 namespace BizUnit.BizUnitOM
 {
-    using System;
-
     public delegate object[] TestStepParameterFormatter(Type type, object[] args, Context ctx);
 
     [Obsolete("ITestStepParameterFormatter has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]

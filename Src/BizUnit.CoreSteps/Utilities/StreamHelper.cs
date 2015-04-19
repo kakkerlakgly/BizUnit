@@ -15,9 +15,10 @@
 //---------------------------------------------------------------------
 
 using System;
-using System.Xml;
-using System.Text;
 using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.Utilities
 {
@@ -89,7 +90,7 @@ namespace BizUnit.CoreSteps.Utilities
 				{
 					if ( DateTime.Now < now.AddMilliseconds(timeout) )
 					{
-						System.Threading.Thread.Sleep(500);
+						Thread.Sleep(500);
 					}
 				}
 			} while ( DateTime.Now < now.AddMilliseconds(timeout) );

@@ -12,13 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Xml;
+using BizUnit.BizUnitOM;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-    using System;
-    using System.IO;
-    using System.Xml;
-    using BizUnitOM;
-
     /// <summary>
     /// The FileCreateStep creates a new FILE in the specified directory.
     /// </summary>

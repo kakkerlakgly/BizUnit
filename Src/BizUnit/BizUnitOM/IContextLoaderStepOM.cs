@@ -13,11 +13,10 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.IO;
 
 namespace BizUnit.BizUnitOM
 {
-    using System.IO;
-
     /// <summary>
     /// The IContextLoaderStepOM interface is implemented by test steps which 
     /// need to load data into the context and wish to be driven through the 

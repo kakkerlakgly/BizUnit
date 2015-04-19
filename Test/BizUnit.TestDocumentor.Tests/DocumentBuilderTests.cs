@@ -1,10 +1,8 @@
 ﻿
-using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BizUnit.TestDocumentor.Tests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Summary description for UnitTest1
     /// </summary>

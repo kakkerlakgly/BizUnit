@@ -14,14 +14,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Globalization;
+using System.Threading;
+using System.Xml;
+using LoadGen;
+
 namespace BizUnit.LoadGenSteps
 {
-    using System;
-    using System.Xml;
-    using LoadGen;
-    using System.Globalization;
-    using System.Threading;
-
     /// <summary>
     /// The LoadGenExecuteStep step executes a LoadGen test
     /// </summary>
@@ -73,7 +73,7 @@ namespace BizUnit.LoadGenSteps
                     throw new ConfigException("LoadGen Configuration File Schema Invalid!");
                 }
 
-                var loadGen = new LoadGen(doc.FirstChild);
+                var loadGen = new LoadGen.LoadGen(doc.FirstChild);
                 loadGen.LoadGenStopped += LoadGenStopped;
                 loadGen.Start();
             }

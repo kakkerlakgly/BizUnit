@@ -1,15 +1,13 @@
 ﻿
 using System;
+using System.IO;
+using BizUnit.TestSteps.DataLoaders.File;
 using BizUnit.TestSteps.File;
 using BizUnit.Xaml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BizUnit.TestSteps.Tests.File
 {
-    using System.IO;
-    using DataLoaders.File;
-    using File;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Summary description for DeleteTest
     /// </summary>
@@ -71,7 +69,7 @@ namespace BizUnit.TestSteps.Tests.File
 
             try
             {
-                var deletedFile = File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml", FileMode.Open,
+                var deletedFile = System.IO.File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.xml", FileMode.Open,
                                     FileAccess.Read);
             }
             catch (FileNotFoundException)
@@ -104,7 +102,7 @@ namespace BizUnit.TestSteps.Tests.File
 
             try
             {
-                var deletedFile = File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.wildCardTestxml", FileMode.Open,
+                var deletedFile = System.IO.File.Open(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\DeleteTest_FileToBeDeleted.wildCardTestxml", FileMode.Open,
                                     FileAccess.Read);
             }
             catch (FileNotFoundException)

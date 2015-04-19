@@ -14,13 +14,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Reflection;
+using System.Xml;
+
 namespace BizUnit.CoreSteps.ValidationSteps
 {
-    using System;
-    using System.IO;
-    using System.Xml;
-    using System.Reflection;
-
     /// <summary>
 	/// The CodeValidationStep validates expected results from the execution of a method, property or field.
 	/// </summary>

@@ -12,17 +12,16 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Web.UI;
+using System.Xml;
 using BizUnit.Common;
 
 namespace BizUnit.BizUnitOM
 {
-    using System;
-    using System.Xml;
-    using System.Web.UI;
-    using System.Reflection;
-    using System.Collections.Generic;
-
     /// <summary>
     /// The TestStepBuilderBase is the base class for TestStepBuilder, 
     /// ContextLoaderStepBuilder and ValidationStepBuilder. It should 
@@ -32,11 +31,11 @@ namespace BizUnit.BizUnitOM
     [Obsolete("TestStepBuilderBase has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
     public abstract class TestStepBuilderBase
     {
-        protected object testStep;
-        protected XmlNode stepXmlConfig;
-        protected IList<Pair> propsToSet = new List<Pair>();
-        protected IList<Pair> propsToTakeFromCtx = new List<Pair>();
-        private DefaultTestStepParameterFormatter formatter = new DefaultTestStepParameterFormatter();
+        protected object TestStep;
+        protected XmlNode StepXmlConfig;
+        protected IList<Pair> PropsToSet = new List<Pair>();
+        protected IList<Pair> PropsToTakeFromCtx = new List<Pair>();
+        private DefaultTestStepParameterFormatter _formatter = new DefaultTestStepParameterFormatter();
 
         internal TestStepBuilderBase() {}
 
@@ -53,8 +52,8 @@ namespace BizUnit.BizUnitOM
             XmlNode assemblyPathNode = config.SelectSingleNode("@assemblyPath");
             XmlNode typeNameNode = config.SelectSingleNode("@typeName");
 
-            testStep = ObjectCreator.CreateStep(typeNameNode.Value, assemblyPathNode.Value);
-            stepXmlConfig = config;
+            TestStep = ObjectCreator.CreateStep(typeNameNode.Value, assemblyPathNode.Value);
+            StepXmlConfig = config;
         }
 
         /// <summary>
@@ -66,8 +65,8 @@ namespace BizUnit.BizUnitOM
         {
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
 
-            testStep = ObjectCreator.CreateStep(typeName, null);
-            if (null == testStep)
+            TestStep = ObjectCreator.CreateStep(typeName, null);
+            if (null == TestStep)
             {
                 throw new ArgumentException(string.Format("The test step could not be created, check the test step type and assembly path are correct, type: {0}", typeName));
             }
@@ -84,8 +83,8 @@ namespace BizUnit.BizUnitOM
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
             // assemblyPath - optional
 
-            testStep = ObjectCreator.CreateStep(typeName, assemblyPath);
-            if (null == testStep)
+            TestStep = ObjectCreator.CreateStep(typeName, assemblyPath);
+            if (null == TestStep)
             {
                 throw new ArgumentException(string.Format("The test step could not be created, check the test step type and assembly path are correct, type: {0}, assembly path: {1}", typeName, assemblyPath));
             }
@@ -96,7 +95,7 @@ namespace BizUnit.BizUnitOM
         /// </summary>
         public object RawTestStep
         {
-            get { return testStep; }
+            get { return TestStep; }
         }
 
         /// <summary>
@@ -107,7 +106,7 @@ namespace BizUnit.BizUnitOM
         /// <param name='args'>An object array that will be formatted to the correct type of the property which is being set.</param>
         public void SetProperty(string name, object[] args)
         {
-            if (null == testStep)
+            if (null == TestStep)
             {
                 throw new InvalidOperationException("The test step does not implement ITestStepOM");
             }
@@ -120,13 +119,13 @@ namespace BizUnit.BizUnitOM
 
             if (!ProcessTakefromContext(name, args))
             {
-                propsToSet.Add(new Pair(name, clonedArgs));
+                PropsToSet.Add(new Pair(name, clonedArgs));
             }
         }
 
         private void SetPropertyOnStep(string name, object[] args, Context ctx)
         {
-            PropertyInfo[] propertiesInfo = testStep.GetType().GetProperties();
+            PropertyInfo[] propertiesInfo = TestStep.GetType().GetProperties();
             bool found = false;
 
             foreach (PropertyInfo propertyInfo in propertiesInfo)
@@ -162,11 +161,11 @@ namespace BizUnit.BizUnitOM
                     }
                     else
                     {
-                        paramterFormatter = formatter.FormatParameters;
+                        paramterFormatter = _formatter.FormatParameters;
                     }
                     
                     object[] propertyArgs = paramterFormatter(propertyInfo.PropertyType, args, ctx);
-                    propertyInfo.GetSetMethod().Invoke(testStep, propertyArgs);
+                    propertyInfo.GetSetMethod().Invoke(TestStep, propertyArgs);
                     found = true;
                     break;
                 }
@@ -188,7 +187,7 @@ namespace BizUnit.BizUnitOM
                     if(str.StartsWith(Context.TAKE_FROM_CONTEXT))
                     {
                         string ctxPropName = str.Substring(Context.TAKE_FROM_CONTEXT.Length);
-                        propsToTakeFromCtx.Add(new Pair(name, ctxPropName));
+                        PropsToTakeFromCtx.Add(new Pair(name, ctxPropName));
                         return true;
                     }
                 }
@@ -199,7 +198,7 @@ namespace BizUnit.BizUnitOM
 
         internal void PrepareStepForExecution(Context ctx)
         {
-            foreach (Pair prop in propsToSet)
+            foreach (Pair prop in PropsToSet)
             {
                 string name = (string)prop.First;
                 object[] args = (object[])prop.Second;
@@ -207,7 +206,7 @@ namespace BizUnit.BizUnitOM
                 SetPropertyOnStep(name, args, ctx);
             }
 
-            foreach (Pair prop in propsToTakeFromCtx)
+            foreach (Pair prop in PropsToTakeFromCtx)
             {
                 string name = (string)prop.First;
                 string ctxPropName = (string)prop.Second;
@@ -230,7 +229,7 @@ namespace BizUnit.BizUnitOM
 
             XmlDocument doc = new XmlDocument();
             doc.LoadXml(xmlConfig);
-            stepXmlConfig = doc.DocumentElement;
+            StepXmlConfig = doc.DocumentElement;
         }
 
         /// <summary>
@@ -240,7 +239,7 @@ namespace BizUnit.BizUnitOM
         /// <returns>PropertyInfo for the property with the name specified.</returns>
         public PropertyInfo GetPropertyInfo(string propertyName)
         {
-            PropertyInfo[] propertiesInfo = testStep.GetType().GetProperties();
+            PropertyInfo[] propertiesInfo = TestStep.GetType().GetProperties();
             return propertiesInfo.FirstOrDefault(propertyInfo => propertyName == propertyInfo.Name);
         }
     }

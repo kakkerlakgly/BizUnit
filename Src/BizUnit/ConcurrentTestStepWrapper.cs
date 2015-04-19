@@ -12,14 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
 using BizUnit.BizUnitOM;
 using BizUnit.Xaml;
 
 namespace BizUnit
 {
-	using System;
-
-	/// <summary>
+    /// <summary>
 	/// Summary description for ConcurrentTestStepWrapper.
 	/// </summary>
 	internal class ConcurrentTestStepWrapper

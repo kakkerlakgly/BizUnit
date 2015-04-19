@@ -12,16 +12,16 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Xml;
+using BizUnit.BizUnitOM;
+
 namespace BizUnit.CoreSteps.ValidationSteps
 {
-	using System;
-	using System.IO;
-	using System.Xml;
-	using System.Text.RegularExpressions;
-    using System.Collections.Generic;
-    using BizUnitOM;
-
-	/// <summary>
+    /// <summary>
 	/// The RegExValidationStep is used to validate a data stream by evaluating one or more regular expressions against it.
 	/// </summary>
 	/// 
@@ -49,17 +49,14 @@ namespace BizUnit.CoreSteps.ValidationSteps
     [Obsolete("RegExValidationStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
 	public class RegExValidationStep : IValidationStepOM
 	{
-        private IList<string> validationRegExs = new List<string>();
-
-        public IList<string> ValidationRegEx
+	    public RegExValidationStep()
 	    {
-	        set
-	        {
-                validationRegExs = value;
-	        }
+	        ValidationRegEx = new List<string>();
 	    }
 
-		/// <summary>
+	    public IList<string> ValidationRegEx { get; set; }
+
+	    /// <summary>
 		/// IValidationStep.ExecuteValidation() implementation
 		/// </summary>
 		/// <param name='data'>The stream cintaining the data to be validated.</param>
@@ -71,7 +68,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 
 			foreach (XmlNode validationNode in validationNodes)
 			{
-				validationRegExs.Add(validationNode.InnerText);
+				ValidationRegEx.Add(validationNode.InnerText);
 			}
 
             ExecuteValidation(data, context);
@@ -82,7 +79,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
             StreamReader sr = new StreamReader(data);
             string strData = sr.ReadToEnd();
 
-            foreach (string validationRegEx in validationRegExs)
+            foreach (string validationRegEx in ValidationRegEx)
             {
                 Match match = Regex.Match(strData, validationRegEx);
 

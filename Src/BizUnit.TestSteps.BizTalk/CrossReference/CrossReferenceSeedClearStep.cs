@@ -12,14 +12,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Data;
+using System.Data.SqlClient;
+using System.Xml;
+using Microsoft.Win32;
+
 namespace BizUnit.TestSteps.BizTalk.CrossReference
 {
-	using System.Xml;
-	using System.Data;
-	using System.Data.SqlClient ;
-	using Microsoft.Win32;
-
-	/// <summary>
+    /// <summary>
 	/// The CrossReferenceSeedClearStep 
 	/// </summary>
 	/// 

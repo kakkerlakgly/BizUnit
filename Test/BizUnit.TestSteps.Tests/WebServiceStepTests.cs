@@ -4,8 +4,8 @@ using BizUnit.TestSteps.Common;
 using BizUnit.TestSteps.DataLoaders.File;
 using BizUnit.TestSteps.Soap;
 using BizUnit.TestSteps.ValidationSteps.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BizUnit.Xaml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BizUnit.TestSteps.Tests
 {

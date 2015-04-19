@@ -12,13 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Collections;
+using System.Collections.Generic;
+using Microsoft.BizTalk.Message.Interop;
+using Microsoft.Test.BizTalk.PipelineObjects;
+
 namespace BizUnit.TestSteps.BizTalk.Common
 {
-    using System.Collections;
-    using System.Collections.Generic;
-    using Microsoft.BizTalk.Message.Interop;
-    using Microsoft.Test.BizTalk.PipelineObjects;
-    
     public static class BizTalkMessageInfoFactory
     {
         public static MessageInfo CreateMessageInfo(IBaseMessage message, string destination)

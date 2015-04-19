@@ -12,13 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
 using System.Diagnostics;
+using System.Threading;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.TestSteps
 {
-    using System;
-    using System.Xml;
-
     /// <summary>
     /// The PerfMonCounterMonitorStep is used to monitor a perfmon counter 
     /// until it reaches a target value. If the counter reaches the target 
@@ -136,7 +136,7 @@ namespace BizUnit.CoreSteps.TestSteps
                 }
                 else if ((end > now) || (0 == timeOut))
                 {
-                    System.Threading.Thread.Sleep(sleepTime);
+                    Thread.Sleep(sleepTime);
                 }
             } while ( (!targetHit) && ((end > now) || (0 == timeOut)));
 

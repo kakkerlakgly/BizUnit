@@ -13,13 +13,12 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.IO;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System.Xml;
-	using System.IO;
-
-	/// <summary>
+    /// <summary>
     /// The FileMoveStep moves a file from one directory to another.
     /// </summary>
     /// 

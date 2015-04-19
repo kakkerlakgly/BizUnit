@@ -14,6 +14,7 @@
 
 using System;
 using System.Management;
+using System.Threading;
 using BizUnit.Common;
 using BizUnit.Xaml;
 
@@ -112,7 +113,7 @@ namespace BizUnit.TestSteps.BizTalk.Port
 			if (DelayForCompletion > 0)
 			{
 				context.LogInfo("Waiting for {0} seconds before recommencing testing.", DelayForCompletion);
-				System.Threading.Thread.Sleep(DelayForCompletion*1000);
+				Thread.Sleep(DelayForCompletion*1000);
 			}
 		}
 
@@ -133,13 +134,15 @@ namespace BizUnit.TestSteps.BizTalk.Port
 
 			var enumOptions = new EnumerationOptions {ReturnImmediately = false};
 
-		    var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",	wmiQuery, enumOptions);							
-
-			foreach( ManagementObject orchestrationInstance in orchestrationSearcher.Get())
-			{
-				context.LogInfo("Enabling Receive Port {0} at location {1}", receivePortName, receiveLocationName );
-				orchestrationInstance.InvokeMethod("Enable", new object[] {2,2});
-			}																													
+	        using (var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", wmiQuery, enumOptions))
+	        {
+	            foreach( var o in orchestrationSearcher.Get())
+	            {
+	                var orchestrationInstance = (ManagementObject) o;
+	                context.LogInfo("Enabling Receive Port {0} at location {1}", receivePortName, receiveLocationName );
+	                orchestrationInstance.InvokeMethod("Enable", new object[] {2,2});
+	            }
+	        }
 		}
 
 		private static void Disable( string receivePortName, string receiveLocationName, Context context )
@@ -149,13 +152,15 @@ namespace BizUnit.TestSteps.BizTalk.Port
 
 			var enumOptions = new EnumerationOptions {ReturnImmediately = false};
 
-		    var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer",	wmiQuery, enumOptions);							
-
-			foreach( ManagementObject orchestrationInstance in orchestrationSearcher.Get())
-			{
-				context.LogInfo("Disabling Receive Port {0} at location {1}", receivePortName, receiveLocationName );
-				orchestrationInstance.InvokeMethod("Disable", new object[] {2,2});
-			}																													
+		    using (var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", wmiQuery, enumOptions))
+		    {
+		        foreach( var o in orchestrationSearcher.Get())
+		        {
+		            var orchestrationInstance = (ManagementObject) o;
+		            context.LogInfo("Disabling Receive Port {0} at location {1}", receivePortName, receiveLocationName );
+		            orchestrationInstance.InvokeMethod("Disable", new object[] {2,2});
+		        }
+		    }
 		}
 	}
 }

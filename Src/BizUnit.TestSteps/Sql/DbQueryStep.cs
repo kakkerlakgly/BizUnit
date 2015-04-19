@@ -13,9 +13,10 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Collections.Generic;
+using System.Threading;
 using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.Sql
@@ -48,7 +49,7 @@ namespace BizUnit.TestSteps.Sql
             if (0 < DelayBeforeCheck)
             {
                 context.LogInfo("Sleeping for: {0} seconds", DelayBeforeCheck);
-                System.Threading.Thread.Sleep(DelayBeforeCheck*1000);
+                Thread.Sleep(DelayBeforeCheck*1000);
             }
 
             context.LogInfo("Executing database query: {0}", sqlQueryToExecute);

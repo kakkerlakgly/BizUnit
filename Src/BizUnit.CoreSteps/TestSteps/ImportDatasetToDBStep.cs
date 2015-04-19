@@ -12,19 +12,19 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System;
-	using System.IO ;
-	using System.Collections.Generic;
-	using System.Xml;
-	using System.Text;
-	using System.Data;
-	using System.Data.SqlClient ;
-
-	///<summary>
+    ///<summary>
 	///ImportDatasetToDBStep imports data stored in a DataSet Xml file into the specified database. Use this step if you want to load
 	///a SQL database with dummy data.  
 	/// </summary>
@@ -101,7 +101,7 @@ namespace BizUnit.CoreSteps.TestSteps
 			double delayBetweenRecordImport = testConfig.InnerXml.IndexOf("DelayBetweenRecordImports",0,testConfig.InnerXml.Length) != -1? context.ReadConfigAsInt32 (testConfig, "DelayBetweenRecordImports") : 0;
 
 			// Sleep for delay seconds...
-			System.Threading.Thread.Sleep(delayBeforeCheck*1000);
+			Thread.Sleep(delayBeforeCheck*1000);
 
 			ImportDatasetDataIntoDBTable(connectionString,GetDataSet(datasetReadXmlSchemaPath,datasetReadXmlPath, delayBetweenRecordImport) );
 		}

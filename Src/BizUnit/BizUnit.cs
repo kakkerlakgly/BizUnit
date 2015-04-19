@@ -13,11 +13,11 @@
 //---------------------------------------------------------------------
 
 using System;
-using System.IO;
-using System.Xml;
 using System.Collections.Concurrent;
-using System.Threading;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Xml;
 using BizUnit.BizUnitOM;
 using BizUnit.Common;
 using BizUnit.Xaml;
@@ -98,7 +98,7 @@ namespace BizUnit
         string _testName = "Unknown";
         Exception _executionException;
         Context _context;
-        internal ILogger _logger;
+        internal ILogger Logger;
         readonly ConcurrentQueue<ConcurrentTestStepWrapper> _completedConcurrentSteps = new ConcurrentQueue<ConcurrentTestStepWrapper>();
         int _inflightQueueDepth;
         TestGroupPhase _testGroupPhase = TestGroupPhase.Unknown;
@@ -197,7 +197,7 @@ namespace BizUnit
             ArgumentValidation.CheckForNullReference(configFile, "configFile");
             ArgumentValidation.CheckForNullReference(ctx, "ctx");
 
-            _logger = ctx.Logger;
+            Logger = ctx.Logger;
             LoadXmlFromFileAndInit(configFile, TestGroupPhase.Unknown, ctx);
         }
 
@@ -330,7 +330,7 @@ namespace BizUnit
         {
             ArgumentValidation.CheckForNullReference(testCase, "testCase");
 
-            _logger = ctx.Logger;
+            Logger = ctx.Logger;
             LoadObjectModelTestCaseAndInit(testCase, TestGroupPhase.Unknown, ctx);
         }
 
@@ -682,7 +682,7 @@ namespace BizUnit
             ArgumentValidation.CheckForNullReference(testCase, "testCase");
 
             _context = new Context(this);
-            _logger = _context.Logger;
+            Logger = _context.Logger;
             LoadXamlTestCaseAndInit(testCase, TestGroupPhase.Unknown, _context);
         }
 
@@ -772,7 +772,7 @@ namespace BizUnit
             ArgumentValidation.CheckForNullReference(testCase, "testCase");
             ArgumentValidation.CheckForNullReference(ctx, "ctx");
 
-            _logger = ctx.Logger;
+            Logger = ctx.Logger;
             LoadXamlTestCaseAndInit(testCase, TestGroupPhase.Unknown, ctx);
         }
 
@@ -789,7 +789,7 @@ namespace BizUnit
             else
             {
                 _context = new Context(this);
-                _logger = _context.Logger;
+                Logger = _context.Logger;
             }
 
             _xamlTestCase = testCase;
@@ -802,12 +802,12 @@ namespace BizUnit
 
             if (phase == TestGroupPhase.Unknown)
             {
-                _logger.TestStart(_testName, now, GetUserName());
+                Logger.TestStart(_testName, now, GetUserName());
                 _context.Add(BizUnitTestCaseStartTime, now, true);
             }
             else
             {
-                _logger.TestGroupStart(testCase.Name, phase, now, GetUserName());
+                Logger.TestGroupStart(testCase.Name, phase, now, GetUserName());
             }
         }
 
@@ -821,7 +821,7 @@ namespace BizUnit
             else
             {
                 _context = new Context(this);
-                _logger = _context.Logger;
+                Logger = _context.Logger;
             }
 
             _testGroupPhase = phase;
@@ -830,12 +830,12 @@ namespace BizUnit
 
             if (phase == TestGroupPhase.Unknown)
             {
-                _logger.TestStart(_testName, now, GetUserName());                
+                Logger.TestStart(_testName, now, GetUserName());                
                 _context.Add(BizUnitTestCaseStartTime, now);
             }
             else
             {
-                _logger.TestGroupStart(_testName, phase, now, GetUserName());
+                Logger.TestGroupStart(_testName, phase, now, GetUserName());
             }
 
             _testCaseObjectModel = testCase;
@@ -896,7 +896,7 @@ namespace BizUnit
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.ERROR, "Failed to load the step configuration file: \"{0}\", exception: {1}", configFile, ex.ToString());
+                Logger.Log(LogLevel.ERROR, "Failed to load the step configuration file: \"{0}\", exception: {1}", configFile, ex.ToString());
                 throw;
             }
 
@@ -915,7 +915,7 @@ namespace BizUnit
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.ERROR, "Failed to load the step configuration stream, exception: {0}", ex.ToString());
+                Logger.Log(LogLevel.ERROR, "Failed to load the step configuration stream, exception: {0}", ex.ToString());
                 throw;
             }
 
@@ -933,7 +933,7 @@ namespace BizUnit
             else
             {
                 _context = new Context(this);
-                _logger = _context.Logger;
+                Logger = _context.Logger;
             }
 
             _testGroupPhase = phase;
@@ -950,12 +950,12 @@ namespace BizUnit
 
             if (phase == TestGroupPhase.Unknown)
             {
-                _logger.TestStart(_testName, now, GetUserName());
+                Logger.TestStart(_testName, now, GetUserName());
                 _context.Add(BizUnitTestCaseStartTime, now, true);
             }
             else
             {
-                _logger.TestGroupStart(_testName, phase, now, GetUserName());
+                Logger.TestGroupStart(_testName, phase, now, GetUserName());
             }
 
             // Get test setup / execution / teardown steps
@@ -1017,10 +1017,10 @@ namespace BizUnit
             }
             finally
             {
-                if (null != _logger)
+                if (null != Logger)
                 {
-                    _logger.Flush();
-                    _logger.Close();
+                    Logger.Flush();
+                    Logger.Close();
                 }
             }
 
@@ -1042,10 +1042,10 @@ namespace BizUnit
             }
             finally
             {
-                if (null != _logger)
+                if (null != Logger)
                 {
-                    _logger.Flush();
-                    _logger.Close();
+                    Logger.Flush();
+                    Logger.Close();
                 }
             }
 
@@ -1072,7 +1072,7 @@ namespace BizUnit
 
         private void ExecuteSteps(IEnumerable<TestStepBase> testSteps, TestStage stage)
         {
-            _logger.TestStageStart(stage, DateTime.Now);
+            Logger.TestStageStart(stage, DateTime.Now);
             _context.SetTestStage(stage);
 
             try
@@ -1096,7 +1096,7 @@ namespace BizUnit
                 _executionException = e;
             }
 
-            _logger.TestStageEnd(stage, DateTime.Now, _executionException);
+            Logger.TestStageEnd(stage, DateTime.Now, _executionException);
         }
 
         private void ExecuteXamlTestStep(TestStepBase testStep, TestStage stage)
@@ -1112,7 +1112,7 @@ namespace BizUnit
                 }
                 else
                 {
-                    _logger.TestStepStart(testStep.GetType().ToString(), DateTime.Now, false, testStep.FailOnError);
+                    Logger.TestStepStart(testStep.GetType().ToString(), DateTime.Now, false, testStep.FailOnError);
                     var step = testStep as ImportTestCaseStep;
                     if (step != null)
                     {
@@ -1126,7 +1126,7 @@ namespace BizUnit
             }
             catch (Exception e)
             {
-                _logger.TestStepEnd(testStep.GetType().ToString(), DateTime.Now, e);
+                Logger.TestStepEnd(testStep.GetType().ToString(), DateTime.Now, e);
 
                 if (testStep.FailOnError)
                 {
@@ -1142,7 +1142,7 @@ namespace BizUnit
 
             if (!testStep.RunConcurrently)
             {
-                _logger.TestStepEnd(testStep.GetType().ToString(), DateTime.Now, null);
+                Logger.TestStepEnd(testStep.GetType().ToString(), DateTime.Now, null);
             }
 
             FlushConcurrentQueue(false, stage);
@@ -1159,7 +1159,7 @@ namespace BizUnit
         {
             try
             {
-                _logger.TestStageStart(TestStage.Setup, DateTime.Now);
+                Logger.TestStageStart(TestStage.Setup, DateTime.Now);
                 _context.SetTestStage(TestStage.Setup);
 
                 if (null != _testCaseObjectModel)
@@ -1173,16 +1173,16 @@ namespace BizUnit
             }
             catch(Exception e)
             {
-                _logger.TestStageEnd(TestStage.Setup, DateTime.Now, e);
+                Logger.TestStageEnd(TestStage.Setup, DateTime.Now, e);
                 throw;
             }
 
-            _logger.TestStageEnd(TestStage.Setup, DateTime.Now, null);
+            Logger.TestStageEnd(TestStage.Setup, DateTime.Now, null);
         }
 
         private void Execute()
         {
-            _logger.TestStageStart(TestStage.Execution, DateTime.Now);
+            Logger.TestStageStart(TestStage.Execution, DateTime.Now);
             _context.SetTestStage(TestStage.Execution);
 
             try
@@ -1203,12 +1203,12 @@ namespace BizUnit
                 _executionException = e;
             }
 
-            _logger.TestStageEnd(TestStage.Execution, DateTime.Now, _executionException);
+            Logger.TestStageEnd(TestStage.Execution, DateTime.Now, _executionException);
         }
 
         private void TearDown()
         {
-            _logger.TestStageStart(TestStage.Cleanup, DateTime.Now);
+            Logger.TestStageStart(TestStage.Cleanup, DateTime.Now);
             _context.SetTestStage(TestStage.Cleanup);
 
             try
@@ -1226,9 +1226,9 @@ namespace BizUnit
             }
             catch (Exception e)
             {
-                _logger.TestStageEnd(TestStage.Cleanup, DateTime.Now, e);
+                Logger.TestStageEnd(TestStage.Cleanup, DateTime.Now, e);
 
-                _logger.TestEnd(_testName, DateTime.Now, e);
+                Logger.TestEnd(_testName, DateTime.Now, e);
 
                 if (null != _executionException)
                 {
@@ -1240,15 +1240,15 @@ namespace BizUnit
                 }
             }
 
-            _logger.TestStageEnd(TestStage.Cleanup, DateTime.Now, null);
+            Logger.TestStageEnd(TestStage.Cleanup, DateTime.Now, null);
 
             if (TestGroupPhase.Unknown != _testGroupPhase)
             {
-                _logger.TestGroupEnd(_testGroupPhase, DateTime.Now, _executionException);
+                Logger.TestGroupEnd(_testGroupPhase, DateTime.Now, _executionException);
             }
             else
             {
-                _logger.TestEnd(_testName, DateTime.Now, _executionException);
+                Logger.TestEnd(_testName, DateTime.Now, _executionException);
             }
         }
 
@@ -1290,19 +1290,19 @@ namespace BizUnit
                 // Should this step be executed concurrently?
                 if (stepWrapper.RunConcurrently)
                 {
-                    _logger.TestStepStart(stepWrapper.TypeName, DateTime.Now, true, stepWrapper.FailOnError);
+                    Logger.TestStepStart(stepWrapper.TypeName, DateTime.Now, true, stepWrapper.FailOnError);
                     Interlocked.Increment(ref _inflightQueueDepth);
                     ThreadPool.QueueUserWorkItem(WorkerThreadThunk, new ConcurrentTestStepWrapper(stepWrapper, _context));
                 }
                 else
                 {
-                    _logger.TestStepStart(stepWrapper.TypeName, DateTime.Now, false, stepWrapper.FailOnError);
+                    Logger.TestStepStart(stepWrapper.TypeName, DateTime.Now, false, stepWrapper.FailOnError);
                     stepWrapper.Execute(_context);
                 }
             }
             catch (Exception e)
             {
-                _logger.TestStepEnd(stepWrapper.TypeName, DateTime.Now, e);
+                Logger.TestStepEnd(stepWrapper.TypeName, DateTime.Now, e);
 
                 if (stepWrapper.FailOnError)
                 {
@@ -1320,7 +1320,7 @@ namespace BizUnit
 
             if (!stepWrapper.RunConcurrently)
             {
-                _logger.TestStepEnd(stepWrapper.TypeName, DateTime.Now, null);
+                Logger.TestStepEnd(stepWrapper.TypeName, DateTime.Now, null);
             }
 
             FlushConcurrentQueue(false, stage);
@@ -1340,9 +1340,9 @@ namespace BizUnit
 
                 if (null != step)
                 {
-                    _logger.LogBufferedText(step.Logger);
+                    Logger.LogBufferedText(step.Logger);
 
-                    _logger.TestStepEnd(step.Name, DateTime.Now, step.FailureException);
+                    Logger.TestStepEnd(step.Name, DateTime.Now, step.FailureException);
 
                     // Check to see if the test step failed, if it did throw the exception...
                     if (null != step.FailureException)
@@ -1405,7 +1405,7 @@ namespace BizUnit
                 return;
             }
 
-            _logger.ValidatorStart(validationStep.GetType().ToString(), DateTime.Now);
+            Logger.ValidatorStart(validationStep.GetType().ToString(), DateTime.Now);
 
             try
             {
@@ -1413,13 +1413,13 @@ namespace BizUnit
             }
             catch(Exception ex)
             {
-                _logger.ValidatorEnd(validationStep.GetType().ToString(), DateTime.Now, ex);
+                Logger.ValidatorEnd(validationStep.GetType().ToString(), DateTime.Now, ex);
 
                 var vsee = new ValidationStepExecutionException("BizUnit encountered an error executing a validation step", ex, _testName);
                 throw vsee;
             }
 
-            _logger.ValidatorEnd(validationStep.GetType().ToString(), DateTime.Now, null);
+            Logger.ValidatorEnd(validationStep.GetType().ToString(), DateTime.Now, null);
         }
 
         internal void ExecuteValidator(Stream data, XmlNode validatorConfig, Context ctx)
@@ -1432,7 +1432,7 @@ namespace BizUnit
             XmlNode assemblyPath = validatorConfig.SelectSingleNode("@assemblyPath");
             XmlNode typeName = validatorConfig.SelectSingleNode("@typeName");
 
-            _logger.ValidatorStart(typeName.Value, DateTime.Now);
+            Logger.ValidatorStart(typeName.Value, DateTime.Now);
 
             try
             {
@@ -1441,12 +1441,12 @@ namespace BizUnit
             }
             catch(Exception ex)
             {
-                _logger.ValidatorEnd(typeName.Value, DateTime.Now, ex);
+                Logger.ValidatorEnd(typeName.Value, DateTime.Now, ex);
                 var vsee = new ValidationStepExecutionException("BizUnit encountered an error executing a validation step", ex, _testName);
                 throw vsee;
             }
 
-            _logger.ValidatorEnd(typeName.Value, DateTime.Now, null);
+            Logger.ValidatorEnd(typeName.Value, DateTime.Now, null);
         }
 
         internal void ExecuteContextLoader(Stream data, IContextLoaderStepOM contextLoaderStep, Context ctx)
@@ -1456,7 +1456,7 @@ namespace BizUnit
                 return;
             }
 
-            _logger.ContextLoaderStart(contextLoaderStep.GetType().ToString(), DateTime.Now);
+            Logger.ContextLoaderStart(contextLoaderStep.GetType().ToString(), DateTime.Now);
 
             try
             {
@@ -1464,11 +1464,11 @@ namespace BizUnit
             }
             catch (Exception ex)
             {
-                _logger.ContextLoaderEnd(contextLoaderStep.GetType().ToString(), DateTime.Now, ex);
+                Logger.ContextLoaderEnd(contextLoaderStep.GetType().ToString(), DateTime.Now, ex);
                 throw;
             }
 
-            _logger.ContextLoaderEnd(contextLoaderStep.GetType().ToString(), DateTime.Now, null);
+            Logger.ContextLoaderEnd(contextLoaderStep.GetType().ToString(), DateTime.Now, null);
         }
 
         internal void ExecuteContextLoader(Stream data, XmlNode contextConfig, Context ctx)
@@ -1481,7 +1481,7 @@ namespace BizUnit
             XmlNode assemblyPath = contextConfig.SelectSingleNode("@assemblyPath");
             XmlNode typeName = contextConfig.SelectSingleNode("@typeName");
 
-            _logger.ContextLoaderStart(typeName.Value, DateTime.Now);
+            Logger.ContextLoaderStart(typeName.Value, DateTime.Now);
 
             try
             {
@@ -1490,11 +1490,11 @@ namespace BizUnit
             }
             catch(Exception ex)
             {
-                _logger.ContextLoaderEnd(typeName.Value, DateTime.Now, ex);
+                Logger.ContextLoaderEnd(typeName.Value, DateTime.Now, ex);
                 throw;                
             }
 
-            _logger.ContextLoaderEnd(typeName.Value, DateTime.Now, null);
+            Logger.ContextLoaderEnd(typeName.Value, DateTime.Now, null);
         }
 
         internal static string GetNow()

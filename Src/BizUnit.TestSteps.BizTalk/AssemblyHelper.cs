@@ -12,20 +12,20 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.IO;
+using System.Reflection;
+
 namespace BizUnit.TestSteps.BizTalk
 {
-    using System.Reflection;
-    using System.IO;
-
     public static class AssemblyHelper
     {
         public static Assembly LoadAssembly(string path)
         {
             string filename = Path.GetFileName(path);
             string newPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), filename);
-            if (!File.Exists(newPath))
+            if (!System.IO.File.Exists(newPath))
             {
-                File.Copy(path, newPath, false);
+                System.IO.File.Copy(path, newPath, false);
             }
 
             return Assembly.LoadFrom(newPath);

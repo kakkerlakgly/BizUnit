@@ -13,9 +13,10 @@
 //---------------------------------------------------------------------
 
 using System;
-using System.Xml;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Xml;
 using BizUnit.BizUnitOM;
 using BizUnit.Common;
 using BizUnit.CoreSteps.Utilities;
@@ -133,7 +134,7 @@ namespace BizUnit.CoreSteps.TestSteps
             context.LogInfo("Executing query: {0}", _sqlQuery.GetFormattedSqlQuery());
 
             // Sleep for delay seconds...
-            System.Threading.Thread.Sleep(_delayBeforeExecution * 1000);
+            Thread.Sleep(_delayBeforeExecution * 1000);
 
             int rowCount = DatabaseHelper.ExecuteNonQuery(_connectionString, _sqlQuery.GetFormattedSqlQuery());
 

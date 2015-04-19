@@ -1,12 +1,10 @@
 ﻿
-using BizUnit.BizUnitOM;
 using BizUnit.TestSteps.Time;
 using BizUnit.Xaml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BizUnit.TestSteps.Tests
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     /// <summary>
     /// Summary description for UnitTest1
     /// </summary>

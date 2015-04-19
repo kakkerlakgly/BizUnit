@@ -13,13 +13,12 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Messaging;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System.Xml;
-	using System.Messaging;
-
-	/// <summary>
+    /// <summary>
 	/// The MSMQDeleteQueueStep deletes one or more MSMQ queues
 	/// </summary>
 	/// 

@@ -12,12 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Text;
+using System.Text.RegularExpressions;
+
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-	using System;
-	using System.Text.RegularExpressions;
-
-	/// <summary>
+    /// <summary>
 	/// Summary description for Pop3Attachment.
 	/// </summary>
 	internal class Pop3Component
@@ -166,7 +167,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 					BinaryData = 
 						Convert.FromBase64String(_data.Replace("\n",""));
 
-					_data = System.Text.Encoding.ASCII.GetString(BinaryData);
+					_data = Encoding.ASCII.GetString(BinaryData);
 				}
 				else
 					// if PRINTABLE ...

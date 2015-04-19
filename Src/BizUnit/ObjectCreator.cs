@@ -12,11 +12,11 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Reflection;
+
 namespace BizUnit
 {
-    using System;
-    using System.Reflection;
-
     public class ObjectCreator
     {
         static public object CreateStep(string typeName, string assemblyPath)

@@ -12,19 +12,18 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-	using System;
-    using System.Collections;
-    using System.Collections.Generic;
-	using System.Net.Sockets;
-	using System.Threading;
-	using System.Text;
-	using System.Text.RegularExpressions;
-
-	/// <summary>
+    /// <summary>
 	/// DLM: Stores the From:, To:, Subject:, body and attachments
 	/// within an email. Binary attachments are Base64-decoded
 	/// </summary>

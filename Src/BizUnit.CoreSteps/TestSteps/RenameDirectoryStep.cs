@@ -12,13 +12,12 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.IO;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System.Xml;
-	using System.IO;
-
-	/// <summary>
+    /// <summary>
 	/// The RenameDirectoryStep renames a directory, this test step is often used for negative test scenarios
 	/// </summary>
 	/// 

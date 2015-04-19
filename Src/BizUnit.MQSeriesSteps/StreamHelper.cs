@@ -15,9 +15,10 @@
 //---------------------------------------------------------------------
 
 using System;
-using System.Xml;
-using System.Text;
 using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml;
 
 namespace BizUnit.MQSeriesSteps
 {
@@ -89,7 +90,7 @@ namespace BizUnit.MQSeriesSteps
 				{
 					if ( DateTime.Now < now.AddMilliseconds(timeout) )
 					{
-						System.Threading.Thread.Sleep(500);
+						Thread.Sleep(500);
 					}
 				}
 			} while ( DateTime.Now < now.AddMilliseconds(timeout) );

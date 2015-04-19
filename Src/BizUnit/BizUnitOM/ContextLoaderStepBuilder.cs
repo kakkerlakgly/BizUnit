@@ -49,7 +49,7 @@ namespace BizUnit.BizUnitOM
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
             // assemblyPath - optional
 
-            _contextLoaderStep = testStep as IContextLoaderStepOM;
+            _contextLoaderStep = TestStep as IContextLoaderStepOM;
             if (null == _contextLoaderStep)
             {
                 throw new ArgumentException("The validation step created is invalid: IContextLoaderStepOM is not implemented");

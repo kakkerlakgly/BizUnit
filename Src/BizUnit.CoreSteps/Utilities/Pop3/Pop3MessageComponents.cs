@@ -12,13 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-	using System.Text;
-    using System.Collections;
-    using System.Collections.Generic;
-
-	/// <summary>
+    /// <summary>
 	/// Summary description for Pop3MessageBody.
 	/// </summary>
     internal class Pop3MessageComponents : IEnumerable<Pop3Component>

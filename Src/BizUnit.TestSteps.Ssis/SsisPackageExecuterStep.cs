@@ -12,9 +12,10 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
-using BizUnit.Xaml;
 using System;
 using System.Collections.Generic;
+using BizUnit.Xaml;
+using Microsoft.SqlServer.Dts.Runtime;
 
 namespace BizUnit.TestSteps.Ssis
 {
@@ -50,7 +51,7 @@ namespace BizUnit.TestSteps.Ssis
         {
             context.LogInfo("Executing SSIS package: {0}", PackageLocation);
 
-            var ssisRuntime = new Microsoft.SqlServer.Dts.Runtime.Application();
+            var ssisRuntime = new Application();
             using (var package = ssisRuntime.LoadPackage(PackageLocation, null))
             {
                 var variables = package.Variables;
@@ -69,7 +70,7 @@ namespace BizUnit.TestSteps.Ssis
                     context.LogError(error.Description);
                 }
 
-                if (Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Success != result || 0 < errors.Count)
+                if (DTSExecResult.Success != result || 0 < errors.Count)
                 {
                     throw new ApplicationException("Package execution failed.");
                 }

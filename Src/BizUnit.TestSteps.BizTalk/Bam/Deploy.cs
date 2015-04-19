@@ -13,6 +13,8 @@
 //---------------------------------------------------------------------
 
 using System.Diagnostics;
+using System.Text;
+using System.Threading;
 using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.BizTalk.Bam
@@ -56,7 +58,7 @@ namespace BizUnit.TestSteps.BizTalk.Bam
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
 		public override void Execute(Context context)
 		{
-			var sb = new System.Text.StringBuilder();
+			var sb = new StringBuilder();
 			sb.Append('"');
 			sb.Append(BamDefinitionXmlFilePath);
 			sb.Append('"');
@@ -93,7 +95,7 @@ namespace BizUnit.TestSteps.BizTalk.Bam
                 else
                 {
                     context.LogInfo("Waiting for {0} seconds before recommencing testing.", DelayForCompletion);
-                    System.Threading.Thread.Sleep(DelayForCompletion * 1000);
+                    Thread.Sleep(DelayForCompletion * 1000);
                 }
             }
         }

@@ -1,8 +1,8 @@
 
+using System;
+
 namespace BizUnit
 {
-    using System;
-
     public class TestStepEventArgs : EventArgs
     {
         private readonly TestStage _stage;

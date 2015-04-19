@@ -13,13 +13,12 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.IO;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System.Xml;
-	using System.IO;
-
-	/// <summary>
+    /// <summary>
     /// The FilesMoveStep step moves the contents of one directory to another based on the file mask supplied.
     /// </summary>
     /// 

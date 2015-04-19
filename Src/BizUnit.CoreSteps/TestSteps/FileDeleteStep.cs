@@ -11,15 +11,15 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Xml;
+using BizUnit.BizUnitOM;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Xml;
-	using System.IO;
-    using BizUnitOM;
-
-	/// <summary>
+    /// <summary>
 	/// The FileDeleteStep deletes a FILE specified at a given location.
 	/// </summary>
 	/// 

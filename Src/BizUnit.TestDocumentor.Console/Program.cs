@@ -1,9 +1,10 @@
 ﻿
 
+using System;
+using System.Diagnostics;
+
 namespace BizUnit.TestDocumentor.Console
 {
-    using System;
-
     class Program
     {
         static void Main(string[] args)
@@ -12,7 +13,7 @@ namespace BizUnit.TestDocumentor.Console
             {
                 if(null != args[6] && 0 < args[6].Length && 0 == string.Compare("debug", args[6]))
                 {
-                    System.Diagnostics.Debugger.Break();
+                    Debugger.Break();
                 }
             }
             else if(args.Length != 6)
@@ -28,9 +29,9 @@ namespace BizUnit.TestDocumentor.Console
 
         private static void Usage(string[] args)
         {
-            Console.WriteLine("Usage:");
-            Console.WriteLine("{0} arguments were supplied.", args.Length);
-            Console.WriteLine("BizUnit.TestDocumentor.exe [Test Report Template] [Category Template] [Test Case Template] [BizUnit Test Directory] [Output File Name (.XML)] [Recursive]");
+            System.Console.WriteLine("Usage:");
+            System.Console.WriteLine("{0} arguments were supplied.", args.Length);
+            System.Console.WriteLine("BizUnit.TestDocumentor.exe [Test Report Template] [Category Template] [Test Case Template] [BizUnit Test Directory] [Output File Name (.XML)] [Recursive]");
         }
     }
 }

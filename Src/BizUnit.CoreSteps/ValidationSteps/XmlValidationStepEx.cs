@@ -12,19 +12,18 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web.UI;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.XPath;
+using BizUnit.BizUnitOM;
 using BizUnit.CoreSteps.Utilities;
 
 namespace BizUnit.CoreSteps.ValidationSteps
 {
-    using System;
-    using System.IO;
-    using System.Xml;
-    using System.Xml.Schema;
-    using System.Xml.XPath;
-    using System.Collections.Generic;
-    using System.Web.UI;
-    using BizUnitOM;
-
     /// <summary>
     /// The XmlValidationStepEx validates an Xml document, it may validate against a given schema, and also evaluate XPath queries.
     /// The Xpath query is extended from XmlValidationStep to allow Xpath functions to be used which may not return a node set.

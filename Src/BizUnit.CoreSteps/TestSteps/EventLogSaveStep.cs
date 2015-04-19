@@ -12,13 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Management;
+using System.Xml;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-    using System;
-    using System.Xml;
-    using System.Management;
-    using System.Collections.Generic;
-
     /// <summary>
     /// The EventLogSaveStep test step clears the event log. Note: caution should be taken when clearing event log.
     /// </summary>

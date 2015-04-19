@@ -12,21 +12,20 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 
 namespace BizUnit
 {
-	using System;
-	using System.Text;
-
-	/// <summary>
+    /// <summary>
 	/// The BizUnit Logger is used to log data from BizUnit and test steps.
 	/// </summary>
 	public class Logger : ILogger
 	{
-		StringBuilder _sb = null;
-		bool _concurrentExecutionMode = false;
+		StringBuilder _sb;
+		bool _concurrentExecutionMode;
 		const string Crlf = "\r\n";
         const string InfoLogLevel = "Info";
         const string ErrorLogLevel = "Error";

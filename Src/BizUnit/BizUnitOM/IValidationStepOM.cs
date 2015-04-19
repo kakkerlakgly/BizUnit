@@ -13,11 +13,10 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.IO;
 
 namespace BizUnit.BizUnitOM
 {
-    using System.IO;
-
     /// <summary>
     /// The IValidationStepOM interface is implemented by validation sub-steps 
     /// that perform validation against data. This interface should be implemented 

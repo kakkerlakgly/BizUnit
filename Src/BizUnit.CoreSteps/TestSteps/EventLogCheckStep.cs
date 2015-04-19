@@ -12,18 +12,18 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Xml;
 using BizUnit.BizUnitOM;
 
 namespace BizUnit.CoreSteps.TestSteps
     {
-	    using System;
-	    using System.Diagnostics;
-	    using System.Xml;
-	    using System.Text.RegularExpressions;
-        using System.Collections.Generic;
-
-	    /// <summary>
+        /// <summary>
 	    /// The EventLogCheckStep test step looks for an event log entry. Note: this test step only looks for the event log entry during the time period of the test case.
 	    /// </summary>
 	    /// <remarks>
@@ -196,7 +196,7 @@ namespace BizUnit.CoreSteps.TestSteps
                 if (_delayBeforeCheck > 0)
                 {
                     context.LogInfo("Waiting for {0} seconds before checking the event log.", _delayBeforeCheck);
-                    System.Threading.Thread.Sleep(_delayBeforeCheck * 1000);
+                    Thread.Sleep(_delayBeforeCheck * 1000);
                 }
 
                 var entryType = (EventLogEntryType)Enum.Parse(typeof(EventLogEntryType), _type, true);

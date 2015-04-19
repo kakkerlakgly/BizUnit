@@ -12,11 +12,11 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.IO;
+using System.Xml;
+
 namespace BizUnit
 {
-    using System.IO;
-    using System.Xml;
-    
     /// <summary>
 	/// The IValidationStep interface is implemented by validation sub-steps that perform validation against data.
 	/// </summary>

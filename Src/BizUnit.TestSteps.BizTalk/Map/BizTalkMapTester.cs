@@ -17,8 +17,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 using System.Xml.XPath;
-using Microsoft.XLANGs.BaseTypes;
 using BizUnit.Common;
+using Microsoft.XLANGs.BaseTypes;
 
 namespace BizUnit.TestSteps.BizTalk.Map
 {

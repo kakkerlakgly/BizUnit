@@ -83,7 +83,7 @@ namespace BizUnit.BizUnitOM
         {
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
 
-            _testStepOm = testStep as ITestStepOM;
+            _testStepOm = TestStep as ITestStepOM;
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace BizUnit.BizUnitOM
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
             // assemblyPath - optional
 
-            _testStepOm = testStep as ITestStepOM;
+            _testStepOm = TestStep as ITestStepOM;
         }
 
         internal ITestStepOM TestStepOM
@@ -139,13 +139,13 @@ namespace BizUnit.BizUnitOM
             {
                 var args = new object[1];
                 args[0] = value;
-                pi.GetSetMethod().Invoke(testStep, args);
+                pi.GetSetMethod().Invoke(TestStep, args);
             }
         }
 
         private PropertyInfo GetProperty(Type t)
         {
-            PropertyInfo[] propertiesInfo = testStep.GetType().GetProperties();
+            PropertyInfo[] propertiesInfo = TestStep.GetType().GetProperties();
             return propertiesInfo.FirstOrDefault(propertyInfo => t == propertyInfo.PropertyType);
         }
 

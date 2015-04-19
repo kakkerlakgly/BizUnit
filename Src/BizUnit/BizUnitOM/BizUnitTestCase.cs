@@ -13,9 +13,9 @@
 //---------------------------------------------------------------------
 
 using System;
-using BizUnit.Common;
-using System.Xml;
 using System.Collections.Generic;
+using System.Xml;
+using BizUnit.Common;
 
 namespace BizUnit.BizUnitOM
 {

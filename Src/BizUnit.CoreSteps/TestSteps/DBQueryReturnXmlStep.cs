@@ -12,17 +12,18 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Xml;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System;
-	using System.IO;
-	using System.Collections.Generic;
-    using System.Linq;
-	using System.Xml;
-	using System.Data;
-	using System.Data.SqlClient;
-
-	/// <summary>
+    /// <summary>
 	/// The DBQueryReturnXmlStep queries a database and returns the response in Xml. It incorporates the context loader and 
 	/// validation sub steps and is useful for testing scenarios where BizTalk communicates with SQL server via the SQL adapter
 	/// </summary>
@@ -122,7 +123,7 @@ namespace BizUnit.CoreSteps.TestSteps
 			context.LogInfo("Executing database query : {0}", sqlQuery );
 
 			// Sleep for delay seconds...
-			System.Threading.Thread.Sleep(delayBeforeCheck*1000);
+			Thread.Sleep(delayBeforeCheck*1000);
 			
 			string xml = GetXmlData(connectionString, sqlQuery);
 
@@ -131,7 +132,7 @@ namespace BizUnit.CoreSteps.TestSteps
 			if(xml != null && xml.Trim().Length > 0)
 			{				 
 				//prepare to execute context loader
-				byte [] buffer = System.Text.Encoding.ASCII.GetBytes("<" + rootElement +">" + xml + "</" + rootElement +  ">");
+				byte [] buffer = Encoding.ASCII.GetBytes("<" + rootElement +">" + xml + "</" + rootElement +  ">");
 				MemoryStream data = null;
 
 				try

@@ -13,11 +13,11 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.IO;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.TestSteps
 {
-    using System.Xml;
-
     /// <summary>
     /// The CreateDirectory creates a new Directory.
     /// </summary>
@@ -58,7 +58,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
             context.LogInfo("About to create the directory: {0}", directoryName);
 		    
-            System.IO.Directory.CreateDirectory(directoryName);
+            Directory.CreateDirectory(directoryName);
         }
     }
 }

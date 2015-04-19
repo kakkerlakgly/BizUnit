@@ -12,14 +12,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Data;
+using System.Data.Odbc;
+using System.Data.SqlClient;
+
 namespace BizUnit.CoreSteps.Utilities
 {
-	using System;
-	using System.Data;
-    using System.Data.Odbc;
-	using System.Data.SqlClient;
-
-	/// <summary>
+    /// <summary>
 	/// Static Helper for executing SQL statements
 	/// </summary>
 	public class DatabaseHelper

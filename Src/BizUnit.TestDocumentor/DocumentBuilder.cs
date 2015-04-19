@@ -1,10 +1,10 @@
 ﻿
-using System.Reflection;
-using BizUnit.Xaml;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
+using BizUnit.Xaml;
 
 namespace BizUnit.TestDocumentor
 {
@@ -207,7 +207,7 @@ namespace BizUnit.TestDocumentor
                     // TODO: Check the XML file is a BizUnit file before attempting to load - do this in TestCase.LoadFromFile
                     var tc = TestCase.LoadFromFile(file);
 
-                    IList<TestCase> category = null;
+                    IList<TestCase> category;
 
                     if (_testCases.ContainsKey(tc.Category))
                     {

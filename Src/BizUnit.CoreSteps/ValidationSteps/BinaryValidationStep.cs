@@ -14,6 +14,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 using System.Xml;
 using BizUnit.BizUnitOM;
 using BizUnit.CoreSteps.Utilities;
@@ -112,7 +113,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
                     if (_compareAsUtf8)
                     {
                         // Compare the streams, make sure we are comparing like for like
-                        StreamHelper.CompareStreams(StreamHelper.EncodeStream(data, System.Text.Encoding.UTF8), StreamHelper.EncodeStream(dataToValidateAgainst, System.Text.Encoding.UTF8));
+                        StreamHelper.CompareStreams(StreamHelper.EncodeStream(data, Encoding.UTF8), StreamHelper.EncodeStream(dataToValidateAgainst, Encoding.UTF8));
                     }
                     else
                     {

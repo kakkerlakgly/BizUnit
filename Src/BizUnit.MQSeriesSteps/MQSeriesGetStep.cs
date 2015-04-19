@@ -13,12 +13,11 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Xml;
 
 namespace BizUnit.MQSeriesSteps
 {
-	using System.Xml;
-
-	/// <summary>
+    /// <summary>
 	/// The MQSeriesGetStep test step reads data from a specified MQ Series queue.
 	/// </summary>
 	/// 

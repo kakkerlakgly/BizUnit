@@ -1,10 +1,10 @@
 ﻿
+using System;
+using System.Collections.Generic;
+using BizUnit.BizUnitOM;
+
 namespace BizUnit.TestSteps.Sql
 {
-    using System;
-    using System.Collections.Generic;
-    using BizUnitOM;
-
     ///<summary>
     /// Database query definition
     ///</summary>

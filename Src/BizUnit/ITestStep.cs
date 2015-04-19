@@ -12,10 +12,10 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Xml;
+
 namespace BizUnit
 {
-    using System.Xml;
-    
     /// <summary>
 	/// The ITestStep interface is implemented by test steps.
 	/// </summary>

@@ -14,13 +14,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Net;
+
 namespace BizUnit.CoreSteps.Utilities
 {
-	using System;
-	using System.IO;
-	using System.Net;
-
-	/// <summary>
+    /// <summary>
 	/// Helper class for HTTP
 	/// </summary>
 	public class HttpHelper

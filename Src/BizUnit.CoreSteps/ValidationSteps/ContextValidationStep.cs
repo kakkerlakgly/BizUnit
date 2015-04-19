@@ -12,13 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Xml;
+
 namespace BizUnit.CoreSteps.ValidationSteps
 {
-	using System;
-	using System.IO;
-	using System.Xml;
-
-	/// <summary>
+    /// <summary>
 	/// The ContextValidationStep validates the value of one or more context values.
 	/// </summary>
 	/// 

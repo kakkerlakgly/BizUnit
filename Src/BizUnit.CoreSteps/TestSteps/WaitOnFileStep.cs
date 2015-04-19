@@ -12,13 +12,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Threading;
+using System.Xml;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System;
-	using System.IO;
-	using System.Threading;
-
-	/// <summary>
+    /// <summary>
 	/// The WaitOnFileStep is used to wait for a FILE to be written to a given location. The name
     /// of the file waited on is stored in the context under the key: waitedForFileName
 	/// </summary>
@@ -64,7 +65,7 @@ namespace BizUnit.CoreSteps.TestSteps
 		/// </summary>
 		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(System.Xml.XmlNode testConfig, Context context)
+		public void Execute(XmlNode testConfig, Context context)
 		{
 			// read test config...
 			string path = context.ReadConfigAsString( testConfig, "Path" );

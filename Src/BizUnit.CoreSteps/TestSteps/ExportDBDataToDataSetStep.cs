@@ -13,10 +13,10 @@
 //---------------------------------------------------------------------
 
 using System;
-using System.Threading;
-using System.Xml;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.TestSteps
 {

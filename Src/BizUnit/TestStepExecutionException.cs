@@ -12,10 +12,10 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+
 namespace BizUnit
 {
-    using System;
-
     /// <summary>
     /// TestStepExecutionException is thrown by BizUnit to indicate a validation step failed.
     /// </summary>

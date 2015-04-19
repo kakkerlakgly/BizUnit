@@ -12,19 +12,19 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using System.IO;
+using System.Net;
+using System.Reflection;
+using System.Web.Services.Description;
+using System.Xml;
+using System.Xml.Serialization;
+using Microsoft.CSharp;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-    using System;
-    using System.IO;
-    using System.Xml;
-    using System.Net;
-    using System.Reflection;
-    using System.Xml.Serialization;
-    using Microsoft.CSharp;
-    using System.CodeDom;
-    using System.CodeDom.Compiler;
-    using System.Web.Services.Description;
-
     /// <summary>
     /// The SOAPOverHTTPRequestResponseStep test step may be used to call a Web Service and optionally validate it's response.
     /// </summary>

@@ -13,12 +13,12 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.IO;
+using System.Xml;
 
 namespace BizUnit.MQSeriesSteps
 {
-	using System.IO;
-
-	/// <summary>
+    /// <summary>
 	/// The MQSeriesPutStep test step writes data to an MQ Series queue.
 	/// </summary>
 	/// 
@@ -62,7 +62,7 @@ namespace BizUnit.MQSeriesSteps
 		/// </summary>
 		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(System.Xml.XmlNode testConfig, Context context)
+		public void Execute(XmlNode testConfig, Context context)
 		{
 			string queueManager = testConfig.SelectSingleNode("QueueManager").InnerText;
 			string queue = testConfig.SelectSingleNode("Queue").InnerText;

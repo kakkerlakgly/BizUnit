@@ -12,11 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Text;
+using IBM.WMQ;
+
 namespace BizUnit
 {
-	using System;
-	using  System.Text;
-	using IBM.WMQ; // $:\Program Files\IBM\WebSphere MQ\bin\amqmdnet.dll - Requires Patch Level > CSD07
+    // $:\Program Files\IBM\WebSphere MQ\bin\amqmdnet.dll - Requires Patch Level > CSD07
 
 	/// <summary>
 	/// Summary description for MQSeriesHelper.

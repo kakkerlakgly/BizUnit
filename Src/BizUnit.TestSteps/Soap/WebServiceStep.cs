@@ -13,12 +13,12 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Xml;
-using System.Collections.Generic;
-using System.Linq;
 using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
 
@@ -102,11 +102,11 @@ namespace BizUnit.TestSteps.Soap
 
                 var epa = new EndpointAddress(new Uri(serviceUrl));
 
-                ChannelFactory<genericContract> cf = null;
+                ChannelFactory<IGenericContract> cf = null;
 
                 try
                 {
-                    cf = new ChannelFactory<genericContract>(binding, epa);
+                    cf = new ChannelFactory<IGenericContract>(binding, epa);
                     cf.Credentials.UserName.UserName = username;
                     cf.Credentials.UserName.Password = password;
                     
@@ -177,7 +177,7 @@ namespace BizUnit.TestSteps.Soap
         /// A dummy WCF interface that will be manipulated by the CallWebMethod above
         /// </summary>
         [ServiceContract]
-        interface genericContract
+        interface IGenericContract
         {
             [OperationContract(Action = "*", ReplyAction = "*")]
             Message Invoke(Message msg);

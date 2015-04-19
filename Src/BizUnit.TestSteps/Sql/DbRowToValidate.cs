@@ -1,8 +1,8 @@
 ﻿
+using System.Collections.Generic;
+
 namespace BizUnit.TestSteps.Sql 
 {
-    using System.Collections.Generic;
-
     ///<summary>
     /// Database row to be validated
     ///</summary>

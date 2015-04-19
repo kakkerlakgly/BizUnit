@@ -12,14 +12,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Xml;
+using BizUnit.BizUnitOM;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System;
-	using System.Xml;
-	using System.Diagnostics;
-    using BizUnitOM;
-
-	/// <summary>
+    /// <summary>
 	/// The ExecuteCommandStep executes a program from the command line, command line arguments may be supplied also.
 	/// </summary>
 	/// 

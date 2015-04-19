@@ -12,14 +12,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Diagnostics;
+using System.Xml;
+using Microsoft.Win32;
+
 namespace BizUnit.TestSteps.BizTalk.CrossReference
 {
-	using System;
-	using System.Xml;
-	using System.Diagnostics ;
-	using Microsoft.Win32 ;
-
-	/// <summary>
+    /// <summary>
 	/// The CrossReferenceSeedLoadStep 
 	/// </summary>
 	/// 

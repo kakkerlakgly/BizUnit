@@ -12,6 +12,7 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.IO;
 using BizUnit.Common;
 using BizUnit.Xaml;
 
@@ -37,7 +38,7 @@ namespace BizUnit.TestSteps.File
 
             context.LogInfo("About to create the directory: {0}", DirectoryName);
 
-            System.IO.Directory.CreateDirectory(DirectoryName);
+            Directory.CreateDirectory(DirectoryName);
         }
 
         public override void Validate(Context context)

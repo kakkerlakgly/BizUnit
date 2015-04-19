@@ -13,10 +13,11 @@
 //---------------------------------------------------------------------
 
 using System;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
 using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.EventLog
@@ -84,7 +85,7 @@ namespace BizUnit.TestSteps.EventLog
             if (DelayBeforeCheck > 0)
             {
                 context.LogInfo("Waiting for {0} seconds before checking the event log.", DelayBeforeCheck);
-                System.Threading.Thread.Sleep(DelayBeforeCheck * 1000);
+                Thread.Sleep(DelayBeforeCheck * 1000);
             }
 
             DateTime cutOffTime = context.TestCaseStart;

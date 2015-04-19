@@ -12,12 +12,12 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System.Net.Sockets;
+using System.Text;
+
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-	using System.Net.Sockets;
-	using System.Text;
-
-	/// <summary>
+    /// <summary>
 	/// Holds the current state of the client
 	/// socket.
 	/// </summary>

@@ -12,14 +12,14 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Xml;
+
 namespace BizUnit.CoreSteps.TestSteps
 {
-	using System;
-	using System.Diagnostics;
-	using System.Xml;
-    using System.Collections.Generic;
-
-	/// <summary>
+    /// <summary>
 	/// The EventLogClearStep test step clears the event log(s) on specified machines. Note: caution should be taken when clearing event log.
 	/// </summary>
 	/// 

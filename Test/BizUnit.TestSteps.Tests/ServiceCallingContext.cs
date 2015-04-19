@@ -1,9 +1,9 @@
 ﻿
+using System;
+using System.Runtime.Serialization;
+
 namespace BizUnit.TestSteps.Tests
 {
-    using System;
-    using System.Runtime.Serialization;
-
     // TODO: Change namespace....
     [DataContract(Namespace = "http://schemas.virgin-atlantic.com/Services/ServiceCallingContext/2009")]
     public class ServiceCallingContext

@@ -14,14 +14,15 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Xml;
+
 namespace BizUnit.TestSteps.Common
 {
-	using System;
-	using System.Xml;
-	using System.Text;
-	using System.IO;
-
-	/// <summary>
+    /// <summary>
 	/// Helper class for stream opperations
 	/// </summary>
 	public class StreamHelper
@@ -89,7 +90,7 @@ namespace BizUnit.TestSteps.Common
 				{
 					if ( DateTime.Now < now.AddMilliseconds(timeout) )
 					{
-						System.Threading.Thread.Sleep(500);
+						Thread.Sleep(500);
 					}
 				}
 			} while ( DateTime.Now < now.AddMilliseconds(timeout) );
@@ -116,7 +117,7 @@ namespace BizUnit.TestSteps.Common
 			try
 			{
 				// Get the match data...
-				fs = File.OpenRead(filePath);
+				fs = System.IO.File.OpenRead(filePath);
 				s = new MemoryStream();
 
 				var buff = new byte[1024];

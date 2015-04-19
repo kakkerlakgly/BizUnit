@@ -12,11 +12,11 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-	using System;
-
-	internal class Pop3LoginException : Exception
+    internal class Pop3LoginException : Exception
 	{
 		private readonly string _exceptionString;
 

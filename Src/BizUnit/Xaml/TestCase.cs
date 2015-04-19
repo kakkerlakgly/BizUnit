@@ -13,10 +13,10 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using System.ComponentModel;
-using System.Collections.Generic;
 using BizUnit.Common;
 
 namespace BizUnit.Xaml

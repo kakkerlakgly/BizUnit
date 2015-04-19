@@ -1,10 +1,10 @@
 
+using System;
+using System.ComponentModel;
+using System.Web.Services;
+
 namespace SoapTestWebService
 {
-    using System;
-    using System.Web.Services;
-    using System.ComponentModel;
-
     /// <summary>
     /// Summary description for StockQuoteService
     /// </summary>

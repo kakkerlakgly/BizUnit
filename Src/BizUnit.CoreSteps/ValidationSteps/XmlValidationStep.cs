@@ -13,19 +13,18 @@
 //---------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web.UI;
+using System.Xml;
+using System.Xml.Schema;
+using BizUnit.BizUnitOM;
 using BizUnit.CoreSteps.Utilities;
 
 namespace BizUnit.CoreSteps.ValidationSteps
 {
-	using System;
-	using System.IO;
-	using System.Xml;
-	using System.Xml.Schema;
-    using System.Collections.Generic;
-    using System.Web.UI;
-    using BizUnitOM;
-
-	/// <summary>
+    /// <summary>
 	/// The XmlValidationStep validates an Xml document, it may validate against a given schema, and also evaluate XPath queries.
 	/// </summary>
 	/// 

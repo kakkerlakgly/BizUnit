@@ -12,11 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.Text;
+using System.Text.RegularExpressions;
+
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-    using System.Text.RegularExpressions;
-
-	/// <summary>
+    /// <summary>
 	/// Summary description for Pop3Statics.
 	/// </summary>
 	internal class Pop3Statics
@@ -46,7 +48,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 							,@"^[A-F|0-9]+[A-F|0-9]+$").Success )
 						{
 							// convert to string representation ...
-							outputString += System.Text.Encoding.ASCII.GetString(new[] {System.Convert.ToByte(hexString,16)});
+							outputString += Encoding.ASCII.GetString(new[] {Convert.ToByte(hexString,16)});
 							x+= 3;
 						}
 						else

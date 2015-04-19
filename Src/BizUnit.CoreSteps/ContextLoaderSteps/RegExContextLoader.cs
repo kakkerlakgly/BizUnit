@@ -13,14 +13,13 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace BizUnit.CoreSteps.ContextLoaderSteps
 {
-	using System.IO;
-	using System.Xml;
-	using System.Text.RegularExpressions;
-
-	/// <summary>
+    /// <summary>
 	/// The RegExContextLoader applies a regular expression to the source data and add the value into the context.
 	/// </summary>
 	/// 

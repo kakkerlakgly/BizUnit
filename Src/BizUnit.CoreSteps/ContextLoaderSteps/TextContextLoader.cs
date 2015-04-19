@@ -12,13 +12,13 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Xml;
+
 namespace BizUnit.CoreSteps.ContextLoaderSteps
 {
-    using System;
-    using System.IO;
-    using System.Xml;
-
-	/// <summary>
+    /// <summary>
 	/// The TextContextLoader searches the source data and adds the value into the context.
 	/// </summary>
 	/// 

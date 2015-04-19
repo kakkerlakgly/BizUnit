@@ -1,12 +1,11 @@
 ﻿
+using System;
+using System.IO;
 using BizUnit.TestSteps.File;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BizUnit.TestSteps.Tests.File
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.IO;
-    using System;
-
     /// <summary>
     /// Summary description for FileCreateTests
     /// </summary>
@@ -54,7 +53,7 @@ namespace BizUnit.TestSteps.Tests.File
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml");
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
-            File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
+            System.IO.File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
                 @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
             var step = new MoveStep
@@ -65,7 +64,7 @@ namespace BizUnit.TestSteps.Tests.File
 
             step.Execute(new Context());
 
-            Assert.IsTrue(File.Exists(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"));
+            Assert.IsTrue(System.IO.File.Exists(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"));
          
         }
 
@@ -75,7 +74,7 @@ namespace BizUnit.TestSteps.Tests.File
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml");
             TestHelper.DeleteFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
-            File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
+            System.IO.File.Copy(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml",
                 @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xml");
 
             var step = new MoveStep
