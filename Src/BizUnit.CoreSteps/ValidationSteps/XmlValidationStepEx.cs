@@ -193,6 +193,10 @@ namespace BizUnit.CoreSteps.ValidationSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public void Validate(Context context)
         {
             // xPathValidations - optional

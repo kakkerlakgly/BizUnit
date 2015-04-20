@@ -80,7 +80,12 @@ namespace BizUnit.CoreSteps.ValidationSteps
             ExecuteValidation(data, context);
 		}
 
-	    public void ExecuteValidation(Stream data, Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='data'></param>
+        /// <param name='context'></param>
+        public void ExecuteValidation(Stream data, Context context)
 	    {
             StreamReader sr = new StreamReader(data);
             string strData = sr.ReadToEnd();
@@ -100,6 +105,10 @@ namespace BizUnit.CoreSteps.ValidationSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public void Validate(Context context)
 	    {
             // validationRegEx - no validation to do

@@ -85,7 +85,10 @@ namespace BizUnit.TestSteps.BizTalk.Port
 			}
 		}
 
-	    public override void Validate(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Validate(Context context)
 	    {
 	        ArgumentValidation.CheckForEmptyString(ReceiveLocationName, "ReceiveLocationName");
 	    }

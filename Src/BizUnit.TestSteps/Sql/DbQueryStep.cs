@@ -201,6 +201,10 @@ namespace BizUnit.TestSteps.Sql
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             // _delayBeforeCheck - optional

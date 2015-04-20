@@ -87,7 +87,10 @@ namespace BizUnit.CoreSteps.ContextLoaderSteps
             ExecuteContextLoader(data, context);
 		}
 
-	    public void ExecuteContextLoader(Stream data, Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ExecuteContextLoader(Stream data, Context context)
 	    {
             var doc = new XmlDocument();
             doc.Load(data);
@@ -115,6 +118,9 @@ namespace BizUnit.CoreSteps.ContextLoaderSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Validate(Context context)
 	    {
             // No validation for _xPathExpressions

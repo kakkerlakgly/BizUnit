@@ -31,9 +31,21 @@ namespace BizUnit.BizUnitOM
     [Obsolete("TestStepBuilderBase has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
     public abstract class TestStepBuilderBase
     {
+        /// <summary>
+        /// 
+        /// </summary>
         protected object TestStep;
+        /// <summary>
+        /// 
+        /// </summary>
         protected XmlNode StepXmlConfig;
+        /// <summary>
+        /// 
+        /// </summary>
         protected IList<Pair> PropsToSet = new List<Pair>();
+        /// <summary>
+        /// 
+        /// </summary>
         protected IList<Pair> PropsToTakeFromCtx = new List<Pair>();
         private DefaultTestStepParameterFormatter _formatter = new DefaultTestStepParameterFormatter();
 

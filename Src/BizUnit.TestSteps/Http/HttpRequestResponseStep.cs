@@ -89,6 +89,10 @@ namespace BizUnit.TestSteps.Http
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             ArgumentValidation.CheckForEmptyString(SourcePath, "SourcePath");

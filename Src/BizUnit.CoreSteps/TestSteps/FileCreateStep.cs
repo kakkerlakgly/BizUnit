@@ -90,6 +90,9 @@ namespace BizUnit.CoreSteps.TestSteps
             Execute(context);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Execute(Context context)
         {
             FileStream dstFs = null;
@@ -127,6 +130,9 @@ namespace BizUnit.CoreSteps.TestSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Validate(Context context)
         {
             if (string.IsNullOrEmpty(_creationPath))

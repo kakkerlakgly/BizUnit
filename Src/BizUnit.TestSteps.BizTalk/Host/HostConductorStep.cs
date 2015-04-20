@@ -99,6 +99,9 @@ namespace BizUnit.TestSteps.BizTalk.Host
         /// </summary>
         public bool GrantLogOnAsService { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Execute(Context context)
         {
             var listofServers = Servers.Split(',');
@@ -146,6 +149,9 @@ namespace BizUnit.TestSteps.BizTalk.Host
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Validate(Context context)
         {
             if (string.IsNullOrEmpty(Action))

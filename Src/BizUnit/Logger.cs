@@ -31,7 +31,10 @@ namespace BizUnit
         const string ErrorLogLevel = "Error";
         const string WarningLogLevel = "Warning";
 
-	    public bool ConcurrentExecutionMode
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool ConcurrentExecutionMode
 	    {
 	        get
 	        {
@@ -49,6 +52,9 @@ namespace BizUnit
             }
 	    }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void TestStageStart(TestStage stage, DateTime time)
         {
             switch(stage)
@@ -70,6 +76,9 @@ namespace BizUnit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void TestStageEnd(TestStage stage, DateTime time, Exception stageException)
         {
             if (null != stageException)
@@ -82,6 +91,9 @@ namespace BizUnit
                 FormatDate(time));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void LogException(Exception e)
 		{
             if (null == e)
@@ -95,6 +107,9 @@ namespace BizUnit
 			WriteLine(new string('*', 79));
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void LogData(string description, string data)
 		{
 			WriteLine(new string('~', 79));
@@ -104,6 +119,9 @@ namespace BizUnit
 			WriteLine(new string('~', 79));
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void LogXmlData(string description, string data)
         {
             WriteLine(new string('~', 79));
@@ -113,6 +131,9 @@ namespace BizUnit
             WriteLine(new string('~', 79));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Log(LogLevel logLevel, string text)
 		{
 			switch(logLevel)
@@ -134,12 +155,18 @@ namespace BizUnit
 			}
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Log(LogLevel logLevel, string text, params object[] args)
 		{
             string formattedText = string.Format(text, args);
             Log(logLevel, formattedText);
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void LogBufferedText(ILogger logger)
 		{
             if (!logger.ConcurrentExecutionMode)
@@ -150,7 +177,10 @@ namespace BizUnit
             WriteLine(logger.BufferedText);
 		}
 
-	    public string BufferedText
+        /// <summary>
+        /// 
+        /// </summary>
+        public string BufferedText
 	    {
 	        get
 	        {
@@ -165,6 +195,9 @@ namespace BizUnit
 	        }
 	    }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void TestStepStart(string testStepName, DateTime time, bool runConcurrently, bool failOnError)
         {
             WriteLine("");
@@ -182,6 +215,9 @@ namespace BizUnit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void TestStepEnd(string testStepName, DateTime time, Exception ex)
         {
             WriteLine(null == ex
@@ -190,14 +226,20 @@ namespace BizUnit
                     ex.GetType()));
         }
 
-	    public void ValidateTestSteps(TestStage stage, string testStepName, Exception ex)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ValidateTestSteps(TestStage stage, string testStepName, Exception ex)
 	    {
 	        WriteLine(null == ex
 	            ? string.Format("Test step validation for stage: {0}, step: {1} was successful.", stage, testStepName)
 	            : string.Format("Test step validation for stage: {0}, step: {1} failed: {2}", stage, testStepName, ex));
 	    }
 
-	    public void TestGroupStart(string testGroupName, TestGroupPhase testGroupPhase, DateTime time, string userName)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void TestGroupStart(string testGroupName, TestGroupPhase testGroupPhase, DateTime time, string userName)
         {
             if (testGroupPhase == TestGroupPhase.TestGroupSetup)
             {
@@ -219,6 +261,9 @@ namespace BizUnit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void TestGroupEnd(TestGroupPhase testGroupPhase, DateTime time, Exception executionException)
         {
             if (testGroupPhase == TestGroupPhase.TestGroupSetup)
@@ -249,6 +294,9 @@ namespace BizUnit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void TestStart(string testName, DateTime time, string userName)
         {
             WriteLine(" ");
@@ -259,6 +307,9 @@ namespace BizUnit
             WriteLine(new string('-', 79));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void TestEnd(string testName, DateTime time, Exception ex)
         {
             LogException(ex);
@@ -272,12 +323,18 @@ namespace BizUnit
             WriteLine(new string('-', 79));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void ValidatorStart(string validatorName, DateTime time)
         {
             WriteLine("");
             WriteLine(string.Format("Validation: {0} started @ {1}", validatorName, FormatDate(time)));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void ValidatorEnd(string validatorName, DateTime time, Exception ex)
         {
             WriteLine(null == ex
@@ -287,12 +344,18 @@ namespace BizUnit
             WriteLine("");
         }
 
-	    public void ContextLoaderStart(string contextLoaderName, DateTime time)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void ContextLoaderStart(string contextLoaderName, DateTime time)
         {
             WriteLine("");
             WriteLine(string.Format("ContextLoad: {0} started @ {1}", contextLoaderName, FormatDate(time)));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void ContextLoaderEnd(string contextLoaderName, DateTime time, Exception ex)
         {
             WriteLine(null == ex
@@ -302,11 +365,17 @@ namespace BizUnit
             WriteLine("");
         }
 
-	    public object Clone()
+        /// <summary>
+        /// 
+        /// </summary>
+        public object Clone()
 	    {
 	        return new Logger();
 	    }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Flush()
         {
             string buff = BufferedText;
@@ -316,6 +385,9 @@ namespace BizUnit
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Close()
         {
         }

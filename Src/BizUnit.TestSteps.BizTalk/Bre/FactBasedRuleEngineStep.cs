@@ -288,6 +288,9 @@ namespace BizUnit.TestSteps.BizTalk.Bre
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Validate(Context context)
         {
         }

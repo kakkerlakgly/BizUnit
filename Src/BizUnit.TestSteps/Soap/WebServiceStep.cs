@@ -67,6 +67,10 @@ namespace BizUnit.TestSteps.Soap
         /// </summary>
         public IList<SoapHeader> SoapHeaders { set; get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Execute(Context context)
         {
             _request = RequestBody.Load(context);
@@ -84,6 +88,10 @@ namespace BizUnit.TestSteps.Soap
             Stream responseForPostProcessing = SubSteps.Aggregate(_response, (current, subStep) => subStep.Execute(current, context));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             if (string.IsNullOrEmpty(ServiceUrl))

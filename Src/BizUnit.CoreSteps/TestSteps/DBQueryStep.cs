@@ -286,7 +286,10 @@ namespace BizUnit.CoreSteps.TestSteps
             return rawSqlQuery;
 		}
 
-	    public void Execute(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Execute(Context context)
 	    {
             context.LogInfo("Using database connection string: {0}", ConnectionString);
 	        var sqlQueryToExecute = SQLQuery.GetFormattedSqlQuery();
@@ -352,6 +355,9 @@ namespace BizUnit.CoreSteps.TestSteps
             }
 	    }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Validate(Context context)
 	    {
             // delayBeforeCheck - optional
@@ -533,6 +539,9 @@ namespace BizUnit.CoreSteps.TestSteps
     /// </summary>
     public class DBRowsToValidateParamFormatter : ITestStepParameterFormatter
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public object[] FormatParameters(Type type, object[] args, Context ctx)
         {
             object[] retVal;

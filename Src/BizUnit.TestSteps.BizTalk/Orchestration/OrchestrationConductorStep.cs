@@ -124,7 +124,10 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
             }
         }
 
-	    public override void Validate(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Validate(Context context)
 	    {
 	    }
 

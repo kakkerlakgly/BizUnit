@@ -140,6 +140,9 @@ namespace BizUnit.TestSteps.EventLog
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Validate(Context context)
         {
             if (string.IsNullOrEmpty(Machine))

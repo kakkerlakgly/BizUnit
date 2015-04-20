@@ -97,6 +97,9 @@ namespace BizUnit.TestSteps.DataLoaders.Xml
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override Stream Load(Context context)
         {
             var doc = new XmlDocument();
@@ -137,6 +140,9 @@ namespace BizUnit.TestSteps.DataLoaders.Xml
             return ms;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Validate(Context context)
         {
             ArgumentValidation.CheckForEmptyString(FilePath, "FilePath");

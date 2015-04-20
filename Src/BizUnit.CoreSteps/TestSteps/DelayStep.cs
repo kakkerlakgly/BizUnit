@@ -81,6 +81,9 @@ namespace BizUnit.CoreSteps.TestSteps
             context.LogInfo("A delay of {0} milli second has successfully completed.", _timeOut.ToString());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Validate(Context context)
 	    {
 	        // timeOut - no validation required

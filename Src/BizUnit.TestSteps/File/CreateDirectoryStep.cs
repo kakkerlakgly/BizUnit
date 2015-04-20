@@ -32,7 +32,6 @@ namespace BizUnit.TestSteps.File
         /// TestStepBase.Execute() implementation
 		/// </summary>
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-        
         public override void Execute(Context context)
         {
 
@@ -41,6 +40,9 @@ namespace BizUnit.TestSteps.File
             Directory.CreateDirectory(DirectoryName);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Validate(Context context)
         {
             ArgumentValidation.CheckForEmptyString(DirectoryName, "DirectoryName");

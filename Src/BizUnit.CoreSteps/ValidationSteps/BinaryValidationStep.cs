@@ -92,7 +92,12 @@ namespace BizUnit.CoreSteps.ValidationSteps
             ExecuteValidation(data, context);
 		}
 
-	    public void ExecuteValidation(Stream data, Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='data'></param>
+        /// <param name='context'></param>
+        public void ExecuteValidation(Stream data, Context context)
 	    {
             MemoryStream dataToValidateAgainst = null;
 
@@ -148,7 +153,11 @@ namespace BizUnit.CoreSteps.ValidationSteps
             }
         }
 
-	    public void Validate(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
+        public void Validate(Context context)
 	    {
             // compareAsUTF8 - optional
 
