@@ -45,15 +45,24 @@ namespace BizUnit.CoreSteps.Utilities
         /// <returns>DataSet with the results of the executed command</returns>
         public static DataSet ExecuteSqlCommand( string connectionString, string sqlCommand )
         {
-            var ds = new DataSet();
-
             using (var connection = new SqlConnection( connectionString ) )
             {
-                var adapter = new SqlDataAdapter( sqlCommand, connection );
-                adapter.Fill( ds );
+                using (var adapter = new SqlDataAdapter(sqlCommand, connection))
+                {
+                    DataSet ds = null;
+                    try
+                    {
+                        ds = new DataSet();
+                        adapter.Fill(ds);
+                        return ds;
+                    }
+                    catch
+                    {
+                        if (ds != null) ds.Dispose();
+                        throw;
+                    }
+                }
             }   // connection
-
-            return ds;
         }
 
         /// <summary>
@@ -64,25 +73,14 @@ namespace BizUnit.CoreSteps.Utilities
         /// <returns>The contents of the first column of the first row in the resultset</returns>
         public static int ExecuteScalar( string connectionString, string sqlCommand )
         {
-            SqlConnection connection = null;
-            object col;
-
-            try 
+            using (var connection = new SqlConnection(connectionString))
             {
-                connection = new SqlConnection( connectionString );
-                var command = new SqlCommand( sqlCommand, connection );
-                command.Connection.Open();
-                col = command.ExecuteScalar();
-            }
-            finally 
-            {
-                if (null != connection)
+                connection.Open();
+                using (var command = new SqlCommand(sqlCommand, connection))
                 {
-                    connection.Close();
+                    return Convert.ToInt32( command.ExecuteScalar());
                 }
             }
-
-            return Convert.ToInt32( col );
         }
 
         /// <summary>
@@ -92,25 +90,14 @@ namespace BizUnit.CoreSteps.Utilities
         /// <param name="sqlCommand">SQL statement to execute</param>
         public static int ExecuteNonQuery( string connectionString, string sqlCommand )
         {
-            SqlConnection connection = null;
-            int numberOfRowsAffected;
-
-            try 
+            using (var connection = new SqlConnection(connectionString))
             {
-                connection = new SqlConnection( connectionString );
-                var command = new SqlCommand( sqlCommand, connection );
-                command.Connection.Open();
-                numberOfRowsAffected = command.ExecuteNonQuery();
-            }
-            finally 
-            {
-                if (null != connection)
+                connection.Open();
+                using (var command = new SqlCommand(sqlCommand, connection))
                 {
-                    connection.Close();
+                    return command.ExecuteNonQuery();
                 }
             }
-
-            return numberOfRowsAffected;
         }
         #endregion // Static Methods
 
@@ -121,16 +108,14 @@ namespace BizUnit.CoreSteps.Utilities
         /// <param name="sqlQuery">SQL statement to execute</param>
         internal static int ExecuteODBCNonQuery(string connectionString, string sqlQuery)
         {
-            int numberOfRowsAffected;
-
             using (var connection = new OdbcConnection(connectionString))
             {
                 connection.Open();
-                var command = new OdbcCommand(sqlQuery, connection);
-                numberOfRowsAffected = command.ExecuteNonQuery();
+                using (var command = new OdbcCommand(sqlQuery, connection))
+                {
+                    return command.ExecuteNonQuery();
+                }
             }
-
-            return numberOfRowsAffected;
         }
 
         /// <summary>
@@ -140,16 +125,14 @@ namespace BizUnit.CoreSteps.Utilities
         /// <param name="sqlQuery">SQL statement to execute</param>
         internal static int ExecuteScalarODBCQuery(string connectionString, string sqlQuery)
         {
-            int numberOfRowsAffected;
-
             using (var connection = new OdbcConnection(connectionString))
             {
                 connection.Open();
-                var command = new OdbcCommand(sqlQuery, connection);
-                numberOfRowsAffected = int.Parse(command.ExecuteScalar().ToString()); 
+                using (var command = new OdbcCommand(sqlQuery, connection))
+                {
+                    return int.Parse(command.ExecuteScalar().ToString());
+                }
             }
-
-            return numberOfRowsAffected;
         }
     }
 }

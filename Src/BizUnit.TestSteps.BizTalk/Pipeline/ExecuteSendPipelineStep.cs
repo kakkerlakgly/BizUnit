@@ -244,6 +244,7 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
             {
                 Stream stream = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read);
                 var inputMessage = MessageHelper.CreateFromStream(stream);
+
                 if (!string.IsNullOrEmpty(_sourceEncoding))
                 {
                     inputMessage.BodyPart.Charset = _sourceEncoding;

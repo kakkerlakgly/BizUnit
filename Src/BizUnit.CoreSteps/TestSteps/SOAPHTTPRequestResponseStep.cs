@@ -280,41 +280,43 @@ namespace BizUnit.CoreSteps.TestSteps
 
         internal static Assembly GetProxyAssembly(string wsdlUri, string codeNamespace)
         {
-            var provider = new CSharpCodeProvider();
-            var client = new WebClient();
-            var referenceAssemblies = new[] { "system.dll", "System.Xml.dll", "System.Web.Services.dll" };
-            var wsdlStream = client.OpenRead(wsdlUri);
-
-            var wsdl = ServiceDescription.Read(wsdlStream);
-            var wsdlImport = new ServiceDescriptionImporter();
-            wsdlImport.AddServiceDescription(wsdl, null, null);
-
-            var proxyClassNamespace = new CodeNamespace(codeNamespace);
-            var codeCompileUnit = new CodeCompileUnit();
-            codeCompileUnit.Namespaces.Add(proxyClassNamespace);
-
-            var warnings = wsdlImport.Import(proxyClassNamespace, codeCompileUnit);
-            if (warnings != 0)
+            using (var provider = new CSharpCodeProvider())
             {
-                throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while importing the WSDL!");
+                using (var client = new WebClient())
+                {
+                    var referenceAssemblies = new[] { "system.dll", "System.Xml.dll", "System.Web.Services.dll" };
+                    var wsdlStream = client.OpenRead(wsdlUri);
+
+                    var wsdl = ServiceDescription.Read(wsdlStream);
+                    var wsdlImport = new ServiceDescriptionImporter();
+                    wsdlImport.AddServiceDescription(wsdl, null, null);
+
+                    var proxyClassNamespace = new CodeNamespace(codeNamespace);
+                    var codeCompileUnit = new CodeCompileUnit();
+                    codeCompileUnit.Namespaces.Add(proxyClassNamespace);
+
+                    var warnings = wsdlImport.Import(proxyClassNamespace, codeCompileUnit);
+                    if (warnings != 0)
+                    {
+                        throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while importing the WSDL!");
+                    }
+
+                    var compileParam = new CompilerParameters(referenceAssemblies)
+                                           {
+                                               GenerateInMemory = false,
+                                               OutputAssembly = GetProxyFileName()
+                                           };
+
+                    CompilerResults compilerResults = provider.CompileAssemblyFromDom(compileParam, codeCompileUnit);
+
+                    if (compilerResults.Errors.HasErrors)
+                    {
+                        throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while executing CompileAssemblyFromDom");
+                    }
+
+                    return compilerResults.CompiledAssembly;
+                }
             }
-
-            var compileParam = new CompilerParameters(referenceAssemblies)
-                                   {
-                                       GenerateInMemory = false,
-                                       OutputAssembly = GetProxyFileName()
-                                   };
-
-            CompilerResults compilerResults = provider.CompileAssemblyFromDom(compileParam, codeCompileUnit);
-
-            if (compilerResults.Errors.HasErrors)
-            {
-                throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while executing CompileAssemblyFromDom");
-            }
-
-            provider.Dispose();
-
-            return compilerResults.CompiledAssembly;
         }
 
         /// <summary>

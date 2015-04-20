@@ -100,12 +100,10 @@ namespace BizUnit.CoreSteps.TestSteps
             {
                 foreach(string tableName in arrtableName)
                 {
-                    using (var comm = new SqlCommand
+                    using (var comm = new SqlCommand("SELECT * FROM " + tableName, connection))
                     {
-                        Connection = connection, CommandType = CommandType.Text, CommandText = "SELECT * FROM " + tableName
-                    })
-                    {
-                        using (var da = new SqlDataAdapter {SelectCommand = comm})
+                        comm.CommandType = CommandType.Text;
+                        using (var da = new SqlDataAdapter (comm))
                         {
                             da.Fill(ds,tableName);
                             da.FillSchema(ds,SchemaType.Source);

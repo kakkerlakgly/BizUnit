@@ -165,30 +165,19 @@ namespace BizUnit.CoreSteps.TestSteps
 
 		private static string GetXmlData(string connectionString, string sqlQuery)
 		{
-			var connection = new SqlConnection(connectionString);
-
-			using ( connection )
+            using (var connection = new SqlConnection(connectionString))
 			{
-                object obj; 
-                
-                try
-				{
-					connection.Open();
-					var comm= new SqlCommand(sqlQuery, connection);
-					obj = comm.ExecuteScalar ();
-				}
-				finally
-				{
-					if(connection.State == ConnectionState.Open)
-						connection.Close();
-				}
-
-                if (obj != null)
+				connection.Open();
+                using (var comm = new SqlCommand(sqlQuery, connection))
                 {
-                    return obj.ToString();
-                }
+                    object obj = comm.ExecuteScalar();
+                    if (obj != null)
+                    {
+                        return obj.ToString();
+                    }
 
-                return null;
+                    return null;
+                }
 			}
 		}
 

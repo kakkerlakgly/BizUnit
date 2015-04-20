@@ -190,34 +190,36 @@ namespace BizUnit.TestSteps.BizTalk.Host
                                   EnablePrivileges = true
                               };
 
-            var searcher = new ManagementObjectSearcher();
+            using (var searcher = new ManagementObjectSearcher())
+            {
 
-            ManagementScope scope = null == server ? new ManagementScope("root\\MicrosoftBizTalkServer", options) : new ManagementScope("\\\\" + server + "\\root\\MicrosoftBizTalkServer", options);
+                ManagementScope scope = null == server ? new ManagementScope("root\\MicrosoftBizTalkServer", options) : new ManagementScope("\\\\" + server + "\\root\\MicrosoftBizTalkServer", options);
 
-			searcher.Scope = scope;
-		
-			// Build a Query to enumerate the MSBTS_hostInstance instances 
-			var query = new SelectQuery
-			                {
-			                    QueryString =
-			                        String.Format("SELECT * FROM MSBTS_HostInstance where HostName='" + hostName +
-			                                      "' AND HostType=" + hostType.ToString())
-			                };
+                searcher.Scope = scope;
 
-            // Set the query for the searcher.
-			searcher.Query = query;
+                // Build a Query to enumerate the MSBTS_hostInstance instances 
+                var query = new SelectQuery
+                                {
+                                    QueryString =
+                                        String.Format("SELECT * FROM MSBTS_HostInstance where HostName='" + hostName +
+                                                      "' AND HostType=" + hostType.ToString())
+                                };
 
-			// Execute the query and determine if any results were obtained.
-			var queryCol = searcher.Get();			
-			var me = queryCol.GetEnumerator();
-			me.Reset();
+                // Set the query for the searcher.
+                searcher.Query = query;
 
-			if ( me.MoveNext() )
-			{
-				return (ManagementObject)me.Current;
-			}
+                // Execute the query and determine if any results were obtained.
+                var queryCol = searcher.Get();
+                var me = queryCol.GetEnumerator();
+                me.Reset();
 
-            throw new ApplicationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName ));
+                if (me.MoveNext())
+                {
+                    return (ManagementObject)me.Current;
+                }
+
+                throw new ApplicationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName));
+            }
 		}
 	}
 }

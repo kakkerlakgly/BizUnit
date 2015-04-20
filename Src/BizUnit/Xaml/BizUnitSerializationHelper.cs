@@ -23,39 +23,50 @@ namespace BizUnit.Xaml
 
         internal static string Serialize(object toSerialize)
         {
-            var ms = new MemoryStream();
-            Serialize(toSerialize, ms);
-            return new StreamReader(ms).ReadToEnd();
+            using (var ms = new MemoryStream())
+            {
+                Serialize(toSerialize, ms);
+                using (var reader = new StreamReader(ms))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
         }
 
         internal static object Deserialize(string xamlText)
         {
-            var ms = new MemoryStream();
-            var sw = new StreamWriter(ms);
-            sw.Write(xamlText);
-            sw.Flush();
-            ms.Seek(0, SeekOrigin.Begin);
-            return Deserialize(ms);
+            using (var ms = new MemoryStream())
+            {
+                using (var sw = new StreamWriter(ms))
+                {
+                    sw.Write(xamlText);
+                    sw.Flush();
+                    ms.Seek(0, SeekOrigin.Begin);
+                    return Deserialize(ms);
+                }
+            }
         }
 
         internal static void SaveToFile(object toSerialize, string filePath)
         {
-            var ms = new MemoryStream();
-            var buff = new byte[FileBufferSize];
-            Serialize(toSerialize, ms);
-            ms.Flush();
-            ms.Seek(0, SeekOrigin.Begin);
-
-            using (var fs = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite))
+            using (var ms = new MemoryStream())
             {
-                int read = ms.Read(buff, 0, buff.Length);
-                do
-                {
-                    fs.Write(buff, 0, read);
-                    read = ms.Read(buff, 0, buff.Length);
-                } while (read > 0);
+                var buff = new byte[FileBufferSize];
+                Serialize(toSerialize, ms);
+                ms.Flush();
+                ms.Seek(0, SeekOrigin.Begin);
 
-                fs.Flush();
+                using (var fs = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite))
+                {
+                    int read = ms.Read(buff, 0, buff.Length);
+                    do
+                    {
+                        fs.Write(buff, 0, read);
+                        read = ms.Read(buff, 0, buff.Length);
+                    } while (read > 0);
+
+                    fs.Flush();
+                }
             }
         }
 

@@ -109,39 +109,27 @@ namespace BizUnit.MQSeriesSteps
 		/// </summary>
 		/// <param name="filePath">The path to the FILE containing the data</param>
 		/// <returns>MemoryStream containing the data in the FILE</returns>
-		public static MemoryStream LoadFileToStream(string filePath)
-		{
-			FileStream fs = null;
-			MemoryStream s;
+        public static MemoryStream LoadFileToStream(string filePath)
+        {
+            // Get the match data...
+            using (var fs = File.OpenRead(filePath))
+            {
+                MemoryStream s = new MemoryStream();
 
-			try
-			{
-				// Get the match data...
-				fs = File.OpenRead(filePath);
-				s = new MemoryStream();
+                var buff = new byte[1024];
+                int read = fs.Read(buff, 0, 1024);
 
-				var buff = new byte[1024];
-				int read = fs.Read(buff, 0, 1024);
+                while (0 < read)
+                {
+                    s.Write(buff, 0, read);
+                    read = fs.Read(buff, 0, 1024);
+                }
 
-				while ( 0 < read )
-				{
-					s.Write(buff, 0, read);
-					read = fs.Read(buff, 0, 1024);
-				}
-
-				s.Flush();
-				s.Seek(0, SeekOrigin.Begin);
-			}
-			finally
-			{
-				if ( null != fs )
-				{
-					fs.Close();
-				}
-			}
-
-			return s;
-		}
+                s.Flush();
+                s.Seek(0, SeekOrigin.Begin);
+                return s;
+            }
+        }
 
 		/// <summary>
 		/// Helper method to write the data in a stream to the console

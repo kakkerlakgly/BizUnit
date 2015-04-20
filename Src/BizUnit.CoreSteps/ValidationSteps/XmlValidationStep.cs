@@ -134,22 +134,28 @@ namespace BizUnit.CoreSteps.ValidationSteps
         {
             var doc = new XmlDocument();
             var trData = new XmlTextReader(data);
-            var vr = new XmlValidatingReader(trData);
-
-            // If schema was specified use it to vaidate against...
-            if (null != _xmlSchemaPath)
+            using (var vr = new XmlValidatingReader(trData))
             {
-                MemoryStream xsdSchema = StreamHelper.LoadFileToStream(_xmlSchemaPath);
-                var trSchema = new XmlTextReader(xsdSchema);
-                var xsc = new XmlSchemaCollection();
 
-                if (null != _xmlSchemaNameSpace)
+                // If schema was specified use it to vaidate against...
+                if (null != _xmlSchemaPath)
                 {
-                    xsc.Add(_xmlSchemaNameSpace, trSchema);
-                    vr.Schemas.Add(xsc);
-                }
+                    using (var xsdSchema = StreamHelper.LoadFileToStream(_xmlSchemaPath))
+                    {
+                        using (var trSchema = new XmlTextReader(xsdSchema))
+                        {
+                            var xsc = new XmlSchemaCollection();
 
-                doc.Load(vr);
+                            if (null != _xmlSchemaNameSpace)
+                            {
+                                xsc.Add(_xmlSchemaNameSpace, trSchema);
+                                vr.Schemas.Add(xsc);
+                            }
+
+                            doc.Load(vr);
+                        }
+                    }
+                }
             }
 
             data.Seek(0, SeekOrigin.Begin);

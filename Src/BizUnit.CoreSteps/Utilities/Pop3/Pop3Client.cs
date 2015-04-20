@@ -79,56 +79,47 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 			_credential = new Pop3Credential(user,pass,server);
 		}
 
-		private Socket GetClientSocket()
-		{
-			Socket s = null;
-			
-			try
-			{
-			    // Get host related information.
-#pragma warning disable 612,618
-			    IPHostEntry hostEntry = Dns.Resolve(_credential.Server);
-#pragma warning restore 612,618
+        private Socket GetClientSocket()
+        {
+            try
+            {
+                // Get host related information.
+                IPHostEntry hostEntry = Dns.GetHostEntry(_credential.Server);
 
-				// Loop through the AddressList to obtain the supported 
-				// AddressFamily. This is to avoid an exception that 
-				// occurs when the host IP Address is not compatible 
-				// with the address family 
-				// (typical in the IPv6 case).
-				
-				foreach(IPAddress address in hostEntry.AddressList)
-				{
-					var ipe = new IPEndPoint(address, Pop3Port);
-				
-					var tempSocket = 
-						new Socket(ipe.AddressFamily, 
-						SocketType.Stream, ProtocolType.Tcp);
+                // Loop through the AddressList to obtain the supported 
+                // AddressFamily. This is to avoid an exception that 
+                // occurs when the host IP Address is not compatible 
+                // with the address family 
+                // (typical in the IPv6 case).
 
-					tempSocket.Connect(ipe);
+                foreach (IPAddress address in hostEntry.AddressList)
+                {
+                    var ipe = new IPEndPoint(address, Pop3Port);
 
-					if(tempSocket.Connected)
-					{
-						// we have a connection.
-						// return this socket ...
-						s = tempSocket;
-						break;
-					}
-				}
-			}
-			catch(Exception e)
-			{
-				throw new Pop3ConnectException(e.ToString());
-			}
+                    var tempSocket =
+                        new Socket(ipe.AddressFamily,
+                        SocketType.Stream, ProtocolType.Tcp);
 
-			// throw exception if can't connect ...
-			if(s == null)
-			{
-				throw new Pop3ConnectException("Error : connecting to "
-					+_credential.Server);
-			}
-			
-			return s;
-		}
+                    tempSocket.Connect(ipe);
+
+                    if (tempSocket.Connected)
+                    {
+                        // we have a connection.
+                        // return this socket ...
+                        return tempSocket;
+                    }
+                    tempSocket.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Pop3ConnectException(e.ToString());
+            }
+
+            // throw exception if can't connect ...
+            throw new Pop3ConnectException("Error : connecting to "
+                + _credential.Server);
+        }
 
 		//send the data to server
 		private void Send(String data) 

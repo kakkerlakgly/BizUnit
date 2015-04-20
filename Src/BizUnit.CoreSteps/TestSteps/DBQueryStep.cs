@@ -253,21 +253,21 @@ namespace BizUnit.CoreSteps.TestSteps
 			}
 		}
 
-		private static DataSet FillDataSet(string connectionString, string sqlQuery)
-		{
-			var connection = new SqlConnection(connectionString);
-			var ds = new DataSet();
-
-			using ( connection )
-			{
-				var adapter = new SqlDataAdapter
-				                  {
-				                      SelectCommand = new SqlCommand(sqlQuery, connection)
-				                  };
-			    adapter.Fill( ds );
-				return ds;
-			}
-		}
+        private static DataSet FillDataSet(string connectionString, string sqlQuery)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                using (var command = new SqlCommand(sqlQuery, connection))
+                {
+                    using (var adapter = new SqlDataAdapter(command))
+                    {
+                        var ds = new DataSet();
+                        adapter.Fill(ds);
+                        return ds;
+                    }
+                }
+            }
+        }
 
 		private static string BuildSqlQuery( XmlNode queryConfig, Context context )
 		{

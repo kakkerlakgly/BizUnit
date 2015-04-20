@@ -82,13 +82,9 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
 		    {
 		        conn.Open();
 
-		        using (var command = new SqlCommand
+		        using (var command = new SqlCommand("xref_Cleanup", conn))
 		        {
-		            Connection = conn,
-		            CommandType = CommandType.StoredProcedure,
-		            CommandText = "xref_Cleanup"
-		        })
-		        {
+                    command.CommandType = CommandType.StoredProcedure;
 		            command.ExecuteNonQuery();
 		        }
 		    }

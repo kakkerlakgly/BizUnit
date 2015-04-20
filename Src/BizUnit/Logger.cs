@@ -433,16 +433,20 @@ namespace BizUnit
 
         private static string FormatPrettyPrint(XmlDocument doc)
         {
-            var ms = new MemoryStream();
-            var tw = new XmlTextWriter(ms, Encoding.Unicode) {Formatting = Formatting.Indented};
+            using (var ms = new MemoryStream())
+            {
+                var tw = new XmlTextWriter(ms, Encoding.Unicode) { Formatting = Formatting.Indented };
 
-            doc.WriteContentTo(tw);
-            tw.Flush();
-            ms.Flush();
-            ms.Seek(0, SeekOrigin.Begin);
+                doc.WriteContentTo(tw);
+                tw.Flush();
+                ms.Flush();
+                ms.Seek(0, SeekOrigin.Begin);
 
-            var sr = new StreamReader(ms);
-            return sr.ReadToEnd();
+                using (var sr = new StreamReader(ms))
+                {
+                    return sr.ReadToEnd();
+                }
+            }
         }
     }
 }
