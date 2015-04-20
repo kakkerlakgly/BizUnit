@@ -98,58 +98,49 @@ namespace BizUnit.CoreSteps.ValidationSteps
         /// <param name='data'></param>
         /// <param name='context'></param>
         public void ExecuteValidation(Stream data, Context context)
-	    {
-            MemoryStream dataToValidateAgainst = null;
-
+        {
             try
             {
-                try
+                using (var dataToValidateAgainst = StreamHelper.LoadFileToStream(_comparisonDataPath))
                 {
-                    dataToValidateAgainst = StreamHelper.LoadFileToStream(_comparisonDataPath);
-
-                }
-                catch (Exception e)
-                {
-                    context.LogError("BinaryValidationStep failed, exception caugh trying to open comparison file: {0}", _comparisonDataPath);
-                    context.LogException(e);
-
-                    throw;
-                }
-
-                try
-                {
-                    data.Seek(0, SeekOrigin.Begin);
-                    dataToValidateAgainst.Seek(0, SeekOrigin.Begin);
-
-                    if (_compareAsUtf8)
+                    try
                     {
-                        // Compare the streams, make sure we are comparing like for like
-                        StreamHelper.CompareStreams(StreamHelper.EncodeStream(data, Encoding.UTF8), StreamHelper.EncodeStream(dataToValidateAgainst, Encoding.UTF8));
+                        data.Seek(0, SeekOrigin.Begin);
+                        dataToValidateAgainst.Seek(0, SeekOrigin.Begin);
+
+                        if (_compareAsUtf8)
+                        {
+                            using (Stream stream1 = StreamHelper.EncodeStream(data, Encoding.UTF8), stream2 = StreamHelper.EncodeStream(dataToValidateAgainst, Encoding.UTF8))
+                            {
+                                // Compare the streams, make sure we are comparing like for like
+                                StreamHelper.CompareStreams(stream1, stream2);
+                            }
+                        }
+                        else
+                        {
+                            StreamHelper.CompareStreams(data, dataToValidateAgainst);
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        StreamHelper.CompareStreams(data, dataToValidateAgainst);
+                        context.LogError("Binary validation failed while comparing the two data streams with the following exception: {0}", e.ToString());
+
+                        // Dump out streams for validation...
+                        data.Seek(0, SeekOrigin.Begin);
+                        dataToValidateAgainst.Seek(0, SeekOrigin.Begin);
+                        context.LogData("Stream 1:", data);
+                        context.LogData("Stream 2:", dataToValidateAgainst);
+
+                        throw;
                     }
-                }
-                catch (Exception e)
-                {
-                    context.LogError("Binary validation failed while comparing the two data streams with the following exception: {0}", e.ToString());
-
-                    // Dump out streams for validation...
-                    data.Seek(0, SeekOrigin.Begin);
-                    dataToValidateAgainst.Seek(0, SeekOrigin.Begin);
-                    context.LogData("Stream 1:", data);
-                    context.LogData("Stream 2:", dataToValidateAgainst);
-
-                    throw;
                 }
             }
-            finally
+            catch (Exception e)
             {
-                if (null != dataToValidateAgainst)
-                {
-                    dataToValidateAgainst.Close();
-                }
+                context.LogError("BinaryValidationStep failed, exception caugh trying to open comparison file: {0}", _comparisonDataPath);
+                context.LogException(e);
+
+                throw;
             }
         }
 

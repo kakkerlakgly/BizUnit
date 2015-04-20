@@ -42,49 +42,35 @@ namespace BizUnit.TestSteps.Http
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
         {
-            MemoryStream request = null;
-            MemoryStream response = null;
+            context.LogInfo("HttpRequestResponseStep about to post data from File: {0} to the Url: {1}", SourcePath, DestinationUrl);
 
-            try
+            // Get the data to post...
+            using (var request = StreamHelper.LoadFileToStream(SourcePath))
             {
-                context.LogInfo("HttpRequestResponseStep about to post data from File: {0} to the Url: {1}", SourcePath, DestinationUrl);
-
-                // Get the data to post...
-                request = StreamHelper.LoadFileToStream(SourcePath);
                 byte[] data = request.GetBuffer();
 
                 // Post the data...
-                response = HttpHelper.SendRequestData(DestinationUrl, data, RequestTimeout, context);
-
-                // Dump the respons to the console...
-                StreamHelper.WriteStreamToConsole("HttpRequestResponseStep response data", response, context);
-
-                // Validate the response...
-                try
+                using (var response = HttpHelper.SendRequestData(DestinationUrl, data, RequestTimeout, context))
                 {
-                    response.Seek(0, SeekOrigin.Begin);
 
-                    foreach (var subStep in SubSteps)
+                    // Dump the respons to the console...
+                    StreamHelper.WriteStreamToConsole("HttpRequestResponseStep response data", response, context);
+
+                    // Validate the response...
+                    try
                     {
-                        subStep.Execute(response, context);
                         response.Seek(0, SeekOrigin.Begin);
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new ApplicationException("HttpRequestResponseStep response stream was not correct!", e);
-                }
-            }
-            finally
-            {
-                if (null != response)
-                {
-                    response.Close();
-                }
 
-                if (null != request)
-                {
-                    request.Close();
+                        foreach (var subStep in SubSteps)
+                        {
+                            subStep.Execute(response, context);
+                            response.Seek(0, SeekOrigin.Begin);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new ApplicationException("HttpRequestResponseStep response stream was not correct!", e);
+                    }
                 }
             }
         }

@@ -96,19 +96,26 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
                 {
                     var ipe = new IPEndPoint(address, Pop3Port);
 
-                    var tempSocket =
-                        new Socket(ipe.AddressFamily,
-                        SocketType.Stream, ProtocolType.Tcp);
-
-                    tempSocket.Connect(ipe);
-
-                    if (tempSocket.Connected)
+                    Socket tempSocket = null;
+                    try
                     {
-                        // we have a connection.
-                        // return this socket ...
-                        return tempSocket;
+                        tempSocket = new Socket(ipe.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+                        tempSocket.Connect(ipe);
+
+                        if (tempSocket.Connected)
+                        {
+                            // we have a connection.
+                            // return this socket ...
+                            return tempSocket;
+                        }
+                        tempSocket.Dispose();
                     }
-                    tempSocket.Dispose();
+                    catch
+                    {
+                        if (tempSocket != null) tempSocket.Dispose();
+                        throw;
+                    }
                 }
             }
             catch (Exception e)

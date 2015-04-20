@@ -95,16 +95,11 @@ namespace BizUnit.CoreSteps.TestSteps
         /// </summary>
         public void Execute(Context context)
         {
-            FileStream dstFs = null;
-            FileStream srcFs = null;
+            context.LogInfo("FileCreateStep about to copy the data from File: {0} to the File: {1}", _sourcePath, _creationPath);
 
-            try
+            var buff = new byte[4096];
+            using (Stream srcFs = File.Open(_sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read), dstFs = File.Create(_creationPath))
             {
-                context.LogInfo("FileCreateStep about to copy the data from File: {0} to the File: {1}", _sourcePath, _creationPath);
-
-                srcFs = File.Open(_sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                dstFs = File.Create(_creationPath);
-                var buff = new byte[4096];
 
                 var read = srcFs.Read(buff, 0, 4096);
 
@@ -115,18 +110,6 @@ namespace BizUnit.CoreSteps.TestSteps
                 }
 
                 context.Add(FileCreationPathContextKey, _creationPath, true);
-            }
-            finally
-            {
-                if (null != srcFs)
-                {
-                    srcFs.Close();
-                }
-
-                if (null != dstFs)
-                {
-                    dstFs.Close();
-                }
             }
         }
 

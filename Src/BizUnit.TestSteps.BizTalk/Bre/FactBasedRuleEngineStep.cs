@@ -140,8 +140,6 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
             var ruleset = ruleStore.GetRuleSet(rsInfo[0]);
 
-            // Create an instance of the DebugTrackingInterceptor
-            var dti = new DebugTrackingInterceptor(DebugTracking);
 
 
             // load the facts into array
@@ -238,19 +236,23 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                     i++;
                 }
 
-                // Execute Policy Tester
-                try
+                // Create an instance of the DebugTrackingInterceptor
+                using (var dti = new DebugTrackingInterceptor(DebugTracking))
                 {
-                    policyTester.Execute(facts, dti);
-                }
-                catch (Exception e)
-                {
-                    context.LogException(e);
-                    throw;
-                }
-                finally
-                {
-                    dti.CloseTraceFile();
+                    // Execute Policy Tester
+                    try
+                    {
+                        policyTester.Execute(facts, dti);
+                    }
+                    catch (Exception e)
+                    {
+                        context.LogException(e);
+                        throw;
+                    }
+                    finally
+                    {
+                        dti.CloseTraceFile();
+                    }
                 }
             }
 

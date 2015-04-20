@@ -27,13 +27,13 @@ namespace BizUnit.TestSteps.BizTalk.Common
         /// <param name='destination'>The destination directory to persist the file to</param>
         public static void PersistMessage(IBaseMessage message, string destination)
         {
+            var enc = Encoding.GetEncoding("UTF-8");
+            if (!string.IsNullOrEmpty(message.BodyPart.Charset))
+            {
+                enc = Encoding.GetEncoding(message.BodyPart.Charset);
+            }
             using (var fs = new FileStream(destination, FileMode.Create))
             {
-                var enc = Encoding.GetEncoding("UTF-8");
-                if (!string.IsNullOrEmpty(message.BodyPart.Charset))
-                {
-                    enc = Encoding.GetEncoding(message.BodyPart.Charset);
-                }
                 using (var writer = new StreamWriter(fs, enc))
                 {
                     var msgStream = message.BodyPart.GetOriginalDataStream();

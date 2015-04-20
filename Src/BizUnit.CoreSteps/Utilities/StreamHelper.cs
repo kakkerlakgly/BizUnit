@@ -71,9 +71,9 @@ namespace BizUnit.CoreSteps.Utilities
         /// <param name="timeout">The timeout afterwhich if the FILE is not found the method will fail</param>
         /// <returns>MemoryStream containing the data in the FILE</returns>
 
-        public static MemoryStream LoadFileToStream(string filePath, double timeout)
+        public static Stream LoadFileToStream(string filePath, double timeout)
         {
-            MemoryStream ms = null;
+            Stream ms = null;
             bool loaded = false;
 
             DateTime now = DateTime.Now;
@@ -111,26 +111,35 @@ namespace BizUnit.CoreSteps.Utilities
         /// <returns>MemoryStream containing the data in the FILE</returns>
         public static MemoryStream LoadFileToStream(string filePath)
         {
-            MemoryStream s = new MemoryStream();
-
-            // Get the match data...
-            using (var fs = File.OpenRead(filePath))
+            MemoryStream s = null;
+            try
             {
+                s = new MemoryStream();
 
-                var buff = new byte[1024];
-                int read = fs.Read(buff, 0, 1024);
-
-                while (0 < read)
+                // Get the match data...
+                using (var fs = File.OpenRead(filePath))
                 {
-                    s.Write(buff, 0, read);
-                    read = fs.Read(buff, 0, 1024);
+
+                    var buff = new byte[1024];
+                    int read = fs.Read(buff, 0, 1024);
+
+                    while (0 < read)
+                    {
+                        s.Write(buff, 0, read);
+                        read = fs.Read(buff, 0, 1024);
+                    }
                 }
+                s.Flush();
+                s.Seek(0, SeekOrigin.Begin);
+
+                return s;
+
             }
-            s.Flush();
-            s.Seek(0, SeekOrigin.Begin);
-
-            return s;
-
+            catch
+            {
+                if (s != null) s.Dispose();
+                throw;
+            }
         }
 
         /// <summary>
@@ -139,7 +148,7 @@ namespace BizUnit.CoreSteps.Utilities
         /// <param name="description">The description text that will be written before the stream data</param>
         /// <param name="ms">Stream containing the data to write</param>
         /// <param name="context">The BizUnit context object which holds state and is passed between test steps</param>
-        public static void WriteStreamToConsole(string description, MemoryStream ms, Context context)
+        public static void WriteStreamToConsole(string description, Stream ms, Context context)
         {
             ms.Seek(0, SeekOrigin.Begin);
             var sr = new StreamReader(ms);
@@ -152,21 +161,30 @@ namespace BizUnit.CoreSteps.Utilities
         /// </summary>
         /// <param name="s">The forward only stream to read the data from</param>
         /// <returns>MemoryStream containg the data as read from s</returns>
-        public static MemoryStream LoadMemoryStream(Stream s)
+        public static Stream LoadMemoryStream(Stream s)
         {
-            var ms = new MemoryStream();
-            var buff = new byte[1024];
-            int read = s.Read(buff, 0, 1024);
-
-            while ( 0 < read )
+            Stream ms = null;
+            try
             {
-                ms.Write(buff, 0, read);
-                read = s.Read(buff, 0, 1024);
-            }
-            ms.Flush();
-            ms.Seek(0, SeekOrigin.Begin);
+                ms = new MemoryStream();
+                var buff = new byte[1024];
+                int read = s.Read(buff, 0, 1024);
 
-            return ms;
+                while (0 < read)
+                {
+                    ms.Write(buff, 0, read);
+                    read = s.Read(buff, 0, 1024);
+                }
+                ms.Flush();
+                ms.Seek(0, SeekOrigin.Begin);
+
+                return ms;
+            }
+            catch
+            {
+                if (ms != null) ms.Dispose();
+                throw;
+            }
         }
 
         /// <summary>
@@ -174,16 +192,25 @@ namespace BizUnit.CoreSteps.Utilities
         /// </summary>
         /// <param name="s">The string containing the data that will be loaded into the stream</param>
         /// <returns>MemoryStream containg the data read from the string</returns>
-        public static MemoryStream LoadMemoryStream(string s)
+        public static Stream LoadMemoryStream(string s)
         {
             Encoding utf8 = Encoding.UTF8;
             var bytes = utf8.GetBytes(s);
-            var ms = new MemoryStream(bytes);
+            Stream ms = null;
+            try
+            {
+                ms = new MemoryStream(bytes);
 
-            ms.Flush();
-            ms.Seek(0, SeekOrigin.Begin);
+                ms.Flush();
+                ms.Seek(0, SeekOrigin.Begin);
 
-            return ms;
+                return ms;
+            }
+            catch
+            {
+                if (ms != null) ms.Dispose();
+                throw;
+            }
         }
 
         /// <summary>
@@ -205,8 +232,10 @@ namespace BizUnit.CoreSteps.Utilities
             string data2 = root.OuterXml;
 
             context.LogInfo("About to compare the following Xml documents:\r\nDocument1: {0},\r\nDocument2: {1}", data1, data2);
-
-            CompareStreams( LoadMemoryStream(data1), LoadMemoryStream(data2) );
+            using (Stream stream1 = LoadMemoryStream(data1), stream2 = LoadMemoryStream(data2))
+            {
+                CompareStreams(stream1, stream2);
+            }
         }
 
         /// <summary>
@@ -222,8 +251,17 @@ namespace BizUnit.CoreSteps.Utilities
             string data = sr.ReadToEnd();
             Encoding e = encoding;
             byte[] bytes = e.GetBytes(data);
-
-            return new MemoryStream(bytes);
+            Stream stream = null;
+            try
+            {
+                stream = new MemoryStream(bytes);
+                return stream;
+            }
+            catch
+            {
+                if (stream != null) stream.Dispose();
+                throw;
+            }
         }
     }
 }

@@ -261,9 +261,18 @@ namespace BizUnit.CoreSteps.TestSteps
                 {
                     using (var adapter = new SqlDataAdapter(command))
                     {
-                        var ds = new DataSet();
-                        adapter.Fill(ds);
-                        return ds;
+                        DataSet ds = null;
+                        try
+                        {
+                            ds = new DataSet();
+                            adapter.Fill(ds);
+                            return ds;
+                        }
+                        catch
+                        {
+                            if (ds != null) ds.Dispose();
+                            throw;
+                        }
                     }
                 }
             }

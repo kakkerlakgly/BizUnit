@@ -103,7 +103,7 @@ namespace BizUnit.CoreSteps.TestSteps
             {
                 using (var msg = new Message())
                 {
-                    using (MemoryStream msgStr = StreamHelper.LoadFileToStream(sourcePath))
+                    using (var msgStr = StreamHelper.LoadFileToStream(sourcePath))
                     {
                         msg.BodyStream = msgStr;
                         msg.UseDeadLetterQueue = true;

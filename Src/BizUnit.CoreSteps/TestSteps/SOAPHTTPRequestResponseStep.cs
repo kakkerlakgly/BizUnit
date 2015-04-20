@@ -351,14 +351,23 @@ namespace BizUnit.CoreSteps.TestSteps
             return fname;
         }
 
-        internal static MemoryStream GetOutputStream(object outputMessage)
+        internal static Stream GetOutputStream(object outputMessage)
         {
-            var ms = new MemoryStream();
-            var outputSerializer = new XmlSerializer(outputMessage.GetType());
-            outputSerializer.Serialize(ms, outputMessage);
-            ms.Seek(0, SeekOrigin.Begin);
+            Stream ms = null;
+            try
+            {
+                ms = new MemoryStream();
+                var outputSerializer = new XmlSerializer(outputMessage.GetType());
+                outputSerializer.Serialize(ms, outputMessage);
+                ms.Seek(0, SeekOrigin.Begin);
 
-            return ms;
+                return ms;
+            }
+            catch
+            {
+                if (ms != null) ms.Dispose();
+                throw;
+            }
         }
 
         internal static string GetDefaultNamespace(Assembly assembly, string msgTypeName)

@@ -143,10 +143,19 @@ namespace BizUnit.CoreSteps.TestSteps
 
             using (var stringReader = new StringReader(fileContents))
             {
-                var ds = new DataSet("DataStore");
-                ds.ReadXmlSchema(datasetSchemaFile);
-                ds.ReadXml(stringReader);
-                return ds;
+                DataSet ds = null;
+                try
+                {
+                    ds = new DataSet("DataStore");
+                    ds.ReadXmlSchema(datasetSchemaFile);
+                    ds.ReadXml(stringReader);
+                    return ds;
+                }
+                catch
+                {
+                    if (ds != null) ds.Dispose();
+                    throw;
+                }
             }
         }
 
