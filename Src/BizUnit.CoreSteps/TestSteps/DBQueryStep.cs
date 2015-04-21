@@ -188,62 +188,62 @@ namespace BizUnit.CoreSteps.TestSteps
 		{
 			dbDataStringValue = Convert.ToString(dbData);
 
-			switch( dbData.GetType().ToString() )
+		    switch (Type.GetTypeCode(dbData.GetType()))
 			{
-				case( "System.DateTime" ):
+				case(TypeCode.DateTime):
 					var dbDt = (DateTime)dbData;
 					var targetDt = Convert.ToDateTime(targetValue);
 					return targetDt.CompareTo( dbDt );
 
-				case( "System.DBNull" ):
+				case(TypeCode.DBNull):
 					dbDataStringValue = "null";
 					return targetValue.CompareTo( "null" );
 
-				case( "System.String" ):
+				case(TypeCode.String):
 					dbDataStringValue = (string)dbData;
 					return targetValue.CompareTo( (string)dbData );
                      
-				case( "System.Int16" ):
+				case(TypeCode.Int16):
 					var dbInt16 = (Int16)dbData;
 					var targetInt16 = Convert.ToInt16(targetValue);
 					return targetInt16.CompareTo( dbInt16 );
 
-				case( "System.Int32" ):
+				case(TypeCode.Int32):
 					var dbInt32 = (Int32)dbData;
 					var targetInt32 = Convert.ToInt32(targetValue);
 					return targetInt32.CompareTo( dbInt32 );
 
-				case( "System.Int64" ):
+				case(TypeCode.Int64):
 					var dbInt64 = (Int64)dbData;
 					var targetInt64 = Convert.ToInt64(targetValue);
 					return targetInt64.CompareTo( dbInt64 );
 
-				case( "System.Double" ):
+				case(TypeCode.Double):
 					var dbDouble = (Double)dbData;
 					var targetDouble = Convert.ToDouble(targetValue);
 					return targetDouble.CompareTo( dbDouble );
 
-				case( "System.Decimal" ):
+				case(TypeCode.Decimal):
 					var dbDecimal = (Decimal)dbData;
 					var targetDecimal = Convert.ToDecimal(targetValue);
 					return targetDecimal.CompareTo( dbDecimal );
 
-				case( "System.Boolean" ):
+				case(TypeCode.Boolean):
 					var dbBoolean = (Boolean)dbData;
 					var targetBoolean = Convert.ToBoolean(targetValue);
 					return targetBoolean.CompareTo( dbBoolean );
 
-				case( "System.Byte" ):
+				case(TypeCode.Byte):
 					var dbByte = (Byte)dbData;
 					var targetByte = Convert.ToByte(targetValue);
 					return targetByte.CompareTo( dbByte );
 
-				case( "System.Char" ):
+				case(TypeCode.Char):
 					var dbChar = (Char)dbData;
 					var targetChar = Convert.ToChar(targetValue);
 					return targetChar.CompareTo( dbChar );
 
-				case( "System.SByte" ):
+				case(TypeCode.SByte):
 					var dbSByte = (SByte)dbData;
 					var targetSByte = Convert.ToSByte(targetValue);
 					return targetSByte.CompareTo( dbSByte );
