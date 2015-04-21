@@ -253,21 +253,30 @@ namespace BizUnit.CoreSteps.TestSteps
 			}
 		}
 
-		private static DataSet FillDataSet(string connectionString, string sqlQuery)
-		{
-			var connection = new SqlConnection(connectionString);
-			var ds = new DataSet();
-
-			using ( connection )
-			{
-				var adapter = new SqlDataAdapter
-				                  {
-				                      SelectCommand = new SqlCommand(sqlQuery, connection)
-				                  };
-			    adapter.Fill( ds );
-				return ds;
-			}
-		}
+        private static DataSet FillDataSet(string connectionString, string sqlQuery)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                using (var command = new SqlCommand(sqlQuery, connection))
+                {
+                    using (var adapter = new SqlDataAdapter(command))
+                    {
+                        DataSet ds = null;
+                        try
+                        {
+                            ds = new DataSet();
+                            adapter.Fill(ds);
+                            return ds;
+                        }
+                        catch
+                        {
+                            if (ds != null) ds.Dispose();
+                            throw;
+                        }
+                    }
+                }
+            }
+        }
 
 		private static string BuildSqlQuery( XmlNode queryConfig, Context context )
 		{
@@ -286,7 +295,10 @@ namespace BizUnit.CoreSteps.TestSteps
             return rawSqlQuery;
 		}
 
-	    public void Execute(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Execute(Context context)
 	    {
             context.LogInfo("Using database connection string: {0}", ConnectionString);
 	        var sqlQueryToExecute = SQLQuery.GetFormattedSqlQuery();
@@ -352,6 +364,9 @@ namespace BizUnit.CoreSteps.TestSteps
             }
 	    }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Validate(Context context)
 	    {
             // delayBeforeCheck - optional
@@ -533,6 +548,9 @@ namespace BizUnit.CoreSteps.TestSteps
     /// </summary>
     public class DBRowsToValidateParamFormatter : ITestStepParameterFormatter
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public object[] FormatParameters(Type type, object[] args, Context ctx)
         {
             object[] retVal;

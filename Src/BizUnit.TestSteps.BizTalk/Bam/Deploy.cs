@@ -68,45 +68,48 @@ namespace BizUnit.TestSteps.BizTalk.Bam
 			sb.Append('"');
 			sb.Append(BamDefinitionXmlFilePath);
 			sb.Append('"');
-			
-			var bamProcess = new Process
-			                     {
-			                         StartInfo = {WorkingDirectory = TrackingFolderPath, FileName = "bm.exe"}
-			                     };
 
-            if (Action == BamDeploymentAction.Deploy)
+            using (var bamProcess = new Process())
             {
-                context.LogInfo("Deploying BAM definition file {0}", BamDefinitionXmlFilePath);
-                bamProcess.StartInfo.Arguments = "deploy-all -DefinitionFile:" + sb;
-            }
-            else
-            {
-                context.LogInfo("Undeploying BAM definition file {0}", BamDefinitionXmlFilePath);
-                bamProcess.StartInfo.Arguments = "remove-all -DefinitionFile:" + sb;
-            }
+                bamProcess.StartInfo = new ProcessStartInfo{ WorkingDirectory = TrackingFolderPath, FileName = "bm.exe" };
 
-			bamProcess.StartInfo.UseShellExecute = true;
-
-			bamProcess.Start();
-
-            // If a positive delay period is specfied then wait, if -1 wait for the BAM deployment process to complete
-            if (DelayForCompletion > 0)
-            {
-                // Wait for deployment process to complete
-                if (DelayForCompletion == -1)
+                if (Action == BamDeploymentAction.Deploy)
                 {
-                    context.LogInfo("Waiting for the BAM deployment process to complete before recommencing testing.", DelayForCompletion);
-                    bamProcess.WaitForExit();
+                    context.LogInfo("Deploying BAM definition file {0}", BamDefinitionXmlFilePath);
+                    bamProcess.StartInfo.Arguments = "deploy-all -DefinitionFile:" + sb;
                 }
                 else
                 {
-                    context.LogInfo("Waiting for {0} seconds before recommencing testing.", DelayForCompletion);
-                    Thread.Sleep(DelayForCompletion * 1000);
+                    context.LogInfo("Undeploying BAM definition file {0}", BamDefinitionXmlFilePath);
+                    bamProcess.StartInfo.Arguments = "remove-all -DefinitionFile:" + sb;
+                }
+
+                bamProcess.StartInfo.UseShellExecute = true;
+
+                bamProcess.Start();
+
+                // If a positive delay period is specfied then wait, if -1 wait for the BAM deployment process to complete
+                if (DelayForCompletion > 0)
+                {
+                    // Wait for deployment process to complete
+                    if (DelayForCompletion == -1)
+                    {
+                        context.LogInfo("Waiting for the BAM deployment process to complete before recommencing testing.", DelayForCompletion);
+                        bamProcess.WaitForExit();
+                    }
+                    else
+                    {
+                        context.LogInfo("Waiting for {0} seconds before recommencing testing.", DelayForCompletion);
+                        Thread.Sleep(DelayForCompletion * 1000);
+                    }
                 }
             }
         }
 
-	    public override void Validate(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Validate(Context context)
 	    {
 	    }
 	}

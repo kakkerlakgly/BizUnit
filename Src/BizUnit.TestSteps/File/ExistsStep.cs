@@ -44,6 +44,10 @@ namespace BizUnit.TestSteps.File
         ///</summary>
         public string SearchPattern { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Execute(Context context)
         {
             var now = DateTime.Now;
@@ -65,6 +69,10 @@ namespace BizUnit.TestSteps.File
             context.LogInfo("FilesExistStep found: \"{0}\" files", filelist.Length);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             ArgumentValidation.CheckForEmptyString(DirectoryPath, "DirectoryPath");

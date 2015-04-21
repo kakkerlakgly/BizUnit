@@ -90,7 +90,11 @@ namespace BizUnit.CoreSteps.TestSteps
             Execute(context);
 		}
 
-	    public void Execute(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
+        public void Execute(Context context)
 	    {
             var di = new DirectoryInfo(_directory);
             var files = di.GetFiles(_searchPattern);
@@ -105,6 +109,10 @@ namespace BizUnit.CoreSteps.TestSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public void Validate(Context context)
 	    {
             if (String.IsNullOrEmpty(_directory))

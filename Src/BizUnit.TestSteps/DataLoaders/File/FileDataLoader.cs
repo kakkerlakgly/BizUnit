@@ -53,11 +53,17 @@ namespace BizUnit.TestSteps.DataLoaders.File
         ///</summary>
         public string FilePath { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override Stream Load(Context context)
         {
             return StreamHelper.LoadFileToStream(FilePath);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Validate(Context context)
         {
             ArgumentValidation.CheckForEmptyString(FilePath, "FilePath");

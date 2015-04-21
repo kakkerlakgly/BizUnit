@@ -139,110 +139,110 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
             var ruleset = ruleStore.GetRuleSet(rsInfo[0]);
 
-            // Create an instance of the DebugTrackingInterceptor
-            var dti = new DebugTrackingInterceptor(DebugTracking);
 
-            // Create an instance of the Policy Tester class
-            var policyTester = new PolicyTester(ruleset);
 
             // load the facts into array
-            var facts = new object[FactsList.Count]; 
+            var facts = new object[FactsList.Count];
             var i = 0;
 
-            foreach (var currentFact in FactsList)
+            // Create an instance of the Policy Tester class
+            using (var policyTester = new PolicyTester(ruleset))
             {
-                switch (currentFact.GetType().ToString())
+                foreach (var currentFact in FactsList)
                 {
-                    case "ObjectFact":
-                        {
-                            var fact = currentFact as ObjectFact;
-
-                            object[] objectArgs = null;
-                            if (null != fact.Args)
+                    switch (currentFact.GetType().ToString())
+                    {
+                        case "ObjectFact":
                             {
-                                objectArgs = fact.Args.Split(',');
-                            }
+                                var fact = currentFact as ObjectFact;
 
-                            Type type;
-                            if (fact.AssemblyPath.Length > 0)
-                            {
-                                var asm = Assembly.LoadWithPartialName(fact.AssemblyPath);
-                                if (asm == null)
+                                object[] objectArgs = null;
+                                if (null != fact.Args)
                                 {
-                                    // fail
-                                    throw (new Exception("failed to create type " + fact.Type));
+                                    objectArgs = fact.Args.Split(',');
                                 }
-                                type = asm.GetType(fact.Type, true, false);
-                            }
-                            else
-                            {
-                                // must be in path
-                                type = Type.GetType(fact.Type);
-                            }
 
-                            facts[i] = Activator.CreateInstance(type, objectArgs);
-                            break;
-                        }
-                    case "DocumentFact":
-                        {
-                            var fact = currentFact as DocumentFact;
-                            var xd1 = new XmlDocument();
-                            xd1.Load(fact.InstanceDocument);
-                            var txd = new TypedXmlDocument(fact.SchemaType, xd1);
-                            facts[i] = txd; 
-                            break;
-                        }
-                    case "DataConnectionFact":
-                        {
-                            var fact = currentFact as DataConnectionFact;
-                            var conn = new SqlConnection(fact.ConnectionString);
-                            conn.Open();
-                            var dc = new DataConnection(fact.Dataset, fact.TableName, conn);
-                            facts[i] = dc;
-                            break;
-                        }
-                    case "dataTable":
-                    case "dataRow":
-                        {
-                            var fact = currentFact as DataTableFact;
+                                Type type;
+                                if (fact.AssemblyPath.Length > 0)
+                                {
+                                    var asm = Assembly.Load(fact.AssemblyPath);
+                                    if (asm == null)
+                                    {
+                                        // fail
+                                        throw (new Exception("failed to create type " + fact.Type));
+                                    }
+                                    type = asm.GetType(fact.Type, true, false);
+                                }
+                                else
+                                {
+                                    // must be in path
+                                    type = Type.GetType(fact.Type);
+                                }
 
-                            var dAdapt = new SqlDataAdapter();
-                            dAdapt.TableMappings.Add("Table", fact.TableName);
-                            var conn = new SqlConnection(fact.ConnectionString);
-                            conn.Open();
-                            var myCommand = new SqlCommand(fact.Command, conn) {CommandType = CommandType.Text};
-                            dAdapt.SelectCommand = myCommand;
-                            var ds = new DataSet(fact.Dataset);
-                            dAdapt.Fill(ds);
-                            var tdt = new TypedDataTable(ds.Tables[fact.TableName]);
-                            if (fact.Type == "dataRow")
-                            {
-                                var tdr = new TypedDataRow(ds.Tables[fact.TableName].Rows[0], tdt);
-                                facts[i] = tdr;
+                                facts[i] = Activator.CreateInstance(type, objectArgs);
+                                break;
                             }
-                            else
+                        case "DocumentFact":
                             {
-                                facts[i] = tdt;
+                                var fact = currentFact as DocumentFact;
+                                var xd1 = new XmlDocument();
+                                xd1.Load(fact.InstanceDocument);
+                                var txd = new TypedXmlDocument(fact.SchemaType, xd1);
+                                facts[i] = txd;
+                                break;
                             }
-                            break;
-                        }
+                        case "DataConnectionFact":
+                            {
+                                var fact = currentFact as DataConnectionFact;
+                                var conn = new SqlConnection(fact.ConnectionString);
+                                conn.Open();
+                                var dc = new DataConnection(fact.Dataset, fact.TableName, conn);
+                                facts[i] = dc;
+                                break;
+                            }
+                        case "dataTable":
+                        case "dataRow":
+                            {
+                                var fact = currentFact as DataTableFact;
+
+                                var conn = new SqlConnection(fact.ConnectionString);
+                                conn.Open();
+                                var myCommand = new SqlCommand(fact.Command, conn) { CommandType = CommandType.Text };
+                                var dAdapt = new SqlDataAdapter();
+                                dAdapt.TableMappings.Add("Table", fact.TableName);
+                                dAdapt.SelectCommand = myCommand;
+                                var ds = new DataSet(fact.Dataset);
+                                dAdapt.Fill(ds);
+                                var tdt = new TypedDataTable(ds.Tables[fact.TableName]);
+                                if (fact.Type == "dataRow")
+                                {
+                                    var tdr = new TypedDataRow(ds.Tables[fact.TableName].Rows[0], tdt);
+                                    facts[i] = tdr;
+                                }
+                                else
+                                {
+                                    facts[i] = tdt;
+                                }
+                                break;
+                            }
+                    }
+                    i++;
                 }
-                i++;
-            }
 
-            // Execute Policy Tester
-            try
-            {
-                policyTester.Execute(facts, dti);
-            }
-            catch (Exception e)
-            {
-                context.LogException(e);
-                throw;
-            }
-            finally
-            {
-                dti.CloseTraceFile();
+                // Create an instance of the DebugTrackingInterceptor
+                using (var dti = new DebugTrackingInterceptor(DebugTracking))
+                {
+                    // Execute Policy Tester
+                    try
+                    {
+                        policyTester.Execute(facts, dti);
+                    }
+                    catch (Exception e)
+                    {
+                        context.LogException(e);
+                        throw;
+                    }
+                }
             }
 
             // write out all document instances passed in
@@ -256,7 +256,6 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
                             context.LogData("TypedXmlDocument result: ", txd.Document.OuterXml);
                             Stream data = StreamHelper.LoadMemoryStream(txd.Document.OuterXml);
-
                             // Validate if configured...
                             // HACK: We need to prevent ExecuteValidator for /each/ TypedXmlDocument
                             if (txd.DocumentType == "UBS.CLAS.PoC.Schemas.INSERTS")
@@ -288,6 +287,9 @@ namespace BizUnit.TestSteps.BizTalk.Bre
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Validate(Context context)
         {
         }

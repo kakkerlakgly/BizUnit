@@ -68,6 +68,7 @@ namespace BizUnit.TestSteps.BizTalk.Map
 
         /// <summary>
         /// Execute the map, updated to use 'XSLCompiledTransform' for BizTalk 2013, This KB hints at this http://support.microsoft.com/kb/2887564
+        /// Credit goes to MichaelBilling https://bizunit.codeplex.com/discussions/465271
         /// </summary>
         /// <param name='source'>The input Xml instance to map</param>
         /// <param name='destination'>The ouput Xml instance produced by the map</param>

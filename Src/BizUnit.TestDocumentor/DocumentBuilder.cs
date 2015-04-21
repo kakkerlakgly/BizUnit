@@ -123,12 +123,13 @@ namespace BizUnit.TestDocumentor
             }
 
             var report = templateReport.Replace("<!-- ##BizUnitTests## -->", sb.ToString());
-            var sw = new StreamWriter(
-            File.Open(outpurFileName, FileMode.CreateNew, FileAccess.ReadWrite));
-
-            sw.WriteLine(report);
-            sw.Flush();
-            sw.Close();
+            using (var stream = File.Open(outpurFileName, FileMode.CreateNew, FileAccess.ReadWrite))
+            {
+                using (var sw = new StreamWriter(stream))
+                {
+                    sw.WriteLine(report);
+                }
+            }
        }
 
         private static string BuildTestCaseFragment(string testCaseTemplate, TestCase test, string testCaseDirectory, bool searchRecursively)

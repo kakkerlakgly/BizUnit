@@ -90,31 +90,36 @@ namespace BizUnit.CoreSteps.TestSteps
 			ds.WriteXmlSchema(datasetWriteXmlSchemaPath);
 		}
 
-		private static DataSet GetDataSet(string connectionString, string tableNames)
-		{
-			var arrtableName = tableNames.Split(',');
-			var ds = new DataSet("DataStore");
-			
+        private static DataSet GetDataSet(string connectionString, string tableNames)
+        {
+            DataSet ds = null;
 
-            using (var connection = new SqlConnection(connectionString))
+            try
             {
-                foreach(string tableName in arrtableName)
+                ds = new DataSet("DataStore");
+                var arrtableName = tableNames.Split(',');
+                using (var connection = new SqlConnection(connectionString))
                 {
-                    using (var comm = new SqlCommand
+                    foreach (string tableName in arrtableName)
                     {
-                        Connection = connection, CommandType = CommandType.Text, CommandText = "SELECT * FROM " + tableName
-                    })
-                    {
-                        using (var da = new SqlDataAdapter {SelectCommand = comm})
+                        using (var comm = new SqlCommand("SELECT * FROM " + tableName, connection))
                         {
-                            da.Fill(ds,tableName);
-                            da.FillSchema(ds,SchemaType.Source);
+                            comm.CommandType = CommandType.Text;
+                            using (var da = new SqlDataAdapter(comm))
+                            {
+                                da.Fill(ds, tableName);
+                                da.FillSchema(ds, SchemaType.Source);
+                            }
                         }
                     }
                 }
+                return ds;
             }
-
-		    return ds;
-		}
+            catch
+            {
+                if (ds != null) ds.Dispose();
+                throw;
+            }
+        }
 	}
 }

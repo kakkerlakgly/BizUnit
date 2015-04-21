@@ -41,6 +41,10 @@ namespace BizUnit.TestSteps.Time
             context.LogInfo("A delay of {0} milli second has successfully completed.", DelayMilliSeconds.ToString());
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
 	    {
 	        // _timeOut - no validation required

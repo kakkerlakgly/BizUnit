@@ -91,13 +91,7 @@ namespace BizUnit.CoreSteps.TestSteps
 			var mi = obj.GetType().GetMethod(methodToInvoke);
 			var pi = mi.GetParameters();
 			
-			var parameterArray = pi.Select(t1 => t1.ParameterType).Select(t => new XmlSerializer(t)).Select((xs, c) => xs.Deserialize(new XmlTextReader(StreamHelper.LoadMemoryStream(context.GetInnerXml(parameters[c]))))).ToList();
-
-		    var paramsForCall = new object[parameterArray.Count];
-			for( int c = 0; c < parameterArray.Count; c++ )
-			{
-				paramsForCall[c] = parameterArray[c];
-			}
+			var paramsForCall = pi.Select(t1 => t1.ParameterType).Select(t => new XmlSerializer(t)).Select((xs, c) => xs.Deserialize(new XmlTextReader(StreamHelper.LoadMemoryStream(context.GetInnerXml(parameters[c]))))).ToArray();
 
 			context.LogInfo("About to call the method: {0}() on the type {1}", methodToInvoke, typeName );
 			// Call the .Net Object...
@@ -108,13 +102,20 @@ namespace BizUnit.CoreSteps.TestSteps
 			{
 				var xsRet = new XmlSerializer(returnValue.GetType());
 
-				var rs = new MemoryStream();
-				xsRet.Serialize( new StreamWriter(rs), returnValue );
-				var es = StreamHelper.LoadMemoryStream(returnParameter);
+                using (var rs = new MemoryStream())
+                {
+                    using (var writer = new StreamWriter(rs))
+                    {
+                        xsRet.Serialize(writer, returnValue);
+                        using (var es = StreamHelper.LoadMemoryStream(returnParameter))
+                        {
 
-				rs.Seek(0, SeekOrigin.Begin);
-				es.Seek(0, SeekOrigin.Begin);
-				StreamHelper.CompareXmlDocs(rs, es, context);
+                            rs.Seek(0, SeekOrigin.Begin);
+                            es.Seek(0, SeekOrigin.Begin);
+                            StreamHelper.CompareXmlDocs(rs, es, context);
+                        }
+                    }
+                }
 			}
 		}
 

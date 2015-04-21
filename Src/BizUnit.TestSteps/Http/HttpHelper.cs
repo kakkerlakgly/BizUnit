@@ -34,15 +34,12 @@ namespace BizUnit.TestSteps.Http
 		/// <param name="requestTimeout">The request timeout value</param>
 		/// <param name="context">The BizUnit context object which holds state and is passed between test steps</param>
 		/// <returns>response MemoryStream</returns>
-		public static MemoryStream SendRequestData(String url, byte[] payload, int requestTimeout, Context context)
+		public static Stream SendRequestData(String url, byte[] payload, int requestTimeout, Context context)
 		{
-			WebResponse result = null;
-			var response = new MemoryStream();
-			Stream responseStream = null;
-			Stream requestStream = null;
-			
+            Stream response = null;
             try 
 			{
+                response = new MemoryStream();
                 var req = (HttpWebRequest)WebRequest.Create(url);
 
 				req.Method = "POST";
@@ -50,47 +47,37 @@ namespace BizUnit.TestSteps.Http
 				req.ContentType = "text/xml; charset=\"utf-8\"";
 
 				req.ContentLength = payload.Length;
-				requestStream = req.GetRequestStream();
-				requestStream.Write( payload, 0, payload.Length );
+                using (var requestStream = req.GetRequestStream())
+                {
+                    requestStream.Write(payload, 0, payload.Length);
 
-				result = req.GetResponse();
-				responseStream = result.GetResponseStream();
+                    using (var result = req.GetResponse())
+                    {
+                        using (var responseStream = result.GetResponseStream())
+                        {
 
-				const int bufferSize = 4096;
-				var buffer = new byte[bufferSize];
+                            const int bufferSize = 4096;
+                            var buffer = new byte[bufferSize];
 
-				int count = responseStream.Read( buffer, 0, bufferSize );
-				while (count > 0) 
-				{
-					response.Write(buffer, 0, count);
-					count = responseStream.Read(buffer, 0, bufferSize );
-				}
-				response.Seek(0, SeekOrigin.Begin);
-			} 
+                            int count = responseStream.Read(buffer, 0, bufferSize);
+                            while (count > 0)
+                            {
+                                response.Write(buffer, 0, count);
+                                count = responseStream.Read(buffer, 0, bufferSize);
+                            }
+                            response.Seek(0, SeekOrigin.Begin);
+                        }
+                    }
+                }
+                return response;
+            } 
 			catch(Exception e) 
 			{
+                if ((response != null)) response.Dispose();
 				context.LogException( e );
 				throw;
 			} 
-			finally 
-			{
-				if ( null != result ) 
-				{
-					result.Close();
-				}
 
-				if ( null != responseStream )
-				{
-					responseStream.Close();
-				}
-
-				if ( null != requestStream )
-				{
-					requestStream.Close();
-				}
-			}
-
-			return response;
 		}
 	}
 }

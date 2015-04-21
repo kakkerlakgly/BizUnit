@@ -42,15 +42,11 @@ namespace BizUnit.TestSteps.File
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
         {
-            FileStream dstFs = null;
-            Stream srcFs = null;
 
-            try
+            context.LogInfo("FileCreateStep about to copy the data from datasource to: {0}", CreationPath);
+
+            using (Stream srcFs = DataSource.Load(context), dstFs = System.IO.File.Create(CreationPath))
             {
-                context.LogInfo("FileCreateStep about to copy the data from datasource to: {0}", CreationPath);
-
-                srcFs = DataSource.Load(context);
-                dstFs = System.IO.File.Create(CreationPath);
                 var buff = new byte[BuffSize];
 
                 int read = srcFs.Read(buff, 0, BuffSize);
@@ -60,23 +56,15 @@ namespace BizUnit.TestSteps.File
                     dstFs.Write(buff, 0, read);
                     read = srcFs.Read(buff, 0, BuffSize);
                 }
-
-                context.Add(FileCreationPathContextKey, CreationPath, true);
             }
-            finally
-            {
-                if (null != srcFs)
-                {
-                    srcFs.Close();
-                }
+            context.Add(FileCreationPathContextKey, CreationPath, true);
 
-                if (null != dstFs)
-                {
-                    dstFs.Close();
-                }
-            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             if (string.IsNullOrEmpty(CreationPath))

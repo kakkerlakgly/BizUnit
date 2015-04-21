@@ -59,8 +59,10 @@ namespace BizUnit.CoreSteps.TestSteps
 			{
 				string queuePath = queue.InnerText;
 
-				var q = new MessageQueue(queuePath);
-				q.Purge();
+                using (var q = new MessageQueue(queuePath))
+                {
+                    q.Purge();
+                }
 
 				context.LogInfo( "MSMQQueuePurgeStep has purged the queue: {0}", queuePath );
 			}

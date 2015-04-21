@@ -83,7 +83,11 @@ namespace BizUnit.CoreSteps.TestSteps
             context.LogInfo("FileDeleteStep has deleted file: {0}", fileToDeletePath);
         }
 
-	    public void Execute(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
+        public void Execute(Context context)
 	    {
 	        foreach(string file in _filesToDelete)
 	        {
@@ -91,6 +95,10 @@ namespace BizUnit.CoreSteps.TestSteps
 	        }
 	    }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public void Validate(Context context)
 	    {
 	        if(null == _filesToDelete || 0 == _filesToDelete.Count)

@@ -112,34 +112,34 @@ namespace BizUnit.CoreSteps.TestSteps
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public void Execute(Context context)
-	    {
+        {
             context.LogInfo("ExecuteCommandStep about to execute the command: {0} params: {1}, working directory: {2}", _processName, _processParams, _workingDirectory);
 
-            var process = new Process
-                              {
-                                  StartInfo =
-                                      {
-                                          UseShellExecute = false,
-                                          RedirectStandardOutput = true,
-                                          CreateNoWindow = true,
-                                          Arguments = _processParams,
-                                          FileName = _processName,
-                                          WorkingDirectory = _workingDirectory
-                                      }
-                              };
-
-            process.Start();
-
-            var output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-            var exitCode = process.ExitCode;
-
-            if (0 != exitCode)
+            using (var process = new Process())
             {
-                throw new ApplicationException(string.Format("ExecuteCommandStep received an exit code: {0} while executing process {1} {2}\n\nOutput: {3}", exitCode, _processName, _processParams, output));
-            }
+                process.StartInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                    Arguments = _processParams,
+                    FileName = _processName,
+                    WorkingDirectory = _workingDirectory
+                };
 
-            context.LogInfo("ExecuteCommandStep {0} output:\n{1}", _processName, output);
+                process.Start();
+
+                var output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+                var exitCode = process.ExitCode;
+
+                if (0 != exitCode)
+                {
+                    throw new ApplicationException(string.Format("ExecuteCommandStep received an exit code: {0} while executing process {1} {2}\n\nOutput: {3}", exitCode, _processName, _processParams, output));
+                }
+
+                context.LogInfo("ExecuteCommandStep {0} output:\n{1}", _processName, output);
+            }
         }
 
         /// <summary>

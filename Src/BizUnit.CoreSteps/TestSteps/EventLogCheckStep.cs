@@ -215,7 +215,10 @@ namespace BizUnit.CoreSteps.TestSteps
                 Execute(context);
 		    }
 
-	        public void Execute(Context context)
+            /// <summary>
+            /// 
+            /// </summary>
+            public void Execute(Context context)
 	        {
                 if (_delayBeforeCheck > 0)
                 {
@@ -277,7 +280,10 @@ namespace BizUnit.CoreSteps.TestSteps
                 }
             }
 
-	        public void Validate(Context context)
+            /// <summary>
+            /// 
+            /// </summary>
+            public void Validate(Context context)
 	        {
                 if (string.IsNullOrEmpty(_machine))
                 {

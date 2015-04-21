@@ -65,32 +65,31 @@ namespace BizUnit.CoreSteps.TestSteps
 		/// </summary>
 		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(XmlNode testConfig, Context context)
-		{
-			// read test config...
-			string path = context.ReadConfigAsString( testConfig, "Path" );
-			string fileFilter = context.ReadConfigAsString( testConfig, "FileFilter" );
-			int timeOut = context.ReadConfigAsInt32( testConfig, "TimeOut" );
-			
-			var watcher = new FileSystemWatcher
-			                  {
-			                      Path = path,
-			                      Filter = fileFilter,
-			                      NotifyFilter = NotifyFilters.LastWrite,
-			                      EnableRaisingEvents = true,
-			                      IncludeSubdirectories = false
-			                  };
-		    watcher.Changed += OnCreated;
-			_mre = new ManualResetEvent(false);
+        public void Execute(XmlNode testConfig, Context context)
+        {
+            // read test config...
+            string path = context.ReadConfigAsString(testConfig, "Path");
+            string fileFilter = context.ReadConfigAsString(testConfig, "FileFilter");
+            int timeOut = context.ReadConfigAsInt32(testConfig, "TimeOut");
 
-			if(!_mre.WaitOne(timeOut, false))
-			{
-				throw new Exception(string.Format("WaitOnFileStep timed out after {0} milisecs watching path:{1}, filter{2}", timeOut, path, fileFilter));
-			}
+            using (var watcher = new FileSystemWatcher(path, fileFilter))
+            {
+                watcher.NotifyFilter = NotifyFilters.LastWrite;
+                watcher.EnableRaisingEvents = true;
+                watcher.IncludeSubdirectories = false;
 
-            context.LogInfo(string.Format("WaitOnFileStep found the file: {0}", _newFilePath));
-            context.Add("waitedForFileName", _newFilePath);
-		}
+                watcher.Changed += OnCreated;
+                _mre = new ManualResetEvent(false);
+
+                if (!_mre.WaitOne(timeOut, false))
+                {
+                    throw new Exception(string.Format("WaitOnFileStep timed out after {0} milisecs watching path:{1}, filter{2}", timeOut, path, fileFilter));
+                }
+
+                context.LogInfo(string.Format("WaitOnFileStep found the file: {0}", _newFilePath));
+                context.Add("waitedForFileName", _newFilePath);
+            }
+        }
 
 		private void OnCreated(object sender, FileSystemEventArgs e) 
 		{ 

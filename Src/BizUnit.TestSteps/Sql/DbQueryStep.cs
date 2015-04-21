@@ -187,20 +187,34 @@ namespace BizUnit.TestSteps.Sql
 
         private static DataSet FillDataSet(string connectionString, string sqlQuery)
         {
-            var connection = new SqlConnection(connectionString);
-            var ds = new DataSet();
-
-            using (connection)
+            using (var connection = new SqlConnection(connectionString))
             {
-                var adapter = new SqlDataAdapter
-                                  {
-                                      SelectCommand = new SqlCommand(sqlQuery, connection)
-                                  };
-                adapter.Fill(ds);
-                return ds;
+                using (var command = new SqlCommand(sqlQuery, connection))
+                {
+                    using (var adapter = new SqlDataAdapter(command))
+                    {
+                        DataSet ds = null;
+                        try
+                        {
+                            ds = new DataSet();
+                            adapter.Fill(ds);
+                            return ds;
+
+                        }
+                        catch
+                        {
+                            if (ds != null) ds.Dispose();
+                            throw;
+                        }
+                    }
+                }
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             // _delayBeforeCheck - optional

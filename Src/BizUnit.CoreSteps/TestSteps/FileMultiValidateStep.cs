@@ -123,7 +123,7 @@ namespace BizUnit.CoreSteps.TestSteps
             {
                 context.LogInfo("FileXmlValidateStep validating file: {0}", filePath );
 
-                MemoryStream xmlData = StreamHelper.LoadFileToStream(filePath, timeout);
+                var xmlData = StreamHelper.LoadFileToStream(filePath, timeout);
                 StreamHelper.WriteStreamToConsole( "File data to be validated", xmlData, context );
 
                 // Check it against the validate steps to see if it matches one of them

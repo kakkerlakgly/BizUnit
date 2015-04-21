@@ -91,22 +91,24 @@ namespace BizUnit.CoreSteps.TestSteps
                 }
 
                 var query = new SelectQuery("Select * from Win32_NTEventLogFile");
-                var searcher = new ManagementObjectSearcher(scope, query);
-
-                foreach (var logFileObject in searcher.Get())
+                using (var searcher = new ManagementObjectSearcher(scope, query))
                 {
-                    var methodArgs = new object[] { destinationPath + @"\" + server + ".evt" };
 
-                    try
+                    foreach (var logFileObject in searcher.Get())
                     {
-                        ((ManagementObject)logFileObject).InvokeMethod("BackupEventLog", methodArgs);
-                    }
-                    catch (Exception e1)
-                    {
-                        //access denied on method call if scope path referes to the same  
-                        context.LogException(e1);
+                        var methodArgs = new object[] { destinationPath + @"\" + server + ".evt" };
 
-                        throw;
+                        try
+                        {
+                            ((ManagementObject)logFileObject).InvokeMethod("BackupEventLog", methodArgs);
+                        }
+                        catch (Exception e1)
+                        {
+                            //access denied on method call if scope path referes to the same  
+                            context.LogException(e1);
+
+                            throw;
+                        }
                     }
                 }
             }

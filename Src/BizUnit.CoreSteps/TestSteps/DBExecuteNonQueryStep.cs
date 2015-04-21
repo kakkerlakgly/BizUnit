@@ -119,7 +119,10 @@ namespace BizUnit.CoreSteps.TestSteps
             Execute(context);
 		}
 
-	    public void Execute(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Execute(Context context)
 	    {
             context.LogInfo("Using database connection string: {0}", ConnectionString);
             context.LogInfo("Executing query: {0}", SQLQuery.GetFormattedSqlQuery());
@@ -140,6 +143,9 @@ namespace BizUnit.CoreSteps.TestSteps
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Validate(Context context)
 	    {
             // delayBeforeExecution - optional

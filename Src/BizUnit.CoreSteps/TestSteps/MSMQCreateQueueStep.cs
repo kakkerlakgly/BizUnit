@@ -64,7 +64,10 @@ namespace BizUnit.CoreSteps.TestSteps
 				string queuePath = queue.InnerText;
 				bool transactional = context.ReadConfigAsBool(testConfig, "QueuePath/@transactional");
 
-				MessageQueue.Create(queuePath, transactional);
+                using (var messageQueue = MessageQueue.Create(queuePath, transactional))
+                {
+
+                }
 
 				context.LogInfo( "The queue: \"{0}\" was created successfully.", queuePath );
 			}

@@ -15,6 +15,7 @@
 using System;
 using System.Management;
 using BizUnit.Xaml;
+using System.Linq;
 
 namespace BizUnit.TestSteps.BizTalk.Host
 {
@@ -99,23 +100,21 @@ namespace BizUnit.TestSteps.BizTalk.Host
         /// </summary>
         public bool GrantLogOnAsService { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Execute(Context context)
         {
             var listofServers = Servers.Split(',');
             foreach (var server in listofServers)
             {
-                var mo = GetHostInstanceWmiObject(server, HostInstanceName);
-
-                using (mo)
+                using (var mo = GetHostInstanceWmiObject(server, HostInstanceName))
                 {
                     if (Action.ToLower() == "start")
                     {
                         if (!string.IsNullOrEmpty(Logon))
                         {
-                            var creds = new object[3];
-                            creds[0] = Logon;
-                            creds[1] = PassWord;
-                            creds[2] = GrantLogOnAsService;
+                            var creds = new object[] { Logon, PassWord, GrantLogOnAsService };
                             mo.InvokeMethod("Install", creds);
                         }
 
@@ -146,6 +145,9 @@ namespace BizUnit.TestSteps.BizTalk.Host
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Validate(Context context)
         {
             if (string.IsNullOrEmpty(Action))
@@ -171,7 +173,7 @@ namespace BizUnit.TestSteps.BizTalk.Host
                 }
             }
         }
-        
+
         private static ManagementObject GetHostInstanceWmiObject(string server, string hostName)
 		{
             // 2 represents an isolated host and 1 represents an in-process hosts, only an in-process 
@@ -184,34 +186,34 @@ namespace BizUnit.TestSteps.BizTalk.Host
                                   EnablePrivileges = true
                               };
 
-            var searcher = new ManagementObjectSearcher();
+            using (var searcher = new ManagementObjectSearcher())
+            {
 
-            ManagementScope scope = null == server ? new ManagementScope("root\\MicrosoftBizTalkServer", options) : new ManagementScope("\\\\" + server + "\\root\\MicrosoftBizTalkServer", options);
+                ManagementScope scope = null == server ? new ManagementScope("root\\MicrosoftBizTalkServer", options) : new ManagementScope("\\\\" + server + "\\root\\MicrosoftBizTalkServer", options);
 
-			searcher.Scope = scope;
-		
-			// Build a Query to enumerate the MSBTS_hostInstance instances 
-			var query = new SelectQuery
-			                {
-			                    QueryString =
-			                        String.Format("SELECT * FROM MSBTS_HostInstance where HostName='" + hostName +
-			                                      "' AND HostType=" + hostType.ToString())
-			                };
+                searcher.Scope = scope;
 
-            // Set the query for the searcher.
-			searcher.Query = query;
+                // Build a Query to enumerate the MSBTS_hostInstance instances 
+                var query = new SelectQuery
+                                {
+                                    QueryString =
+                                        String.Format("SELECT * FROM MSBTS_HostInstance where HostName='" + hostName +
+                                                      "' AND HostType=" + hostType.ToString())
+                                };
 
-			// Execute the query and determine if any results were obtained.
-			var queryCol = searcher.Get();			
-			var me = queryCol.GetEnumerator();
-			me.Reset();
+                // Set the query for the searcher.
+                searcher.Query = query;
 
-			if ( me.MoveNext() )
-			{
-				return (ManagementObject)me.Current;
-			}
-
-            throw new ApplicationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName ));
+                // Execute the query and determine if any results were obtained.
+                try
+                {
+                    return searcher.Get().OfType<ManagementObject>().First();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    throw new ApplicationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName));
+                }
+            }
 		}
 	}
 }

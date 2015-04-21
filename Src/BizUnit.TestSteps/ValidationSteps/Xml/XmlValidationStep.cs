@@ -101,6 +101,10 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
             return data;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             foreach(var schema in XmlSchemas)

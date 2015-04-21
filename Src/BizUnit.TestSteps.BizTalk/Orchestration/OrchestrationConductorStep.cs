@@ -124,7 +124,10 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
             }
         }
 
-	    public override void Validate(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Validate(Context context)
 	    {
 	    }
 
@@ -140,12 +143,14 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
 	        {
 	            foreach( var o in orchestrationSearcher.Get())
 	            {
-	                var orchestrationInstance = (ManagementObject) o;
-	                context.LogInfo("Starting Orchestration: {0}", orchestrationName);
-	                orchestrationInstance.InvokeMethod("Start", new object[] {2,2});
+                    using (var orchestrationInstance = (ManagementObject)o)
+                    {
+                        context.LogInfo("Starting Orchestration: {0}", orchestrationName);
+                        orchestrationInstance.InvokeMethod("Start", new object[] { 2, 2 });
 
-	                context.LogInfo("Orchestration: {0} was successfully started", orchestrationName);
-	                started = true;
+                        context.LogInfo("Orchestration: {0} was successfully started", orchestrationName);
+                        started = true;
+                    }
 	            }
 	        }
 
@@ -167,11 +172,13 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
 		    {
 		        foreach( var o in orchestrationSearcher.Get())
 		        {
-		            var orchestrationInstance = (ManagementObject) o;
-		            orchestrationInstance.InvokeMethod("Stop", new object[] {2,2});
+                    using (var orchestrationInstance = (ManagementObject)o)
+                    {
+                        orchestrationInstance.InvokeMethod("Stop", new object[] { 2, 2 });
 
-		            context.LogInfo("Orchestration: {0} was successfully stopped", orchestrationName);
-		            stopped = true;
+                        context.LogInfo("Orchestration: {0} was successfully stopped", orchestrationName);
+                        stopped = true;
+                    }
 		        }
 		    }
 

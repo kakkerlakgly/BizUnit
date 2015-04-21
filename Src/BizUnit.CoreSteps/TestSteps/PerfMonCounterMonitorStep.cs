@@ -98,51 +98,49 @@ namespace BizUnit.CoreSteps.TestSteps
             context.LogInfo("About to start monitoring: {0}\\{1}\\{2}({3}) for the target value: {4}", server, categoryName, counterName, instanceName, counterTargetValue);
 
             // Init perfmon counter...
-            var perfCounter = new PerformanceCounter
-                                  {
-                                      CategoryName = categoryName,
-                                      CounterName = counterName,
-                                      MachineName = server
-                                  };
-
-            if (null != instanceName)
+            using (var perfCounter = new PerformanceCounter(categoryName, counterName))
             {
-                perfCounter.InstanceName = instanceName;
-            }
+        perfCounter.MachineName = server;
 
-            // Set default value for sleepTime
-            if ( 0 == sleepTime)
-            {
-                sleepTime = 100;
-            }
-
-            DateTime now = DateTime.Now;
-            DateTime end = now;
-
-            if (0 != timeOut)
-            {
-                end = now.AddSeconds(timeOut);
-            }
-
-            bool targetHit = false;
-
-            do
-            {
-                if (perfCounter.NextValue() == counterTargetValue)
+                if (null != instanceName)
                 {
-                    targetHit = true;
-                    context.LogInfo("Target hit");
-
+                    perfCounter.InstanceName = instanceName;
                 }
-                else if ((end > now) || (0 == timeOut))
+
+                // Set default value for sleepTime
+                if (0 == sleepTime)
                 {
-                    Thread.Sleep(sleepTime);
+                    sleepTime = 100;
                 }
-            } while ( (!targetHit) && ((end > now) || (0 == timeOut)));
 
-            if (!targetHit)
-            {
-                throw new ApplicationException("The target perfmon counter was not hit!");
+                DateTime now = DateTime.Now;
+                DateTime end = now;
+
+                if (0 != timeOut)
+                {
+                    end = now.AddSeconds(timeOut);
+                }
+
+                bool targetHit = false;
+
+                do
+                {
+                    if (perfCounter.NextValue() == counterTargetValue)
+                    {
+                        targetHit = true;
+                        context.LogInfo("Target hit");
+
+                    }
+                    else if ((end > now) || (0 == timeOut))
+                    {
+                        Thread.Sleep(sleepTime);
+                    }
+                } while ((!targetHit) && ((end > now) || (0 == timeOut)));
+
+                if (!targetHit)
+                {
+                    throw new ApplicationException("The target perfmon counter was not hit!");
+                }
             }
         }
     }

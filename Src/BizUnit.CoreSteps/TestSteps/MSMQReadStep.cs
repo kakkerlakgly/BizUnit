@@ -81,53 +81,45 @@ namespace BizUnit.CoreSteps.TestSteps
 		/// </summary>
 		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(XmlNode testConfig, Context context)
-		{
-			MemoryStream msgData = null;
+        public void Execute(XmlNode testConfig, Context context)
+        {
+            // Read test config...
+            string queuePath = context.ReadConfigAsString(testConfig, "QueuePath");
+            double timeout = context.ReadConfigAsDouble(testConfig, "Timeout");
+            XmlNode validationConfig = testConfig.SelectSingleNode("ValidationStep");
+            XmlNodeList ctxProps = testConfig.SelectNodes("ContextProperties/*");
 
-			try
-			{
-				// Read test config...
-				string queuePath = context.ReadConfigAsString( testConfig, "QueuePath" );
-				double timeout = context.ReadConfigAsDouble( testConfig, "Timeout" );
-				XmlNode validationConfig = testConfig.SelectSingleNode("ValidationStep");
-				XmlNodeList ctxProps = testConfig.SelectNodes("ContextProperties/*");
+            context.LogInfo("MSMQReadStep about to read data from queue: {0}", queuePath);
 
-				context.LogInfo("MSMQReadStep about to read data from queue: {0}", queuePath );
+            using (var queue = new MessageQueue(queuePath))
+            {
 
-				var queue = new MessageQueue(queuePath);
-
-				// Receive msg from queue...
+                // Receive msg from queue...
                 Message msg = queue.Receive(TimeSpan.FromMilliseconds(timeout), MessageQueueTransactionType.Single);
 
-				// Dump msg content to console...
-				msgData = StreamHelper.LoadMemoryStream(msg.BodyStream );
-				StreamHelper.WriteStreamToConsole("MSMQ message data", msgData, context);
+                // Dump msg content to console...
+                using (var msgData = StreamHelper.LoadMemoryStream(msg.BodyStream))
+                {
+                    StreamHelper.WriteStreamToConsole("MSMQ message data", msgData, context);
 
-				// Validate data...
-				try
-				{
-					msgData.Seek(0, SeekOrigin.Begin);
-					context.ExecuteValidator( msgData, validationConfig );
-				}
-				catch(Exception e)
-				{
-					throw new ApplicationException("MSMQReadStep message data was not correct!", e);
-				}
-	
-				if ( null != ctxProps && ctxProps.Count > 0 )
-				{
-					ProcessContextProperties( context, ctxProps, msg );
-				}
-			}
-			finally
-			{
-				if ( null != msgData )
-				{
-					msgData.Close();
-				}
-			}
-		}
+                    // Validate data...
+                    try
+                    {
+                        msgData.Seek(0, SeekOrigin.Begin);
+                        context.ExecuteValidator(msgData, validationConfig);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new ApplicationException("MSMQReadStep message data was not correct!", e);
+                    }
+
+                    if (null != ctxProps && ctxProps.Count > 0)
+                    {
+                        ProcessContextProperties(context, ctxProps, msg);
+                    }
+                }
+            }
+        }
 
         private static void ProcessContextProperties(Context context, XmlNodeList props, Message msg)
 		{

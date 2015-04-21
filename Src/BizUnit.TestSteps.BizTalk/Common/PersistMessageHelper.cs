@@ -27,25 +27,27 @@ namespace BizUnit.TestSteps.BizTalk.Common
         /// <param name='destination'>The destination directory to persist the file to</param>
         public static void PersistMessage(IBaseMessage message, string destination)
         {
+            var enc = Encoding.GetEncoding("UTF-8");
+            if (!string.IsNullOrEmpty(message.BodyPart.Charset))
+            {
+                enc = Encoding.GetEncoding(message.BodyPart.Charset);
+            }
             using (var fs = new FileStream(destination, FileMode.Create))
             {
-                var enc = Encoding.GetEncoding("UTF-8");
-                if (!string.IsNullOrEmpty(message.BodyPart.Charset))
-                {
-                    enc = Encoding.GetEncoding(message.BodyPart.Charset);
-                }
                 using (var writer = new StreamWriter(fs, enc))
                 {
-                    var msgStream = message.BodyPart.GetOriginalDataStream();
-                    using (var reader = new StreamReader(msgStream, enc))
+                    using (var msgStream = message.BodyPart.GetOriginalDataStream())
                     {
-                        const int size = 1024;
-                        var buf = new char[size];
-                        var charsRead = reader.Read(buf, 0, size);
-                        while (charsRead > 0)
+                        using (var reader = new StreamReader(msgStream, enc))
                         {
-                            writer.Write(buf, 0, charsRead);
-                            charsRead = reader.Read(buf, 0, size);
+                            const int size = 1024;
+                            var buf = new char[size];
+                            var charsRead = reader.Read(buf, 0, size);
+                            while (charsRead > 0)
+                            {
+                                writer.Write(buf, 0, charsRead);
+                                charsRead = reader.Read(buf, 0, size);
+                            }
                         }
                     }
                 }

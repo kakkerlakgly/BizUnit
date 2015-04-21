@@ -129,30 +129,20 @@ namespace BizUnit.CoreSteps.TestSteps
 
 			context.LogInfo("Xml returned : {0}", xml );
 
-			if(xml != null && xml.Trim().Length > 0)
-			{				 
-				//prepare to execute context loader
-				byte [] buffer = Encoding.ASCII.GetBytes("<" + rootElement +">" + xml + "</" + rootElement +  ">");
-				MemoryStream data = null;
+            if (xml != null && xml.Trim().Length > 0)
+            {
+                //prepare to execute context loader
+                byte[] buffer = Encoding.ASCII.GetBytes("<" + rootElement + ">" + xml + "</" + rootElement + ">");
+                using (var data = new MemoryStream(buffer))
+                {
 
-				try
-				{
-					data = new MemoryStream(buffer);
+                    data.Seek(0, SeekOrigin.Begin);
+                    context.ExecuteContextLoader(data, contextConfig);
 
-					data.Seek(0, SeekOrigin.Begin);
-					context.ExecuteContextLoader( data, contextConfig );
-
-					data.Seek(0, SeekOrigin.Begin);
-					context.ExecuteValidator( data, validationConfig );
-				}
-				finally
-				{
-					if ( null != data )
-					{
-						data.Close();
-					}
-				}
-			}
+                    data.Seek(0, SeekOrigin.Begin);
+                    context.ExecuteValidator(data, validationConfig);
+                }
+            }
             else if (!allowEmpty && (xml == null || xml.Trim().Length > 0))
             {
                 throw new Exception("Response was expected.No Xml returned.");
@@ -165,30 +155,19 @@ namespace BizUnit.CoreSteps.TestSteps
 
 		private static string GetXmlData(string connectionString, string sqlQuery)
 		{
-			var connection = new SqlConnection(connectionString);
-
-			using ( connection )
+            using (var connection = new SqlConnection(connectionString))
 			{
-                object obj; 
-                
-                try
-				{
-					connection.Open();
-					var comm= new SqlCommand(sqlQuery, connection);
-					obj = comm.ExecuteScalar ();
-				}
-				finally
-				{
-					if(connection.State == ConnectionState.Open)
-						connection.Close();
-				}
-
-                if (obj != null)
+				connection.Open();
+                using (var comm = new SqlCommand(sqlQuery, connection))
                 {
-                    return obj.ToString();
-                }
+                    object obj = comm.ExecuteScalar();
+                    if (obj != null)
+                    {
+                        return obj.ToString();
+                    }
 
-                return null;
+                    return null;
+                }
 			}
 		}
 

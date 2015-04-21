@@ -42,11 +42,17 @@ namespace BizUnit.Xaml
             return TestCase.LoadFromFile(TestCasePath);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Execute(Context context)
         {
              // no op
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public override void Validate(Context context)
         {
             if(string.IsNullOrEmpty(TestCasePath))

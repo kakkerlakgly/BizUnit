@@ -186,7 +186,7 @@ namespace BizUnit.CoreSteps.TestSteps
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public void Execute(Context context)
 	    {
-            MemoryStream data = null;
+            Stream data = null;
 
             try
             {

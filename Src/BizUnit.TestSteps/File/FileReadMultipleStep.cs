@@ -135,6 +135,10 @@ namespace BizUnit.TestSteps.File
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             ArgumentValidation.CheckForEmptyString(DirectoryPath, "DirectoryPath");

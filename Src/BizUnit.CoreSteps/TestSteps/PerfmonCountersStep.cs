@@ -141,30 +141,29 @@ namespace BizUnit.CoreSteps.TestSteps
 
         private static void ExecuteLogman(string workingDirectory, string processParams, Context context)
         {
-            var process = new Process
-                              {
-                                  StartInfo =
-                                      {
-                                          UseShellExecute = false,
-                                          RedirectStandardOutput = true,
-                                          CreateNoWindow = true,
-                                          Arguments = processParams,
-                                          FileName = "logman",
-                                          WorkingDirectory = workingDirectory
-                                      }
-                              };
-
-            process.Start();
-
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-            int exitCode = process.ExitCode;
-
-            context.LogInfo("logman output: {0}", output); 
-
-            if (0 != exitCode)
+            using (var process = new Process())
             {
-                throw new ApplicationException(string.Format("PerfmonCountersStep received an exit code: {0} while executing process {1}\n\nOutput: {2}", exitCode, processParams, output));
+                process.StartInfo = new ProcessStartInfo
+                {
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                    Arguments = processParams,
+                    FileName = "logman",
+                    WorkingDirectory = workingDirectory
+                };
+                process.Start();
+
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+                int exitCode = process.ExitCode;
+
+                context.LogInfo("logman output: {0}", output);
+
+                if (0 != exitCode)
+                {
+                    throw new ApplicationException(string.Format("PerfmonCountersStep received an exit code: {0} while executing process {1}\n\nOutput: {2}", exitCode, processParams, output));
+                }
             }
         }
     }

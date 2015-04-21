@@ -221,7 +221,10 @@ namespace BizUnit
             }
             else
             {
-                _context.TryAdd(key, newValue);
+                if (!_context.TryAdd(key, newValue))
+                {
+                    throw new ArgumentException(string.Format("Item has already been added. Key being added: '{0}'", key));
+                }
             }
         }
 

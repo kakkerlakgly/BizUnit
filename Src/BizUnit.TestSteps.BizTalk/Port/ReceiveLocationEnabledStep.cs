@@ -16,6 +16,7 @@ using System;
 using System.Management;
 using BizUnit.Common;
 using BizUnit.Xaml;
+using System.Linq;
 
 namespace BizUnit.TestSteps.BizTalk.Port
 {
@@ -66,7 +67,7 @@ namespace BizUnit.TestSteps.BizTalk.Port
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
 		{
-			ManagementObject mo = GetreceiveLocationWmiObject(ReceiveLocationName);
+			var mo = GetreceiveLocationWmiObject(ReceiveLocationName);
 
 			bool isActualDisabled;
 
@@ -85,40 +86,41 @@ namespace BizUnit.TestSteps.BizTalk.Port
 			}
 		}
 
-	    public override void Validate(Context context)
+        /// <summary>
+        /// 
+        /// </summary>
+        public override void Validate(Context context)
 	    {
 	        ArgumentValidation.CheckForEmptyString(ReceiveLocationName, "ReceiveLocationName");
 	    }
 
 	    private static ManagementObject GetreceiveLocationWmiObject(string receiveLocation)
 		{
-			var searcher = new ManagementObjectSearcher();
-			var scope = new ManagementScope("root\\MicrosoftBizTalkServer");
-			searcher.Scope = scope;
-		
-			// Build a Query to enumerate the MSBTS_ReceiveLocation instances if an argument
-			// is supplied use it to select only the matching RL.
-			var query = new SelectQuery
-			                {
-			                    QueryString = String.Format("SELECT * FROM MSBTS_ReceiveLocation WHERE Name =\"{0}\"", receiveLocation)
-			                };
+            using (var searcher = new ManagementObjectSearcher())
+            {
+                var scope = new ManagementScope("root\\MicrosoftBizTalkServer");
+                searcher.Scope = scope;
 
-		    // Set the query for the searcher.
-			searcher.Query = query;
+                // Build a Query to enumerate the MSBTS_ReceiveLocation instances if an argument
+                // is supplied use it to select only the matching RL.
+                var query = new SelectQuery
+                                {
+                                    QueryString = String.Format("SELECT * FROM MSBTS_ReceiveLocation WHERE Name =\"{0}\"", receiveLocation)
+                                };
 
-			// Execute the query and determine if any results were obtained.
-			ManagementObjectCollection queryCol = searcher.Get();
-			
-			ManagementObjectCollection.ManagementObjectEnumerator me = queryCol.GetEnumerator();
-			me.Reset();
-			if ( me.MoveNext() )
-			{
-				return (ManagementObject)me.Current;
-			}
-			else
-			{
-				throw new ApplicationException(string.Format("The WMI object for the receive location:{0} could not be retrieved.", receiveLocation ));
-			}
+                // Set the query for the searcher.
+                searcher.Query = query;
+
+                // Execute the query and determine if any results were obtained.
+                try
+                {
+                    return searcher.Get().OfType<ManagementObject>().First();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    throw new ApplicationException(string.Format("The WMI object for the receive location:{0} could not be retrieved.", receiveLocation));
+                }
+            }
 		}
 	}
 }

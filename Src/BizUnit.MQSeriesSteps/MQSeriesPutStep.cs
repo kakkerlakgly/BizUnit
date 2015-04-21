@@ -68,8 +68,12 @@ namespace BizUnit.MQSeriesSteps
 			string queue = testConfig.SelectSingleNode("Queue").InnerText;
 			string path = testConfig.SelectSingleNode("SourcePath").InnerText;
 
-			var reader = new StreamReader(path);
-			string testData = reader.ReadToEnd();
+            string testData;
+            using (var reader = new StreamReader(path))
+            {
+                testData = reader.ReadToEnd();
+            }
+
 
 			context.LogData("MSMQ input message:", testData);
 

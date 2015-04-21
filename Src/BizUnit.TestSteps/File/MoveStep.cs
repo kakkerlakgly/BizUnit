@@ -57,6 +57,10 @@ namespace BizUnit.TestSteps.File
             context.LogInfo( "FileMoveStep has moved file: \"{0}\" to \"{1}\"", _sourcePath, _destinationPath ) ;
 		}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             if (string.IsNullOrEmpty(_destinationPath))

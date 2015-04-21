@@ -191,8 +191,6 @@ namespace BizUnit.CoreSteps.TestSteps
         public void Execute(XmlNode testConfig, Context context)
         {
             const string soapproxynamespace = "BizUnit.Proxy";
-            Stream request = null;
-            Stream response = null;
 
             // Turn on shadow copying of asseblies for the current appdomain. 
             AppDomain.CurrentDomain.SetShadowCopyFiles();
@@ -215,8 +213,10 @@ namespace BizUnit.CoreSteps.TestSteps
 
                     if (null != objInputMessage)
                     {
-                        request = GetOutputStream(objInputMessage);
-                        context.LogData("SOAPHTTPRequestResponseStep request data", request);
+                        using (var request = GetOutputStream(objInputMessage))
+                        {
+                            context.LogData("SOAPHTTPRequestResponseStep request data", request);
+                        }
                     }
                 }
 
@@ -238,24 +238,23 @@ namespace BizUnit.CoreSteps.TestSteps
 
                 if (null != outputMessage)
                 {
-                    response = GetOutputStream(outputMessage);
-                    context.LogData("SOAPHTTPRequestResponseStep response data", response);
-                }
+                    using (var response = GetOutputStream(outputMessage))
+                    {
+                        context.LogData("SOAPHTTPRequestResponseStep response data", response);
 
-                // Execute ctx loader step if present...
-                if (null != response)
-                {
-                    context.ExecuteContextLoader(response, testConfig.SelectSingleNode("ContextLoaderStep"), true);
-                }
+                        // Execute ctx loader step if present...
+                        context.ExecuteContextLoader(response, testConfig.SelectSingleNode("ContextLoaderStep"), true);
 
-                // Validate the response...
-                try
-                {
-                    context.ExecuteValidator(response, testConfig.SelectSingleNode("ValidationStep"), true);
-                }
-                catch (Exception e)
-                {
-                    throw new ApplicationException("SOAPHTTPRequestResponseStep response stream was not correct!", e);
+                        // Validate the response...
+                        try
+                        {
+                            context.ExecuteValidator(response, testConfig.SelectSingleNode("ValidationStep"), true);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new ApplicationException("SOAPHTTPRequestResponseStep response stream was not correct!", e);
+                        }
+                    }
                 }
             }
             catch(Exception ex)
@@ -264,57 +263,47 @@ namespace BizUnit.CoreSteps.TestSteps
                 context.LogException(ex);
                 throw;
             }
-            finally
-            {
-                if (null != response)
-                {
-                    response.Close();
-                }
-
-                if (null != request)
-                {
-                    request.Close();
-                }
-            }
         }
 
         internal static Assembly GetProxyAssembly(string wsdlUri, string codeNamespace)
         {
-            var provider = new CSharpCodeProvider();
-            var client = new WebClient();
-            var referenceAssemblies = new[] { "system.dll", "System.Xml.dll", "System.Web.Services.dll" };
-            var wsdlStream = client.OpenRead(wsdlUri);
-
-            var wsdl = ServiceDescription.Read(wsdlStream);
-            var wsdlImport = new ServiceDescriptionImporter();
-            wsdlImport.AddServiceDescription(wsdl, null, null);
-
-            var proxyClassNamespace = new CodeNamespace(codeNamespace);
-            var codeCompileUnit = new CodeCompileUnit();
-            codeCompileUnit.Namespaces.Add(proxyClassNamespace);
-
-            var warnings = wsdlImport.Import(proxyClassNamespace, codeCompileUnit);
-            if (warnings != 0)
+            using (var provider = new CSharpCodeProvider())
             {
-                throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while importing the WSDL!");
+                using (var client = new WebClient())
+                {
+                    var referenceAssemblies = new[] { "system.dll", "System.Xml.dll", "System.Web.Services.dll" };
+                    var wsdlStream = client.OpenRead(wsdlUri);
+
+                    var wsdl = ServiceDescription.Read(wsdlStream);
+                    var wsdlImport = new ServiceDescriptionImporter();
+                    wsdlImport.AddServiceDescription(wsdl, null, null);
+
+                    var proxyClassNamespace = new CodeNamespace(codeNamespace);
+                    var codeCompileUnit = new CodeCompileUnit();
+                    codeCompileUnit.Namespaces.Add(proxyClassNamespace);
+
+                    var warnings = wsdlImport.Import(proxyClassNamespace, codeCompileUnit);
+                    if (warnings != 0)
+                    {
+                        throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while importing the WSDL!");
+                    }
+
+                    var compileParam = new CompilerParameters(referenceAssemblies)
+                                           {
+                                               GenerateInMemory = false,
+                                               OutputAssembly = GetProxyFileName()
+                                           };
+
+                    CompilerResults compilerResults = provider.CompileAssemblyFromDom(compileParam, codeCompileUnit);
+
+                    if (compilerResults.Errors.HasErrors)
+                    {
+                        throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while executing CompileAssemblyFromDom");
+                    }
+
+                    return compilerResults.CompiledAssembly;
+                }
             }
-
-            var compileParam = new CompilerParameters(referenceAssemblies)
-                                   {
-                                       GenerateInMemory = false,
-                                       OutputAssembly = GetProxyFileName()
-                                   };
-
-            CompilerResults compilerResults = provider.CompileAssemblyFromDom(compileParam, codeCompileUnit);
-
-            if (compilerResults.Errors.HasErrors)
-            {
-                throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while executing CompileAssemblyFromDom");
-            }
-
-            provider.Dispose();
-
-            return compilerResults.CompiledAssembly;
         }
 
         /// <summary>
@@ -349,14 +338,23 @@ namespace BizUnit.CoreSteps.TestSteps
             return fname;
         }
 
-        internal static MemoryStream GetOutputStream(object outputMessage)
+        internal static Stream GetOutputStream(object outputMessage)
         {
-            var ms = new MemoryStream();
-            var outputSerializer = new XmlSerializer(outputMessage.GetType());
-            outputSerializer.Serialize(ms, outputMessage);
-            ms.Seek(0, SeekOrigin.Begin);
+            Stream ms = null;
+            try
+            {
+                ms = new MemoryStream();
+                var outputSerializer = new XmlSerializer(outputMessage.GetType());
+                outputSerializer.Serialize(ms, outputMessage);
+                ms.Seek(0, SeekOrigin.Begin);
 
-            return ms;
+                return ms;
+            }
+            catch
+            {
+                if (ms != null) ms.Dispose();
+                throw;
+            }
         }
 
         internal static string GetDefaultNamespace(Assembly assembly, string msgTypeName)

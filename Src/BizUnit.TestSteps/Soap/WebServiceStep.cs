@@ -67,6 +67,10 @@ namespace BizUnit.TestSteps.Soap
         /// </summary>
         public IList<SoapHeader> SoapHeaders { set; get; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Execute(Context context)
         {
             _request = RequestBody.Load(context);
@@ -84,6 +88,10 @@ namespace BizUnit.TestSteps.Soap
             Stream responseForPostProcessing = SubSteps.Aggregate(_response, (current, subStep) => subStep.Execute(current, context));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name='context'></param>
         public override void Validate(Context context)
         {
             if (string.IsNullOrEmpty(ServiceUrl))
@@ -109,76 +117,60 @@ namespace BizUnit.TestSteps.Soap
         {
             try
             {
-                Stream responseData;
                 var binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
                 binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
                 binding.UseDefaultWebProxy = true;               
 
                 var epa = new EndpointAddress(new Uri(serviceUrl));
 
-                ChannelFactory<IGenericContract> cf = null;
-
                 try
                 {
-                    cf = new ChannelFactory<IGenericContract>(binding, epa);
-                    cf.Credentials.UserName.UserName = username;
-                    cf.Credentials.UserName.Password = password;
-                    
-                    cf.Open();
-                    var channel = cf.CreateChannel();
-                    Message request;
-                    Message response;
-                    using (new OperationContextScope((IContextChannel)channel))
+                    using (var cf = new ChannelFactory<IGenericContract>(binding, epa))
                     {
-                        XmlReader r = new XmlTextReader(requestData);
+                        cf.Credentials.UserName.UserName = username;
+                        cf.Credentials.UserName.Password = password;
 
-                        request = Message.CreateMessage(MessageVersion.Soap11, action, r);
-
-                        foreach (var header in SoapHeaders)
+                        cf.Open();
+                        var channel = cf.CreateChannel();
+                        using (new OperationContextScope((IContextChannel)channel))
                         {
-                            MessageHeader messageHeader = MessageHeader.CreateHeader(header.HeaderName, header.HeaderNameSpace, header.HeaderInstance);
-                            OperationContext.Current.OutgoingMessageHeaders.Add(messageHeader);
-                        }
-                        
-                        response = channel.Invoke(request);
+                            XmlReader r = new XmlTextReader(requestData);
 
-                        string responseStr = response.GetReaderAtBodyContents().ReadOuterXml();
-                        ctx.LogXmlData("Response", responseStr);
-                        responseData = StreamHelper.LoadMemoryStream(responseStr); 
+                            using (var request = Message.CreateMessage(MessageVersion.Soap11, action, r))
+                            {
+
+                                foreach (var header in SoapHeaders)
+                                {
+                                    MessageHeader messageHeader = MessageHeader.CreateHeader(header.HeaderName, header.HeaderNameSpace, header.HeaderInstance);
+                                    OperationContext.Current.OutgoingMessageHeaders.Add(messageHeader);
+                                }
+
+                                using (var response = channel.Invoke(request))
+                                {
+
+                                    string responseStr = response.GetReaderAtBodyContents().ReadOuterXml();
+                                    ctx.LogXmlData("Response", responseStr);
+                                    return StreamHelper.LoadMemoryStream(responseStr);
+                                }
+                            }
+                        }
                     }
-                    request.Close();
-                    response.Close();
-                    cf.Close();
                 }
                 catch (CommunicationException ce)
                 {
                     ctx.LogException(ce);
-                    if (cf != null)
-                    {
-                        cf.Abort();
-                    }
                     throw;
                 }
                 catch (TimeoutException te)
                 {
                     ctx.LogException(te);
-                    if (cf != null)
-                    {
-                        cf.Abort();
-                    }
                     throw;
                 }
                 catch (Exception e)
                 {
                     ctx.LogException(e);
-                    if (cf != null)
-                    {
-                        cf.Abort();
-                    }
                     throw;
                 }
-
-                return responseData;
             }
             catch (Exception ex)
             {
