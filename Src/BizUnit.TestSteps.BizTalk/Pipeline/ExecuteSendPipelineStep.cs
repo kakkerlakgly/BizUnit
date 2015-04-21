@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using BizUnit.Common;
 using BizUnit.TestSteps.BizTalk.Common;
+using BizUnit.TestSteps.Common;
 using BizUnit.Xaml;
 using Winterdom.BizTalk.PipelineTesting;
 
@@ -242,7 +243,7 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
             int index = 0;
             foreach (FileInfo fi in di.GetFiles(_searchPattern))
             {
-                Stream stream = new FileStream(fi.FullName, FileMode.Open, FileAccess.Read);
+                Stream stream = StreamHelper.LoadFileToStream(fi.FullName);
                 var inputMessage = MessageHelper.CreateFromStream(stream);
 
                 if (!string.IsNullOrEmpty(_sourceEncoding))

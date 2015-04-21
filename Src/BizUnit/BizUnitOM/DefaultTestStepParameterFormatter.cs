@@ -78,8 +78,8 @@ namespace BizUnit.BizUnitOM
             }
             else
             {
-                throw new ApplicationException(
-                    string.Format("The type {0} is not supported in the BizBizUnit object model", type.FullName));
+                throw new ArgumentException(
+                    string.Format("The type {0} is not supported in the BizBizUnit object model", type.FullName), "type");
             }
 
             return retVal;

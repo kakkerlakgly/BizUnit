@@ -191,8 +191,6 @@ namespace BizUnit.CoreSteps.TestSteps
         public void Execute(XmlNode testConfig, Context context)
         {
             const string soapproxynamespace = "BizUnit.Proxy";
-            Stream request = null;
-            Stream response = null;
 
             // Turn on shadow copying of asseblies for the current appdomain. 
             AppDomain.CurrentDomain.SetShadowCopyFiles();
@@ -215,8 +213,10 @@ namespace BizUnit.CoreSteps.TestSteps
 
                     if (null != objInputMessage)
                     {
-                        request = GetOutputStream(objInputMessage);
-                        context.LogData("SOAPHTTPRequestResponseStep request data", request);
+                        using (var request = GetOutputStream(objInputMessage))
+                        {
+                            context.LogData("SOAPHTTPRequestResponseStep request data", request);
+                        }
                     }
                 }
 
@@ -238,24 +238,23 @@ namespace BizUnit.CoreSteps.TestSteps
 
                 if (null != outputMessage)
                 {
-                    response = GetOutputStream(outputMessage);
-                    context.LogData("SOAPHTTPRequestResponseStep response data", response);
-                }
+                    using (var response = GetOutputStream(outputMessage))
+                    {
+                        context.LogData("SOAPHTTPRequestResponseStep response data", response);
 
-                // Execute ctx loader step if present...
-                if (null != response)
-                {
-                    context.ExecuteContextLoader(response, testConfig.SelectSingleNode("ContextLoaderStep"), true);
-                }
+                        // Execute ctx loader step if present...
+                        context.ExecuteContextLoader(response, testConfig.SelectSingleNode("ContextLoaderStep"), true);
 
-                // Validate the response...
-                try
-                {
-                    context.ExecuteValidator(response, testConfig.SelectSingleNode("ValidationStep"), true);
-                }
-                catch (Exception e)
-                {
-                    throw new ApplicationException("SOAPHTTPRequestResponseStep response stream was not correct!", e);
+                        // Validate the response...
+                        try
+                        {
+                            context.ExecuteValidator(response, testConfig.SelectSingleNode("ValidationStep"), true);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new ApplicationException("SOAPHTTPRequestResponseStep response stream was not correct!", e);
+                        }
+                    }
                 }
             }
             catch(Exception ex)
@@ -263,18 +262,6 @@ namespace BizUnit.CoreSteps.TestSteps
                 context.LogError("SOAPHTTPRequestResponseStep Failed");
                 context.LogException(ex);
                 throw;
-            }
-            finally
-            {
-                if (null != response)
-                {
-                    response.Close();
-                }
-
-                if (null != request)
-                {
-                    request.Close();
-                }
             }
         }
 

@@ -122,7 +122,6 @@ namespace BizUnit.TestSteps.BizTalk.Bre
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
         {
-            var disposableList = new List<IDisposable>();
             var fi = new FileInfo(RuleStoreName);
 
             if (!fi.Exists)
@@ -196,10 +195,8 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                             {
                                 var fact = currentFact as DataConnectionFact;
                                 var conn = new SqlConnection(fact.ConnectionString);
-                                disposableList.Add(conn);
                                 conn.Open();
                                 var dc = new DataConnection(fact.Dataset, fact.TableName, conn);
-                                disposableList.Add(dc);
                                 facts[i] = dc;
                                 break;
                             }
@@ -209,16 +206,12 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                                 var fact = currentFact as DataTableFact;
 
                                 var conn = new SqlConnection(fact.ConnectionString);
-                                disposableList.Add(conn);
                                 conn.Open();
                                 var myCommand = new SqlCommand(fact.Command, conn) { CommandType = CommandType.Text };
-                                disposableList.Add(myCommand);
                                 var dAdapt = new SqlDataAdapter();
-                                disposableList.Add(conn);
                                 dAdapt.TableMappings.Add("Table", fact.TableName);
                                 dAdapt.SelectCommand = myCommand;
                                 var ds = new DataSet(fact.Dataset);
-                                disposableList.Add(ds);
                                 dAdapt.Fill(ds);
                                 var tdt = new TypedDataTable(ds.Tables[fact.TableName]);
                                 if (fact.Type == "dataRow")
@@ -249,10 +242,6 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                         context.LogException(e);
                         throw;
                     }
-                    finally
-                    {
-                        dti.CloseTraceFile();
-                    }
                 }
             }
 
@@ -267,13 +256,11 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
                             context.LogData("TypedXmlDocument result: ", txd.Document.OuterXml);
                             Stream data = StreamHelper.LoadMemoryStream(txd.Document.OuterXml);
-                            disposableList.Add(data);
                             // Validate if configured...
                             // HACK: We need to prevent ExecuteValidator for /each/ TypedXmlDocument
                             if (txd.DocumentType == "UBS.CLAS.PoC.Schemas.INSERTS")
                             {
                                 data = SubSteps.Aggregate(data, (current, subStep) => subStep.Execute(current, context));
-                                disposableList.Add(data);
                             }
 
                             break;
@@ -297,10 +284,6 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                             break;
                         }
                 }
-            }
-            foreach (var disposable in disposableList)
-            {
-                disposable.Dispose();
             }
         }
 
