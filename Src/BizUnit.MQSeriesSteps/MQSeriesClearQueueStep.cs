@@ -55,92 +55,69 @@ namespace BizUnit.MQSeriesSteps
     [Obsolete("MQSeriesClearQueueStep has been deprecated.")]
     public class MQSeriesClearQueueStep : ITestStep
 	{
-		/// <summary>
-		/// ITestStep.Execute() implementation
-		/// </summary>
-		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(XmlNode testConfig, Context context)
-        {
-            string qmgr = context.ReadConfigAsString(testConfig, "QueueManager");
-            MQQueueManager queueManager;
+	    /// <summary>
+	    /// ITestStep.Execute() implementation
+	    /// </summary>
+	    /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
+	    /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+	    public void Execute(XmlNode testConfig, Context context)
+	    {
+	        string qmgr = context.ReadConfigAsString(testConfig, "QueueManager");
 
-            try
-            {
-                context.LogInfo("Opening queue manager '{0}'.", qmgr);
-                queueManager = new MQQueueManager(qmgr);
-            }
-            catch (Exception e)
-            {
-                throw new ApplicationException(string.Format("Failed to open queue manager {0}.", qmgr), e);
-            }
+	        try
+	        {
+	            context.LogInfo("Opening queue manager '{0}'.", qmgr);
+	            using (var queueManager = new MQQueueManager(qmgr))
+	            {
+	                XmlNodeList queueNodes = testConfig.SelectNodes("Queue");
+	                foreach (XmlNode queueNode in queueNodes)
+	                {
+	                    string q = queueNode.InnerText;
+	                    context.LogInfo("Opening queue '{0}'.", q);
+	                    using (
+	                        MQQueue queue = queueManager.AccessQueue(q,
+	                            MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING))
+	                    {
+	                        try
+	                        {
+	                            MQMessage mqMsg = new MQMessage();
+	                            MQGetMessageOptions mqMsgOpts = new MQGetMessageOptions();
 
-            bool errors = false;
+	                            int i = 0;
+	                            while (true)
+	                            {
+	                                try
+	                                {
+	                                    // Get message from queue
+	                                    queue.Get(mqMsg, mqMsgOpts);
+	                                    i++;
+	                                }
+	                                catch (MQException mqe)
+	                                {
+	                                    if (mqe.Reason == 2033) // No more messages.
+	                                    {
+	                                        break;
+	                                    }
+	                                    throw;
+	                                }
+	                            }
 
-			try
-			{
-				XmlNodeList queueNodes = testConfig.SelectNodes("Queue");
-				foreach (XmlNode queueNode in queueNodes)
-				{
-					string q = queueNode.InnerText;
-					context.LogInfo("Opening queue '{0}'.", q);
-					MQQueue queue = queueManager.AccessQueue(q, MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING);
-					try
-					{
-						MQMessage mqMsg = new MQMessage();
-						MQGetMessageOptions mqMsgOpts = new MQGetMessageOptions();
-
-						int i = 0;
-						bool finished = false;
-						while (!finished)
-						{
-							try
-							{
-								// Get message from queue
-								queue.Get(mqMsg,mqMsgOpts);
-								i++;
-							}
-							catch (MQException mqe)
-							{
-								if (mqe.Reason == 2033) // No more messages.
-								{
-									finished = true;
-								}
-								else
-								{
-									throw;
-								}
-							}
-						}
-
-						context.LogInfo("Cleared {0} messages from queue '{1}'.", i, q);
-					}
-					catch (Exception e)
-					{
-						context.LogError("Failed to clear queue \"{0}\" with the following exception: {1}", q, e.ToString());
-						errors = true;
-					}
-					finally
-					{
-						if (queue != null)
-						{
-							queue.Close();
-						}
-					}
-				}
-			}
-			finally
-			{
-				if (queueManager != null)
-				{
-					queueManager.Close();
-				}
-
-                if (errors)
-                {
-                    throw new ApplicationException("Failed to clear at least one queue.");
-                }
-            }
-        }
+	                            context.LogInfo("Cleared {0} messages from queue '{1}'.", i, q);
+	                        }
+	                        catch (Exception e)
+	                        {
+	                            context.LogError("Failed to clear queue \"{0}\" with the following exception: {1}", q,
+	                                e.ToString());
+	                            throw;
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        catch (MQException e)
+	        {
+	            throw new InvalidOperationException(string.Format("Failed to open queue manager {0}.", qmgr), e);
+	        }
+	    }
 	}
 }

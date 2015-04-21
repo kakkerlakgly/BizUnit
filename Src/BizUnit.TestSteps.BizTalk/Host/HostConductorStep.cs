@@ -211,7 +211,7 @@ namespace BizUnit.TestSteps.BizTalk.Host
                 }
                 catch (InvalidOperationException ex)
                 {
-                    throw new ApplicationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName));
+                    throw new InvalidOperationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName));
                 }
             }
 		}

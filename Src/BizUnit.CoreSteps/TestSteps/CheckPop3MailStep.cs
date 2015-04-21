@@ -168,7 +168,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
 				if (!found)
 				{
-					throw new Exception("Failed to find email message");
+					throw new InvalidOperationException("Failed to find email message");
 				}
 				else
 				{

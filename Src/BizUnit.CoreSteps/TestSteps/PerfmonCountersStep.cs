@@ -135,7 +135,7 @@ namespace BizUnit.CoreSteps.TestSteps
                     break;
 
                 default:
-                    throw new ApplicationException(string.Format("PerfmonCountersStep does not recognise PerfmonAction= {0}", perfmonAction));
+                    throw new InvalidOperationException(string.Format("PerfmonCountersStep does not recognise PerfmonAction= {0}", perfmonAction));
             }
         }
 
@@ -162,7 +162,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
                 if (0 != exitCode)
                 {
-                    throw new ApplicationException(string.Format("PerfmonCountersStep received an exit code: {0} while executing process {1}\n\nOutput: {2}", exitCode, processParams, output));
+                    throw new InvalidOperationException(string.Format("PerfmonCountersStep received an exit code: {0} while executing process {1}\n\nOutput: {2}", exitCode, processParams, output));
                 }
             }
         }

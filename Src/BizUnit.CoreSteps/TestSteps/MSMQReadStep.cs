@@ -110,7 +110,7 @@ namespace BizUnit.CoreSteps.TestSteps
                     }
                     catch (Exception e)
                     {
-                        throw new ApplicationException("MSMQReadStep message data was not correct!", e);
+                        throw new InvalidOperationException("MSMQReadStep message data was not correct!", e);
                     }
 
                     if (null != ctxProps && ctxProps.Count > 0)

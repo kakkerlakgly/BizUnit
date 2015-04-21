@@ -213,12 +213,11 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 			return lineType;
 		}
 
-		private long ParseHeader(string[] lines)
+		private int ParseHeader(string[] lines)
 		{
-			int numberOfLines = lines.Length;
-			long bodyStart = 0;
+		    int bodyStart = 0;
 
-			for(int i=0; i<numberOfLines; i++)
+			for(int i=0; i<lines.Length; i++)
 			{
 				string currentLine = lines[i].Replace("\n","");
 
@@ -295,7 +294,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 		
 		private void ParseEmail(string[] lines)
 		{
-			long startOfBody = ParseHeader(lines);
+			int startOfBody = ParseHeader(lines);
 
 			_messageComponents = 
 				new Pop3MessageComponents(lines,startOfBody

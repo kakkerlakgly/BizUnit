@@ -338,7 +338,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
 			if( !header.Substring(0,3).Equals("+OK") )
 			{
-				throw new Exception("Invalid initial POP3 response");
+				throw new InvalidOperationException("Invalid initial POP3 response");
 			}
 		
 			// send login details ...

@@ -62,7 +62,7 @@ namespace BizUnit.BizUnitOM
     ///             {
     ///                 context.LogInfo("Regex validation succeeded for pattern \"{0}\".", validationRegEx);
     ///             }
-    ///             else { throw new Exception(String.Format("Regex validation failed for pattern \"{0}\".", validationRegEx)); }
+    ///             else { throw new InvalidOperationException(String.Format("Regex validation failed for pattern \"{0}\".", validationRegEx)); }
     ///         }
     ///     }
     /// 

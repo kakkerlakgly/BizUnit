@@ -135,7 +135,7 @@ namespace BizUnit.CoreSteps.TestSteps
             if (NumberOfRowsAffected != -1)
             {
                 if (rowCount != NumberOfRowsAffected)
-                    throw new Exception("Number of rows affected by the query does not match the value specified in the teststep. Number of rows affected was " + rowCount + " and value specified was " + NumberOfRowsAffected);
+                    throw new InvalidOperationException("Number of rows affected by the query does not match the value specified in the teststep. Number of rows affected was " + rowCount + " and value specified was " + NumberOfRowsAffected);
             }
             else
             {
@@ -356,7 +356,7 @@ namespace BizUnit.CoreSteps.TestSteps
         /// <param name="args"></param>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        /// <exception cref="ApplicationException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public object[] FormatParameters(Type type, object[] args, Context ctx)
         {
             object[] retVal;
@@ -375,7 +375,7 @@ namespace BizUnit.CoreSteps.TestSteps
             }
             else
             {
-                throw new ApplicationException(
+                throw new InvalidOperationException(
                     string.Format("The type {0} is not supported in SqlQueryParamFormatter", type.FullName));
             }
 

@@ -134,7 +134,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
             if (rsInfo.Count != 1)
             {
                 // oops ... error
-                throw new ApplicationException(String.Format("RuleStore {0} did not contain RuleSet {1}", RuleStoreName, RuleSetInfoCollectionName));
+                throw new InvalidOperationException(String.Format("RuleStore {0} did not contain RuleSet {1}", RuleStoreName, RuleSetInfoCollectionName));
             }
 
             var ruleset = ruleStore.GetRuleSet(rsInfo[0]);
@@ -169,7 +169,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                                     if (asm == null)
                                     {
                                         // fail
-                                        throw (new Exception("failed to create type " + fact.Type));
+                                        throw (new InvalidOperationException("failed to create type " + fact.Type));
                                     }
                                     type = asm.GetType(fact.Type, true, false);
                                 }

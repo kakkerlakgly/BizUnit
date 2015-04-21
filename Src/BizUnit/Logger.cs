@@ -151,7 +151,7 @@ namespace BizUnit
                     break;
 
 				default:
-			        throw new ApplicationException("Invalid log level was set!");
+			        throw new InvalidOperationException("Invalid log level was set!");
 			}
 		}
 
@@ -171,7 +171,7 @@ namespace BizUnit
 		{
             if (!logger.ConcurrentExecutionMode)
 			{
-				throw new ApplicationException("This instance is not a concurrent test step!");
+				throw new InvalidOperationException("This instance is not a concurrent test step!");
 			}
 
             WriteLine(logger.BufferedText);

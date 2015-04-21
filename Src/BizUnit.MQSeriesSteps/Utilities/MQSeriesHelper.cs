@@ -51,55 +51,46 @@ namespace BizUnit
 		/// <param name="context">The BizUnit context object which holds state and is passed between test steps</param>
 		/// <param name="msgID">[out] the MQ Series message ID</param>
 		/// <returns>String containing the data from the MQ series message</returns>
-		static public string ReadMessage(string queueManagerName, string queueName, int waitDelay, Context context, out byte[] msgID)
+        public static string ReadMessage(string queueManagerName, string queueName, int waitDelay, Context context, out byte[] msgID)
 		{
-			MQQueueManager queueManager = null;
-			MQQueue receiveQueue = null;
 			string message = null;
 
-			try 
-			{
 				context.LogInfo("Opening queue manager: \"{0}\"", queueManagerName);
-				queueManager = new MQQueueManager(queueManagerName);
-				
-				context.LogInfo("Opening queue: \"{0}\"", queueName);
-				receiveQueue = queueManager.AccessQueue(queueName, MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING);
-			
-				MQMessage mqMsg = new MQMessage();
-			    MQGetMessageOptions mqMsgOpts = new MQGetMessageOptions
+			    using (var queueManager = new MQQueueManager(queueManagerName))
 			    {
-			        WaitInterval = waitDelay*1000,
-			        Options = MQC.MQGMO_WAIT
-			    };
+
+			        context.LogInfo("Opening queue: \"{0}\"", queueName);
+			        using (
+			            var receiveQueue = queueManager.AccessQueue(queueName,
+			                MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING))
+			        {
+
+			            MQMessage mqMsg = new MQMessage();
+			            MQGetMessageOptions mqMsgOpts = new MQGetMessageOptions
+			            {
+			                WaitInterval = waitDelay*1000,
+			                Options = MQC.MQGMO_WAIT
+			            };
 
 
-			    context.LogInfo("Reading message from queue '{0}'.", queueName);
+			            context.LogInfo("Reading message from queue '{0}'.", queueName);
 
-				receiveQueue.Get(mqMsg,mqMsgOpts);
+			            receiveQueue.Get(mqMsg, mqMsgOpts);
 
-				if(mqMsg.Format.CompareTo(MQC.MQFMT_STRING)==0)
-				{
-					mqMsg.Seek(0);
-					message = Encoding.UTF8.GetString(mqMsg.ReadBytes(mqMsg.MessageLength));
-					msgID = mqMsg.MessageId;
-				}
-				else
-				{
-					throw new NotSupportedException(string.Format("Unsupported message format: '{0}' read from queue: {1}.", mqMsg.Format, queueName));
-				}
-			}
-			finally
-			{
-				if (receiveQueue != null)
-				{
-					receiveQueue.Close();
-				}
-
-				if (queueManager != null)
-				{
-					queueManager.Close();
-				}
-			}
+			            if (mqMsg.Format.CompareTo(MQC.MQFMT_STRING) == 0)
+			            {
+			                mqMsg.Seek(0);
+			                message = Encoding.UTF8.GetString(mqMsg.ReadBytes(mqMsg.MessageLength));
+			                msgID = mqMsg.MessageId;
+			            }
+			            else
+			            {
+			                throw new NotSupportedException(
+			                    string.Format("Unsupported message format: '{0}' read from queue: {1}.",
+			                        mqMsg.Format, queueName));
+			            }
+			        }
+			    }
 
 			return message;
 		}
@@ -128,44 +119,28 @@ namespace BizUnit
 		/// <param name="context">The BizUnit context object which holds state and is passed between test steps</param>
 		static public void WriteMessage(string queueManagerName, string queueName, string message, byte[] correlId, Context context)
 		{
-			MQQueueManager queueManager = null;
-			MQQueue sendQueue = null;
+		    context.LogInfo("Opening queue manager: \"{0}\"", queueManagerName);
+		    using (var queueManager = new MQQueueManager(queueManagerName))
+		    {
+		        context.LogInfo("Opening queue: '{0}'.", queueName);
+		        using (var sendQueue = queueManager.AccessQueue(queueName, MQC.MQOO_OUTPUT + MQC.MQOO_FAIL_IF_QUIESCING))
+		        {
+		            var mqMessage = new MQMessage();
+		            byte[] data = ConvertToBytes(message);
+		            mqMessage.Write(data);
+		            mqMessage.Format = MQC.MQFMT_STRING;
+		            var mqPutMsgOpts = new MQPutMessageOptions();
 
-		    try
-			{
-				context.LogInfo("Opening queue manager: \"{0}\"", queueManagerName);
-				queueManager = new MQQueueManager(queueManagerName);
+		            context.LogInfo("Writing {0} byte message to queue '{1}'.", data.Length, queueName);
 
-				context.LogInfo("Opening queue: '{0}'.", queueName);
-				sendQueue = queueManager.AccessQueue(queueName, MQC.MQOO_OUTPUT + MQC.MQOO_FAIL_IF_QUIESCING );
+		            if (correlId != null)
+		            {
+		                mqMessage.CorrelationId = correlId;
+		            }
 				
-				var mqMessage = new MQMessage();
-				byte[] data = ConvertToBytes(message);
-				mqMessage.Write(data);
-				mqMessage.Format = MQC.MQFMT_STRING;
-				var mqPutMsgOpts = new MQPutMessageOptions();
-
-				context.LogInfo("Writing {0} byte message to queue '{1}'.", data.Length, queueName);
-
-				if (correlId != null)
-				{
-					mqMessage.CorrelationId = correlId;
-				}
-				
-				sendQueue.Put( mqMessage, mqPutMsgOpts );
-			}
-			finally
-			{
-				if (sendQueue != null)
-				{
-					sendQueue.Close();
-				}
-
-				if (queueManager != null)
-				{
-					queueManager.Close();
-				}
-			}
+		            sendQueue.Put( mqMessage, mqPutMsgOpts );
+		        }
+		    }
 		}
 
 		private static byte[] ConvertToBytes(string str)

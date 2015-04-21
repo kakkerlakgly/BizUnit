@@ -156,7 +156,7 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
 
 	        if ( !started )
 			{
-				throw new ApplicationException(string.Format("Failed to start the orchestration: \"{0}\"", orchestrationName));
+				throw new InvalidOperationException(string.Format("Failed to start the orchestration: \"{0}\"", orchestrationName));
 			}							
 		}
 
@@ -184,7 +184,7 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
 
 		    if ( !stopped )
 			{
-				throw new ApplicationException(string.Format("Failed to stop the orchestration: \"{0}\"", orchestrationName));
+				throw new InvalidOperationException(string.Format("Failed to stop the orchestration: \"{0}\"", orchestrationName));
 			}																									
 		}
 	}

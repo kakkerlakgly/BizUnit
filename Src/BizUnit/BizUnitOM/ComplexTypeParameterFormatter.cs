@@ -32,7 +32,7 @@ namespace BizUnit.BizUnitOM
         /// <param name="args"></param>
         /// <param name="ctx"></param>
         /// <returns></returns>
-        /// <exception cref="ApplicationException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public object[] FormatParameters(Type type, object[] args, Context ctx)
         {
             object[] retVal;

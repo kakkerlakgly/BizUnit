@@ -172,7 +172,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 
                 if (0 != expectedValue.CompareTo(checkNode.InnerText))
                 {
-                    throw new ApplicationException(string.Format("XmlValidationStep failed, compare {0} != {1}, xpath query used: {2}", expectedValue, checkNode.InnerText, xpathExp));
+                    throw new InvalidOperationException(string.Format("XmlValidationStep failed, compare {0} != {1}, xpath query used: {2}", expectedValue, checkNode.InnerText, xpathExp));
                 }
             }
         }

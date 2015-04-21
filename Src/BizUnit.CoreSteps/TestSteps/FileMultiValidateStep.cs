@@ -104,13 +104,13 @@ namespace BizUnit.CoreSteps.TestSteps
             if ( filelist.Length == 0)
             {
                 // Expecting more than one file 
-                throw new ApplicationException( "Directory contains no files matching the pattern!" );
+                throw new InvalidOperationException( "Directory contains no files matching the pattern!" );
             }
 
             if ( filelist.Length == 1 )
             {
                 // Expecting more than one file 
-                throw new ApplicationException( "Directory only contains one file matching the pattern!" );
+                throw new InvalidOperationException( "Directory only contains one file matching the pattern!" );
             }
 
             // Get the validate steps
@@ -140,7 +140,7 @@ namespace BizUnit.CoreSteps.TestSteps
                         // Not found a node matching XPath, do nothing
                         nullException = true ;
                     }
-                    catch ( ApplicationException )
+                    catch ( InvalidOperationException )
                     {
                         // Not a matching comparision, do nothing
                         nullException = true ;

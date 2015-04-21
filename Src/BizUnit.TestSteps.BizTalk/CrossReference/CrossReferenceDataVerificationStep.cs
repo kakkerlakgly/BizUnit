@@ -68,7 +68,7 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
 
 				if(string.IsNullOrEmpty(commonId))
 				{
-					throw new ApplicationException("AppId " + valueToVerify + " not found" );
+					throw new InvalidOperationException("AppId " + valueToVerify + " not found" );
 				}
 
 				context.LogInfo("IdXRef = " + entity  + ". AppInstance = " + appinstance + ". AppId = " + valueToVerify + ". CommonId = " + commonId);
@@ -86,7 +86,7 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
 
 				if(string.IsNullOrEmpty(commonValue))
 				{
-					throw new ApplicationException("AppValue " + valueToVerify + " not found" );
+					throw new InvalidOperationException("AppValue " + valueToVerify + " not found" );
 				}
 
 				context.LogInfo("IdXRef = " + entity  + ". AppType = " + appType + ". AppValue = " + valueToVerify + ". CommonValue = " + commonValue);

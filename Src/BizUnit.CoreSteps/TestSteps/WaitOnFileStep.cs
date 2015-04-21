@@ -83,7 +83,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
                 if (!_mre.WaitOne(timeOut, false))
                 {
-                    throw new Exception(string.Format("WaitOnFileStep timed out after {0} milisecs watching path:{1}, filter{2}", timeOut, path, fileFilter));
+                    throw new InvalidOperationException(string.Format("WaitOnFileStep timed out after {0} milisecs watching path:{1}, filter{2}", timeOut, path, fileFilter));
                 }
 
                 context.LogInfo(string.Format("WaitOnFileStep found the file: {0}", _newFilePath));

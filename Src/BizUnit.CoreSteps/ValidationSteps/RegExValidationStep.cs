@@ -100,7 +100,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
                 }
                 else
                 {
-                    throw new Exception(String.Format("Regex validation failed for pattern \"{0}\".", validationRegEx));
+                    throw new InvalidOperationException(String.Format("Regex validation failed for pattern \"{0}\".", validationRegEx));
                 }
             }
         }

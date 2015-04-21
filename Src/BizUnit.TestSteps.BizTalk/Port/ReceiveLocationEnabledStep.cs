@@ -78,7 +78,7 @@ namespace BizUnit.TestSteps.BizTalk.Port
 
             if (IsDisabled != isActualDisabled)
 			{
-                throw new ApplicationException(string.Format("The receive location: {0} was found to not be in the state IsDisabled = {1}", ReceiveLocationName, IsDisabled));
+                throw new InvalidOperationException(string.Format("The receive location: {0} was found to not be in the state IsDisabled = {1}", ReceiveLocationName, IsDisabled));
 			}
 			else
 			{
@@ -118,7 +118,7 @@ namespace BizUnit.TestSteps.BizTalk.Port
                 }
                 catch (InvalidOperationException ex)
                 {
-                    throw new ApplicationException(string.Format("The WMI object for the receive location:{0} could not be retrieved.", receiveLocation));
+                    throw new InvalidOperationException(string.Format("The WMI object for the receive location:{0} could not be retrieved.", receiveLocation));
                 }
             }
 		}

@@ -69,7 +69,7 @@ namespace BizUnit.TestSteps.Http
                     }
                     catch (Exception e)
                     {
-                        throw new ApplicationException("HttpRequestResponseStep response stream was not correct!", e);
+                        throw new InvalidOperationException("HttpRequestResponseStep response stream was not correct!", e);
                     }
                 }
             }

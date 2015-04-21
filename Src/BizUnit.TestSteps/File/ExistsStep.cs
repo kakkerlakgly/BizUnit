@@ -61,7 +61,7 @@ namespace BizUnit.TestSteps.File
                 if (filelist.Length != ExpectedNoOfFiles)
                 {
                     // Expecting more than one file 
-                    throw new ApplicationException(String.Format("Directory does not contain the correct number of files!\n Found: {0} files matching the pattern {1}.", filelist.Length, SearchPattern));
+                    throw new InvalidOperationException(String.Format("Directory does not contain the correct number of files!\n Found: {0} files matching the pattern {1}.", filelist.Length, SearchPattern));
                 }
 
             } while (now.AddMilliseconds(Timeout) <= DateTime.Now);

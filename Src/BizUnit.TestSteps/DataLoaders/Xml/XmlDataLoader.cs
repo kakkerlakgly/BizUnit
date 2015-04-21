@@ -117,7 +117,7 @@ namespace BizUnit.TestSteps.DataLoaders.Xml
                     if (null == node)
                     {
                         context.LogError("XPath expression failed to find node");
-                        throw new ApplicationException(String.Format("Node not found: {0}", xpath.Description));
+                        throw new InvalidOperationException(String.Format("Node not found: {0}", xpath.Description));
                     }
 
                     if (!string.IsNullOrEmpty(xpath.ContextKey))

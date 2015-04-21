@@ -68,7 +68,7 @@ namespace BizUnit.TestSteps.File
             }
             else
             {
-                throw new ApplicationException(string.Format("The file path: {0} is not valid", filePathToDelete));
+                throw new InvalidOperationException(string.Format("The file path: {0} is not valid", filePathToDelete));
             }
 
             context.LogInfo("File.Delete has deleted file: {0}", filePathToDelete);

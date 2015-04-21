@@ -92,9 +92,8 @@ namespace BizUnit.CoreSteps.TestSteps
 	        private int _eventId;
 	        private IList<string> _validationRegexs = new List<string>();
 	        private bool _failIfFound;
-	        private EventLogEntryType _entryType;
 
-	        /// <summary>
+            /// <summary>
 	        /// 
 	        /// </summary>
 	        public int DelayBeforeCheck
@@ -196,8 +195,7 @@ namespace BizUnit.CoreSteps.TestSteps
 			    _source = context.ReadConfigAsString(testConfig, "Source");
 			    _type = context.ReadConfigAsString(testConfig, "Type");
                 _failIfFound = context.ReadConfigAsBool(testConfig, "FailIfFound", true);
-                _entryType = (EventLogEntryType)Enum.Parse(typeof(EventLogEntryType), _type, true);
-			    XmlNodeList validationNodes = testConfig.SelectNodes("ValidationRegex");
+                XmlNodeList validationNodes = testConfig.SelectNodes("ValidationRegex");
 
                 if (string.IsNullOrEmpty(_machine))
                 {
@@ -271,12 +269,12 @@ namespace BizUnit.CoreSteps.TestSteps
                 // Check that its ok
                 if (!_failIfFound && !found)
                 {
-                    throw new ApplicationException("Failed to find expected event log entry.");
+                    throw new InvalidOperationException("Failed to find expected event log entry.");
                 }
                 
                 if (_failIfFound && found)
                 {
-                    throw new ApplicationException("Found event log entry which should not be present.");
+                    throw new InvalidOperationException("Found event log entry which should not be present.");
                 }
             }
 
@@ -289,8 +287,6 @@ namespace BizUnit.CoreSteps.TestSteps
                 {
                     _machine = Environment.MachineName;
                 }
-
-                _entryType = (EventLogEntryType)Enum.Parse(typeof(EventLogEntryType), _type, true);
-            }
+	        }
 	    }
     }

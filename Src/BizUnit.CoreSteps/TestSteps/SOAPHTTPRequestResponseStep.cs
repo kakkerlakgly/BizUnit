@@ -252,7 +252,7 @@ namespace BizUnit.CoreSteps.TestSteps
                         }
                         catch (Exception e)
                         {
-                            throw new ApplicationException("SOAPHTTPRequestResponseStep response stream was not correct!", e);
+                            throw new InvalidOperationException("SOAPHTTPRequestResponseStep response stream was not correct!", e);
                         }
                     }
                 }
@@ -285,7 +285,7 @@ namespace BizUnit.CoreSteps.TestSteps
                     var warnings = wsdlImport.Import(proxyClassNamespace, codeCompileUnit);
                     if (warnings != 0)
                     {
-                        throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while importing the WSDL!");
+                        throw new InvalidOperationException("SOAPHTTPRequestResponseStep experienced problems while importing the WSDL!");
                     }
 
                     var compileParam = new CompilerParameters(referenceAssemblies)
@@ -298,7 +298,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
                     if (compilerResults.Errors.HasErrors)
                     {
-                        throw new ApplicationException("SOAPHTTPRequestResponseStep experienced problems while executing CompileAssemblyFromDom");
+                        throw new InvalidOperationException("SOAPHTTPRequestResponseStep experienced problems while executing CompileAssemblyFromDom");
                     }
 
                     return compilerResults.CompiledAssembly;

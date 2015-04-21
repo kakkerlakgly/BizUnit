@@ -205,7 +205,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
                 if (files.Length == 0)
                 {
-                    throw new ApplicationException(string.Format("No files were found at: {0}{1}", _directory, _searchPattern));
+                    throw new InvalidOperationException(string.Format("No files were found at: {0}{1}", _directory, _searchPattern));
                 }
 
                 context.LogInfo("{0} fies were found at : \"{1}{2}\"", files.Length, _directory, _searchPattern);

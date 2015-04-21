@@ -208,13 +208,13 @@ namespace BizUnit.TestDocumentor
                 var fileName = Path.GetFileName(importContainer.TestCasePath);
 
                 var filePath = Directory.GetFiles(testCaseDirectory, fileName, searchRecursively ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
-                if(null != filePath && 1 == filePath.Length)
+                if(1 == filePath.Length)
                 {
                     itc = TestCase.LoadFromFile(filePath[0]);
                 }
-                else if (null != filePath && 1 < filePath.Length)
+                else if (1 < filePath.Length)
                 {
-                    throw new ApplicationException(string.Format("Ambiguous file name specified as import: {0}", filePath));
+                    throw new InvalidOperationException(string.Format("Ambiguous file name specified as import: {0}", fileName));
                 }
             }
 

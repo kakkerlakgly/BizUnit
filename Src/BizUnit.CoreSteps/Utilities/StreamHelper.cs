@@ -45,7 +45,7 @@ namespace BizUnit.CoreSteps.Utilities
 
                 if ( read1 != read2 )
                 {
-                    throw new ApplicationException( "Streams do not contain identical data!" );
+                    throw new InvalidOperationException( "Streams do not contain identical data!" );
                 }
 
                 if ( 0 == read1 )
@@ -57,7 +57,7 @@ namespace BizUnit.CoreSteps.Utilities
                 {
                     if ( buff1[c] != buff2[c] )
                     {
-                        throw new ApplicationException( "Streams do not contain identical data!" );
+                        throw new InvalidOperationException( "Streams do not contain identical data!" );
                     }
                 }
 
@@ -98,7 +98,7 @@ namespace BizUnit.CoreSteps.Utilities
 
             if ( !loaded )
             {
-                throw new ApplicationException( string.Format( "The file: {0} was not found within the timeout period!", filePath ) );
+                throw new InvalidOperationException( string.Format( "The file: {0} was not found within the timeout period!", filePath ) );
             }
 
             return ms;

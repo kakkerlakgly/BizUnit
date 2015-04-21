@@ -390,7 +390,7 @@ namespace BizUnit
         {
             if (null != validationStep && null != validatorConfig)
             {
-                throw new ApplicationException(
+                throw new InvalidOperationException(
                     "Cannot execute a validation step using both Xml configuration and the BizUnit OM");
             }
 
@@ -436,7 +436,7 @@ namespace BizUnit
         {
             if (null != contextLoaderStep && null != contextConfig)
             {
-                throw new ApplicationException(
+                throw new InvalidOperationException(
                     "Cannot execute a context loader step using both Xml configuration and the BizUnit OM");
             }
 

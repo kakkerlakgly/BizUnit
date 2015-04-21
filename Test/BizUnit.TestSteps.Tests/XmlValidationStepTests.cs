@@ -67,7 +67,7 @@ namespace BizUnit.TestSteps.Tests
             validation.Execute(data, ctx);
         }
 
-        [ExpectedException(typeof(ApplicationException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         [TestMethod]
         public void XmlValidationStepTest_InvalidXPath()
         {

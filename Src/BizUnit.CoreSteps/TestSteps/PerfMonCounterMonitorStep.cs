@@ -139,7 +139,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
                 if (!targetHit)
                 {
-                    throw new ApplicationException("The target perfmon counter was not hit!");
+                    throw new InvalidOperationException("The target perfmon counter was not hit!");
                 }
             }
         }

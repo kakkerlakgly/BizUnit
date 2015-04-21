@@ -188,7 +188,7 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
                     {
                         context.LogError("XPath evaluation failed. Expected:<{0}>. Actual:<{1}>.", expectedValue, actualValue);
 
-                        throw new ApplicationException(
+                        throw new InvalidOperationException(
                             string.Format("XmlValidationStep failed, compare {0} != {1}, xpath query used: {2}",
                                           expectedValue, actualValue, xpathExp));
                     }

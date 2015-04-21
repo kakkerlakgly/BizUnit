@@ -145,7 +145,7 @@ namespace BizUnit.CoreSteps.TestSteps
             }
             else if (!allowEmpty && (xml == null || xml.Trim().Length > 0))
             {
-                throw new Exception("Response was expected.No Xml returned.");
+                throw new InvalidOperationException("Response was expected.No Xml returned.");
             }
             else if (allowEmpty)
             {

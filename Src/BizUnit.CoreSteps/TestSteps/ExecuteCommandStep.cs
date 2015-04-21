@@ -135,7 +135,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
                 if (0 != exitCode)
                 {
-                    throw new ApplicationException(string.Format("ExecuteCommandStep received an exit code: {0} while executing process {1} {2}\n\nOutput: {3}", exitCode, _processName, _processParams, output));
+                    throw new InvalidOperationException(string.Format("ExecuteCommandStep received an exit code: {0} while executing process {1} {2}\n\nOutput: {3}", exitCode, _processName, _processParams, output));
                 }
 
                 context.LogInfo("ExecuteCommandStep {0} output:\n{1}", _processName, output);

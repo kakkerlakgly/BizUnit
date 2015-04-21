@@ -146,28 +146,35 @@ namespace BizUnit.BizUnitOM
                 {
 
                     BizUnitParameterFormatterAttribute[] formatterAttributes =
-                                    (BizUnitParameterFormatterAttribute[])propertyInfo.GetCustomAttributes(
-                                                                   typeof(BizUnitParameterFormatterAttribute),
-                                                                   false);
+                        propertyInfo.GetCustomAttributes(typeof (BizUnitParameterFormatterAttribute), false)
+                            .Cast<BizUnitParameterFormatterAttribute>()
+                            .ToArray();
 
                     TestStepParameterFormatter paramterFormatter;
 
-                    if (formatterAttributes != null && formatterAttributes.Length > 0)
+                    if (formatterAttributes.Length > 0)
                     {
                         object obj =
                             ObjectCreator.CreateStep(formatterAttributes[0].TypeName,
-                                                     formatterAttributes[0].AssemblyPath);
+                                formatterAttributes[0].AssemblyPath);
 
                         if (null == obj)
                         {
-                            throw new ApplicationException(string.Format("The propery {0} has specified a custom BizUnit parameter formatter specified, but the formatter cannot be created, typeName: {1}, assemblyPath: {2}", propertyInfo.Name, formatterAttributes[0].TypeName, formatterAttributes[0].AssemblyPath));
+                            throw new InvalidOperationException(
+                                string.Format(
+                                    "The propery {0} has specified a custom BizUnit parameter formatter specified, but the formatter cannot be created, typeName: {1}, assemblyPath: {2}",
+                                    propertyInfo.Name, formatterAttributes[0].TypeName,
+                                    formatterAttributes[0].AssemblyPath));
                         }
 
                         ITestStepParameterFormatter customFormatter = obj as ITestStepParameterFormatter;
 
                         if (null == customFormatter)
                         {
-                            throw new ApplicationException(string.Format("The propery {0} has specified a custom BizUnit parameter formatter, but the formatter does not implement ITestStepParameterFormatter", propertyInfo.Name));
+                            throw new InvalidOperationException(
+                                string.Format(
+                                    "The propery {0} has specified a custom BizUnit parameter formatter, but the formatter does not implement ITestStepParameterFormatter",
+                                    propertyInfo.Name));
                         }
                         paramterFormatter = customFormatter.FormatParameters;
                     }
@@ -175,7 +182,7 @@ namespace BizUnit.BizUnitOM
                     {
                         paramterFormatter = _formatter.FormatParameters;
                     }
-                    
+
                     object[] propertyArgs = paramterFormatter(propertyInfo.PropertyType, args, ctx);
                     propertyInfo.GetSetMethod().Invoke(TestStep, propertyArgs);
                     found = true;
@@ -183,9 +190,10 @@ namespace BizUnit.BizUnitOM
                 }
             }
 
-            if(!found)
+            if (!found)
             {
-                throw new ApplicationException(string.Format("BizUnitOM could not find the property {0} on the test step", name));
+                throw new InvalidOperationException(
+                    string.Format("BizUnitOM could not find the property {0} on the test step", name));
             }
         }
 

@@ -68,7 +68,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 				}
 				else
 				{
-					throw new Exception(String.Format("Context validation failed for key: {0}. Expected value: {1}, actual value: {2}", keyName, expectedValue, actualValue));
+					throw new InvalidOperationException(String.Format("Context validation failed for key: {0}. Expected value: {1}, actual value: {2}", keyName, expectedValue, actualValue));
 				}
 			}
 		}

@@ -117,7 +117,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 				if (typeName.Length == 0)
 				{
 					// fail
-					throw (new ApplicationException("no type specified"));
+					throw (new InvalidOperationException("no type specified"));
 				}
 			
 				// get constructor details
@@ -129,7 +129,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 					if (asm == null)
 					{
 						// fail
-						throw (new Exception("failed to create type " + typeName));
+						throw (new InvalidOperationException("failed to create type " + typeName));
 					}
 					type = asm.GetType(typeName, true, false);
 				}
@@ -160,7 +160,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 					if (i == constructorParms.Count)
 					{
 						// no match on constructor parms
-						throw(new Exception(String.Format("No suitable constructor found for type {0}. Looking for constructor with {1} parameters. Cannot create instance",type.Name,constructorParms.Count)));
+						throw(new InvalidOperationException(String.Format("No suitable constructor found for type {0}. Looking for constructor with {1} parameters. Cannot create instance",type.Name,constructorParms.Count)));
 					}
 				}
 				
@@ -181,7 +181,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 			var mi = type.GetMember(methodName);
 			if (mi.Length == 0) // member not found
 			{
-				throw (new ApplicationException(String.Format("Requested member {0} not found in type {1} in instance {2}", methodName, type.Name, fact)));
+				throw (new InvalidOperationException(String.Format("Requested member {0} not found in type {1} in instance {2}", methodName, type.Name, fact)));
 			}
 
 			MethodInfo methodDetails = null;
@@ -196,7 +196,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 					if (methodDetails == null)
 					{
 						// can only support parameters for method type
-						throw(new Exception(String.Format("Ambiguous member name. Found {0} matches", mi.Length)));
+						throw(new InvalidOperationException(String.Format("Ambiguous member name. Found {0} matches", mi.Length)));
 					}
 
                     if (methodDetails.GetParameters().Length == parms.SelectNodes("Parameter").Count)
@@ -207,7 +207,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 				}
 				if (infoCount == mi.Length)
 				{
-					throw(new Exception(String.Format("Ambiguous member name. Found {0} matches", mi.Length)));
+					throw(new InvalidOperationException(String.Format("Ambiguous member name. Found {0} matches", mi.Length)));
 				}
 			}
 
@@ -226,7 +226,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 							if (parm == null)
 							{
 								// parameter name not defined in configuration
-								throw(new Exception(String.Format("The parameter name {0} for method {1} was not defined in the step configuration",pi.Name,methodDetails.Name)));
+								throw(new InvalidOperationException(String.Format("The parameter name {0} for method {1} was not defined in the step configuration",pi.Name,methodDetails.Name)));
 							}
 							else
 							{
@@ -269,7 +269,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 								context.LogInfo("CodeValidationStep evaluating result {0} equals \"{1}\"", resultName, resultValue, args[i].ToString());					
 								if (resultValue != args[p].ToString())
 								{
-									throw new ApplicationException(string.Format( "CodeValidationStep failed, compare {0} != {1}, parameter name used: {2}", resultValue, args[i], resultName));
+									throw new InvalidOperationException(string.Format( "CodeValidationStep failed, compare {0} != {1}, parameter name used: {2}", resultValue, args[i], resultName));
 								}
 								break;
 							}
@@ -277,12 +277,12 @@ namespace BizUnit.CoreSteps.ValidationSteps
 						if (p == methodDetails.GetParameters().Length)
 						{
 							// not found
-							throw new ApplicationException(string.Format("Parameter {0} not found in member {1}",resultName, methodDetails.Name));
+							throw new InvalidOperationException(string.Format("Parameter {0} not found in member {1}",resultName, methodDetails.Name));
 						}
 					}
 					else 
 					{
-						throw new ApplicationException("Configuration not supported");
+						throw new InvalidOperationException("Configuration not supported");
 					}
 				}
 				else
@@ -290,14 +290,14 @@ namespace BizUnit.CoreSteps.ValidationSteps
 					// don't have a named parm value for the return value
 					if (result == null)
 					{
-						throw new ApplicationException("CodeValidationStep failed, expected return value from member but found null");
+						throw new InvalidOperationException("CodeValidationStep failed, expected return value from member but found null");
 					}
 
                     resultValue = results[i].Attributes.GetNamedItem("value").Value;
 					context.LogInfo("CodeValidationStep evaluating return value {0} equals \"{1}\"", resultValue, result);
 					if (resultValue.CompareTo(result) != 0)
 					{
-						throw new ApplicationException(string.Format( "CodeValidationStep failed, compare {0} != {1}, parameter name used: {2}", resultValue, result, resultName));
+						throw new InvalidOperationException(string.Format( "CodeValidationStep failed, compare {0} != {1}, parameter name used: {2}", resultValue, result, resultName));
 					}
 				}
 			}

@@ -57,11 +57,11 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
 
             if (node == null)
             {
-                throw new ApplicationException("SeedDataSetupFilePath node not specified");
+                throw new InvalidOperationException("SeedDataSetupFilePath node not specified");
             }
             else if (node.InnerText.Trim().Length == 0)
             {
-                throw new ApplicationException("SeedDataSetupFilePath has no path specified");
+                throw new InvalidOperationException("SeedDataSetupFilePath has no path specified");
             }
             string btsxrefimportPath;
             using (RegistryKey rk = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\BizTalk Server\\3.0\\"))
@@ -86,7 +86,7 @@ namespace BizUnit.TestSteps.BizTalk.CrossReference
             }
             if (processOutput.IndexOf("error") != -1)
             {
-                throw new ApplicationException("XRef seed data load failed. The result of the import was - \n" + processOutput);
+                throw new InvalidOperationException("XRef seed data load failed. The result of the import was - \n" + processOutput);
             }
 
             context.LogInfo(processOutput);

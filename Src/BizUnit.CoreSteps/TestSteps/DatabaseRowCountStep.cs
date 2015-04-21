@@ -84,7 +84,7 @@ namespace BizUnit.CoreSteps.TestSteps
             // Number of rows as expected?
             if ( rows != expectedRows )
             {
-                throw new ApplicationException( string.Format( "DatabaseRowCountStep failed, expected {0} rows but found {1} rows", expectedRows, rows ) ) ;
+                throw new InvalidOperationException( string.Format( "DatabaseRowCountStep failed, expected {0} rows but found {1} rows", expectedRows, rows ) ) ;
             }
                 
             context.LogInfo( "DatabaseRowCountStep found \"{0}\" rows", rows ) ;

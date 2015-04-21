@@ -131,12 +131,12 @@ namespace BizUnit.TestSteps.EventLog
             // Check that its ok
             if (!FailIfFound && !found)
             {
-                throw new ApplicationException("Failed to find expected event log entry.");
+                throw new InvalidOperationException("Failed to find expected event log entry.");
             }
 
             if (FailIfFound && found)
             {
-                throw new ApplicationException("Found event log entry which should not be present.");
+                throw new InvalidOperationException("Found event log entry which should not be present.");
             }
         }
 

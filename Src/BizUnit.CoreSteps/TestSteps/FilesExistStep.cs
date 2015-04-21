@@ -81,7 +81,7 @@ namespace BizUnit.CoreSteps.TestSteps
 			if ( filelist.Length != expectedNoOfFiles )
 			{
 				// Expecting more than one file 
-				throw new ApplicationException( String.Format( "Directory does not contain the correct number of files!\n Found: {0} files matching the pattern {1}.", filelist.Length, pattern ) ) ;
+				throw new InvalidOperationException( String.Format( "Directory does not contain the correct number of files!\n Found: {0} files matching the pattern {1}.", filelist.Length, pattern ) ) ;
 			}
 
             context.LogInfo( "FilesExistStep found: \"{0}\" files", filelist.Length ) ;

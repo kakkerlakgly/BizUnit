@@ -46,7 +46,7 @@ namespace BizUnit.TestSteps.Ssis
         /// TestStepBase.Execute() implementation
         ///</summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-        ///<exception cref="ApplicationException"></exception>
+        ///<exception cref="InvalidOperationException"></exception>
         public override void Execute(Context context)
         {
             context.LogInfo("Executing SSIS package: {0}", PackageLocation);
@@ -72,7 +72,7 @@ namespace BizUnit.TestSteps.Ssis
 
                 if (DTSExecResult.Success != result || 0 < errors.Count)
                 {
-                    throw new ApplicationException("Package execution failed.");
+                    throw new InvalidOperationException("Package execution failed.");
                 }
 
                 context.LogInfo("Package executed successfully.");

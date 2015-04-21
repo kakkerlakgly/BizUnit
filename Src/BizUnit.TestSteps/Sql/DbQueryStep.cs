@@ -75,7 +75,7 @@ namespace BizUnit.TestSteps.Sql
 
             if (NumberOfRowsExpected != ds.Tables[0].Rows.Count)
             {
-                throw new ApplicationException(string.Format("Number of rows expected to be returned by the query does not match the value specified in the teststep. Number of rows the NnumberOfRowsExpected were: {0}, actual: {1}", NumberOfRowsExpected, ds.Tables[0].Rows.Count));
+                throw new InvalidOperationException(string.Format("Number of rows expected to be returned by the query does not match the value specified in the teststep. Number of rows the NnumberOfRowsExpected were: {0}, actual: {1}", NumberOfRowsExpected, ds.Tables[0].Rows.Count));
             }
 
             context.LogInfo("NumberOfRowsExpected: {0}, actual number returned: {1}", NumberOfRowsExpected, ds.Tables[0].Rows.Count);
@@ -107,7 +107,7 @@ namespace BizUnit.TestSteps.Sql
                         }
                         else
                         {
-                            throw new Exception(String.Format("Validation failed for field: {0}. Expected value: {1}, actual value: {2}", cell.ColumnName, cell.ExpectedValue, dbDataStringValue));
+                            throw new InvalidOperationException(String.Format("Validation failed for field: {0}. Expected value: {1}, actual value: {2}", cell.ColumnName, cell.ExpectedValue, dbDataStringValue));
                         }
                     }
 
@@ -181,7 +181,7 @@ namespace BizUnit.TestSteps.Sql
                     return targetSByte.CompareTo(dbSByte);
 
                 default:
-                    throw new ApplicationException(string.Format("Unsupported type: {0}", dbData.GetType()));
+                    throw new InvalidOperationException(string.Format("Unsupported type: {0}", dbData.GetType()));
             }
         }
 
