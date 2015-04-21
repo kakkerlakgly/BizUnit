@@ -15,6 +15,7 @@
 using System;
 using System.Management;
 using BizUnit.Xaml;
+using System.Linq;
 
 namespace BizUnit.TestSteps.BizTalk.Host
 {
@@ -172,7 +173,7 @@ namespace BizUnit.TestSteps.BizTalk.Host
                 }
             }
         }
-        
+
         private static ManagementObject GetHostInstanceWmiObject(string server, string hostName)
 		{
             // 2 represents an isolated host and 1 represents an in-process hosts, only an in-process 
@@ -206,7 +207,7 @@ namespace BizUnit.TestSteps.BizTalk.Host
                 // Execute the query and determine if any results were obtained.
                 try
                 {
-                    return searcher.Get().Cast<ManagementObject>().First();
+                    return searcher.Get().OfType<ManagementObject>().First();
                 }
                 catch (InvalidOperationException ex)
                 {

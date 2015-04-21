@@ -67,7 +67,7 @@ namespace BizUnit.TestSteps.BizTalk.Port
 		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
 		{
-			ManagementObject mo = GetreceiveLocationWmiObject(ReceiveLocationName);
+			var mo = GetreceiveLocationWmiObject(ReceiveLocationName);
 
 			bool isActualDisabled;
 
@@ -114,7 +114,7 @@ namespace BizUnit.TestSteps.BizTalk.Port
                 // Execute the query and determine if any results were obtained.
                 try
                 {
-                    return searcher.Get().Cast<ManagementObject>().First();
+                    return searcher.Get().OfType<ManagementObject>().First();
                 }
                 catch (InvalidOperationException ex)
                 {
