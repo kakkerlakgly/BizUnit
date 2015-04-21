@@ -36,16 +36,18 @@ namespace BizUnit.TestSteps.BizTalk.Common
             {
                 using (var writer = new StreamWriter(fs, enc))
                 {
-                    var msgStream = message.BodyPart.GetOriginalDataStream();
-                    using (var reader = new StreamReader(msgStream, enc))
+                    using (var msgStream = message.BodyPart.GetOriginalDataStream())
                     {
-                        const int size = 1024;
-                        var buf = new char[size];
-                        var charsRead = reader.Read(buf, 0, size);
-                        while (charsRead > 0)
+                        using (var reader = new StreamReader(msgStream, enc))
                         {
-                            writer.Write(buf, 0, charsRead);
-                            charsRead = reader.Read(buf, 0, size);
+                            const int size = 1024;
+                            var buf = new char[size];
+                            var charsRead = reader.Read(buf, 0, size);
+                            while (charsRead > 0)
+                            {
+                                writer.Write(buf, 0, charsRead);
+                                charsRead = reader.Read(buf, 0, size);
+                            }
                         }
                     }
                 }

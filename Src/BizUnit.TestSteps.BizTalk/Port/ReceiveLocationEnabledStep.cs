@@ -16,6 +16,7 @@ using System;
 using System.Management;
 using BizUnit.Common;
 using BizUnit.Xaml;
+using System.Linq;
 
 namespace BizUnit.TestSteps.BizTalk.Port
 {
@@ -111,15 +112,11 @@ namespace BizUnit.TestSteps.BizTalk.Port
                 searcher.Query = query;
 
                 // Execute the query and determine if any results were obtained.
-                ManagementObjectCollection queryCol = searcher.Get();
-
-                ManagementObjectCollection.ManagementObjectEnumerator me = queryCol.GetEnumerator();
-                me.Reset();
-                if (me.MoveNext())
+                try
                 {
-                    return (ManagementObject)me.Current;
+                    return searcher.Get().Cast<ManagementObject>().First();
                 }
-                else
+                catch (InvalidOperationException ex)
                 {
                     throw new ApplicationException(string.Format("The WMI object for the receive location:{0} could not be retrieved.", receiveLocation));
                 }

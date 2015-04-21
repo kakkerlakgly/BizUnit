@@ -107,18 +107,13 @@ namespace BizUnit.TestSteps.BizTalk.Host
             var listofServers = Servers.Split(',');
             foreach (var server in listofServers)
             {
-                var mo = GetHostInstanceWmiObject(server, HostInstanceName);
-
-                using (mo)
+                using (var mo = GetHostInstanceWmiObject(server, HostInstanceName))
                 {
                     if (Action.ToLower() == "start")
                     {
                         if (!string.IsNullOrEmpty(Logon))
                         {
-                            var creds = new object[3];
-                            creds[0] = Logon;
-                            creds[1] = PassWord;
-                            creds[2] = GrantLogOnAsService;
+                            var creds = new object[] { Logon, PassWord, GrantLogOnAsService };
                             mo.InvokeMethod("Install", creds);
                         }
 
@@ -209,16 +204,14 @@ namespace BizUnit.TestSteps.BizTalk.Host
                 searcher.Query = query;
 
                 // Execute the query and determine if any results were obtained.
-                var queryCol = searcher.Get();
-                var me = queryCol.GetEnumerator();
-                me.Reset();
-
-                if (me.MoveNext())
+                try
                 {
-                    return (ManagementObject)me.Current;
+                    return searcher.Get().Cast<ManagementObject>().First();
                 }
-
-                throw new ApplicationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName));
+                catch (InvalidOperationException ex)
+                {
+                    throw new ApplicationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName));
+                }
             }
 		}
 	}
