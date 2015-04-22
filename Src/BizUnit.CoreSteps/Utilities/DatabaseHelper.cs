@@ -22,17 +22,9 @@ namespace BizUnit.CoreSteps.Utilities
     /// <summary>
     ///     Static Helper for executing SQL statements
     /// </summary>
-    public class DatabaseHelper
+    public static class DatabaseHelper
     {
         #region constructor(s)
-
-        /// <summary>
-        ///     Constructor for class, default constructor is private to prevent instances being
-        ///     created as the class only has static methods
-        /// </summary>
-        private DatabaseHelper()
-        {
-        }
 
         #endregion // constructor(s)
 

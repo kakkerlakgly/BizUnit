@@ -84,12 +84,12 @@ namespace BizUnit.TestSteps.File
         ///     TestStepBase.Validate() implementation
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="InvalidOperationException "></exception>
         public override void Validate(Context context)
         {
             if (null == FilePathsToDelete || 0 == FilePathsToDelete.Count)
             {
-                throw new ArgumentNullException("FilePathsToDelete is either null or of zero length");
+                throw new InvalidOperationException("FilePathsToDelete is either null or of zero length");
             }
 
             for (var c = 0; c < FilePathsToDelete.Count; c++)

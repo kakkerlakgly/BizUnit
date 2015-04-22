@@ -52,7 +52,7 @@ namespace BizUnit.CoreSteps.TestSteps
     ///     </list>
     /// </remarks>
     [Obsolete("WaitOnFileStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
-    public class WaitOnFileStep : ITestStep
+    public class WaitOnFileStep : ITestStep, IDisposable
     {
         private ManualResetEvent _mre;
         private string _newFilePath;
@@ -94,6 +94,11 @@ namespace BizUnit.CoreSteps.TestSteps
         {
             _newFilePath = e.FullPath;
             _mre.Set();
+        }
+
+        public void Dispose()
+        {
+            if (_mre != null) _mre.Dispose();
         }
     }
 }

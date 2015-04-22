@@ -18,6 +18,6 @@ namespace BizUnit.TestSteps.Sql
         /// <summary>
         ///     The cells to be validated
         /// </summary>
-        public IList<DbCellToValidate> Cells { get; set; }
+        public IList<DbCellToValidate> Cells { get; private set; }
     }
 }

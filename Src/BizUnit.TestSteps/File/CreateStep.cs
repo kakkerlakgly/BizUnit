@@ -66,7 +66,7 @@ namespace BizUnit.TestSteps.File
         {
             if (string.IsNullOrEmpty(CreationPath))
             {
-                throw new ArgumentNullException("CreationPath is either null or of zero length");
+                throw new InvalidOperationException("CreationPath is either null or of zero length");
             }
             CreationPath = context.SubstituteWildCards(CreationPath);
 

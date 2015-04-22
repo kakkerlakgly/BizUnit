@@ -590,7 +590,7 @@ namespace BizUnit
                 }
                 return SubstituteWildCards(node.InnerText);
             }
-            throw new NullReferenceException(string.Format("The XPath query: {0} did not find a node.", xPath));
+            throw new InvalidOperationException(string.Format("The XPath query: {0} did not find a node.", xPath));
         }
 
         /// <summary>

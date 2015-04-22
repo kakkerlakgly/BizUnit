@@ -23,7 +23,7 @@ namespace BizUnit
     /// <summary>
     ///     Summary description for MQSeriesHelper.
     /// </summary>
-    public class MQSeriesHelper
+    public static class MQSeriesHelper
     {
         /// <summary>
         ///     Helper method to read a message from an MQ Series queue

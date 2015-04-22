@@ -138,19 +138,19 @@ namespace BizUnit.CoreSteps.TestSteps
         {
             if (string.IsNullOrEmpty(_processName))
             {
-                throw new ArgumentNullException("ProcessName is either null or of zero length");
+                throw new InvalidOperationException("ProcessName is either null or of zero length");
             }
             _processName = context.SubstituteWildCards(_processName);
 
             if (string.IsNullOrEmpty(_processParams))
             {
-                throw new ArgumentNullException("ProcessParams is either null or of zero length");
+                throw new InvalidOperationException("ProcessParams is either null or of zero length");
             }
             _processParams = context.SubstituteWildCards(_processParams);
 
             if (string.IsNullOrEmpty(_workingDirectory))
             {
-                throw new ArgumentNullException("WorkingDirectory is either null or of zero length");
+                throw new InvalidOperationException("WorkingDirectory is either null or of zero length");
             }
             _workingDirectory = context.SubstituteWildCards(_workingDirectory);
         }

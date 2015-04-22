@@ -27,11 +27,11 @@ namespace BizUnit.TestSteps.BizTalk.Common
         /// <param name='destination'>The destination directory to persist the file to</param>
         public static void PersistMessage(IBaseMessage message, string destination)
         {
-            var enc = Encoding.GetEncoding("UTF-8");
-            if (!string.IsNullOrEmpty(message.BodyPart.Charset))
-            {
-                enc = Encoding.GetEncoding(message.BodyPart.Charset);
-            }
+            var enc = string.IsNullOrEmpty(message.BodyPart.Charset)
+                ? Encoding.GetEncoding("UTF-8")
+                : Encoding.GetEncoding(message.BodyPart.Charset);
+            const int size = 1024;
+            var buf = new char[size];
             using (var fs = new FileStream(destination, FileMode.Create))
             {
                 using (var writer = new StreamWriter(fs, enc))
@@ -40,8 +40,6 @@ namespace BizUnit.TestSteps.BizTalk.Common
                     {
                         using (var reader = new StreamReader(msgStream, enc))
                         {
-                            const int size = 1024;
-                            var buf = new char[size];
                             var charsRead = reader.Read(buf, 0, size);
                             while (charsRead > 0)
                             {

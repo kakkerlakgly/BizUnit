@@ -155,24 +155,24 @@ namespace BizUnit.TestSteps.BizTalk.Host
         {
             if (string.IsNullOrEmpty(Action))
             {
-                throw new ArgumentNullException("Action is either null or an empty string");
+                throw new InvalidOperationException("Action is either null or an empty string");
             }
 
             if (string.IsNullOrEmpty(HostInstanceName))
             {
-                throw new ArgumentNullException("HostName is either null or an empty string");
+                throw new InvalidOperationException("HostName is either null or an empty string");
             }
 
             if (string.IsNullOrEmpty(Servers))
             {
-                throw new ArgumentNullException("Servers is either null or an empty string");
+                throw new InvalidOperationException("Servers is either null or an empty string");
             }
 
             if (null != Logon && 0 < Servers.Length)
             {
                 if (string.IsNullOrEmpty(PassWord))
                 {
-                    throw new ArgumentNullException("PassWord is either null or an empty string");
+                    throw new InvalidOperationException("PassWord is either null or an empty string");
                 }
             }
         }

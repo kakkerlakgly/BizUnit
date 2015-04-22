@@ -22,7 +22,7 @@ using System.Text.RegularExpressions;
 
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-    internal class Pop3Client : IEnumerable<Pop3Component>
+    internal class Pop3Client : IEnumerable<Pop3Component>, IDisposable
     {
         private const int Pop3Port = 110;
         private const int MaxBufferReadSize = 256;
@@ -230,10 +230,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
         internal void CloseConnection()
         {
-            Send("quit");
-
-            _socket = null;
-            _pop3Message = null;
+            Dispose();
         }
 
         internal bool DeleteEmail()
@@ -336,6 +333,15 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
             // send login details ...
             LoginToInbox();
+        }
+
+        public void Dispose()
+        {
+            Send("quit");
+            if (_pop3Message != null) _pop3Message.Dispose();
+            _pop3Message = null;
+            if (_socket != null) _socket.Dispose();
+            _socket = null;
         }
     }
 }

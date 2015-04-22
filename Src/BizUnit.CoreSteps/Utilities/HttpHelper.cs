@@ -23,7 +23,7 @@ namespace BizUnit.CoreSteps.Utilities
     /// <summary>
     ///     Helper class for HTTP
     /// </summary>
-    public class HttpHelper
+    public static class HttpHelper
     {
         /// <summary>
         ///     Helper method to execute an HTTP request-response
@@ -34,6 +34,19 @@ namespace BizUnit.CoreSteps.Utilities
         /// <param name="context">The BizUnit context object which holds state and is passed between test steps</param>
         /// <returns>response Stream</returns>
         public static Stream SendRequestData(string url, byte[] payload, int requestTimeout, Context context)
+        {
+            return SendRequestData(new Uri(url), payload, requestTimeout, context);
+        }
+
+        /// <summary>
+        ///     Helper method to execute an HTTP request-response
+        /// </summary>
+        /// <param name="url">The HTTP Url</param>
+        /// <param name="payload">Byte array conatining the request data</param>
+        /// <param name="requestTimeout">The request timeout value</param>
+        /// <param name="context">The BizUnit context object which holds state and is passed between test steps</param>
+        /// <returns>response Stream</returns>
+        public static Stream SendRequestData(Uri url, byte[] payload, int requestTimeout, Context context)
         {
             Stream response = null;
             try

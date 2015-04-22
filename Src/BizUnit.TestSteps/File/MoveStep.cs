@@ -52,13 +52,13 @@ namespace BizUnit.TestSteps.File
         {
             if (string.IsNullOrEmpty(DestinationPath))
             {
-                throw new ArgumentNullException("DestinationPath is either null or of zero length");
+                throw new InvalidOperationException("DestinationPath is either null or of zero length");
             }
             DestinationPath = context.SubstituteWildCards(DestinationPath);
 
             if (string.IsNullOrEmpty(SourcePath))
             {
-                throw new ArgumentNullException("SourcePath is either null or of zero length");
+                throw new InvalidOperationException("SourcePath is either null or of zero length");
             }
             SourcePath = context.SubstituteWildCards(SourcePath);
         }

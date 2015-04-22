@@ -19,7 +19,7 @@ namespace BizUnit
 {
     /// <summary>
     /// </summary>
-    public class ObjectCreator
+    public static class ObjectCreator
     {
         /// <summary>
         /// </summary>

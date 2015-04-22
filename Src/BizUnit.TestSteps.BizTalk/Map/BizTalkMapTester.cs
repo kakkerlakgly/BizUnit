@@ -27,7 +27,7 @@ namespace BizUnit.TestSteps.BizTalk.Map
     /// </summary>
     public class BizTalkMapTester
     {
-        internal static XmlWriterSettings WriterSettings = new XmlWriterSettings();
+        internal static readonly XmlWriterSettings WriterSettings = new XmlWriterSettings();
         private readonly TransformBase _map;
 
         static BizTalkMapTester()

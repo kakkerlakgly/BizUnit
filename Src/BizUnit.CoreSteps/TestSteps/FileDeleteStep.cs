@@ -89,7 +89,7 @@ namespace BizUnit.CoreSteps.TestSteps
         {
             if (null == _filesToDelete || 0 == _filesToDelete.Count)
             {
-                throw new ArgumentNullException("FilesToDelete is either null or of zero length");
+                throw new InvalidOperationException("FilesToDelete is either null or of zero length");
             }
 
             for (var c = 0; c < _filesToDelete.Count; c++)

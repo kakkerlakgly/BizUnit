@@ -188,13 +188,13 @@ namespace BizUnit.CoreSteps.ValidationSteps
 
             if (string.IsNullOrEmpty(_xmlSchemaPath))
             {
-                throw new ArgumentNullException("XmlSchemaPath is either null or of zero length");
+                throw new InvalidOperationException("XmlSchemaPath is either null or of zero length");
             }
             _xmlSchemaPath = context.SubstituteWildCards(_xmlSchemaPath);
 
             if (string.IsNullOrEmpty(_xmlSchemaNameSpace))
             {
-                throw new ArgumentNullException("XmlSchemaNameSpace is either null or of zero length");
+                throw new InvalidOperationException("XmlSchemaNameSpace is either null or of zero length");
             }
             _xmlSchemaNameSpace = context.SubstituteWildCards(_xmlSchemaNameSpace);
         }

@@ -149,7 +149,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
 
             if (string.IsNullOrEmpty(_comparisonDataPath))
             {
-                throw new ArgumentNullException("ComparisonDataPath is either null or of zero length");
+                throw new InvalidOperationException("ComparisonDataPath is either null or of zero length");
             }
 
             _comparisonDataPath = context.SubstituteWildCards(_comparisonDataPath);

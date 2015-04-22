@@ -60,7 +60,7 @@ namespace BizUnit.BizUnitOM
         ///     The Xml configuration for a test step that
         ///     implements the ITestStep interface.
         /// </param>
-        public TestStepBuilderBase(XmlNode config)
+        protected TestStepBuilderBase(XmlNode config)
         {
             ArgumentValidation.CheckForNullReference(config, "config");
 
@@ -75,7 +75,7 @@ namespace BizUnit.BizUnitOM
         ///     TestStepBuilderBase constructor.
         /// </summary>
         /// <param name='typeName'>The type name of the test step to be created by the builder.</param>
-        public TestStepBuilderBase(string typeName)
+        protected TestStepBuilderBase(string typeName)
         {
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
 
@@ -94,7 +94,7 @@ namespace BizUnit.BizUnitOM
         /// </summary>
         /// <param name='typeName'>The type name of the test step to be created by the builder.</param>
         /// <param name='assemblyPath'>The assembly path name of the test step to be created by the builder.</param>
-        public TestStepBuilderBase(string typeName, string assemblyPath)
+        protected TestStepBuilderBase(string typeName, string assemblyPath)
         {
             ArgumentValidation.CheckForEmptyString(typeName, "typeName");
             // assemblyPath - optional

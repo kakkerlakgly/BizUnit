@@ -363,53 +363,35 @@ namespace BizUnit.CoreSteps.TestSteps
         {
             var t = assembly.GetType(msgTypeName);
 
-            var ret = "";
             var attributes = t.GetCustomAttributes(false);
 
             foreach (var t1 in attributes)
             {
-                var att = (Attribute) t1;
-
-                if (att.ToString().Equals("System.Xml.Serialization.XmlTypeAttribute"))
+                if (t1.ToString().Equals("System.Xml.Serialization.XmlTypeAttribute"))
                 {
-                    var typeAtt = (XmlTypeAttribute) att;
-                    ret = typeAtt.Namespace;
-                    break;
+                    var typeAtt = (XmlTypeAttribute) t1;
+                    return typeAtt.Namespace;
                 }
             }
 
-            return ret;
+            return "";
         }
 
         internal static object LoadMessage(Assembly assembly, string msgTypeName, string messagePath)
         {
-            XmlReader messageReader = null;
-            object objMessage;
+            // This object requires CreateInstanceFrom...however the proxy object instantiation 
+            // does not require CreateInstancefrom
+            Activator.CreateInstanceFrom(assembly.Location, msgTypeName);
+            var defNamespace = GetDefaultNamespace(assembly, msgTypeName);
 
-            try
+            var serializer = !string.IsNullOrEmpty(defNamespace)
+                ? new XmlSerializer(assembly.GetType(msgTypeName), defNamespace)
+                : new XmlSerializer(assembly.GetType(msgTypeName));
+
+            using (XmlReader messageReader = new XmlTextReader(messagePath))
             {
-                // This object requires CreateInstanceFrom...however the proxy object instantiation 
-                // does not require CreateInstancefrom
-                Activator.CreateInstanceFrom(assembly.Location, msgTypeName);
-                messageReader = new XmlTextReader(messagePath);
-
-                var defNamespace = GetDefaultNamespace(assembly, msgTypeName);
-
-                var serializer = !string.IsNullOrEmpty(defNamespace)
-                    ? new XmlSerializer(assembly.GetType(msgTypeName), defNamespace)
-                    : new XmlSerializer(assembly.GetType(msgTypeName));
-
-                objMessage = serializer.Deserialize(messageReader);
+                return serializer.Deserialize(messageReader);
             }
-            finally
-            {
-                if (messageReader != null)
-                {
-                    messageReader.Close();
-                }
-            }
-
-            return objMessage;
         }
     }
 }

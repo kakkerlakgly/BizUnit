@@ -28,7 +28,12 @@ namespace BizUnit.TestSteps.Http
         /// <summary>
         ///     The Url which the data will be posted to
         /// </summary>
-        public string DestinationUrl { get; set; }
+        public string DestinationUrl { get { return DestinationUri.AbsoluteUri; } set{DestinationUri = new Uri(value);} }
+
+        /// <summary>
+        ///     The Url which the data will be posted to
+        /// </summary>
+        public Uri DestinationUri { get; set; }
 
         /// <summary>
         ///     The length of time to wait to the HTTP return code
@@ -42,7 +47,7 @@ namespace BizUnit.TestSteps.Http
         public override void Execute(Context context)
         {
             context.LogInfo("HttpRequestResponseStep about to post data from File: {0} to the Url: {1}", SourcePath,
-                DestinationUrl);
+                DestinationUri);
 
             // Get the data to post...
             using (var request = StreamHelper.LoadFileToStream(SourcePath))
@@ -50,7 +55,7 @@ namespace BizUnit.TestSteps.Http
                 var data = request.GetBuffer();
 
                 // Post the data...
-                using (var response = HttpHelper.SendRequestData(DestinationUrl, data, RequestTimeout, context))
+                using (var response = HttpHelper.SendRequestData(DestinationUri, data, RequestTimeout, context))
                 {
                     // Dump the respons to the console...
                     StreamHelper.WriteStreamToConsole("HttpRequestResponseStep response data", response, context);
@@ -81,7 +86,7 @@ namespace BizUnit.TestSteps.Http
         public override void Validate(Context context)
         {
             ArgumentValidation.CheckForEmptyString(SourcePath, "SourcePath");
-            ArgumentValidation.CheckForEmptyString(DestinationUrl, "DestinationUrl");
+            ArgumentValidation.CheckForNullReference(DestinationUri, "DestinationUrl");
         }
     }
 }

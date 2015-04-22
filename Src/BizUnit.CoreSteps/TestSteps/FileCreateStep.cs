@@ -109,13 +109,13 @@ namespace BizUnit.CoreSteps.TestSteps
         {
             if (string.IsNullOrEmpty(_creationPath))
             {
-                throw new ArgumentNullException("CreationPath is either null or of zero length");
+                throw new InvalidOperationException("CreationPath is either null or of zero length");
             }
             _creationPath = context.SubstituteWildCards(_creationPath);
 
             if (string.IsNullOrEmpty(_sourcePath))
             {
-                throw new ArgumentNullException("SourcePath is either null or of zero length");
+                throw new InvalidOperationException("SourcePath is either null or of zero length");
             }
             _sourcePath = context.SubstituteWildCards(_sourcePath);
         }

@@ -68,13 +68,13 @@ namespace BizUnit.TestSteps.Sql
         ///     Validates the SqlQuery
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="InvalidOperationException "></exception>
         public void Validate(Context context)
         {
             var sqlQuery = GetFormattedSqlQuery(context);
             if (string.IsNullOrEmpty(sqlQuery))
             {
-                throw new ArgumentNullException("The Sql Query cannot be formmatted correctly");
+                throw new InvalidOperationException("The Sql Query cannot be formmatted correctly");
             }
 
             for (var c = 0; c < QueryParameters.Count; c++)

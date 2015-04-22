@@ -71,7 +71,10 @@ namespace BizUnit.TestSteps.DataLoaders.Xml
     /// </remarks>
     public class XmlDataLoader : DataLoaderBase
     {
-        private IList<XPathDefinition> _updateXml = new List<XPathDefinition>();
+        public XmlDataLoader()
+        {
+            UpdateXml = new List<XPathDefinition>();
+        }
 
         /// <summary>
         ///     The file path of the data to be loaded
@@ -81,12 +84,7 @@ namespace BizUnit.TestSteps.DataLoaders.Xml
         /// <summary>
         ///     A collection of XPathDefinition's to be applied to the data fetched from FilePath
         /// </summary>
-        public IList<XPathDefinition> UpdateXml
-        {
-            get { return _updateXml; }
-
-            set { _updateXml = value; }
-        }
+        public IList<XPathDefinition> UpdateXml { get; set; }
 
         /// <summary>
         /// </summary>

@@ -138,8 +138,8 @@ namespace BizUnit.TestSteps.Sql
                     return targetValue.CompareTo("null");
 
                 case (TypeCode.String):
-                    dbDataStringValue = (string) dbData;
-                    return targetValue.CompareTo((string) dbData);
+                    dbDataStringValue = dbData.ToString();
+                    return targetValue.CompareTo(dbData.ToString());
 
                 case (TypeCode.Int16):
                     var dbInt16 = (short) dbData;
@@ -225,13 +225,13 @@ namespace BizUnit.TestSteps.Sql
 
             if (string.IsNullOrEmpty(ConnectionString))
             {
-                throw new ArgumentNullException("ConnectionString is either null or of zero length");
+                throw new InvalidOperationException("ConnectionString is either null or of zero length");
             }
             ConnectionString = context.SubstituteWildCards(ConnectionString);
 
             if (null == SQLQuery)
             {
-                throw new ArgumentNullException("ConnectionString is either null or of zero length");
+                throw new InvalidOperationException("ConnectionString is either null or of zero length");
             }
 
             SQLQuery.Validate(context);

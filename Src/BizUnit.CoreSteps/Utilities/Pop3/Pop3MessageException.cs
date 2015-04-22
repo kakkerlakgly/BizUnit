@@ -16,7 +16,7 @@ using System;
 
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-    internal class Pop3MessageException : Exception
+    internal class Pop3MessageException : Pop3Exception
     {
         private readonly string _exceptionString;
 

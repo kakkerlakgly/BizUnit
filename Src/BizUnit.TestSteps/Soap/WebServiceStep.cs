@@ -45,7 +45,11 @@ namespace BizUnit.TestSteps.Soap
 
         /// <summary>
         /// </summary>
-        public string ServiceUrl { get; set; }
+        public string ServiceUrl { get { return ServiceUri.AbsoluteUri; } set { ServiceUri = new Uri(value); } }
+
+        /// <summary>
+        /// </summary>
+        public Uri ServiceUri { get; set; }
 
         /// <summary>
         /// </summary>
@@ -61,7 +65,7 @@ namespace BizUnit.TestSteps.Soap
 
         /// <summary>
         /// </summary>
-        public IList<SoapHeader> SoapHeaders { set; get; }
+        public IList<SoapHeader> SoapHeaders { private set; get; }
 
         /// <summary>
         /// </summary>
@@ -74,7 +78,7 @@ namespace BizUnit.TestSteps.Soap
 
             _response = CallWebMethod(
                 _request,
-                ServiceUrl,
+                ServiceUri,
                 Action,
                 Username,
                 Password,
@@ -89,9 +93,9 @@ namespace BizUnit.TestSteps.Soap
         /// <param name='context'></param>
         public override void Validate(Context context)
         {
-            if (string.IsNullOrEmpty(ServiceUrl))
+            if (ServiceUri == null)
             {
-                throw new StepValidationException("ServiceUrl may not be null or empty", this);
+                throw new StepValidationException("ServiceUri may not be null", this);
             }
 
             if (string.IsNullOrEmpty(Action))
@@ -104,7 +108,7 @@ namespace BizUnit.TestSteps.Soap
 
         private Stream CallWebMethod(
             Stream requestData,
-            string serviceUrl,
+            Uri serviceUri,
             string action,
             string username,
             string password,
@@ -116,7 +120,7 @@ namespace BizUnit.TestSteps.Soap
                 binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
                 binding.UseDefaultWebProxy = true;
 
-                var epa = new EndpointAddress(new Uri(serviceUrl));
+                var epa = new EndpointAddress(serviceUri);
 
                 try
                 {

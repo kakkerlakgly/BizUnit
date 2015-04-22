@@ -119,14 +119,13 @@ namespace BizUnit.CoreSteps.TestSteps
                 Thread.Sleep(delayBeforeCheck*1000);
             }
 
-            var email = new Pop3Client(user, password, server);
-            email.OpenInbox();
-
-            try
+            using (var email = new Pop3Client(user, password, server))
             {
+                email.OpenInbox();
+
                 while (email.NextEmail())
                 {
-                    if (email.To == user && (email.From == from || from == null) &&
+                    if (email.To == user && (email.From == @from || @from == null) &&
                         (email.Subject == subject || subject == null))
                     {
                         if (attachments > 0 && email.IsMultipart)
@@ -170,14 +169,7 @@ namespace BizUnit.CoreSteps.TestSteps
                 {
                     throw new InvalidOperationException("Failed to find email message");
                 }
-                else
-                {
-                    email.DeleteEmail();
-                }
-            }
-            finally
-            {
-                email.CloseConnection();
+                email.DeleteEmail();
             }
         }
     }

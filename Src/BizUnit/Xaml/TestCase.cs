@@ -194,7 +194,6 @@ namespace BizUnit.Xaml
             // Validate test Setup Steps
             foreach (var step in steps)
             {
-                Exception caughtEx = null;
                 try
                 {
                     step.Validate(ctx);
@@ -205,15 +204,12 @@ namespace BizUnit.Xaml
                             subStep.Validate(ctx);
                         }
                     }
+                    ctx.Logger.ValidateTestSteps(stage, step.GetType().ToString(), null);
                 }
                 catch (Exception ex)
                 {
-                    caughtEx = ex;
+                    ctx.Logger.ValidateTestSteps(stage, step.GetType().ToString(), ex);
                     throw;
-                }
-                finally
-                {
-                    ctx.Logger.ValidateTestSteps(stage, step.GetType().ToString(), caughtEx);
                 }
             }
         }

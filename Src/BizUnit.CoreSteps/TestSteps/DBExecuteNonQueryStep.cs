@@ -158,7 +158,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
             if (string.IsNullOrEmpty(ConnectionString))
             {
-                throw new ArgumentNullException("ConnectionString is either null or of zero length");
+                throw new InvalidOperationException("ConnectionString is either null or of zero length");
             }
             ConnectionString = context.SubstituteWildCards(ConnectionString);
 
@@ -166,7 +166,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
             if (null == SQLQuery)
             {
-                throw new ArgumentNullException("ConnectionString is either null or of zero length");
+                throw new InvalidOperationException("SQLQuery is null");
             }
             SQLQuery.Validate(context);
         }
@@ -293,13 +293,13 @@ namespace BizUnit.CoreSteps.TestSteps
         /// <summary>
         /// </summary>
         /// <param name="context"></param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="InvalidOperationException "></exception>
         public void Validate(Context context)
         {
             var sqlQuery = GetFormattedSqlQuery();
             if (string.IsNullOrEmpty(sqlQuery))
             {
-                throw new ArgumentNullException("The Sql Query cannot be formmatted correctly");
+                throw new InvalidOperationException("The Sql Query cannot be formmatted correctly");
             }
 
             for (var c = 0; c < _queryParameters.Count; c++)

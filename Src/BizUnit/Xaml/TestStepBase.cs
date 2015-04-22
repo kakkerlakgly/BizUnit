@@ -49,7 +49,7 @@ namespace BizUnit.Xaml
         ///     zero or more sub-steps. Each sub-step is called, with the data being
         ///     passed from one to the next typically.
         /// </summary>
-        public IList<SubStepBase> SubSteps { get; set; }
+        public IList<SubStepBase> SubSteps { get; protected set; }
 
         /// <summary>
         ///     The exception details should execution fail

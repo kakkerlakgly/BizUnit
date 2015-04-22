@@ -78,11 +78,11 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
 
         /// <summary>
         /// </summary>
-        public IList<SchemaDefinition> XmlSchemas { set; get; }
+        public IList<SchemaDefinition> XmlSchemas { private set; get; }
 
         /// <summary>
         /// </summary>
-        public IList<XPathDefinition> XPathValidations { get; set; }
+        public IList<XPathDefinition> XPathValidations { get; private set; }
 
         /// <summary>
         ///     ITestStep.Execute() implementation

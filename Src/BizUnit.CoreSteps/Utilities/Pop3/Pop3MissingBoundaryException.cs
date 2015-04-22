@@ -16,7 +16,7 @@ using System;
 
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-    internal class Pop3MissingBoundaryException : Exception
+    internal class Pop3MissingBoundaryException : Pop3Exception
     {
         private readonly string _exceptionString;
 

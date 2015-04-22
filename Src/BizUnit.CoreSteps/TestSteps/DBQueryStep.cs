@@ -258,13 +258,13 @@ namespace BizUnit.CoreSteps.TestSteps
 
             if (string.IsNullOrEmpty(ConnectionString))
             {
-                throw new ArgumentNullException("ConnectionString is either null or of zero length");
+                throw new InvalidOperationException("ConnectionString is either null or of zero length");
             }
             ConnectionString = context.SubstituteWildCards(ConnectionString);
 
             if (null == SQLQuery)
             {
-                throw new ArgumentNullException("ConnectionString is either null or of zero length");
+                throw new InvalidOperationException("SQLQuery is null");
             }
 
             SQLQuery.Validate(context);
@@ -417,7 +417,7 @@ namespace BizUnit.CoreSteps.TestSteps
 
         /// <summary>
         /// </summary>
-        public IList<DBRowToValidate> RowsToValidate { set; get; }
+        public IList<DBRowToValidate> RowsToValidate { private set; get; }
 
         /// <summary>
         /// </summary>

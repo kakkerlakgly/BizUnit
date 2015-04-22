@@ -27,7 +27,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
     ///     DLM: Stores the From:, To:, Subject:, body and attachments
     ///     within an email. Binary attachments are Base64-decoded
     /// </summary>
-    internal class Pop3Message : IEnumerable<Pop3Component>
+    internal class Pop3Message : IEnumerable<Pop3Component>, IDisposable
     {
         private const int FromState = 0;
         private const int ToState = 1;
@@ -326,6 +326,12 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
                 "Subject : " + Subject + "\r\n";
 
             return this.Aggregate(ret, (current, enumerator) => current + (enumerator + "\r\n"));
+        }
+
+        public void Dispose()
+        {
+            if (_manualEvent != null) _manualEvent.Dispose();
+            if (_client != null) _client.Dispose();
         }
     }
 }

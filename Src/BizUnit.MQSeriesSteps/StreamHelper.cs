@@ -25,7 +25,7 @@ namespace BizUnit.MQSeriesSteps
     /// <summary>
     ///     Helper class for stream opperations
     /// </summary>
-    public class StreamHelper
+    public static class StreamHelper
     {
         /// <summary>
         ///     Performs a binary comparison between two streams

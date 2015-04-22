@@ -132,6 +132,7 @@ namespace BizUnit.CoreSteps.ValidationSteps
         {
             var doc = new XmlDocument();
             var trData = new XmlTextReader(data);
+            var xsc = new XmlSchemaCollection();
             using (var vr = new XmlValidatingReader(trData))
             {
                 // If schema was specified use it to vaidate against...
@@ -141,7 +142,6 @@ namespace BizUnit.CoreSteps.ValidationSteps
                     {
                         using (var trSchema = new XmlTextReader(xsdSchema))
                         {
-                            var xsc = new XmlSchemaCollection();
 
                             if (null != _xmlSchemaNameSpace)
                             {
@@ -200,13 +200,13 @@ namespace BizUnit.CoreSteps.ValidationSteps
 
             if (string.IsNullOrEmpty(_xmlSchemaPath))
             {
-                throw new ArgumentNullException("XmlSchemaPath is either null or of zero length");
+                throw new InvalidOperationException("XmlSchemaPath is either null or of zero length");
             }
             _xmlSchemaPath = context.SubstituteWildCards(_xmlSchemaPath);
 
             if (string.IsNullOrEmpty(_xmlSchemaNameSpace))
             {
-                throw new ArgumentNullException("XmlSchemaNameSpace is either null or of zero length");
+                throw new InvalidOperationException("XmlSchemaNameSpace is either null or of zero length");
             }
             _xmlSchemaNameSpace = context.SubstituteWildCards(_xmlSchemaNameSpace);
         }

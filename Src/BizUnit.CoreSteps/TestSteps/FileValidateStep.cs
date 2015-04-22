@@ -169,54 +169,29 @@ namespace BizUnit.CoreSteps.TestSteps
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public void Execute(Context context)
         {
-            Stream data = null;
+            context.LogInfo("Searching for files in: \"{0}{1}\"", _directory, _searchPattern);
 
-            try
+            var endTime = DateTime.Now + TimeSpan.FromMilliseconds(_timeout);
+            FileInfo[] files;
+
+            do
             {
-                context.LogInfo("Searching for files in: \"{0}{1}\"", _directory, _searchPattern);
+                var di = new DirectoryInfo(_directory);
+                files = di.GetFiles(_searchPattern);
 
-                var endTime = DateTime.Now + TimeSpan.FromMilliseconds(_timeout);
-                FileInfo[] files;
+                Thread.Sleep(100);
+            } while ((files.Length == 0) && (endTime > DateTime.Now));
 
-                do
-                {
-                    var di = new DirectoryInfo(_directory);
-                    files = di.GetFiles(_searchPattern);
+            if (files.Length == 0)
+            {
+                throw new InvalidOperationException(string.Format("No files were found at: {0}{1}", _directory,
+                    _searchPattern));
+            }
 
-                    Thread.Sleep(100);
-                } while ((files.Length == 0) && (endTime > DateTime.Now));
+            context.LogInfo("{0} fies were found at : \"{1}{2}\"", files.Length, _directory, _searchPattern);
 
-                if (files.Length == 0)
-                {
-                    throw new InvalidOperationException(string.Format("No files were found at: {0}{1}", _directory,
-                        _searchPattern));
-                }
-
-                context.LogInfo("{0} fies were found at : \"{1}{2}\"", files.Length, _directory, _searchPattern);
-
-                IOException ex = null;
-                do
-                {
-                    try
-                    {
-                        using (var fs = new FileStream(files[0].FullName, FileMode.Open, FileAccess.Read))
-                        {
-                            data = StreamHelper.LoadMemoryStream(fs);
-                        }
-                    }
-                    catch (IOException ioex)
-                    {
-                        context.LogWarning("IOException caught trying to load file, will re-try if within timeout");
-                        ex = ioex;
-                        Thread.Sleep(100);
-                    }
-                } while ((null == data) && (endTime > DateTime.Now));
-
-                if (null != ex)
-                {
-                    throw ex;
-                }
-
+            using (var data = GetDataStream(context, endTime, files[0]))
+            {
                 context.LogData(string.Format("Loaded FILE: {0}", files[0].FullName), data);
 
                 data.Seek(0, SeekOrigin.Begin);
@@ -240,18 +215,11 @@ namespace BizUnit.CoreSteps.TestSteps
                 {
                     context.ExecuteValidator(data, _validationConfig);
                 }
-
-                if (_deleteFile)
-                {
-                    File.Delete(files[0].FullName);
-                }
             }
-            finally
+
+            if (_deleteFile)
             {
-                if (null != data)
-                {
-                    data.Close();
-                }
+                File.Delete(files[0].FullName);
             }
         }
 
@@ -263,18 +231,18 @@ namespace BizUnit.CoreSteps.TestSteps
         {
             if (0 > _timeout)
             {
-                throw new ArgumentNullException("Timeout must be greater than zero");
+                throw new InvalidOperationException("Timeout must be greater than zero");
             }
 
             if (string.IsNullOrEmpty(_directory))
             {
-                throw new ArgumentNullException("Directory is either null or of zero length");
+                throw new InvalidOperationException("Directory is either null or of zero length");
             }
             _directory = context.SubstituteWildCards(_directory);
 
             if (string.IsNullOrEmpty(_searchPattern))
             {
-                throw new ArgumentNullException("SearchPattern is either null or of zero length");
+                throw new InvalidOperationException("SearchPattern is either null or of zero length");
             }
             _searchPattern = context.SubstituteWildCards(_searchPattern);
 
@@ -287,6 +255,29 @@ namespace BizUnit.CoreSteps.TestSteps
             {
                 _contextLoaderStep.Validate(context);
             }
+        }
+
+        private static Stream GetDataStream(Context context, DateTime endTime, FileInfo file)
+        {
+            IOException ex;
+            do
+            {
+                try
+                {
+                    using (var fs = new FileStream(file.FullName, FileMode.Open, FileAccess.Read))
+                    {
+                        return StreamHelper.LoadMemoryStream(fs);
+                    }
+                }
+                catch (IOException ioex)
+                {
+                    context.LogWarning("IOException caught trying to load file, will re-try if within timeout");
+                    ex = ioex;
+                    Thread.Sleep(100);
+                }
+            } while (endTime > DateTime.Now);
+
+            throw ex;
         }
     }
 }
