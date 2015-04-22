@@ -12,19 +12,28 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
-/// <summary>The TestStage enumeration is used to specify the stage of a BizUnit 
-/// test case, each instance of a test step must be assigned to a single stage.
+/// <summary>
+///     The TestStage enumeration is used to specify the stage of a BizUnit
+///     test case, each instance of a test step must be assigned to a single stage.
 /// </summary>
 public enum TestStage
 {
-    ///<summary>The setup stage of a test, typically used for initialising the 
-    /// conditions ready to run the test</summary>
+    /// <summary>
+    ///     The setup stage of a test, typically used for initialising the
+    ///     conditions ready to run the test
+    /// </summary>
     Setup = 0,
-    ///<summary>The execution stage of a test. typically this stage of the test 
-    /// represents the actual scenario being tested</summary>
+
+    /// <summary>
+    ///     The execution stage of a test. typically this stage of the test
+    ///     represents the actual scenario being tested
+    /// </summary>
     Execution = 1,
-    ///<summary>The cleanup stage is always executed, typically this stage should 
-    /// contain the neccessary steps to revert the platform to its state prior 
-    /// to the test runnning</summary>
+
+    /// <summary>
+    ///     The cleanup stage is always executed, typically this stage should
+    ///     contain the neccessary steps to revert the platform to its state prior
+    ///     to the test runnning
+    /// </summary>
     Cleanup = 2
 }

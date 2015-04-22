@@ -6,14 +6,14 @@
   Preconditions="ASS Databases should be setup, SSP and ASS Book web service should be installed"
   Description="BookAncillary for a single product"
   ExpectedResults="Ancillary product successfully booked in ASS"
-  BizUnitVersion="4.0.0.0" 
-  xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit" 
-  xmlns:butss="clr-namespace:BizUnit.TestSteps.Soap;assembly=BizUnit.TestSteps" 
-  xmlns:butsdlf="clr-namespace:BizUnit.TestSteps.DataLoaders.File;assembly=BizUnit.TestSteps" 
-  xmlns:butsdlx="clr-namespace:BizUnit.TestSteps.DataLoaders.Xml;assembly=BizUnit.TestSteps" 
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-  xmlns:butsx="clr-namespace:BizUnit.TestSteps.Xml;assembly=BizUnit.TestSteps" 
-  xmlns:butsc="clr-namespace:BizUnit.TestSteps.Common;assembly=BizUnit.TestSteps" 
+  BizUnitVersion="4.0.0.0"
+  xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit"
+  xmlns:butss="clr-namespace:BizUnit.TestSteps.Soap;assembly=BizUnit.TestSteps"
+  xmlns:butsdlf="clr-namespace:BizUnit.TestSteps.DataLoaders.File;assembly=BizUnit.TestSteps"
+  xmlns:butsdlx="clr-namespace:BizUnit.TestSteps.DataLoaders.Xml;assembly=BizUnit.TestSteps"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:butsx="clr-namespace:BizUnit.TestSteps.Xml;assembly=BizUnit.TestSteps"
+  xmlns:butsc="clr-namespace:BizUnit.TestSteps.Common;assembly=BizUnit.TestSteps"
   xmlns:vaaassu="clr-namespace:VAA.ASS.Utils;assembly=VAA.ASS.Utils">
   <TestCase.SetupSteps>
     <ImportTestCaseStep
@@ -21,7 +21,7 @@
       RunConcurrently="False"
       FailOnError="True" />
   </TestCase.SetupSteps>
-  
+
   <TestCase.ExecutionSteps>
     <butss:WebServiceStep
       ServiceUrl="http://localhost/SSP.AncillarySalesBook/AncillarySalesBook.svc"
@@ -31,7 +31,7 @@
       RunConcurrently="False"
       FailOnError="True">
       <butss:WebServiceStep.RequestBody>
-        
+
         <butsdlx:XmlDataLoader
           FilePath="..\..\..\Test\VAA.SSP.ASS.BVTs\Book_TestData\SSP0101_Book_BookAncillary_RQ.xml">
           <butsdlx:XmlDataLoader.UpdateXml>
@@ -67,14 +67,12 @@
             <butsc:XPathDefinition
               Description="ancillaryBookingReference"
               XPath="/*[local-name()='BookAncillary_RS' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/*[local-name()='Message' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/*[local-name()='BookAncillary' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/@*[local-name()='ancillaryBookingReference' and namespace-uri()='']"
-              ContextKey="AncillaryBookingReference"
-              />
+              ContextKey="AncillaryBookingReference" />
 
             <butsc:XPathDefinition
               Description="salesRecordId"
               XPath="/*[local-name()='BookAncillary_RS' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/*[local-name()='Message' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/*[local-name()='BookAncillary' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/*[local-name()='FlightSectorBookings' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/*[local-name()='FlightSectorSale' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Common/2009']/@*[local-name()='salesRecordId' and namespace-uri()='']"
-              ContextKey="SalesRecordId"
-              />
+              ContextKey="SalesRecordId" />
 
             <butsc:XPathDefinition
               Description="Message/BookAncillary/FlightSectorBookings/Result/success"
@@ -84,13 +82,13 @@
             <butsc:XPathDefinition
               Description="Result/messageId"
               XPath="/*[local-name()='BookAncillary_RS' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/*[local-name()='Result' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/@*[local-name()='messageId' and namespace-uri()='']"
-              Value="11" />          
+              Value="11" />
 
             <butsc:XPathDefinition
               Description="Result/result"
               XPath="/*[local-name()='BookAncillary_RS' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/*[local-name()='Result' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/BookAncillary/2009']/@*[local-name()='result' and namespace-uri()='']"
               Value="Success" />
-            
+
           </butsx:XmlValidationStep.XPathValidations>
         </butsx:XmlValidationStep>
       </butss:WebServiceStep.SubSteps>

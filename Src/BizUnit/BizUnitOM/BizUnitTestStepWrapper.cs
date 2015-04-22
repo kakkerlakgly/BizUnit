@@ -19,31 +19,31 @@ using BizUnit.Common;
 namespace BizUnit.BizUnitOM
 {
     /// <summary>
-    /// BizUnitTestStepWrapper wraps BizUnit test steps and provides access to any exceptions raised at runtime.
+    ///     BizUnitTestStepWrapper wraps BizUnit test steps and provides access to any exceptions raised at runtime.
     /// </summary>
     [Obsolete("BizUnitTestStepWrapper has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
     public class BizUnitTestStepWrapper
     {
         private readonly ITestStep _testStep;
         private readonly TestStepBuilder _testStepBuilder;
-        private XmlNode _stepConfig;
-        private bool _runConcurrently;
-        private bool _failOnError = true;
-        private string _typeName;
         private string _assemblyPath;
-        private Exception _executeException;
+        private bool _failOnError = true;
+        private XmlNode _stepConfig;
 
         internal BizUnitTestStepWrapper(XmlNode stepConfig)
         {
             ArgumentValidation.CheckForNullReference(stepConfig, "stepConfig");
 
             LoadStepConfig(stepConfig);
-            object obj = ObjectCreator.CreateStep(_typeName, _assemblyPath);
+            var obj = ObjectCreator.CreateStep(TypeName, _assemblyPath);
             _testStep = obj as ITestStep;
 
             if (null == _testStep)
             {
-                throw new ArgumentException(string.Format("The test step could not be created, check the test step type and assembly path are correct, type: {0}, assembly path: {1}", _typeName, _assemblyPath));
+                throw new ArgumentException(
+                    string.Format(
+                        "The test step could not be created, check the test step type and assembly path are correct, type: {0}, assembly path: {1}",
+                        TypeName, _assemblyPath));
             }
         }
 
@@ -63,18 +63,18 @@ namespace BizUnit.BizUnitOM
 
             LoadStepConfig(stepConfig);
             _testStep = testStep;
-            _runConcurrently = runConcurrently;
+            RunConcurrently = runConcurrently;
             _failOnError = failOnError;
         }
 
         internal BizUnitTestStepWrapper(ITestStepOM testStep, bool runConcurrently, bool failOnError)
         {
             ArgumentValidation.CheckForNullReference(testStep, "testStep");
-            
+
             _testStepBuilder = new TestStepBuilder(testStep);
-            _runConcurrently = runConcurrently;
+            RunConcurrently = runConcurrently;
             _failOnError = failOnError;
-            _typeName = testStep.GetType().ToString();
+            TypeName = testStep.GetType().ToString();
         }
 
         internal BizUnitTestStepWrapper(TestStepBuilder testStepBuilder, bool runConcurrently, bool failOnError)
@@ -82,34 +82,25 @@ namespace BizUnit.BizUnitOM
             ArgumentValidation.CheckForNullReference(testStepBuilder, "testStepBuilder");
 
             _testStepBuilder = testStepBuilder;
-            _runConcurrently = runConcurrently;
+            RunConcurrently = runConcurrently;
             _failOnError = failOnError;
-            _typeName = testStepBuilder.TestStepOM.GetType().ToString();
+            TypeName = testStepBuilder.TestStepOM.GetType().ToString();
         }
 
-        internal bool RunConcurrently
-        {
-            get
-            {
-                return _runConcurrently;
-            }
-        }
+        internal bool RunConcurrently { get; private set; }
 
         internal bool FailOnError
         {
-            get
-            {
-                return _failOnError;
-            }
+            get { return _failOnError; }
         }
 
-        internal string TypeName
-        {
-            get
-            {
-                return _typeName;
-            }
-        }
+        internal string TypeName { get; private set; }
+
+        /// <summary>
+        ///     Returns the exception generated during execution, otherwise null.
+        /// </summary>
+        /// <value>The exception which occured during execution.</value>
+        public Exception ExecuteException { get; private set; }
 
         internal void Execute(Context ctx)
         {
@@ -138,7 +129,7 @@ namespace BizUnit.BizUnitOM
             }
             catch (Exception executionException)
             {
-                _executeException = executionException;
+                ExecuteException = executionException;
                 throw;
             }
         }
@@ -146,14 +137,14 @@ namespace BizUnit.BizUnitOM
         private void LoadStepConfig(XmlNode config)
         {
             _stepConfig = config;
-            XmlNode assemblyPathNode = _stepConfig.SelectSingleNode("@assemblyPath");
-            XmlNode typeNameNode = _stepConfig.SelectSingleNode("@typeName");
-            XmlNode runConcurrentlyNode = _stepConfig.SelectSingleNode("@runConcurrently");
-            XmlNode failOnErrorNode = _stepConfig.SelectSingleNode("@failOnError");
+            var assemblyPathNode = _stepConfig.SelectSingleNode("@assemblyPath");
+            var typeNameNode = _stepConfig.SelectSingleNode("@typeName");
+            var runConcurrentlyNode = _stepConfig.SelectSingleNode("@runConcurrently");
+            var failOnErrorNode = _stepConfig.SelectSingleNode("@failOnError");
 
             if (null != runConcurrentlyNode)
             {
-                _runConcurrently = Convert.ToBoolean(runConcurrentlyNode.Value);
+                RunConcurrently = Convert.ToBoolean(runConcurrentlyNode.Value);
             }
 
             if (null != failOnErrorNode)
@@ -161,17 +152,8 @@ namespace BizUnit.BizUnitOM
                 _failOnError = Convert.ToBoolean(failOnErrorNode.Value);
             }
 
-            _typeName = typeNameNode.Value;
+            TypeName = typeNameNode.Value;
             _assemblyPath = null != assemblyPathNode ? assemblyPathNode.Value : string.Empty;
-        }
-
-        /// <summary>
-        /// Returns the exception generated during execution, otherwise null.
-        /// </summary>
-        /// <value>The exception which occured during execution.</value>
-        public Exception ExecuteException
-        {
-            get { return _executeException; }
         }
     }
 }

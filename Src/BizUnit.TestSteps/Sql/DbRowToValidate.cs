@@ -1,24 +1,23 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace BizUnit.TestSteps.Sql 
+namespace BizUnit.TestSteps.Sql
 {
-    ///<summary>
-    /// Database row to be validated
-    ///</summary>
+    /// <summary>
+    ///     Database row to be validated
+    /// </summary>
     public class DbRowToValidate
     {
-        ///<summary>
-        /// The cells to be validated
-        ///</summary>
-        public IList<DbCellToValidate> Cells { get; set; }
-
-        ///<summary>
-        /// Default constructor
-        ///</summary>
+        /// <summary>
+        ///     Default constructor
+        /// </summary>
         public DbRowToValidate()
         {
-            Cells = new List<DbCellToValidate>(); 
+            Cells = new List<DbCellToValidate>();
         }
+
+        /// <summary>
+        ///     The cells to be validated
+        /// </summary>
+        public IList<DbCellToValidate> Cells { get; set; }
     }
 }

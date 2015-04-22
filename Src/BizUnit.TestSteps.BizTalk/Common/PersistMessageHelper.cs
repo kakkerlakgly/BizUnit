@@ -18,10 +18,10 @@ using Microsoft.BizTalk.Message.Interop;
 
 namespace BizUnit.TestSteps.BizTalk.Common
 {
-    static class PersistMessageHelper
+    internal static class PersistMessageHelper
     {
         /// <summary>
-        /// Helper class to persist BizTalk message bodies
+        ///     Helper class to persist BizTalk message bodies
         /// </summary>
         /// <param name='message'>The BizTalk message to persist</param>
         /// <param name='destination'>The destination directory to persist the file to</param>

@@ -20,100 +20,86 @@ using BizUnit.BizUnitOM;
 namespace BizUnit.CoreSteps.TestSteps
 {
     /// <summary>
-	/// The ExecuteCommandStep executes a program from the command line, command line arguments may be supplied also.
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
-	/// <TestStep assemblyPath="" typeName="BizUnit.ExecuteCommandStep">
-	///		<ProcessName>processName</ProcessName>
-	///		<ProcessParams>-a32 -bFooBar</ProcessParams>
-	///		<WorkingDirectory>..\..\setup</WorkingDirectory>
-	/// </TestStep>
-	///	</code>
-	///	
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>ProcessName</term>
-	///			<description>The name of the program to execute</description>
-	///		</item>
-	///		<item>
-	///			<term>ProcessParams</term>
-	///			<description>The command line paramters</description>
-	///		</item>
-	///		<item>
-	///			<term>WorkingDirectory</term>
-	///			<description>The working directory to run the program from</description>
-	///		</item>
-	///	</list>
-	///	</remarks>
+    ///     The ExecuteCommandStep executes a program from the command line, command line arguments may be supplied also.
+    /// </summary>
+    /// <remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    ///  <TestStep assemblyPath="" typeName="BizUnit.ExecuteCommandStep">
+    ///             <ProcessName>processName</ProcessName>
+    ///             <ProcessParams>-a32 -bFooBar</ProcessParams>
+    ///             <WorkingDirectory>..\..\setup</WorkingDirectory>
+    ///         </TestStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>ProcessName</term>
+    ///             <description>The name of the program to execute</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>ProcessParams</term>
+    ///             <description>The command line paramters</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>WorkingDirectory</term>
+    ///             <description>The working directory to run the program from</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     [Obsolete("ExecuteCommandStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
-	public class ExecuteCommandStep : ITestStepOM
-	{
-	    private string _processName;
-	    private string _processParams;
-	    private string _workingDirectory;
-
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    public string ProcessName
-	    {
-	        set
-            { 
-                _processName = value;
-            }
-	    }
-
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    public string ProcessParams
-	    {
-	        set
-	        {
-	            _processParams = value;
-	        }
-	    }
-
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    public string WorkingDirectory
-	    {
-	        set
-	        {
-	            _workingDirectory = value;
-	        }
-	    }
+    public class ExecuteCommandStep : ITestStepOM
+    {
+        private string _processName;
+        private string _processParams;
+        private string _workingDirectory;
 
         /// <summary>
-		/// ITestStep.Execute() implementation
-		/// </summary>
-		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(XmlNode testConfig, Context context)
-		{
-			_processName = context.ReadConfigAsString( testConfig, "ProcessName" );
-			_processParams = context.ReadConfigAsString( testConfig, "ProcessParams");
-			_workingDirectory = context.ReadConfigAsString( testConfig, "WorkingDirectory" );
+        /// </summary>
+        public string ProcessName
+        {
+            set { _processName = value; }
+        }
+
+        /// <summary>
+        /// </summary>
+        public string ProcessParams
+        {
+            set { _processParams = value; }
+        }
+
+        /// <summary>
+        /// </summary>
+        public string WorkingDirectory
+        {
+            set { _workingDirectory = value; }
+        }
+
+        /// <summary>
+        ///     ITestStep.Execute() implementation
+        /// </summary>
+        /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        public void Execute(XmlNode testConfig, Context context)
+        {
+            _processName = context.ReadConfigAsString(testConfig, "ProcessName");
+            _processParams = context.ReadConfigAsString(testConfig, "ProcessParams");
+            _workingDirectory = context.ReadConfigAsString(testConfig, "WorkingDirectory");
 
             Execute(context);
-		}
+        }
 
         /// <summary>
-        /// ITestStep.Execute() implementation
+        ///     ITestStep.Execute() implementation
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public void Execute(Context context)
         {
-            context.LogInfo("ExecuteCommandStep about to execute the command: {0} params: {1}, working directory: {2}", _processName, _processParams, _workingDirectory);
+            context.LogInfo("ExecuteCommandStep about to execute the command: {0} params: {1}, working directory: {2}",
+                _processName, _processParams, _workingDirectory);
 
             using (var process = new Process())
             {
@@ -135,7 +121,10 @@ namespace BizUnit.CoreSteps.TestSteps
 
                 if (0 != exitCode)
                 {
-                    throw new InvalidOperationException(string.Format("ExecuteCommandStep received an exit code: {0} while executing process {1} {2}\n\nOutput: {3}", exitCode, _processName, _processParams, output));
+                    throw new InvalidOperationException(
+                        string.Format(
+                            "ExecuteCommandStep received an exit code: {0} while executing process {1} {2}\n\nOutput: {3}",
+                            exitCode, _processName, _processParams, output));
                 }
 
                 context.LogInfo("ExecuteCommandStep {0} output:\n{1}", _processName, output);
@@ -143,10 +132,10 @@ namespace BizUnit.CoreSteps.TestSteps
         }
 
         /// <summary>
-        /// ITestStep.Validate() implementation
+        ///     ITestStep.Validate() implementation
         /// </summary>
         public void Validate(Context context)
-	    {
+        {
             if (string.IsNullOrEmpty(_processName))
             {
                 throw new ArgumentNullException("ProcessName is either null or of zero length");
@@ -165,5 +154,5 @@ namespace BizUnit.CoreSteps.TestSteps
             }
             _workingDirectory = context.SubstituteWildCards(_workingDirectory);
         }
-	}
+    }
 }

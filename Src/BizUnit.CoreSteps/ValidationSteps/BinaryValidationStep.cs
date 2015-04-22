@@ -21,79 +21,70 @@ using BizUnit.CoreSteps.Utilities;
 
 namespace BizUnit.CoreSteps.ValidationSteps
 {
-	/// <summary>
-	/// The BinaryValidationStep performs a binary validation of the data supplied.
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
-	///	<ValidationStep assemblyPath="" typeName="BizUnit.BinaryValidationStep">
-	///		<ComparisonDataPath>.\TestData\ResultDoc1.xml</ComparisonDataPath>
-	///		<CompareAsUTF8>true</CompareAsUTF8>
-	///	</ValidationStep>
-	///	</code>
-	///	
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>ComparisonDataPath</term>
-	///			<description>The path of the data to compare against.</description>
-	///		</item>
-	///		<item>
-	///			<term>CompareAsUTF8</term>
-	///			<description>true if both ComparisonDataPath and the data are to be compared to UTF8 before comparing (optional)(default=false)</description>
-	///		</item>
-	///	</list>
-	///	</remarks>	
+    /// <summary>
+    ///     The BinaryValidationStep performs a binary validation of the data supplied.
+    /// </summary>
+    /// <remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<ValidationStep assemblyPath="" typeName="BizUnit.BinaryValidationStep">
+    ///             <ComparisonDataPath>.\TestData\ResultDoc1.xml</ComparisonDataPath>
+    ///             <CompareAsUTF8>true</CompareAsUTF8>
+    ///         </ValidationStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>ComparisonDataPath</term>
+    ///             <description>The path of the data to compare against.</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>CompareAsUTF8</term>
+    ///             <description>
+    ///                 true if both ComparisonDataPath and the data are to be compared to UTF8 before comparing
+    ///                 (optional)(default=false)
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     [Obsolete("BinaryValidationStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
     public class BinaryValidationStep : IValidationStepOM
-	{
-	    private string _comparisonDataPath;
-	    private bool _compareAsUtf8;
-        
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    public string ComparisonDataPath
-	    {
-	        set
-	        {
-	            _comparisonDataPath = value;
-	        }
-	    }
-
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    public bool CompareAsUTF8
-	    {
-	        set
-	        {
-	            _compareAsUtf8 = value;
-	        }
-	    }
+    {
+        private bool _compareAsUtf8;
+        private string _comparisonDataPath;
 
         /// <summary>
-		/// IValidationStep.ExecuteValidation() implementation
-		/// </summary>
-		/// <param name='data'>The stream cintaining the data to be validated.</param>
-		/// <param name='validatorConfig'>The Xml fragment containing the configuration for the test step</param>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void ExecuteValidation(Stream data, XmlNode validatorConfig, Context context)
-		{
-			_comparisonDataPath = context.ReadConfigAsString( validatorConfig, "ComparisonDataPath" );
-			_compareAsUtf8 = context.ReadConfigAsBool( validatorConfig, "CompareAsUTF8", true);
+        /// </summary>
+        public string ComparisonDataPath
+        {
+            set { _comparisonDataPath = value; }
+        }
+
+        /// <summary>
+        /// </summary>
+        public bool CompareAsUTF8
+        {
+            set { _compareAsUtf8 = value; }
+        }
+
+        /// <summary>
+        ///     IValidationStep.ExecuteValidation() implementation
+        /// </summary>
+        /// <param name='data'>The stream cintaining the data to be validated.</param>
+        /// <param name='validatorConfig'>The Xml fragment containing the configuration for the test step</param>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        public void ExecuteValidation(Stream data, XmlNode validatorConfig, Context context)
+        {
+            _comparisonDataPath = context.ReadConfigAsString(validatorConfig, "ComparisonDataPath");
+            _compareAsUtf8 = context.ReadConfigAsBool(validatorConfig, "CompareAsUTF8", true);
 
             ExecuteValidation(data, context);
-		}
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name='data'></param>
         /// <param name='context'></param>
@@ -110,7 +101,9 @@ namespace BizUnit.CoreSteps.ValidationSteps
 
                         if (_compareAsUtf8)
                         {
-                            using (Stream stream1 = StreamHelper.EncodeStream(data, Encoding.UTF8), stream2 = StreamHelper.EncodeStream(dataToValidateAgainst, Encoding.UTF8))
+                            using (
+                                Stream stream1 = StreamHelper.EncodeStream(data, Encoding.UTF8),
+                                    stream2 = StreamHelper.EncodeStream(dataToValidateAgainst, Encoding.UTF8))
                             {
                                 // Compare the streams, make sure we are comparing like for like
                                 StreamHelper.CompareStreams(stream1, stream2);
@@ -123,7 +116,9 @@ namespace BizUnit.CoreSteps.ValidationSteps
                     }
                     catch (Exception e)
                     {
-                        context.LogError("Binary validation failed while comparing the two data streams with the following exception: {0}", e.ToString());
+                        context.LogError(
+                            "Binary validation failed while comparing the two data streams with the following exception: {0}",
+                            e.ToString());
 
                         // Dump out streams for validation...
                         data.Seek(0, SeekOrigin.Begin);
@@ -137,7 +132,8 @@ namespace BizUnit.CoreSteps.ValidationSteps
             }
             catch (Exception e)
             {
-                context.LogError("BinaryValidationStep failed, exception caugh trying to open comparison file: {0}", _comparisonDataPath);
+                context.LogError("BinaryValidationStep failed, exception caugh trying to open comparison file: {0}",
+                    _comparisonDataPath);
                 context.LogException(e);
 
                 throw;
@@ -145,11 +141,10 @@ namespace BizUnit.CoreSteps.ValidationSteps
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name='context'></param>
         public void Validate(Context context)
-	    {
+        {
             // compareAsUTF8 - optional
 
             if (string.IsNullOrEmpty(_comparisonDataPath))
@@ -158,6 +153,6 @@ namespace BizUnit.CoreSteps.ValidationSteps
             }
 
             _comparisonDataPath = context.SubstituteWildCards(_comparisonDataPath);
-	    }
-	}
+        }
+    }
 }

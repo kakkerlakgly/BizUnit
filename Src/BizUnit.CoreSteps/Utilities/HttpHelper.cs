@@ -21,32 +21,31 @@ using System.Net;
 namespace BizUnit.CoreSteps.Utilities
 {
     /// <summary>
-	/// Helper class for HTTP
-	/// </summary>
-	public class HttpHelper
-	{
-		/// <summary>
-		/// Helper method to execute an HTTP request-response
-		/// </summary>
-		/// 
-		/// <param name="url">The HTTP Url</param>
-		/// <param name="payload">Byte array conatining the request data</param>
-		/// <param name="requestTimeout">The request timeout value</param>
-		/// <param name="context">The BizUnit context object which holds state and is passed between test steps</param>
-		/// <returns>response Stream</returns>
-		public static Stream SendRequestData(String url, byte[] payload, int requestTimeout, Context context)
-		{
+    ///     Helper class for HTTP
+    /// </summary>
+    public class HttpHelper
+    {
+        /// <summary>
+        ///     Helper method to execute an HTTP request-response
+        /// </summary>
+        /// <param name="url">The HTTP Url</param>
+        /// <param name="payload">Byte array conatining the request data</param>
+        /// <param name="requestTimeout">The request timeout value</param>
+        /// <param name="context">The BizUnit context object which holds state and is passed between test steps</param>
+        /// <returns>response Stream</returns>
+        public static Stream SendRequestData(string url, byte[] payload, int requestTimeout, Context context)
+        {
             Stream response = null;
-            try 
-			{
+            try
+            {
                 response = new MemoryStream();
-                var req = (HttpWebRequest)WebRequest.Create(url);
+                var req = (HttpWebRequest) WebRequest.Create(url);
 
-				req.Method = "POST";
-				req.Timeout = requestTimeout;
-				req.ContentType = "text/xml; charset=\"utf-8\"";
+                req.Method = "POST";
+                req.Timeout = requestTimeout;
+                req.ContentType = "text/xml; charset=\"utf-8\"";
 
-				req.ContentLength = payload.Length;
+                req.ContentLength = payload.Length;
                 using (var requestStream = req.GetRequestStream())
                 {
                     requestStream.Write(payload, 0, payload.Length);
@@ -55,11 +54,10 @@ namespace BizUnit.CoreSteps.Utilities
                     {
                         using (var responseStream = result.GetResponseStream())
                         {
-
                             const int bufferSize = 4096;
                             var buffer = new byte[bufferSize];
 
-                            int count = responseStream.Read(buffer, 0, bufferSize);
+                            var count = responseStream.Read(buffer, 0, bufferSize);
                             while (count > 0)
                             {
                                 response.Write(buffer, 0, count);
@@ -70,13 +68,13 @@ namespace BizUnit.CoreSteps.Utilities
                     }
                 }
                 return response;
-            } 
-			catch(Exception e) 
-			{
+            }
+            catch (Exception e)
+            {
                 if (response != null) response.Dispose();
-				context.LogException( e );
-				throw;
-			} 
-		}
-	}
+                context.LogException(e);
+                throw;
+            }
+        }
+    }
 }

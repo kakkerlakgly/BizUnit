@@ -24,330 +24,308 @@ using System.Threading;
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
     /// <summary>
-	/// DLM: Stores the From:, To:, Subject:, body and attachments
-	/// within an email. Binary attachments are Base64-decoded
-	/// </summary>
-
+    ///     DLM: Stores the From:, To:, Subject:, body and attachments
+    ///     within an email. Binary attachments are Base64-decoded
+    /// </summary>
     internal class Pop3Message : IEnumerable<Pop3Component>
-	{
-		private readonly Socket _client;
-		private Pop3MessageComponents _messageComponents;
-		private string _from;
-		private string _to;
-		private string _subject;
-		private string _contentType;
-		private readonly string _body;
-        private bool _isMultipart;
+    {
+        private const int FromState = 0;
+        private const int ToState = 1;
+        private const int SubjectState = 2;
+        private const int ContentTypeState = 3;
+        private const int NotKnownState = -99;
+        private const int EndOfHeader = -98;
+        private readonly string _body;
+        private readonly Socket _client;
+        private readonly long _inboxPosition;
+        // this array corresponds with above
+        // enumerator ...
+
+        private readonly string[] _lineTypeString =
+        {
+            "From",
+            "To",
+            "Subject",
+            "Content-Type"
+        };
+
+        private readonly ManualResetEvent _manualEvent = new ManualResetEvent(false);
+        private string _contentType;
+        private Pop3MessageComponents _messageComponents;
         private string _multipartBoundary;
-		
-		private const int FromState=0;
-		private const int ToState=1;
-		private const int SubjectState = 2;
-		private const int ContentTypeState = 3;
-		private const int NotKnownState = -99;
-		private const int EndOfHeader = -98;
+        private Pop3StateObject _pop3State;
 
-		// this array corresponds with above
-		// enumerator ...
+        internal Pop3Message(long position, long size, Socket client)
+        {
+            _inboxPosition = position;
+            _client = client;
 
-		private readonly string[] _lineTypeString =
-		{
-			"From",
-			"To",
-			"Subject",
-			"Content-Type"
-		};
-		
-		private readonly long _inboxPosition;
-        Pop3StateObject _pop3State;
-        readonly ManualResetEvent _manualEvent = new ManualResetEvent(false);
+            _pop3State = new Pop3StateObject {WorkSocket = _client, Sb = new StringBuilder()};
 
-		public IEnumerator<Pop3Component> GetEnumerator()
-		{
+            // load email ...
+            LoadEmail();
+
+            // get body (if it exists) ...
+            foreach (var multipart in this)
+            {
+                if (multipart.IsBody)
+                {
+                    _body = multipart.Data;
+                    break;
+                }
+            }
+        }
+
+        internal bool IsMultipart { get; private set; }
+        internal string From { get; private set; }
+        internal string To { get; private set; }
+        internal string Subject { get; private set; }
+
+        internal string Body
+        {
+            get { return _body; }
+        }
+
+        internal long InboxPosition
+        {
+            get { return _inboxPosition; }
+        }
+
+        public IEnumerator<Pop3Component> GetEnumerator()
+        {
             return _messageComponents.GetEnumerator();
-		}
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-        internal bool IsMultipart
-		{
-			get { return _isMultipart; }
-		}
+        //send the data to server
+        private void Send(string data)
+        {
+            try
+            {
+                // Convert the string data to byte data 
+                // using ASCII encoding.
 
-		internal string From
-		{
-			get { return _from; }
-		}
+                var byteData = Encoding.ASCII.GetBytes(data + "\r\n");
 
-		internal string To
-		{
-			get { return _to; }
-		}
+                // Begin sending the data to the remote device.
+                _client.Send(byteData);
+            }
+            catch (Exception e)
+            {
+                throw new Pop3SendException(e.ToString());
+            }
+        }
 
-		internal string Subject
-		{
-			get { return _subject; }
-		}
+        private void StartReceiveAgain(string data)
+        {
+            // receive more data if we expect more.
+            // note: a literal "." (or more) followed by
+            // "\r\n" in an email is prefixed with "." ...
 
-		internal string Body
-		{
-			get { return _body; }
-		}
+            if (!data.EndsWith("\r\n.\r\n"))
+            {
+                _client.BeginReceive(_pop3State.Buffer, 0,
+                    Pop3StateObject.BufferSize, 0,
+                    ReceiveCallback,
+                    _pop3State);
+            }
+            else
+            {
+                // stop receiving data ...
+                _manualEvent.Set();
+            }
+        }
 
-		internal long InboxPosition
-		{
-			get { return _inboxPosition; }
-		}
+        private void ReceiveCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the state object and the client socket 
+                // from the asynchronous state object.
 
-		//send the data to server
-		private void Send(String data) 
-		{
-			try
-			{
-				// Convert the string data to byte data 
-				// using ASCII encoding.
-				
-				byte[] byteData = Encoding.ASCII.GetBytes(data+"\r\n");
-				
-				// Begin sending the data to the remote device.
-				_client.Send(byteData);
-			}
-			catch(Exception e)
-			{
-				throw new Pop3SendException(e.ToString());
-			}
-		}
+                var stateObj = (Pop3StateObject) ar.AsyncState;
+                var client = stateObj.WorkSocket;
 
-		private void StartReceiveAgain(string data)
-		{
-			// receive more data if we expect more.
-			// note: a literal "." (or more) followed by
-			// "\r\n" in an email is prefixed with "." ...
+                // Read data from the remote device.
+                var bytesRead = client.EndReceive(ar);
 
-			if( !data.EndsWith("\r\n.\r\n") )
-			{
-				_client.BeginReceive(_pop3State.Buffer,0,
-					Pop3StateObject.BufferSize,0,
-					ReceiveCallback,
-					_pop3State);
-			}
-			else
-			{
-				// stop receiving data ...
-				_manualEvent.Set();
-			}
-		}
+                if (bytesRead > 0)
+                {
+                    // There might be more data, 
+                    // so store the data received so far.
 
-		private void ReceiveCallback( IAsyncResult ar ) 
-		{
-			try 
-			{
-				// Retrieve the state object and the client socket 
-				// from the asynchronous state object.
-				
-				var stateObj = (Pop3StateObject) ar.AsyncState;
-				var client = stateObj.WorkSocket;
-				
-				// Read data from the remote device.
-				int bytesRead = client.EndReceive(ar);
+                    stateObj.Sb.Append(
+                        Encoding.ASCII.GetString(stateObj.Buffer
+                            , 0, bytesRead));
 
-				if (bytesRead > 0) 
-				{
-					// There might be more data, 
-					// so store the data received so far.
-					
-					stateObj.Sb.Append(
-						Encoding.ASCII.GetString(stateObj.Buffer
-						,0,bytesRead));
+                    // read more data from pop3 server ...
+                    StartReceiveAgain(stateObj.Sb.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                _manualEvent.Set();
 
-					// read more data from pop3 server ...
-					StartReceiveAgain(stateObj.Sb.ToString());
-				}
-			} 
-			catch (Exception e) 
-			{
-				_manualEvent.Set();
+                throw new
+                    Pop3ReceiveException("RecieveCallback error" +
+                                         e);
+            }
+        }
 
-				throw new 
-					Pop3ReceiveException("RecieveCallback error" + 
-					e);
-			}
-		}
+        private void StartReceive()
+        {
+            // start receiving data ...
+            _client.BeginReceive(_pop3State.Buffer, 0,
+                Pop3StateObject.BufferSize, 0,
+                ReceiveCallback,
+                _pop3State);
 
-		private void StartReceive()
-		{
-			// start receiving data ...
-			_client.BeginReceive(_pop3State.Buffer,0,
-				Pop3StateObject.BufferSize,0,
-				ReceiveCallback,
-				_pop3State);
+            // wait until no more data to be read ...
+            _manualEvent.WaitOne();
+        }
 
-			// wait until no more data to be read ...
-			_manualEvent.WaitOne();
-		}
+        private int GetHeaderLineType(string line)
+        {
+            var lineType = NotKnownState;
 
-		private int GetHeaderLineType(string line)
-		{
-			int lineType = NotKnownState;
+            for (var i = 0; i < _lineTypeString.Length; i++)
+            {
+                var match = _lineTypeString[i];
 
-			for(int i=0; i<_lineTypeString.Length; i++)
-			{
-				string match = _lineTypeString[i];
+                if (Regex.Match(line, "^" + match + ":" + ".*$").Success)
+                {
+                    lineType = i;
+                    break;
+                }
 
-				if( Regex.Match(line,"^"+match+":"+".*$").Success )
-				{
-					lineType = i;
-					break;
-				}
+                if (line.Length == 0)
+                {
+                    lineType = EndOfHeader;
+                    break;
+                }
+            }
 
-                if( line.Length == 0 )
-				{
-					lineType = EndOfHeader;
-					break;
-				}
-			}
+            return lineType;
+        }
 
-			return lineType;
-		}
+        private int ParseHeader(string[] lines)
+        {
+            var bodyStart = 0;
 
-		private int ParseHeader(string[] lines)
-		{
-		    int bodyStart = 0;
+            for (var i = 0; i < lines.Length; i++)
+            {
+                var currentLine = lines[i].Replace("\n", "");
 
-			for(int i=0; i<lines.Length; i++)
-			{
-				string currentLine = lines[i].Replace("\n","");
+                var lineType = GetHeaderLineType(currentLine);
 
-				int lineType = GetHeaderLineType(currentLine);
+                switch (lineType)
+                {
+                    // From:
+                    case FromState:
+                        From = Pop3Parse.From(currentLine);
+                        break;
 
-				switch(lineType)
-				{
-					// From:
-					case FromState:
-							_from = Pop3Parse.From(currentLine);	
-					break;
+                    // Subject:
+                    case SubjectState:
+                        Subject = Pop3Parse.Subject(currentLine);
+                        break;
 
-					// Subject:
-					case SubjectState:
-							_subject =	Pop3Parse.Subject(currentLine);
-					break;
+                    // To:
+                    case ToState:
+                        To = Pop3Parse.To(currentLine);
+                        break;
 
-					// To:
-					case ToState:
-							_to = Pop3Parse.To(currentLine);
-					break;
+                    // Content-Type
+                    case ContentTypeState:
 
-					// Content-Type
-					case ContentTypeState:
-							
-						_contentType = 
-							Pop3Parse.ContentType(currentLine);
-						
-						_isMultipart = 
-							Pop3Parse.IsMultipart(_contentType);
+                        _contentType =
+                            Pop3Parse.ContentType(currentLine);
 
-						if(_isMultipart)
-						{
-							// if boundary definition is on next
-							// line ...
+                        IsMultipart =
+                            Pop3Parse.IsMultipart(_contentType);
 
-							if(_contentType
-								.Substring(_contentType.Length-1,1).
-								Equals(";"))
-							{
-								++i;
+                        if (IsMultipart)
+                        {
+                            // if boundary definition is on next
+                            // line ...
 
-								_multipartBoundary
-									= Pop3Parse.
-									MultipartBoundary(lines[i].
-									Replace("\n",""));
-							}
-							else
-							{
-								// boundary definition is on same
-								// line as "Content-Type" ...
+                            if (_contentType
+                                .Substring(_contentType.Length - 1, 1).
+                                Equals(";"))
+                            {
+                                ++i;
 
-								_multipartBoundary =
-									Pop3Parse
-									.MultipartBoundary(_contentType);
-							}
-						}
+                                _multipartBoundary
+                                    = Pop3Parse.
+                                        MultipartBoundary(lines[i].
+                                            Replace("\n", ""));
+                            }
+                            else
+                            {
+                                // boundary definition is on same
+                                // line as "Content-Type" ...
 
-					break;
+                                _multipartBoundary =
+                                    Pop3Parse
+                                        .MultipartBoundary(_contentType);
+                            }
+                        }
 
-					case EndOfHeader:
-							bodyStart = i+1;
-					break;
-				}
+                        break;
 
-				if(bodyStart>0)
-				{
-					break;
-				}
-			}
+                    case EndOfHeader:
+                        bodyStart = i + 1;
+                        break;
+                }
 
-			return(bodyStart);
-		}
-		
-		private void ParseEmail(string[] lines)
-		{
-			int startOfBody = ParseHeader(lines);
+                if (bodyStart > 0)
+                {
+                    break;
+                }
+            }
 
-			_messageComponents = 
-				new Pop3MessageComponents(lines,startOfBody
-				,_multipartBoundary,_contentType);
-		}
+            return (bodyStart);
+        }
 
-		private void LoadEmail()
-		{
-			// tell pop3 server we want to start reading
-			// email (m_inboxPosition) from inbox ...
+        private void ParseEmail(string[] lines)
+        {
+            var startOfBody = ParseHeader(lines);
 
-			Send("retr "+_inboxPosition);
+            _messageComponents =
+                new Pop3MessageComponents(lines, startOfBody
+                    , _multipartBoundary, _contentType);
+        }
 
-			// start receiving email ...
-			StartReceive();
+        private void LoadEmail()
+        {
+            // tell pop3 server we want to start reading
+            // email (m_inboxPosition) from inbox ...
 
-			// parse email ...
-			ParseEmail(
-				_pop3State.Sb.ToString().Split('\r'));
+            Send("retr " + _inboxPosition);
 
-			// remove reading pop3State ...
-			_pop3State = null;
-		}
+            // start receiving email ...
+            StartReceive();
 
-		internal Pop3Message(long position, long size, Socket client)
-		{
-			_inboxPosition = position;
-			_client = client;
+            // parse email ...
+            ParseEmail(
+                _pop3State.Sb.ToString().Split('\r'));
 
-			_pop3State = new Pop3StateObject {WorkSocket = _client, Sb = new StringBuilder()};
+            // remove reading pop3State ...
+            _pop3State = null;
+        }
 
-		    // load email ...
-			LoadEmail();
+        public override string ToString()
+        {
+            var ret =
+                "From    : " + From + "\r\n" +
+                "To      : " + To + "\r\n" +
+                "Subject : " + Subject + "\r\n";
 
-			// get body (if it exists) ...
-            foreach(var multipart in this)
-			{
-				if( multipart.IsBody )
-				{
-					_body = multipart.Data;
-					break;
-				}
-			}
-		}
-
-		public override string ToString()
-		{
-			string ret = 
-				"From    : "+_from+ "\r\n"+
-				"To      : "+_to+ "\r\n"+
-				"Subject : "+_subject+"\r\n";
-
-		    return this.Aggregate(ret, (current, enumerator) => current + (enumerator + "\r\n"));
-		}
-	}
+            return this.Aggregate(ret, (current, enumerator) => current + (enumerator + "\r\n"));
+        }
+    }
 }

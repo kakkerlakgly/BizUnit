@@ -1,4 +1,3 @@
-
 using BizUnit.TestSteps.BizTalk.Map;
 using BizUnit.TestSteps.Common;
 using BizUnit.TestSteps.ValidationSteps.Xml;
@@ -116,7 +115,7 @@ namespace BizUnit.BizTalkSteps.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ValidationStepExecutionException))]
+        [ExpectedException(typeof (ValidationStepExecutionException))]
         public void MapDocumentInstanceTestAndValidateInvalidDocument()
         {
             var mapStep = new ExecuteMapStep

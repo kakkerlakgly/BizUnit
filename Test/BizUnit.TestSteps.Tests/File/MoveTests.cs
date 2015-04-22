@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.IO;
 using BizUnit.TestSteps.File;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,38 +6,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BizUnit.TestSteps.Tests.File
 {
     /// <summary>
-    /// Summary description for FileCreateTests
+    ///     Summary description for FileCreateTests
     /// </summary>
     [TestClass]
     public class MoveTests
     {
         /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        ///     Gets or sets the test context which provides
+        ///     information about and functionality for the current test run.
+        /// </summary>
         public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         public void MoveFileTest()
@@ -57,8 +34,8 @@ namespace BizUnit.TestSteps.Tests.File
 
             step.Execute(new Context());
 
-            Assert.IsTrue(System.IO.File.Exists(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"));
-         
+            Assert.IsTrue(
+                System.IO.File.Exists(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel2xml"));
         }
 
         [TestMethod]
@@ -79,7 +56,6 @@ namespace BizUnit.TestSteps.Tests.File
             try
             {
                 step.Validate(new Context());
-
             }
             catch (ArgumentException ex)
             {
@@ -93,7 +69,6 @@ namespace BizUnit.TestSteps.Tests.File
             try
             {
                 step.Validate(new Context());
-
             }
             catch (ArgumentException ex)
             {
@@ -102,19 +77,43 @@ namespace BizUnit.TestSteps.Tests.File
 
 
             step.SourcePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xmlerror";
-            step.DestinationPath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xmlerror";
+            step.DestinationPath =
+                @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.testdel1xmlerror";
 
             try
             {
                 var context = new Context();
                 step.Validate(context);
                 step.Execute(context);
-
             }
             catch (FileNotFoundException fex)
             {
                 Assert.IsTrue(fex.Message.Contains("Could not find file"));
             }
         }
+
+        #region Additional test attributes
+
+        //
+        // You can use the following additional attributes as you write your tests:
+        //
+        // Use ClassInitialize to run code before running the first test in the class
+        // [ClassInitialize()]
+        // public static void MyClassInitialize(TestContext testContext) { }
+        //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
+
+        #endregion
     }
 }

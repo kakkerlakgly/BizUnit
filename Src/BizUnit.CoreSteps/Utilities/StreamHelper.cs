@@ -23,16 +23,16 @@ using System.Xml;
 namespace BizUnit.CoreSteps.Utilities
 {
     /// <summary>
-    /// Helper class for stream opperations
+    ///     Helper class for stream opperations
     /// </summary>
     public class StreamHelper
     {
         /// <summary>
-        /// Performs a binary comparison between two streams
+        ///     Performs a binary comparison between two streams
         /// </summary>
         /// <param name="s1">The 1st stream to compare aginst the 2nd</param>
         /// <param name="s2">The 2nd stream to compare aginst the 1st</param>
-        static public void CompareStreams(Stream s1, Stream s2)
+        public static void CompareStreams(Stream s1, Stream s2)
         {
             var buff1 = new byte[4096];
             var buff2 = new byte[4096];
@@ -41,42 +41,40 @@ namespace BizUnit.CoreSteps.Utilities
             do
             {
                 read1 = s1.Read(buff1, 0, 4096);
-                int read2 = s2.Read(buff2, 0, 4096);
+                var read2 = s2.Read(buff2, 0, 4096);
 
-                if ( read1 != read2 )
+                if (read1 != read2)
                 {
-                    throw new InvalidOperationException( "Streams do not contain identical data!" );
+                    throw new InvalidOperationException("Streams do not contain identical data!");
                 }
 
-                if ( 0 == read1 )
+                if (0 == read1)
                 {
                     break;
                 }
 
-                for ( int c = 0; c < read1; c++ )
+                for (var c = 0; c < read1; c++)
                 {
-                    if ( buff1[c] != buff2[c] )
+                    if (buff1[c] != buff2[c])
                     {
-                        throw new InvalidOperationException( "Streams do not contain identical data!" );
+                        throw new InvalidOperationException("Streams do not contain identical data!");
                     }
                 }
-
-            } while( read1 > 0 );
+            } while (read1 > 0);
         }
 
         /// <summary>
-        /// Helper method to load a disc FILE into a MemoryStream
+        ///     Helper method to load a disc FILE into a MemoryStream
         /// </summary>
         /// <param name="filePath">The path to the FILE containing the data</param>
         /// <param name="timeout">The timeout afterwhich if the FILE is not found the method will fail</param>
         /// <returns>MemoryStream containing the data in the FILE</returns>
-
         public static Stream LoadFileToStream(string filePath, double timeout)
         {
             Stream ms = null;
-            bool loaded = false;
+            var loaded = false;
 
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             do
             {
@@ -86,26 +84,27 @@ namespace BizUnit.CoreSteps.Utilities
                     loaded = true;
                     break;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
-                    if ( DateTime.Now < now.AddMilliseconds(timeout) )
+                    if (DateTime.Now < now.AddMilliseconds(timeout))
                     {
                         Thread.Sleep(500);
                     }
                 }
-            } while ( DateTime.Now < now.AddMilliseconds(timeout) );
+            } while (DateTime.Now < now.AddMilliseconds(timeout));
 
 
-            if ( !loaded )
+            if (!loaded)
             {
-                throw new InvalidOperationException( string.Format( "The file: {0} was not found within the timeout period!", filePath ) );
+                throw new InvalidOperationException(
+                    string.Format("The file: {0} was not found within the timeout period!", filePath));
             }
 
             return ms;
         }
 
         /// <summary>
-        /// Helper method to load a disc FILE into a MemoryStream
+        ///     Helper method to load a disc FILE into a MemoryStream
         /// </summary>
         /// <param name="filePath">The path to the FILE containing the data</param>
         /// <returns>MemoryStream containing the data in the FILE</returns>
@@ -119,9 +118,8 @@ namespace BizUnit.CoreSteps.Utilities
                 // Get the match data...
                 using (var fs = File.OpenRead(filePath))
                 {
-
                     var buff = new byte[1024];
-                    int read = fs.Read(buff, 0, 1024);
+                    var read = fs.Read(buff, 0, 1024);
 
                     while (0 < read)
                     {
@@ -133,7 +131,6 @@ namespace BizUnit.CoreSteps.Utilities
                 s.Seek(0, SeekOrigin.Begin);
 
                 return s;
-
             }
             catch
             {
@@ -143,7 +140,7 @@ namespace BizUnit.CoreSteps.Utilities
         }
 
         /// <summary>
-        /// Helper method to write the data in a stream to the console
+        ///     Helper method to write the data in a stream to the console
         /// </summary>
         /// <param name="description">The description text that will be written before the stream data</param>
         /// <param name="ms">Stream containing the data to write</param>
@@ -152,12 +149,12 @@ namespace BizUnit.CoreSteps.Utilities
         {
             ms.Seek(0, SeekOrigin.Begin);
             var sr = new StreamReader(ms);
-            context.LogData( description, sr.ReadToEnd() );
+            context.LogData(description, sr.ReadToEnd());
             ms.Seek(0, SeekOrigin.Begin);
         }
 
         /// <summary>
-        /// Helper method to load a forward only stream into a seekable MemoryStream
+        ///     Helper method to load a forward only stream into a seekable MemoryStream
         /// </summary>
         /// <param name="s">The forward only stream to read the data from</param>
         /// <returns>MemoryStream containg the data as read from s</returns>
@@ -168,7 +165,7 @@ namespace BizUnit.CoreSteps.Utilities
             {
                 ms = new MemoryStream();
                 var buff = new byte[1024];
-                int read = s.Read(buff, 0, 1024);
+                var read = s.Read(buff, 0, 1024);
 
                 while (0 < read)
                 {
@@ -188,13 +185,13 @@ namespace BizUnit.CoreSteps.Utilities
         }
 
         /// <summary>
-        /// Helper method to load a string into a MemoryStream
+        ///     Helper method to load a string into a MemoryStream
         /// </summary>
         /// <param name="s">The string containing the data that will be loaded into the stream</param>
         /// <returns>MemoryStream containg the data read from the string</returns>
         public static Stream LoadMemoryStream(string s)
         {
-            Encoding utf8 = Encoding.UTF8;
+            var utf8 = Encoding.UTF8;
             var bytes = utf8.GetBytes(s);
             Stream ms = null;
             try
@@ -214,7 +211,7 @@ namespace BizUnit.CoreSteps.Utilities
         }
 
         /// <summary>
-        /// Helper method to compare two Xml documents from streams
+        ///     Helper method to compare two Xml documents from streams
         /// </summary>
         /// <param name="s1">Stream containing the 1st Xml document</param>
         /// <param name="s2">Stream containing the 2nd Xml document</param>
@@ -224,14 +221,15 @@ namespace BizUnit.CoreSteps.Utilities
             var doc = new XmlDocument();
             doc.Load(new XmlTextReader(s1));
             var root = doc.DocumentElement;
-            string data1 = root.OuterXml;
+            var data1 = root.OuterXml;
 
             doc = new XmlDocument();
             doc.Load(new XmlTextReader(s2));
             root = doc.DocumentElement;
-            string data2 = root.OuterXml;
+            var data2 = root.OuterXml;
 
-            context.LogInfo("About to compare the following Xml documents:\r\nDocument1: {0},\r\nDocument2: {1}", data1, data2);
+            context.LogInfo("About to compare the following Xml documents:\r\nDocument1: {0},\r\nDocument2: {1}", data1,
+                data2);
             using (Stream stream1 = LoadMemoryStream(data1), stream2 = LoadMemoryStream(data2))
             {
                 CompareStreams(stream1, stream2);
@@ -239,7 +237,7 @@ namespace BizUnit.CoreSteps.Utilities
         }
 
         /// <summary>
-        /// Helper method to encode a stream
+        ///     Helper method to encode a stream
         /// </summary>
         /// <param name="rawData">Stream containing data to be encoded</param>
         /// <param name="encoding">The encoding to be used for the data</param>
@@ -248,9 +246,9 @@ namespace BizUnit.CoreSteps.Utilities
         {
             rawData.Seek(0, SeekOrigin.Begin);
             var sr = new StreamReader(rawData);
-            string data = sr.ReadToEnd();
-            Encoding e = encoding;
-            byte[] bytes = e.GetBytes(data);
+            var data = sr.ReadToEnd();
+            var e = encoding;
+            var bytes = e.GetBytes(data);
             Stream stream = null;
             try
             {

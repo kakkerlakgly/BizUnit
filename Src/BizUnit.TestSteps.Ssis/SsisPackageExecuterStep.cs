@@ -20,33 +20,33 @@ using Microsoft.SqlServer.Dts.Runtime;
 namespace BizUnit.TestSteps.Ssis
 {
     /// <summary>
-    /// The SsisPackageExecuterStep test step executes an SSIS package. 
+    ///     The SsisPackageExecuterStep test step executes an SSIS package.
     /// </summary>
     public class SsisPackageExecuterStep : TestStepBase
     {
-        ///<summary>
-        /// The file path of the SSIS package to execute
-        ///</summary>
-        public string PackageLocation { get; set; }
-
-        ///<summary>
-        /// The package variables 
-        ///</summary>
-        public IList<PackageVariable> Variables { get; set; }
-
-        ///<summary>
-        /// Constructor
-        ///</summary>
+        /// <summary>
+        ///     Constructor
+        /// </summary>
         public SsisPackageExecuterStep()
         {
             Variables = new List<PackageVariable>();
         }
 
-        ///<summary>
-        /// TestStepBase.Execute() implementation
-        ///</summary>
+        /// <summary>
+        ///     The file path of the SSIS package to execute
+        /// </summary>
+        public string PackageLocation { get; set; }
+
+        /// <summary>
+        ///     The package variables
+        /// </summary>
+        public IList<PackageVariable> Variables { get; set; }
+
+        /// <summary>
+        ///     TestStepBase.Execute() implementation
+        /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-        ///<exception cref="InvalidOperationException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public override void Execute(Context context)
         {
             context.LogInfo("Executing SSIS package: {0}", PackageLocation);
@@ -79,14 +79,14 @@ namespace BizUnit.TestSteps.Ssis
             }
         }
 
-        ///<summary>
-        /// Validates the test step is correctly configured prior to execution.
-        ///</summary>
+        /// <summary>
+        ///     Validates the test step is correctly configured prior to execution.
+        /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-        ///<exception cref="StepValidationException"></exception>
+        /// <exception cref="StepValidationException"></exception>
         public override void Validate(Context context)
         {
-            if(string.IsNullOrEmpty(PackageLocation))
+            if (string.IsNullOrEmpty(PackageLocation))
             {
                 throw new StepValidationException("PackageLocation may not be null or empty", this);
             }

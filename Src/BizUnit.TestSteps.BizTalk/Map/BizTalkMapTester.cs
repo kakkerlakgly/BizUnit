@@ -23,7 +23,7 @@ using Microsoft.XLANGs.BaseTypes;
 namespace BizUnit.TestSteps.BizTalk.Map
 {
     /// <summary>
-    /// Helper class to execute BizTalk maps
+    ///     Helper class to execute BizTalk maps
     /// </summary>
     public class BizTalkMapTester
     {
@@ -38,7 +38,7 @@ namespace BizUnit.TestSteps.BizTalk.Map
         }
 
         /// <summary>
-        /// Constructor for helper class to execute BizTalk maps
+        ///     Constructor for helper class to execute BizTalk maps
         /// </summary>
         /// <param name='mapType'>The type of the BizTalk map to execute</param>
         public BizTalkMapTester(Type mapType)
@@ -46,11 +46,18 @@ namespace BizUnit.TestSteps.BizTalk.Map
             _map = CreateMapFromType(mapType);
         }
 
+        /// <summary>
+        /// </summary>
+        public TransformBase Map
+        {
+            get { return _map; }
+        }
+
         private static TransformBase CreateMapFromType(Type mapType)
         {
             ArgumentValidation.CheckForNullReference(mapType, "mapType");
 
-            if (!mapType.IsSubclassOf(typeof(TransformBase)))
+            if (!mapType.IsSubclassOf(typeof (TransformBase)))
             {
                 throw new InvalidOperationException("Type must specify a BizTalk map");
             }
@@ -59,16 +66,9 @@ namespace BizUnit.TestSteps.BizTalk.Map
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public TransformBase Map
-        {
-            get { return _map; }
-        }
-
-        /// <summary>
-        /// Execute the map, updated to use 'XSLCompiledTransform' for BizTalk 2013, This KB hints at this http://support.microsoft.com/kb/2887564
-        /// Credit goes to MichaelBilling https://bizunit.codeplex.com/discussions/465271
+        ///     Execute the map, updated to use 'XSLCompiledTransform' for BizTalk 2013, This KB hints at this
+        ///     http://support.microsoft.com/kb/2887564
+        ///     Credit goes to MichaelBilling https://bizunit.codeplex.com/discussions/465271
         /// </summary>
         /// <param name='source'>The input Xml instance to map</param>
         /// <param name='destination'>The ouput Xml instance produced by the map</param>
@@ -77,7 +77,7 @@ namespace BizUnit.TestSteps.BizTalk.Map
             using (var inReader = new StreamReader(source))
             {
                 var xpathdoc = new XPathDocument(inReader);
-                using (XmlWriter writer = XmlWriter.Create(destination))
+                using (var writer = XmlWriter.Create(destination))
                 {
                     Map.Transform.Transform(xpathdoc, Map.TransformArgs, writer);
                 }

@@ -18,22 +18,18 @@ using System.Text;
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
     /// <summary>
-	/// Holds the current state of the client
-	/// socket.
-	/// </summary>
-
-	internal class Pop3StateObject
-	{
-		// Client socket.
-		internal Socket WorkSocket;
-		
-		// Size of receive buffer.
-		internal const int BufferSize = 256;
-		
-		// Receive buffer.
-		internal byte[] Buffer = new byte[BufferSize];
-		
-		// Received data string.
-		internal StringBuilder Sb = new StringBuilder();
-	}
+    ///     Holds the current state of the client
+    ///     socket.
+    /// </summary>
+    internal class Pop3StateObject
+    {
+        // Size of receive buffer.
+        internal const int BufferSize = 256;
+        // Receive buffer.
+        internal byte[] Buffer = new byte[BufferSize];
+        // Received data string.
+        internal StringBuilder Sb = new StringBuilder();
+        // Client socket.
+        internal Socket WorkSocket;
+    }
 }

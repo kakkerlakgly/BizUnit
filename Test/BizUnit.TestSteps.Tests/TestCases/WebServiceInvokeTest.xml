@@ -6,7 +6,13 @@
   Reference="{assembly:Null}"
   Preconditions="{assembly:Null}"
   ExpectedResults="{assembly:Null}"
-  BizUnitVersion="4.0.0.1" xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:bucts="clr-namespace:BizUnit.TestSteps.Soap;assembly=BizUnit.TestSteps" xmlns:but="clr-namespace:BizUnit.TestSteps.Tests;assembly=BizUnit.TestSteps.Tests" xmlns:butdlf="clr-namespace:BizUnit.TestSteps.DataLoaders.File;assembly=BizUnit.TestSteps" xmlns:butvsx="clr-namespace:BizUnit.TestSteps.ValidationSteps.Xml;assembly=BizUnit.TestSteps" xmlns:butc="clr-namespace:BizUnit.TestSteps.Common;assembly=BizUnit.TestSteps">
+  BizUnitVersion="4.0.0.1" xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit"
+  xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:bucts="clr-namespace:BizUnit.TestSteps.Soap;assembly=BizUnit.TestSteps"
+  xmlns:but="clr-namespace:BizUnit.TestSteps.Tests;assembly=BizUnit.TestSteps.Tests"
+  xmlns:butdlf="clr-namespace:BizUnit.TestSteps.DataLoaders.File;assembly=BizUnit.TestSteps"
+  xmlns:butvsx="clr-namespace:BizUnit.TestSteps.ValidationSteps.Xml;assembly=BizUnit.TestSteps"
+  xmlns:butc="clr-namespace:BizUnit.TestSteps.Common;assembly=BizUnit.TestSteps">
   <TestCase.ExecutionSteps>
     <bucts:WebServiceStep
       ServiceUrl="http://localhost/AncillarySalesBook/AncillarySalesBook.svc"

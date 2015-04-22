@@ -13,7 +13,6 @@
 //---------------------------------------------------------------------
 
 using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -24,118 +23,125 @@ using System.Xml;
 namespace BizUnit.CoreSteps.TestSteps
 {
     /// <summary>
-	/// The DBQueryReturnXmlStep queries a database and returns the response in Xml. It incorporates the context loader and 
-	/// validation sub steps and is useful for testing scenarios where BizTalk communicates with SQL server via the SQL adapter
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
-	///	<TestStep assemblyPath="" typeName="BizUnit.DBQueryReturnXmlStep">
-	///		<DelayBeforeCheck>1</DelayBeforeCheck>
-	///		<ConnectionString>Persist Security Info=False;Integrated Security=SSPI;database=DBname;server=(local);Connect Timeout=30</ConnectionString>
-	///		<RootElement>RootNodeName</RootElement>
-	///		<AllowEmpty>true|false</AllowEmpty>
-	///		<!-- 
-	///		The SQL Query to execute is built by formatting the RawSQLQuery substituting in the 
-	///		SQLQueryParam's
-	///		-->
-	///		<SQLQuery>
-	///			<!-- The query that returns Xml (probably using For Xml) -->
-	///			<RawSQLQuery>Exec stordeprocedure</RawSQLQuery>
-	///			<SQLQueryParams>
-	///				<SQLQueryParam takeFromCtx="EventId"></SQLQueryParam>
-	///			</SQLQueryParams>
-	///		</SQLQuery>
-	///		
-	///		<!-- The Context loader will act upon the xml returned from the above Sql Statement  -->
-	///		<ContextLoaderStep assemblyPath="" typeName="BizUnit.XmlContextLoader">
-	///			<XPath contextKey="HTTP_Url">/def:html/def:body/def:p[2]/def:form</XPath>
-	///			<XPath contextKey="ActionID">/def:html/def:body/def:p[2]/def:form/def:input[3]</XPath>
-	///			<XPath contextKey="ActionType">/def:html/def:body/def:p[2]/def:form/def:input[4]</XPath>
-	///			<XPath contextKey="HoldEvent">/def:html/def:body/def:p[2]/def:form/def:input[2]</XPath>
-	///		</ContextLoaderStep>
-	///
-	///	    <!-- Note: Validation step could be any generic validation step -->	
-	///		<ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
-	///			<XmlSchemaPath>.\TestData\PurchaseOrder.xsd</XmlSchemaPath>
-	///			<XmlSchemaNameSpace>http://SendMail.PurchaseOrder</XmlSchemaNameSpace>
-	///			<XPathList>
-	///				<XPathValidation query="/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']">PONumber_0</XPathValidation>
-	///			</XPathList>
-	///		</ValidationStep>			
-	///	</TestStep>
-	///	</code>
-	///	
-	///	The ContextManipulator builds a new context item by appeanding the values of multiple context items
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>DelayBeforeCheck</term>
-	///			<description>The number of seconds to wait before executing the step</description>
-	///		</item>
-	///		<item>
-	///			<term>ConnectionString</term>
-	///			<description>The connection string used for the DB query</description>
-	///		</item>
-    ///		<item>
-    ///			<term>RootElement</term>
-	///			<description>The name of the element which will serve as the root element for the returned Xml</description>
-	///		</item>
-	///		<item>
-	///			<term>AllowEmpty</term>
-	///			<description>Boolean value specifying whether an error should be raised if no Xml is returned. Specify true to raise an error</description>
-	///		</item>
-	///		<item>
-	///			<term>SQLQuery/RawSQLQuery</term>
-	///			<description>The raw SQL string that will be formatted by substituting in the SQLQueryParam</description>
-	///		</item>
-	///		<item>
-	///			<term>SQLQuery/SQLQueryParams/SQLQueryParam</term>
-	///			<description>The parameters to substitute into RawSQLQuery <para>(repeating)</para></description>
-	///		</item>
-	///	</list>
-	///	</remarks>
+    ///     The DBQueryReturnXmlStep queries a database and returns the response in Xml. It incorporates the context loader and
+    ///     validation sub steps and is useful for testing scenarios where BizTalk communicates with SQL server via the SQL
+    ///     adapter
+    /// </summary>
+    /// <remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath="" typeName="BizUnit.DBQueryReturnXmlStep">
+    ///             <DelayBeforeCheck>1</DelayBeforeCheck>
+    ///             <ConnectionString>
+    ///                 Persist Security Info=False;Integrated
+    ///                 Security=SSPI;database=DBname;server=(local);Connect Timeout=30
+    ///             </ConnectionString>
+    ///             <RootElement>RootNodeName</RootElement>
+    ///             <AllowEmpty>true|false</AllowEmpty>
+    ///             <!-- 
+    /// 		The SQL Query to execute is built by formatting the RawSQLQuery substituting in the 
+    /// 		SQLQueryParam's
+    /// 		-->
+    ///             <SQLQuery>
+    ///                 <!-- The query that returns Xml (probably using For Xml) -->
+    ///                 <RawSQLQuery>Exec stordeprocedure</RawSQLQuery>
+    ///                 <SQLQueryParams>
+    ///                     <SQLQueryParam takeFromCtx="EventId"></SQLQueryParam>
+    ///                 </SQLQueryParams>
+    ///             </SQLQuery>
+    ///             <!-- The Context loader will act upon the xml returned from the above Sql Statement  -->
+    ///             <ContextLoaderStep assemblyPath="" typeName="BizUnit.XmlContextLoader">
+    ///                 <XPath contextKey="HTTP_Url">/def:html/def:body/def:p[2]/def:form</XPath>
+    ///                 <XPath contextKey="ActionID">/def:html/def:body/def:p[2]/def:form/def:input[3]</XPath>
+    ///                 <XPath contextKey="ActionType">/def:html/def:body/def:p[2]/def:form/def:input[4]</XPath>
+    ///                 <XPath contextKey="HoldEvent">/def:html/def:body/def:p[2]/def:form/def:input[2]</XPath>
+    ///             </ContextLoaderStep>
+    ///             <!-- Note: Validation step could be any generic validation step -->
+    ///             <ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
+    ///                 <XmlSchemaPath>.\TestData\PurchaseOrder.xsd</XmlSchemaPath>
+    ///                 <XmlSchemaNameSpace>http://SendMail.PurchaseOrder</XmlSchemaNameSpace>
+    ///                 <XPathList>
+    ///                     <XPathValidation
+    ///                         query="/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']">
+    ///                         PONumber_0
+    ///                     </XPathValidation>
+    ///                 </XPathList>
+    ///             </ValidationStep>
+    ///         </TestStep>
+    /// 	</code>
+    ///     The ContextManipulator builds a new context item by appeanding the values of multiple context items
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>DelayBeforeCheck</term>
+    ///             <description>The number of seconds to wait before executing the step</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>ConnectionString</term>
+    ///             <description>The connection string used for the DB query</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>RootElement</term>
+    ///             <description>The name of the element which will serve as the root element for the returned Xml</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>AllowEmpty</term>
+    ///             <description>
+    ///                 Boolean value specifying whether an error should be raised if no Xml is returned. Specify true
+    ///                 to raise an error
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <term>SQLQuery/RawSQLQuery</term>
+    ///             <description>The raw SQL string that will be formatted by substituting in the SQLQueryParam</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>SQLQuery/SQLQueryParams/SQLQueryParam</term>
+    ///             <description>
+    ///                 The parameters to substitute into RawSQLQuery
+    ///                 <para>(repeating)</para>
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     [Obsolete("DBQueryReturnXmlStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
-	public class DBQueryReturnXmlStep : ITestStep
-	{
-		/// <summary>
-		/// ITestStep.Execute() implementation
-		/// </summary>
-		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>		
+    public class DBQueryReturnXmlStep : ITestStep
+    {
+        /// <summary>
+        ///     ITestStep.Execute() implementation
+        /// </summary>
+        /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public void Execute(XmlNode testConfig, Context context)
-		{
-			int delayBeforeCheck = context.ReadConfigAsInt32( testConfig, "DelayBeforeCheck" );			
-			string connectionString = context.ReadConfigAsString( testConfig, "ConnectionString" );
-			string rootElement = context.ReadConfigAsString( testConfig, "RootElement" );
-			bool allowEmpty = context.ReadConfigAsBool ( testConfig, "AllowEmpty" );
-			XmlNode queryConfig = testConfig.SelectSingleNode( "SQLQuery" );
-			string sqlQuery = BuildSqlQuery( queryConfig, context );
-			XmlNode validationConfig = testConfig.SelectSingleNode("ValidationStep");
-			XmlNode contextConfig = testConfig.SelectSingleNode("ContextLoaderStep");
+        {
+            var delayBeforeCheck = context.ReadConfigAsInt32(testConfig, "DelayBeforeCheck");
+            var connectionString = context.ReadConfigAsString(testConfig, "ConnectionString");
+            var rootElement = context.ReadConfigAsString(testConfig, "RootElement");
+            var allowEmpty = context.ReadConfigAsBool(testConfig, "AllowEmpty");
+            var queryConfig = testConfig.SelectSingleNode("SQLQuery");
+            var sqlQuery = BuildSqlQuery(queryConfig, context);
+            var validationConfig = testConfig.SelectSingleNode("ValidationStep");
+            var contextConfig = testConfig.SelectSingleNode("ContextLoaderStep");
 
-			context.LogInfo("Using database connection string: {0}", connectionString);
-			context.LogInfo("Executing database query : {0}", sqlQuery );
+            context.LogInfo("Using database connection string: {0}", connectionString);
+            context.LogInfo("Executing database query : {0}", sqlQuery);
 
-			// Sleep for delay seconds...
-			Thread.Sleep(delayBeforeCheck*1000);
-			
-			string xml = GetXmlData(connectionString, sqlQuery);
+            // Sleep for delay seconds...
+            Thread.Sleep(delayBeforeCheck*1000);
 
-			context.LogInfo("Xml returned : {0}", xml );
+            var xml = GetXmlData(connectionString, sqlQuery);
+
+            context.LogInfo("Xml returned : {0}", xml);
 
             if (xml != null && xml.Trim().Length > 0)
             {
                 //prepare to execute context loader
-                byte[] buffer = Encoding.ASCII.GetBytes("<" + rootElement + ">" + xml + "</" + rootElement + ">");
+                var buffer = Encoding.ASCII.GetBytes("<" + rootElement + ">" + xml + "</" + rootElement + ">");
                 using (var data = new MemoryStream(buffer))
                 {
-
                     data.Seek(0, SeekOrigin.Begin);
                     context.ExecuteContextLoader(data, contextConfig);
 
@@ -149,18 +155,19 @@ namespace BizUnit.CoreSteps.TestSteps
             }
             else if (allowEmpty)
             {
-                context.LogWarning("No Xml was returned from the DB Query. AllowEmpty has been set to true and hence no error has been raised");
+                context.LogWarning(
+                    "No Xml was returned from the DB Query. AllowEmpty has been set to true and hence no error has been raised");
             }
-		}
+        }
 
-		private static string GetXmlData(string connectionString, string sqlQuery)
-		{
+        private static string GetXmlData(string connectionString, string sqlQuery)
+        {
             using (var connection = new SqlConnection(connectionString))
-			{
-				connection.Open();
+            {
+                connection.Open();
                 using (var comm = new SqlCommand(sqlQuery, connection))
                 {
-                    object obj = comm.ExecuteScalar();
+                    var obj = comm.ExecuteScalar();
                     if (obj != null)
                     {
                         return obj.ToString();
@@ -168,25 +175,25 @@ namespace BizUnit.CoreSteps.TestSteps
 
                     return null;
                 }
-			}
-		}
+            }
+        }
 
-		private static string BuildSqlQuery( XmlNode queryConfig, Context context )
-		{
-			var rawSqlQuery = context.ReadConfigAsString( queryConfig, "RawSQLQuery" );			
-			var sqlParams = queryConfig.SelectNodes( "SQLQueryParams/*" );
+        private static string BuildSqlQuery(XmlNode queryConfig, Context context)
+        {
+            var rawSqlQuery = context.ReadConfigAsString(queryConfig, "RawSQLQuery");
+            var sqlParams = queryConfig.SelectNodes("SQLQueryParams/*");
 
-			if ( null != sqlParams )
-			{
-				var paramArray = (from XmlNode sqlParam in sqlParams select context.ReadConfigAsString(sqlParam, "."));
-				//context
+            if (null != sqlParams)
+            {
+                var paramArray = (from XmlNode sqlParam in sqlParams select context.ReadConfigAsString(sqlParam, "."));
+                //context
 
-			    var paramObjs = paramArray.Cast<object>().ToArray();
+                var paramObjs = paramArray.Cast<object>().ToArray();
 
-				return string.Format( rawSqlQuery, paramObjs );
-			}
-			
-			return rawSqlQuery;
-		}
-	}
+                return string.Format(rawSqlQuery, paramObjs);
+            }
+
+            return rawSqlQuery;
+        }
+    }
 }

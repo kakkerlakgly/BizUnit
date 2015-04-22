@@ -19,59 +19,58 @@ using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.BizTalk.Bam
 {
-	/// <summary>
-    /// The Deploy deloys a BAM definition.
-	/// </summary>
+    /// <summary>
+    ///     The Deploy deloys a BAM definition.
+    /// </summary>
     public class Deploy : TestStepBase
-	{
-        ///<summary>
-        ///</summary>
-        public enum BamDeploymentAction 
-		{
-			/// <summary>
-			/// 
-			/// </summary>
-			Deploy,
-			/// <summary>
-			/// 
-			/// </summary>
-			Undeploy
-		}
+    {
+        /// <summary>
+        /// </summary>
+        public enum BamDeploymentAction
+        {
+            /// <summary>
+            /// </summary>
+            Deploy,
 
-	    ///<summary>
-        /// The Tracking directory for BizTalk Server.
-	    ///</summary>
-	    public string TrackingFolderPath { get; set; }
+            /// <summary>
+            /// </summary>
+            Undeploy
+        }
 
-        ///<summary>
-        /// The path to the BAM definition file
-        ///</summary>
-        public string BamDefinitionXmlFilePath { get; set;}
+        /// <summary>
+        ///     The Tracking directory for BizTalk Server.
+        /// </summary>
+        public string TrackingFolderPath { get; set; }
 
-	    ///<summary>
-        /// The delay for this step to complete in seconds, -1 to delay until BAM deployment has finished
-	    ///</summary>
-	    public int DelayForCompletion { get; set; }
+        /// <summary>
+        ///     The path to the BAM definition file
+        /// </summary>
+        public string BamDefinitionXmlFilePath { get; set; }
 
-        ///<summary>
-        /// Deploy|Undeploy
-        ///</summary>
+        /// <summary>
+        ///     The delay for this step to complete in seconds, -1 to delay until BAM deployment has finished
+        /// </summary>
+        public int DelayForCompletion { get; set; }
+
+        /// <summary>
+        ///     Deploy|Undeploy
+        /// </summary>
         public BamDeploymentAction Action { get; set; }
 
         /// <summary>
-        /// TestStepBase.Execute() implementation
-		/// </summary>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public override void Execute(Context context)
-		{
-			var sb = new StringBuilder();
-			sb.Append('"');
-			sb.Append(BamDefinitionXmlFilePath);
-			sb.Append('"');
+        ///     TestStepBase.Execute() implementation
+        /// </summary>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        public override void Execute(Context context)
+        {
+            var sb = new StringBuilder();
+            sb.Append('"');
+            sb.Append(BamDefinitionXmlFilePath);
+            sb.Append('"');
 
             using (var bamProcess = new Process())
             {
-                bamProcess.StartInfo = new ProcessStartInfo{ WorkingDirectory = TrackingFolderPath, FileName = "bm.exe" };
+                bamProcess.StartInfo = new ProcessStartInfo {WorkingDirectory = TrackingFolderPath, FileName = "bm.exe"};
 
                 if (Action == BamDeploymentAction.Deploy)
                 {
@@ -94,23 +93,24 @@ namespace BizUnit.TestSteps.BizTalk.Bam
                     // Wait for deployment process to complete
                     if (DelayForCompletion == -1)
                     {
-                        context.LogInfo("Waiting for the BAM deployment process to complete before recommencing testing.", DelayForCompletion);
+                        context.LogInfo(
+                            "Waiting for the BAM deployment process to complete before recommencing testing.",
+                            DelayForCompletion);
                         bamProcess.WaitForExit();
                     }
                     else
                     {
                         context.LogInfo("Waiting for {0} seconds before recommencing testing.", DelayForCompletion);
-                        Thread.Sleep(DelayForCompletion * 1000);
+                        Thread.Sleep(DelayForCompletion*1000);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public override void Validate(Context context)
-	    {
-	    }
-	}
+        {
+        }
+    }
 }

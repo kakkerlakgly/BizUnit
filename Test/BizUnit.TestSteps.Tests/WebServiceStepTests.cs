@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using BizUnit.TestSteps.Common;
 using BizUnit.TestSteps.DataLoaders.File;
 using BizUnit.TestSteps.Soap;
@@ -10,43 +9,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BizUnit.TestSteps.Tests
 {
     /// <summary>
-    /// Summary description for WebServiceStep
+    ///     Summary description for WebServiceStep
     /// </summary>
     [TestClass]
     public class WebServiceStepTests
     {
         /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        ///     Gets or sets the test context which provides
+        ///     information about and functionality for the current test run.
+        /// </summary>
         public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         public void WebServiceInvoke()
         {
-            TestCase btc = new TestCase
+            var btc = new TestCase
             {
                 Name = "Serialization Test",
                 Description = "Test to blah blah blah, yeah really!",
@@ -94,12 +71,12 @@ namespace BizUnit.TestSteps.Tests
             };
             validation.XmlSchemas.Add(schemaResultType);
             var schema = new SchemaDefinition
-                             {
-                                 XmlSchemaPath =
-                                     @"C:\Affinus\Depot\ASS\Main\Dev\Src\VAA.ASS.Schemas\Book\GetProductTermsAndConditions_RS.xsd",
-                                 XmlSchemaNameSpace =
-                                     "http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/GetProductTermsAndConditions/2009"
-                             };
+            {
+                XmlSchemaPath =
+                    @"C:\Affinus\Depot\ASS\Main\Dev\Src\VAA.ASS.Schemas\Book\GetProductTermsAndConditions_RS.xsd",
+                XmlSchemaNameSpace =
+                    "http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/GetProductTermsAndConditions/2009"
+            };
             validation.XmlSchemas.Add(schema);
 
             var xpathProductId = new XPathDefinition
@@ -121,7 +98,7 @@ namespace BizUnit.TestSteps.Tests
             ws.SubSteps.Add(validation);
             btc.ExecutionSteps.Add(ws);
 
-            BizUnit bu = new BizUnit(btc);
+            var bu = new BizUnit(btc);
             TestCase.SaveToFile(btc, "WebServiceInvoke.xaml");
             bu.RunTest();
         }
@@ -129,9 +106,34 @@ namespace BizUnit.TestSteps.Tests
         [TestMethod]
         public void WebServiceInvoke_LoadFromXaml()
         {
-            var tc = TestCase.LoadFromFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestCases\WebServiceInvokeTest.xml");
-            BizUnit bu = new BizUnit(tc);
+            var tc =
+                TestCase.LoadFromFile(@"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestCases\WebServiceInvokeTest.xml");
+            var bu = new BizUnit(tc);
             bu.RunTest();
         }
+
+        #region Additional test attributes
+
+        //
+        // You can use the following additional attributes as you write your tests:
+        //
+        // Use ClassInitialize to run code before running the first test in the class
+        // [ClassInitialize()]
+        // public static void MyClassInitialize(TestContext testContext) { }
+        //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
+
+        #endregion
     }
 }

@@ -19,129 +19,91 @@ using BizUnit.Xaml;
 namespace BizUnit
 {
     /// <summary>
-	/// Summary description for ConcurrentTestStepWrapper.
-	/// </summary>
-	internal class ConcurrentTestStepWrapper
-	{
-	    private BizUnitTestStepWrapper _stepWrapper;
-		private Context _context;
-		private ILogger _logger;
-		private Exception _ex;
-	    private TestStepBase _testStep;
+    ///     Summary description for ConcurrentTestStepWrapper.
+    /// </summary>
+    internal class ConcurrentTestStepWrapper
+    {
+        private readonly Context _context;
 
-        public ConcurrentTestStepWrapper(TestStepBase testStep, Context ctx )
+        public ConcurrentTestStepWrapper(TestStepBase testStep, Context ctx)
         {
-            _testStep = testStep;
-            _logger = new Logger {ConcurrentExecutionMode = true};
-            _context = ctx.CloneForConcurrentUse(_logger);
+            TestStep = testStep;
+            Logger = new Logger {ConcurrentExecutionMode = true};
+            _context = ctx.CloneForConcurrentUse(Logger);
         }
 
-		public ConcurrentTestStepWrapper(BizUnitTestStepWrapper stepWrapper, Context ctx )
-		{
-            _stepWrapper = stepWrapper;
+        public ConcurrentTestStepWrapper(BizUnitTestStepWrapper stepWrapper, Context ctx)
+        {
+            StepWrapper = stepWrapper;
             // TODO:.... ILogger
-		    _logger = new Logger {ConcurrentExecutionMode = true};
-		    _context = ctx.CloneForConcurrentUse(_logger);
+            Logger = new Logger {ConcurrentExecutionMode = true};
+            _context = ctx.CloneForConcurrentUse(Logger);
         }
 
-	    
-		public string Name
-		{
-			get 
-			{
-				return (null != _testStep) ? _testStep.GetType().ToString() : _stepWrapper.TypeName;
-			}
-		}
+        public string Name
+        {
+            get { return (null != TestStep) ? TestStep.GetType().ToString() : StepWrapper.TypeName; }
+        }
 
         public bool FailOnError
         {
+            get { return (null != TestStep) ? TestStep.FailOnError : StepWrapper.FailOnError; }
+        }
+
+        public string StepName
+        {
             get
             {
-                return (null != _testStep) ? _testStep.FailOnError : _stepWrapper.FailOnError;
+                if (null != TestStep)
+                    return TestStep.GetType().ToString();
+
+                if (null != StepWrapper)
+                    return StepWrapper.TypeName;
+
+                return null;
             }
         }
 
-	    public string StepName
-	    {
-	        get
-	        {
-                if (null != _testStep)
-                    return _testStep.GetType().ToString();
-                
-                if(null != _stepWrapper)
-	                return _stepWrapper.TypeName;
+        public BizUnitTestStepWrapper StepWrapper { get; private set; }
+        public TestStepBase TestStep { get; private set; }
+        public Exception FailureException { get; private set; }
+        public ILogger Logger { get; private set; }
 
-	            return null;
-	        }
-	    }
-
-	    public BizUnitTestStepWrapper StepWrapper
-	    {
-	        get
-	        {
-	            return _stepWrapper;
-	        }
-	    }
-
-	    public TestStepBase TestStep
-	    {
-	        get
-	        {
-	            return _testStep;
-	        }
-	    }
-
-		public Exception FailureException
-		{
-			get
-			{
-				return _ex;
-			}
-		}
-
-		public void Execute()
-		{
-			try
-			{
-                if(null != _testStep)
+        public void Execute()
+        {
+            try
+            {
+                if (null != TestStep)
                 {
-                    _logger.TestStepStart(_testStep.GetType().ToString(), DateTime.Now, true, _testStep.FailOnError);
-                    var step = _testStep as ImportTestCaseStep;
+                    Logger.TestStepStart(TestStep.GetType().ToString(), DateTime.Now, true, TestStep.FailOnError);
+                    var step = TestStep as ImportTestCaseStep;
                     if (step != null)
                     {
                         ExecuteImportedTestCase(step, _context);
                     }
                     else
                     {
-                        _testStep.Execute(_context);
+                        TestStep.Execute(_context);
                     }
                 }
                 else
                 {
-                    _logger.TestStepStart(_stepWrapper.TypeName, DateTime.Now, true, _stepWrapper.FailOnError);
-                    _stepWrapper.Execute(_context);
+                    Logger.TestStepStart(StepWrapper.TypeName, DateTime.Now, true, StepWrapper.FailOnError);
+                    StepWrapper.Execute(_context);
                 }
-			}
-			catch(Exception e)
-			{
-				_logger.LogException( e );
-				_ex = e;
-			}
-		}
-
-		public ILogger Logger
-		{
-            get
-            {
-                return _logger;
             }
-		}
+            catch (Exception e)
+            {
+                Logger.LogException(e);
+                FailureException = e;
+            }
+        }
 
         private static void ExecuteImportedTestCase(ImportTestCaseStep testStep, Context context)
         {
             var testCase = testStep.GetTestCase();
             var bu = new BizUnit(testCase, context);
             bu.RunTest();
-        } 
-	}
+        }
+    }
 }

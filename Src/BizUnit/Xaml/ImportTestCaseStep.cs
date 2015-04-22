@@ -16,46 +16,44 @@ using BizUnit.Common;
 
 namespace BizUnit.Xaml
 {
-    ///<summary>
-    /// Used to import another test case into this test case. This is especially
-    /// useful when testing logic that builds on different scenarios. Each scenario
-    /// may have a test case, subsequent scenarios may import their dependant tests
-    /// to avoid having to duplicate test code.
-    ///</summary>
-    sealed public class ImportTestCaseStep : TestStepBase
+    /// <summary>
+    ///     Used to import another test case into this test case. This is especially
+    ///     useful when testing logic that builds on different scenarios. Each scenario
+    ///     may have a test case, subsequent scenarios may import their dependant tests
+    ///     to avoid having to duplicate test code.
+    /// </summary>
+    public sealed class ImportTestCaseStep : TestStepBase
     {
-        ///<summary>
-        /// The file path of the test case to be imported. Either TestCase should be set or TestCasePath, but not both.
-        ///</summary>
+        /// <summary>
+        ///     The file path of the test case to be imported. Either TestCase should be set or TestCasePath, but not both.
+        /// </summary>
         public string TestCasePath { get; set; }
 
-        ///<summary>
-        /// The test case to be imported. Either TestCase should be set or TestCasePath, but not both.
-        ///</summary>
+        /// <summary>
+        ///     The test case to be imported. Either TestCase should be set or TestCasePath, but not both.
+        /// </summary>
         public TestCase TestCase { get; set; }
 
         internal TestCase GetTestCase()
         {
-            if(null != TestCase)
+            if (null != TestCase)
                 return TestCase;
 
             return TestCase.LoadFromFile(TestCasePath);
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public override void Execute(Context context)
         {
-             // no op
+            // no op
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public override void Validate(Context context)
         {
-            if(string.IsNullOrEmpty(TestCasePath))
+            if (string.IsNullOrEmpty(TestCasePath))
             {
                 ArgumentValidation.CheckForNullReference(TestCase, "TestCase");
             }

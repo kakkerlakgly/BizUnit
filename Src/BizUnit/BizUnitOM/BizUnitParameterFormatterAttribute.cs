@@ -18,45 +18,42 @@ using BizUnit.Common;
 namespace BizUnit.BizUnitOM
 {
     /// <summary>
-    /// The BizUnitParameterFormatterAttribute Attribute is used to decorate 
-    /// test step properties to specify a custom formatter to use when setting 
-    /// a specific property.
+    ///     The BizUnitParameterFormatterAttribute Attribute is used to decorate
+    ///     test step properties to specify a custom formatter to use when setting
+    ///     a specific property.
     /// </summary>
-    /// 
     /// <remarks>
-    /// The following example demonstrates how to use the BizUnitParameterFormatterAttribute:
+    ///     The following example demonstrates how to use the BizUnitParameterFormatterAttribute:
+    ///     <code escaped="true">
+    ///  	public class DBExecuteNonQueryStep : ITestStepOM
+    ///  	{
+    ///  	    private SqlQuery sqlQuery;
+    ///          ...
+    ///  
+    ///          // Instruct BizUnit to use the type: BizUnit.SqlQueryParamFormatter 
+    ///          // to format the object array when setting this property. Note, 
+    ///          // BizUnit.SqlQueryParamFormatter should implement ITestStepParameterFormatter
+    ///          [BizUnitParameterFormatter("BizUnit.SqlQueryParamFormatter")]
+    ///  	    public SqlQuery SQLQuery
+    ///  	    {
+    ///  	        set { sqlQuery = value; }
+    ///              get { return sqlQuery; }
+    ///  	    }
+    ///  
+    ///          ...
+    ///      }
     /// 
-    /// <code escaped="true">
-    /// 	public class DBExecuteNonQueryStep : ITestStepOM
-    /// 	{
-    /// 	    private SqlQuery sqlQuery;
-    ///         ...
-    /// 
-    ///         // Instruct BizUnit to use the type: BizUnit.SqlQueryParamFormatter 
-    ///         // to format the object array when setting this property. Note, 
-    ///         // BizUnit.SqlQueryParamFormatter should implement ITestStepParameterFormatter
-    ///         [BizUnitParameterFormatter("BizUnit.SqlQueryParamFormatter")]
-    /// 	    public SqlQuery SQLQuery
-    /// 	    {
-    /// 	        set { sqlQuery = value; }
-    ///             get { return sqlQuery; }
-    /// 	    }
-    /// 
-    ///         ...
-    ///     }
-    ///
-    ///	</code>
-    ///	
-    ///	</remarks>
-    [Obsolete("BizUnitParameterFormatterAttribute has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
+    /// 	</code>
+    /// </remarks>
+    [Obsolete(
+        "BizUnitParameterFormatterAttribute has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class BizUnitParameterFormatterAttribute : Attribute
     {
-        private readonly string _typeName;
         private readonly string _assemblyPath;
+        private readonly string _typeName;
 
         /// <summary>
-        /// 
         /// </summary>
         public BizUnitParameterFormatterAttribute()
         {
@@ -65,7 +62,6 @@ namespace BizUnit.BizUnitOM
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="typeName"></param>
         public BizUnitParameterFormatterAttribute(string typeName)
@@ -77,7 +73,6 @@ namespace BizUnit.BizUnitOM
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="assemblyPath"></param>
@@ -91,7 +86,6 @@ namespace BizUnit.BizUnitOM
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public string TypeName
         {
@@ -99,7 +93,6 @@ namespace BizUnit.BizUnitOM
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public string AssemblyPath
         {

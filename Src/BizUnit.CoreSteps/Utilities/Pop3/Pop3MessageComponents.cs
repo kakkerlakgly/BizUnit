@@ -27,7 +27,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
         internal Pop3MessageComponents(string[] lines, int startOfBody, string multipartBoundary, string mainContentType)
         {
-            int stopOfBody = lines.Length;
+            var stopOfBody = lines.Length;
 
             // if this email is a mixture of message
             // and attachments ...

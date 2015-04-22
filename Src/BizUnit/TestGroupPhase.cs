@@ -12,14 +12,18 @@
 // PURPOSE.
 //---------------------------------------------------------------------
 
-/// <summary>The TestGroupPhase enumeration is used to specify the setup and teardown phases of a group of test cases. For example when using the NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].
+/// <summary>
+///     The TestGroupPhase enumeration is used to specify the setup and teardown phases of a group of test cases. For
+///     example when using the NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].
 /// </summary>
 public enum TestGroupPhase
 {
-    ///<summary>The start of the test group setup</summary>
+    /// <summary>The start of the test group setup</summary>
     TestGroupSetup,
-    ///<summary>The end of the test group setup</summary>
+
+    /// <summary>The end of the test group setup</summary>
     TestGroupTearDown,
-    ///<summary>Undefined</summary>
+
+    /// <summary>Undefined</summary>
     Unknown
 };

@@ -1,21 +1,38 @@
-﻿
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BizUnit.TestDocumentor.Tests
 {
     /// <summary>
-    /// Summary description for UnitTest1
+    ///     Summary description for UnitTest1
     /// </summary>
     [TestClass]
     public class DocumentBuilderTests
     {
         /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        ///     Gets or sets the test context which provides
+        ///     information about and functionality for the current test run.
+        /// </summary>
         public TestContext TestContext { get; set; }
 
+        [TestMethod]
+        public void DocumentBizUnitTests()
+        {
+            var documentor = new DocumentBuilder(new Logger());
+
+            var foo = TestContext.TestDir;
+
+            documentor.GenerateDocumentation(
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\TestReportTemplate0.2.xml",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\CategoryTemplate.xml",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\TestCaseTemplate.xml",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Tests",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Output\BizUnitTestReport_v1.0.xml",
+                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Bins",
+                true);
+        }
+
         #region Additional test attributes
+
         //
         // You can use the following additional attributes as you write your tests:
         //
@@ -35,23 +52,7 @@ namespace BizUnit.TestDocumentor.Tests
         // [TestCleanup()]
         // public void MyTestCleanup() { }
         //
+
         #endregion
-
-        [TestMethod]
-        public void DocumentBizUnitTests()
-        {
-            var documentor = new DocumentBuilder(new Logger());
-
-            var foo = TestContext.TestDir;
-
-            documentor.GenerateDocumentation(
-                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\TestReportTemplate0.2.xml",
-                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\CategoryTemplate.xml",
-                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Templates\TestCaseTemplate.xml",
-                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Tests",
-                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Output\BizUnitTestReport_v1.0.xml",
-                @"..\..\..\..\Test\BizUnit.TestDocumentor.Tests\Bins",
-                true);
-        }
     }
 }

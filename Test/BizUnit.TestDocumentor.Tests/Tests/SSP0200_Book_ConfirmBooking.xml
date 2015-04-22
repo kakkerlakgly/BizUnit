@@ -6,21 +6,21 @@
   Reference="Use case: 115"
   Preconditions="ASS Databases should be setup, Book web service should be installed"
   ExpectedResults="Booking details returned along with a success code"
-  BizUnitVersion="4.0.0.0" 
-  xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit" 
-  xmlns:butss="clr-namespace:BizUnit.TestSteps.Soap;assembly=BizUnit.TestSteps" 
+  BizUnitVersion="4.0.0.0"
+  xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit"
+  xmlns:butss="clr-namespace:BizUnit.TestSteps.Soap;assembly=BizUnit.TestSteps"
   xmlns:butsdlf="clr-namespace:BizUnit.TestSteps.DataLoaders.File;assembly=BizUnit.TestSteps"
-  xmlns:butsdlx="clr-namespace:BizUnit.TestSteps.DataLoaders.Xml;assembly=BizUnit.TestSteps" 
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-  xmlns:butsx="clr-namespace:BizUnit.TestSteps.Xml;assembly=BizUnit.TestSteps" 
-  xmlns:butsc="clr-namespace:BizUnit.TestSteps.Common;assembly=BizUnit.TestSteps" 
+  xmlns:butsdlx="clr-namespace:BizUnit.TestSteps.DataLoaders.Xml;assembly=BizUnit.TestSteps"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:butsx="clr-namespace:BizUnit.TestSteps.Xml;assembly=BizUnit.TestSteps"
+  xmlns:butsc="clr-namespace:BizUnit.TestSteps.Common;assembly=BizUnit.TestSteps"
   xmlns:vaaassu="clr-namespace:VAA.ASS.Utils;assembly=VAA.ASS.Utils">
 
   <TestCase.SetupSteps>
-	<ImportTestCaseStep
-	  TestCasePath="..\..\..\Test\VAA.SSP.ASS.BVTs\TestCases\Book\SSP0101_Book_BookAncillary.xml"
-	  RunConcurrently="False"
-	  FailOnError="True" />
+    <ImportTestCaseStep
+      TestCasePath="..\..\..\Test\VAA.SSP.ASS.BVTs\TestCases\Book\SSP0101_Book_BookAncillary.xml"
+      RunConcurrently="False"
+      FailOnError="True" />
   </TestCase.SetupSteps>
   <TestCase.ExecutionSteps>
     <butss:WebServiceStep
@@ -33,14 +33,14 @@
       <butss:WebServiceStep.RequestBody>
         <butsdlf:FileDataLoader
           FilePath="..\..\..\Test\VAA.SSP.ASS.BVTs\Book_TestData\SSP0200_ConfirmBooking_RQ.xml" />
-		  <butsdlx:XmlDataLoader.UpdateXml>
-			  <butsc:XPathDefinition
-				Description="ancillaryBookingReference"
-				XPath="/*[local-name()='ConfirmBooking_RQ' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/ConfirmBooking/2009']/*[local-name()='Message' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/ConfirmBooking/2009']/*[local-name()='AncillaryBooking' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/ConfirmBooking/2009']/*[local-name()='AncillaryBookingReference' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/ConfirmBooking/2009']/@*[local-name()='ancillaryBookingReference' and namespace-uri()='']"
-				Value="{x:Null}"
-				ContextKey="AncillaryBookingReference" />
-		  </butsdlx:XmlDataLoader.UpdateXml>
-	  </butss:WebServiceStep.RequestBody>
+        <butsdlx:XmlDataLoader.UpdateXml>
+          <butsc:XPathDefinition
+            Description="ancillaryBookingReference"
+            XPath="/*[local-name()='ConfirmBooking_RQ' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/ConfirmBooking/2009']/*[local-name()='Message' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/ConfirmBooking/2009']/*[local-name()='AncillaryBooking' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/ConfirmBooking/2009']/*[local-name()='AncillaryBookingReference' and namespace-uri()='http://schemas.virgin-atlantic.com/AncillarySales/Book/Services/ConfirmBooking/2009']/@*[local-name()='ancillaryBookingReference' and namespace-uri()='']"
+            Value="{x:Null}"
+            ContextKey="AncillaryBookingReference" />
+        </butsdlx:XmlDataLoader.UpdateXml>
+      </butss:WebServiceStep.RequestBody>
       <butss:WebServiceStep.SubSteps>
         <butsx:XmlValidationStep>
           <butsx:XmlValidationStep.XmlSchemas>

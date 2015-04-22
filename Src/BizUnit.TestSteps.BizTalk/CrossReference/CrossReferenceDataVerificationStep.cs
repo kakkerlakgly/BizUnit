@@ -19,80 +19,80 @@ using Microsoft.BizTalk.CrossReferencing;
 namespace BizUnit.TestSteps.BizTalk.CrossReference
 {
     /// <summary>
-	/// The CrossReferenceDataVerificationStep reads email from a POP3 server.
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
-    ///	<TestStep assemblyPath="" typeName="BizUnit.BizTalkSteps.CrossReferenceDataVerificationStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
-	///		<VerifyId appInstance="application1" idXRef="Customer">25</VerifyId> 
-	///		<VerifyValue appType="application2" idXRef="Customer">12LK</VerifyValue> 
-	///	</TestStep>
-	/// </code>
-	/// 
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>VerifyId</term>
-	///			<description>The Id to varify</description>
-	///		</item>
-	///		<item>
-	///			<term>VerifyValue</term>
-	///			<description>The expected value</description>
-	///		</item>
-	///	</list>
-	///	</remarks>
-	public class CrossReferenceDataVerificationStep : ITestStep
-	{
-		/// <summary>
-		/// ITestStep.Execute() implementation
-		/// </summary>
-		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(XmlNode testConfig, Context context)
-		{
-			XmlNodeList nodelist = testConfig.SelectNodes("VerifyId");
+    ///     The CrossReferenceDataVerificationStep reads email from a POP3 server.
+    /// </summary>
+    /// <remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath=""
+    ///             typeName="BizUnit.BizTalkSteps.CrossReferenceDataVerificationStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
+    ///             <VerifyId appInstance="application1" idXRef="Customer">25</VerifyId>
+    ///             <VerifyValue appType="application2" idXRef="Customer">12LK</VerifyValue>
+    ///         </TestStep>
+    ///  </code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>VerifyId</term>
+    ///             <description>The Id to varify</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>VerifyValue</term>
+    ///             <description>The expected value</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
+    public class CrossReferenceDataVerificationStep : ITestStep
+    {
+        /// <summary>
+        ///     ITestStep.Execute() implementation
+        /// </summary>
+        /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        public void Execute(XmlNode testConfig, Context context)
+        {
+            var nodelist = testConfig.SelectNodes("VerifyId");
 
-			foreach(XmlNode node in nodelist)
-			{
-				string valueToVerify = node.InnerText ;
-				string appinstance = node.Attributes.GetNamedItem("appInstance").Value;
-				string entity = node.Attributes.GetNamedItem("idXRef").Value;
+            foreach (XmlNode node in nodelist)
+            {
+                var valueToVerify = node.InnerText;
+                var appinstance = node.Attributes.GetNamedItem("appInstance").Value;
+                var entity = node.Attributes.GetNamedItem("idXRef").Value;
 
-				string commonId = CrossReferencing.GetCommonID(entity,appinstance,valueToVerify);
+                var commonId = CrossReferencing.GetCommonID(entity, appinstance, valueToVerify);
 
-				if(string.IsNullOrEmpty(commonId))
-				{
-					throw new InvalidOperationException("AppId " + valueToVerify + " not found" );
-				}
+                if (string.IsNullOrEmpty(commonId))
+                {
+                    throw new InvalidOperationException("AppId " + valueToVerify + " not found");
+                }
 
-				context.LogInfo("IdXRef = " + entity  + ". AppInstance = " + appinstance + ". AppId = " + valueToVerify + ". CommonId = " + commonId);
-			}
+                context.LogInfo("IdXRef = " + entity + ". AppInstance = " + appinstance + ". AppId = " + valueToVerify +
+                                ". CommonId = " + commonId);
+            }
 
-			XmlNodeList valueNodelist = testConfig.SelectNodes("VerifyValue");
+            var valueNodelist = testConfig.SelectNodes("VerifyValue");
 
-			foreach(XmlNode node in valueNodelist)
-			{
-				string valueToVerify = node.InnerText ;
-				string appType = node.Attributes.GetNamedItem("appType").Value;
-				string entity = node.Attributes.GetNamedItem("valueXRef").Value;
+            foreach (XmlNode node in valueNodelist)
+            {
+                var valueToVerify = node.InnerText;
+                var appType = node.Attributes.GetNamedItem("appType").Value;
+                var entity = node.Attributes.GetNamedItem("valueXRef").Value;
 
-				string commonValue = CrossReferencing.GetCommonValue(entity,appType,valueToVerify);
+                var commonValue = CrossReferencing.GetCommonValue(entity, appType, valueToVerify);
 
-				if(string.IsNullOrEmpty(commonValue))
-				{
-					throw new InvalidOperationException("AppValue " + valueToVerify + " not found" );
-				}
+                if (string.IsNullOrEmpty(commonValue))
+                {
+                    throw new InvalidOperationException("AppValue " + valueToVerify + " not found");
+                }
 
-				context.LogInfo("IdXRef = " + entity  + ". AppType = " + appType + ". AppValue = " + valueToVerify + ". CommonValue = " + commonValue);
-			}
+                context.LogInfo("IdXRef = " + entity + ". AppType = " + appType + ". AppValue = " + valueToVerify +
+                                ". CommonValue = " + commonValue);
+            }
 
-			context.LogInfo("Cross Reference Id and Value verification is complete");
-		}
-	}
+            context.LogInfo("Cross Reference Id and Value verification is complete");
+        }
+    }
 }

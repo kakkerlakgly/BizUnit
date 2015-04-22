@@ -20,60 +20,56 @@ using BizUnit.BizUnitOM;
 namespace BizUnit.CoreSteps.TestSteps
 {
     /// <summary>
-	/// The DelayStep is used to perform a delay/sleep.
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
-	///	<TestStep assemblyPath="" typeName="BizUnit.DelayStep">
-	///		<Delay>1000</Delay>
-	///	</TestStep>
-	///	</code>
-	///	
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>Delay</term>
-	///			<description>The length of the delay in miliseconds</description>
-	///		</item>
-	///	</list>
-	///	</remarks>
+    ///     The DelayStep is used to perform a delay/sleep.
+    /// </summary>
+    /// <remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath="" typeName="BizUnit.DelayStep">
+    ///             <Delay>1000</Delay>
+    ///         </TestStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>Delay</term>
+    ///             <description>The length of the delay in miliseconds</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     [Obsolete("DelayStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
-	public class DelayStep : ITestStepOM
-	{
-	    private int _timeOut;
-
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    public int Delay
-	    {
-	        set { _timeOut = value; }
-	    }
-
-		/// <summary>
-		/// ITestStep.Execute() implementation
-		/// </summary>
-		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(XmlNode testConfig, Context context)
-		{
-			_timeOut = context.ReadConfigAsInt32( testConfig, "Delay" );
-
-            Execute(context);
-		}
+    public class DelayStep : ITestStepOM
+    {
+        private int _timeOut;
 
         /// <summary>
-        /// ITestStep.Execute() implementation
+        /// </summary>
+        public int Delay
+        {
+            set { _timeOut = value; }
+        }
+
+        /// <summary>
+        ///     ITestStep.Execute() implementation
+        /// </summary>
+        /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        public void Execute(XmlNode testConfig, Context context)
+        {
+            _timeOut = context.ReadConfigAsInt32(testConfig, "Delay");
+
+            Execute(context);
+        }
+
+        /// <summary>
+        ///     ITestStep.Execute() implementation
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public void Execute(Context context)
-	    {
+        {
             context.LogInfo("About to wait for {0} milli seconds...", _timeOut.ToString());
 
             Thread.Sleep(_timeOut);
@@ -82,11 +78,10 @@ namespace BizUnit.CoreSteps.TestSteps
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Validate(Context context)
-	    {
-	        // timeOut - no validation required
-	    }
-	}
+        {
+            // timeOut - no validation required
+        }
+    }
 }

@@ -17,12 +17,10 @@ using System;
 namespace BizUnit.Common
 {
     /// <summary>
-    /// 
     /// </summary>
     public static class ArgumentValidation
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="var"></param>
         /// <param name="varName"></param>
@@ -41,7 +39,6 @@ namespace BizUnit.Common
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="variable"></param>
         /// <param name="variableName"></param>

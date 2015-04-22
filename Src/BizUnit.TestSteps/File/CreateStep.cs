@@ -19,37 +19,36 @@ using BizUnit.Xaml;
 namespace BizUnit.TestSteps.File
 {
     /// <summary>
-    /// The FileCreateStep creates a new FILE in the specified directory.
+    ///     The FileCreateStep creates a new FILE in the specified directory.
     /// </summary>
     public class CreateStep : TestStepBase
     {
         private const string FileCreationPathContextKey = "FileCreateStep-CreationPath";
         private const int BuffSize = 4096;
-        
-        ///<summary>
-        /// The dataloader to be used as the source for the FILE to be created
-        ///</summary>
+
+        /// <summary>
+        ///     The dataloader to be used as the source for the FILE to be created
+        /// </summary>
         public DataLoaderBase DataSource { get; set; }
 
-        ///<summary>
-        /// The file path of the file to be created
-        ///</summary>
+        /// <summary>
+        ///     The file path of the file to be created
+        /// </summary>
         public string CreationPath { get; set; }
 
         /// <summary>
-        /// Execute() implementation
+        ///     Execute() implementation
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
         {
-
             context.LogInfo("FileCreateStep about to copy the data from datasource to: {0}", CreationPath);
 
             using (Stream srcFs = DataSource.Load(context), dstFs = System.IO.File.Create(CreationPath))
             {
                 var buff = new byte[BuffSize];
 
-                int read = srcFs.Read(buff, 0, BuffSize);
+                var read = srcFs.Read(buff, 0, BuffSize);
 
                 while (read > 0)
                 {
@@ -58,11 +57,9 @@ namespace BizUnit.TestSteps.File
                 }
             }
             context.Add(FileCreationPathContextKey, CreationPath, true);
-
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name='context'></param>
         public override void Validate(Context context)

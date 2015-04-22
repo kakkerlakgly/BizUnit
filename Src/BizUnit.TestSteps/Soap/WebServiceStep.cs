@@ -25,7 +25,6 @@ using BizUnit.Xaml;
 namespace BizUnit.TestSteps.Soap
 {
     /// <summary>
-    /// 
     /// </summary>
     public class WebServiceStep : TestStepBase
     {
@@ -33,28 +32,6 @@ namespace BizUnit.TestSteps.Soap
         private Stream _response;
 
         /// <summary>
-        /// 
-        /// </summary>
-        public DataLoaderBase RequestBody { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string ServiceUrl { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Action { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Username { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
-        /// 
         /// </summary>
         public WebServiceStep()
         {
@@ -63,12 +40,30 @@ namespace BizUnit.TestSteps.Soap
         }
 
         /// <summary>
-        /// 
+        /// </summary>
+        public DataLoaderBase RequestBody { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public string ServiceUrl { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public string Action { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public string Username { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
         /// </summary>
         public IList<SoapHeader> SoapHeaders { set; get; }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name='context'></param>
         public override void Execute(Context context)
@@ -85,11 +80,11 @@ namespace BizUnit.TestSteps.Soap
                 Password,
                 context);
 
-            Stream responseForPostProcessing = SubSteps.Aggregate(_response, (current, subStep) => subStep.Execute(current, context));
+            var responseForPostProcessing = SubSteps.Aggregate(_response,
+                (current, subStep) => subStep.Execute(current, context));
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name='context'></param>
         public override void Validate(Context context)
@@ -113,13 +108,13 @@ namespace BizUnit.TestSteps.Soap
             string action,
             string username,
             string password,
-            Context ctx )
+            Context ctx)
         {
             try
             {
                 var binding = new BasicHttpBinding(BasicHttpSecurityMode.TransportCredentialOnly);
                 binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
-                binding.UseDefaultWebProxy = true;               
+                binding.UseDefaultWebProxy = true;
 
                 var epa = new EndpointAddress(new Uri(serviceUrl));
 
@@ -132,23 +127,22 @@ namespace BizUnit.TestSteps.Soap
 
                         cf.Open();
                         var channel = cf.CreateChannel();
-                        using (new OperationContextScope((IContextChannel)channel))
+                        using (new OperationContextScope((IContextChannel) channel))
                         {
                             XmlReader r = new XmlTextReader(requestData);
 
                             using (var request = Message.CreateMessage(MessageVersion.Soap11, action, r))
                             {
-
                                 foreach (var header in SoapHeaders)
                                 {
-                                    MessageHeader messageHeader = MessageHeader.CreateHeader(header.HeaderName, header.HeaderNameSpace, header.HeaderInstance);
+                                    var messageHeader = MessageHeader.CreateHeader(header.HeaderName,
+                                        header.HeaderNameSpace, header.HeaderInstance);
                                     OperationContext.Current.OutgoingMessageHeaders.Add(messageHeader);
                                 }
 
                                 using (var response = channel.Invoke(request))
                                 {
-
-                                    string responseStr = response.GetReaderAtBodyContents().ReadOuterXml();
+                                    var responseStr = response.GetReaderAtBodyContents().ReadOuterXml();
                                     ctx.LogXmlData("Response", responseStr);
                                     return StreamHelper.LoadMemoryStream(responseStr);
                                 }
@@ -180,10 +174,10 @@ namespace BizUnit.TestSteps.Soap
         }
 
         /// <summary>
-        /// A dummy WCF interface that will be manipulated by the CallWebMethod above
+        ///     A dummy WCF interface that will be manipulated by the CallWebMethod above
         /// </summary>
         [ServiceContract]
-        interface IGenericContract
+        private interface IGenericContract
         {
             [OperationContract(Action = "*", ReplyAction = "*")]
             Message Invoke(Message msg);

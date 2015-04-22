@@ -26,165 +26,162 @@ using Microsoft.CSharp;
 namespace BizUnit.CoreSteps.TestSteps
 {
     /// <summary>
-    /// The SOAPOverHTTPRequestResponseStep test step may be used to call a Web Service and optionally validate it's response.
+    ///     The SOAPOverHTTPRequestResponseStep test step may be used to call a Web Service and optionally validate it's
+    ///     response.
     /// </summary>
-    /// 
     /// <remarks>
-    /// The following shows an example of the Xml representation of this test step.
-    /// 
-    /// <code escaped="true">
-    ///	<TestStep assemblyPath="" typeName="BizUnit.SOAPOverHTTPRequestResponseStep">
-    ///		<WebServiceWSDLURL>http://machine/virdir/StockQuoteService.aspx?wsdl</WebServiceWSDLURL>
-    ///		<ServiceName>Samples_StockQuoteService</ServiceName>
-    ///		<WebMethod>GetQuote</WebMethod>
-    ///		<InputMessageTypeName>QuoteRequest</InputMessageTypeName>
-    ///		<MessagePayload>.\TestData\RequestMSFTQuote.xml</MessagePayload>
-    ///		
-    ///		<!-- Note: ContextLoader Step could be any generic validation step -->	
-    ///	    <ContextLoaderStep assemblyPath="" typeName="BizUnit.XmlContextLoader">
-    ///		    <XPath contextKey="PoNumber">/Po/Header/Id</XPath>
-    ///		    <XPath contextKey="Sender">/Po/Header/Id</XPath>
-    ///		    <XPath contextKey="Amount">/Po/Header/Id</XPath>
-    ///		    <XPath contextKey="Description">/Po/Header/Detail/Description</XPath>
-    ///	    </ContextLoaderStep>
-    ///	
-    ///		<!-- Note: Validation step could be any generic validation step -->	
-    ///		<ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
-    ///			<XPathList>
-    ///				<XPathValidation query="/StockQuote/Symbol">MSFT</XPathValidation>
-    ///				<XPathValidation query="/StockQuote/LastPrice">35.36</XPathValidation>
-    ///			</XPathList>
-    ///		</ValidationStep>
-    ///	</TestStep>
-    ///	</code>
-    ///	
-    ///	<list type="table">
-    ///		<listheader>
-    ///			<term>Tag</term>
-    ///			<description>Description</description>
-    ///		</listheader>
-    ///		<item>
-    ///			<term>WebServiceWSDLURL</term>
-    ///			<description>The Url where the WSDL maybe obtained</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>ServiceName</term>
-    ///			<description>The name of the Web Service to invoke</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>WebMethod</term>
-    ///			<description>The Web Method (opperation) to invoke.</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>InputMessageTypeName/ContextProperty</term>
-    ///			<description>The type of the input message.</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>MessagePayload</term>
-    ///			<description>The path to the input data, note, this is the serialized object.</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>ContextLoaderStep</term>
-    ///			<description>The configuration for the context loader step used to load data into the BizUnit context which may be used by subsequent test steps<para>(optional)</para></description>
-    ///		</item>
-    ///		<item>
-    ///			<term>ValidationStep</term>
-    ///			<description>Optional validation step.</description>
-    ///		</item>
-    ///	</list>
-    /// <para>
-    /// The example below illustrates the calling of the this step for a web service which takes 
-    /// and returns no paramters:
-    /// <code escaped="true">
-    /// <TestStep assemblyPath="" typeName="BizUnit.SOAPHTTPRequestResponseStep">
-    /// 	<WebServiceWSDLURL>http://localhost/StockQuoteService/StockQuoteService.asmx?wsdl</WebServiceWSDLURL>
-    /// 	<ServiceName>StockQuoteService</ServiceName>
-    /// 	<WebMethod>VoidMethod</WebMethod>
-    /// </TestStep>
-    /// </code>
-    /// </para>
-    /// <para>
-    /// The following example illustrates the use of this step in order to invoke a stock quote web service
-    /// exposed via BizTalk.
-    /// An example HTTP request packet is shown below:
-    /// <code escaped="true">
-    /// POST /StockQuoteService_Proxy/StockQuoteService_QuoteService_Port_1.asmx HTTP/1.1
-    /// Host: localhost
-    /// Content-Type: application/soap+xml; charset=utf-8
-    /// Content-Length: length
-    /// <![CDATA[
-    /// <?xml version="1.0" encoding="utf-8"?>
-    /// <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
-    ///   <soap12:Body>
-    ///     <Operation_1 xmlns="http://StockQuoteService.StockQuote">
-    ///       <StockQuote>
-    ///         <Symbol xmlns="">MSFT</Symbol>
-    ///         <LastPrice xmlns=""></LastPrice>
-    ///       </StockQuote>
-    ///     </Operation_1>
-    ///   </soap12:Body>
-    /// </soap12:Envelope>
-    /// ]]>
-    /// </code>
-    /// </para>
-    /// <para>
-    /// An example HTTP response packet is shown below:
-    /// <code escaped="true">
-    /// HTTP/1.1 200 OK
-    /// Content-Type: application/soap+xml; charset=utf-8
-    /// Content-Length: length
-    /// 
-    /// <![CDATA[
-    /// <?xml version="1.0" encoding="utf-8"?>
-    /// <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
-    ///   <soap12:Body>
-    ///     <Operation_1Response xmlns="http://StockQuoteService.StockQuote">
-    ///       <StockQuote>
-    ///         <Symbol xmlns="">MSFT</Symbol>
-    ///         <LastPrice xmlns="">29.29</LastPrice>
-    ///       </StockQuote>
-    ///     </Operation_1Response>
-    ///   </soap12:Body>
-    /// </soap12:Envelope>
-    /// ]]>
-    /// </code>
-    /// </para>
-    /// <para>
-    /// An example test step for this web service is shown below:
-    /// <code escaped="true">
-    /// <TestStep assemblyPath="" typeName="BizUnit.SOAPHTTPRequestResponseStep">
-    /// 
-    /// 	<WebServiceWSDLURL>http://localhost/StockQuoteService_Proxy/StockQuoteService_QuoteService_Port_1.asmx?wsdl</WebServiceWSDLURL>
-    /// 	<ServiceName>StockQuoteService_QuoteService_Port_1</ServiceName>
-    /// 	<WebMethod>Operation_1</WebMethod>
-    /// 	<InputMessageTypeName>Operation_1StockQuote</InputMessageTypeName>
-    /// 	<MessagePayload>..\..\..\Test\BizUnit.Tests\Data\SOAPHTTPRequestResponse-RequestInput001.xml</MessagePayload>
-    /// 
-    /// 	<ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
-    /// 		<XPathList>
-    /// 			<XPathValidation query="/Operation_1ResponseStockQuote/Symbol">MSFT</XPathValidation>
-    /// 			<XPathValidation query="/Operation_1ResponseStockQuote/LastPrice">29.29</XPathValidation>
-    /// 		</XPathList>
-    /// 	</ValidationStep>
-    /// 
-    /// </TestStep>
-    /// </code>
-    /// </para>
-    /// <para>
-    /// The contents of the input file SOAPHTTPRequestResponse-RequestInput001.xml is show below:
-    /// <code escaped="true">
-    /// <Operation_1StockQuote xmlns="http://StockQuoteService.StockQuote">
-    /// 	<Symbol xmlns="">MSFT</Symbol>
-    /// 	<LastPrice xmlns=""></LastPrice>
-    /// </Operation_1StockQuote>    
-    /// </code>
-    /// </para>
-    ///	</remarks>	
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath="" typeName="BizUnit.SOAPOverHTTPRequestResponseStep">
+    ///             <WebServiceWSDLURL>http://machine/virdir/StockQuoteService.aspx?wsdl</WebServiceWSDLURL>
+    ///             <ServiceName>Samples_StockQuoteService</ServiceName>
+    ///             <WebMethod>GetQuote</WebMethod>
+    ///             <InputMessageTypeName>QuoteRequest</InputMessageTypeName>
+    ///             <MessagePayload>.\TestData\RequestMSFTQuote.xml</MessagePayload>
+    ///             <!-- Note: ContextLoader Step could be any generic validation step -->
+    ///             <ContextLoaderStep assemblyPath="" typeName="BizUnit.XmlContextLoader">
+    ///                 <XPath contextKey="PoNumber">/Po/Header/Id</XPath>
+    ///                 <XPath contextKey="Sender">/Po/Header/Id</XPath>
+    ///                 <XPath contextKey="Amount">/Po/Header/Id</XPath>
+    ///                 <XPath contextKey="Description">/Po/Header/Detail/Description</XPath>
+    ///             </ContextLoaderStep>
+    ///             <!-- Note: Validation step could be any generic validation step -->
+    ///             <ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
+    ///                 <XPathList>
+    ///                     <XPathValidation query="/StockQuote/Symbol">MSFT</XPathValidation>
+    ///                     <XPathValidation query="/StockQuote/LastPrice">35.36</XPathValidation>
+    ///                 </XPathList>
+    ///             </ValidationStep>
+    ///         </TestStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>WebServiceWSDLURL</term>
+    ///             <description>The Url where the WSDL maybe obtained</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>ServiceName</term>
+    ///             <description>The name of the Web Service to invoke</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>WebMethod</term>
+    ///             <description>The Web Method (opperation) to invoke.</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>InputMessageTypeName/ContextProperty</term>
+    ///             <description>The type of the input message.</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>MessagePayload</term>
+    ///             <description>The path to the input data, note, this is the serialized object.</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>ContextLoaderStep</term>
+    ///             <description>
+    ///                 The configuration for the context loader step used to load data into the BizUnit context which
+    ///                 may be used by subsequent test steps
+    ///                 <para>(optional)</para>
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <term>ValidationStep</term>
+    ///             <description>Optional validation step.</description>
+    ///         </item>
+    ///     </list>
+    ///     <para>
+    ///         The example below illustrates the calling of the this step for a web service which takes
+    ///         and returns no paramters:
+    ///         <code escaped="true">
+    ///  <TestStep assemblyPath="" typeName="BizUnit.SOAPHTTPRequestResponseStep">
+    ///                 <WebServiceWSDLURL>http://localhost/StockQuoteService/StockQuoteService.asmx?wsdl</WebServiceWSDLURL>
+    ///                 <ServiceName>StockQuoteService</ServiceName>
+    ///                 <WebMethod>VoidMethod</WebMethod>
+    ///             </TestStep>
+    ///  </code>
+    ///     </para>
+    ///     <para>
+    ///         The following example illustrates the use of this step in order to invoke a stock quote web service
+    ///         exposed via BizTalk.
+    ///         An example HTTP request packet is shown below:
+    ///         <code escaped="true">
+    ///  POST /StockQuoteService_Proxy/StockQuoteService_QuoteService_Port_1.asmx HTTP/1.1
+    ///  Host: localhost
+    ///  Content-Type: application/soap+xml; charset=utf-8
+    ///  Content-Length: length
+    ///  <![CDATA[
+    ///  <?xml version="1.0" encoding="utf-8"?>
+    ///  <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+    ///    <soap12:Body>
+    ///      <Operation_1 xmlns="http://StockQuoteService.StockQuote">
+    ///        <StockQuote>
+    ///          <Symbol xmlns="">MSFT</Symbol>
+    ///          <LastPrice xmlns=""></LastPrice>
+    ///        </StockQuote>
+    ///      </Operation_1>
+    ///    </soap12:Body>
+    ///  </soap12:Envelope>
+    ///  ]]>
+    ///  </code>
+    ///     </para>
+    ///     <para>
+    ///         An example HTTP response packet is shown below:
+    ///         <code escaped="true">
+    ///  HTTP/1.1 200 OK
+    ///  Content-Type: application/soap+xml; charset=utf-8
+    ///  Content-Length: length
+    ///  
+    ///  <![CDATA[
+    ///  <?xml version="1.0" encoding="utf-8"?>
+    ///  <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">
+    ///    <soap12:Body>
+    ///      <Operation_1Response xmlns="http://StockQuoteService.StockQuote">
+    ///        <StockQuote>
+    ///          <Symbol xmlns="">MSFT</Symbol>
+    ///          <LastPrice xmlns="">29.29</LastPrice>
+    ///        </StockQuote>
+    ///      </Operation_1Response>
+    ///    </soap12:Body>
+    ///  </soap12:Envelope>
+    ///  ]]>
+    ///  </code>
+    ///     </para>
+    ///     <para>
+    ///         An example test step for this web service is shown below:
+    ///         <code escaped="true">
+    ///  <TestStep assemblyPath="" typeName="BizUnit.SOAPHTTPRequestResponseStep">
+    ///                 <WebServiceWSDLURL>http://localhost/StockQuoteService_Proxy/StockQuoteService_QuoteService_Port_1.asmx?wsdl</WebServiceWSDLURL>
+    ///                 <ServiceName>StockQuoteService_QuoteService_Port_1</ServiceName>
+    ///                 <WebMethod>Operation_1</WebMethod>
+    ///                 <InputMessageTypeName>Operation_1StockQuote</InputMessageTypeName>
+    ///                 <MessagePayload>..\..\..\Test\BizUnit.Tests\Data\SOAPHTTPRequestResponse-RequestInput001.xml</MessagePayload>
+    ///                 <ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
+    ///                     <XPathList>
+    ///                         <XPathValidation query="/Operation_1ResponseStockQuote/Symbol">MSFT</XPathValidation>
+    ///                         <XPathValidation query="/Operation_1ResponseStockQuote/LastPrice">29.29</XPathValidation>
+    ///                     </XPathList>
+    ///                 </ValidationStep>
+    ///             </TestStep>
+    ///  </code>
+    ///     </para>
+    ///     <para>
+    ///         The contents of the input file SOAPHTTPRequestResponse-RequestInput001.xml is show below:
+    ///         <code escaped="true">
+    ///  <Operation_1StockQuote xmlns="http://StockQuoteService.StockQuote">
+    ///                 <Symbol xmlns="">MSFT</Symbol>
+    ///                 <LastPrice xmlns=""></LastPrice>
+    ///             </Operation_1StockQuote>    
+    ///  </code>
+    ///     </para>
+    /// </remarks>
     [Obsolete("SOAPHTTPRequestResponseStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
     public class SOAPHTTPRequestResponseStep : ITestStep
     {
         /// <summary>
-        /// ITestStep.Execute() implementation
+        ///     ITestStep.Execute() implementation
         /// </summary>
         /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
@@ -197,16 +194,16 @@ namespace BizUnit.CoreSteps.TestSteps
 
             try
             {
-                string wsdlFile = context.ReadConfigAsString(testConfig, "WebServiceWSDLURL");
-                string soapMessagePath = context.ReadConfigAsString(testConfig, "MessagePayload", true);
-                string inputMessageTypeName = context.ReadConfigAsString(testConfig, "InputMessageTypeName", true);
-                string webMethod = context.ReadConfigAsString(testConfig, "WebMethod");
-                string serviceName = context.ReadConfigAsString(testConfig, "ServiceName");
+                var wsdlFile = context.ReadConfigAsString(testConfig, "WebServiceWSDLURL");
+                var soapMessagePath = context.ReadConfigAsString(testConfig, "MessagePayload", true);
+                var inputMessageTypeName = context.ReadConfigAsString(testConfig, "InputMessageTypeName", true);
+                var webMethod = context.ReadConfigAsString(testConfig, "WebMethod");
+                var serviceName = context.ReadConfigAsString(testConfig, "ServiceName");
 
-                Assembly proxyAssembly = GetProxyAssembly(wsdlFile, soapproxynamespace);
+                var proxyAssembly = GetProxyAssembly(wsdlFile, soapproxynamespace);
 
                 object objInputMessage = null;
-                if(null != inputMessageTypeName && null != soapMessagePath)
+                if (null != inputMessageTypeName && null != soapMessagePath)
                 {
                     objInputMessage =
                         LoadMessage(proxyAssembly, soapproxynamespace + "." + inputMessageTypeName, soapMessagePath);
@@ -220,16 +217,18 @@ namespace BizUnit.CoreSteps.TestSteps
                     }
                 }
 
-                object proxy = Activator.CreateInstance(proxyAssembly.GetType(soapproxynamespace + "." + serviceName));
+                var proxy = Activator.CreateInstance(proxyAssembly.GetType(soapproxynamespace + "." + serviceName));
 
-                MethodInfo mi = proxy.GetType().GetMethod(webMethod);
+                var mi = proxy.GetType().GetMethod(webMethod);
 
-                context.LogInfo("SOAPHTTPRequestResponseStep about to post data from File: {0} to the Service: {1} defined in WSDL: {2}", soapMessagePath, serviceName, wsdlFile);
+                context.LogInfo(
+                    "SOAPHTTPRequestResponseStep about to post data from File: {0} to the Service: {1} defined in WSDL: {2}",
+                    soapMessagePath, serviceName, wsdlFile);
 
                 object outputMessage;
                 if (null != inputMessageTypeName && null != soapMessagePath)
                 {
-                    outputMessage = mi.Invoke(proxy, new[] { objInputMessage });
+                    outputMessage = mi.Invoke(proxy, new[] {objInputMessage});
                 }
                 else
                 {
@@ -252,12 +251,13 @@ namespace BizUnit.CoreSteps.TestSteps
                         }
                         catch (Exception e)
                         {
-                            throw new InvalidOperationException("SOAPHTTPRequestResponseStep response stream was not correct!", e);
+                            throw new InvalidOperationException(
+                                "SOAPHTTPRequestResponseStep response stream was not correct!", e);
                         }
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 context.LogError("SOAPHTTPRequestResponseStep Failed");
                 context.LogException(ex);
@@ -271,7 +271,7 @@ namespace BizUnit.CoreSteps.TestSteps
             {
                 using (var client = new WebClient())
                 {
-                    var referenceAssemblies = new[] { "system.dll", "System.Xml.dll", "System.Web.Services.dll" };
+                    var referenceAssemblies = new[] {"system.dll", "System.Xml.dll", "System.Web.Services.dll"};
                     var wsdlStream = client.OpenRead(wsdlUri);
 
                     var wsdl = ServiceDescription.Read(wsdlStream);
@@ -285,20 +285,22 @@ namespace BizUnit.CoreSteps.TestSteps
                     var warnings = wsdlImport.Import(proxyClassNamespace, codeCompileUnit);
                     if (warnings != 0)
                     {
-                        throw new InvalidOperationException("SOAPHTTPRequestResponseStep experienced problems while importing the WSDL!");
+                        throw new InvalidOperationException(
+                            "SOAPHTTPRequestResponseStep experienced problems while importing the WSDL!");
                     }
 
                     var compileParam = new CompilerParameters(referenceAssemblies)
-                                           {
-                                               GenerateInMemory = false,
-                                               OutputAssembly = GetProxyFileName()
-                                           };
+                    {
+                        GenerateInMemory = false,
+                        OutputAssembly = GetProxyFileName()
+                    };
 
-                    CompilerResults compilerResults = provider.CompileAssemblyFromDom(compileParam, codeCompileUnit);
+                    var compilerResults = provider.CompileAssemblyFromDom(compileParam, codeCompileUnit);
 
                     if (compilerResults.Errors.HasErrors)
                     {
-                        throw new InvalidOperationException("SOAPHTTPRequestResponseStep experienced problems while executing CompileAssemblyFromDom");
+                        throw new InvalidOperationException(
+                            "SOAPHTTPRequestResponseStep experienced problems while executing CompileAssemblyFromDom");
                     }
 
                     return compilerResults.CompiledAssembly;
@@ -307,16 +309,16 @@ namespace BizUnit.CoreSteps.TestSteps
         }
 
         /// <summary>
-        /// Returns a name that can be used for the proxy assembly.
+        ///     Returns a name that can be used for the proxy assembly.
         /// </summary>
         /// <returns></returns>
         internal static string GetProxyFileName()
         {
             const int max = 20;
             const string baseName = "TestFrameWorkProxy";
-            string fname = "TestFrameWorkProxy.dll";
+            var fname = "TestFrameWorkProxy.dll";
 
-            for (int i = 0; i <= max; i++)
+            for (var i = 0; i <= max; i++)
             {
                 fname = baseName + i + ".dll";
 
@@ -364,13 +366,13 @@ namespace BizUnit.CoreSteps.TestSteps
             var ret = "";
             var attributes = t.GetCustomAttributes(false);
 
-            foreach (object t1 in attributes)
+            foreach (var t1 in attributes)
             {
-                var att = (Attribute)t1;
+                var att = (Attribute) t1;
 
                 if (att.ToString().Equals("System.Xml.Serialization.XmlTypeAttribute"))
                 {
-                    var typeAtt = (XmlTypeAttribute)att;
+                    var typeAtt = (XmlTypeAttribute) att;
                     ret = typeAtt.Namespace;
                     break;
                 }
@@ -391,9 +393,11 @@ namespace BizUnit.CoreSteps.TestSteps
                 Activator.CreateInstanceFrom(assembly.Location, msgTypeName);
                 messageReader = new XmlTextReader(messagePath);
 
-                string defNamespace = GetDefaultNamespace(assembly, msgTypeName);
+                var defNamespace = GetDefaultNamespace(assembly, msgTypeName);
 
-                var serializer = !string.IsNullOrEmpty(defNamespace) ? new XmlSerializer(assembly.GetType(msgTypeName), defNamespace) : new XmlSerializer(assembly.GetType(msgTypeName));
+                var serializer = !string.IsNullOrEmpty(defNamespace)
+                    ? new XmlSerializer(assembly.GetType(msgTypeName), defNamespace)
+                    : new XmlSerializer(assembly.GetType(msgTypeName));
 
                 objMessage = serializer.Deserialize(messageReader);
             }

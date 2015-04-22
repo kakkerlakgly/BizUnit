@@ -1,5 +1,4 @@
-﻿
-using BizUnit.TestSteps.Common;
+﻿using BizUnit.TestSteps.Common;
 using BizUnit.TestSteps.DataLoaders.File;
 using BizUnit.TestSteps.File;
 using BizUnit.TestSteps.ValidationSteps.Xml;
@@ -22,23 +21,23 @@ namespace BizUnit.TestSteps.Tests.ImportTestCase
 
             var createFileStep = new CreateStep {CreationPath = @"File2.xml"};
             var dl = new FileDataLoader
-                         {
-                             FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml"
-                         };
+            {
+                FilePath = @"..\..\..\..\Test\BizUnit.TestSteps.Tests\TestData\PurchaseOrder001.xml"
+            };
             createFileStep.DataSource = dl;
 
             testCase2.ExecutionSteps.Add(createFileStep);
 
             var import = new ImportTestCaseStep {TestCase = testCase1};
             testCase2.ExecutionSteps.Add(import);
-           
+
             // Create a validating read step...
             var validatingFileReadStep = new FileReadMultipleStep
-                               {
-                                   DirectoryPath = @".",
-                                   SearchPattern = "File*.xml",
-                                   ExpectedNumberOfFiles = 2
-                               };
+            {
+                DirectoryPath = @".",
+                SearchPattern = "File*.xml",
+                ExpectedNumberOfFiles = 2
+            };
 
             var validation = new XmlValidationStep();
             var schemaPurchaseOrder = new SchemaDefinition
@@ -51,12 +50,12 @@ namespace BizUnit.TestSteps.Tests.ImportTestCase
             validation.XmlSchemas.Add(schemaPurchaseOrder);
 
             var xpathProductId = new XPathDefinition
-                                     {
-                                         Description = "PONumber",
-                                         XPath =
-                                             "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']",
-                                         Value = "12323"
-                                     };
+            {
+                Description = "PONumber",
+                XPath =
+                    "/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']",
+                Value = "12323"
+            };
             validation.XPathValidations.Add(xpathProductId);
             validatingFileReadStep.SubSteps.Add(validation);
             testCase2.ExecutionSteps.Add(validatingFileReadStep);

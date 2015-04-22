@@ -22,56 +22,57 @@ using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.File
 {
-
-	internal class MultiUnknownException : Exception
+    internal class MultiUnknownException : Exception
     {
-        internal MultiUnknownException( string message ) : base( message ) {}
+        internal MultiUnknownException(string message) : base(message)
+        {
+        }
     }
 
     /// <summary>
-    /// The FileMultiValidateStep step checks a given directory for files matching the file masks and iterates around all of the specified validate steps
-    /// to validate the file.
+    ///     The FileMultiValidateStep step checks a given directory for files matching the file masks and iterates around all
+    ///     of the specified validate steps
+    ///     to validate the file.
     /// </summary>
     public class FileReadMultipleStep : TestStepBase
     {
         /// <summary>
-        /// 
         /// </summary>
         public FileReadMultipleStep()
         {
             SubSteps = new List<SubStepBase>();
         }
 
-        ///<summary>
-        /// The time to wait in milisecs for the file, after which the step will fail if the file is not found
-        ///</summary>
+        /// <summary>
+        ///     The time to wait in milisecs for the file, after which the step will fail if the file is not found
+        /// </summary>
         public int Timeout { get; set; }
 
-        ///<summary>
-        /// The directory path to search
-        ///</summary>
+        /// <summary>
+        ///     The directory path to search
+        /// </summary>
         public string DirectoryPath { get; set; }
 
-        ///<summary>
-        /// Filter to apply to directory path, e.g. "*.xml" or "MyFile*.txt"
-        ///</summary>
+        /// <summary>
+        ///     Filter to apply to directory path, e.g. "*.xml" or "MyFile*.txt"
+        /// </summary>
         public string SearchPattern { get; set; }
 
-        ///<summary>
-        /// Flag to specify whether the files should be deleted upon completion of the test step
-        ///</summary>
+        /// <summary>
+        ///     Flag to specify whether the files should be deleted upon completion of the test step
+        /// </summary>
         public bool DeleteFiles { get; set; }
 
-        ///<summary>
-        /// The number of files expected to be found
-        ///</summary>
+        /// <summary>
+        ///     The number of files expected to be found
+        /// </summary>
         public int ExpectedNumberOfFiles { get; set; }
 
         /// <summary>
-        /// TestStepBase.Execute() implementation
-		/// </summary>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public override void Execute(Context context)
+        ///     TestStepBase.Execute() implementation
+        /// </summary>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        public override void Execute(Context context)
         {
             var endTime = DateTime.Now.AddMilliseconds(Timeout);
             string[] filelist;
@@ -85,9 +86,8 @@ namespace BizUnit.TestSteps.File
                 // Get the list of files in the directory
                 filelist = Directory.GetFiles(DirectoryPath, SearchPattern);
 
-                if ( filelist.Length == ExpectedNumberOfFiles)
+                if (filelist.Length == ExpectedNumberOfFiles)
                     break;
-
             } while (endTime > DateTime.Now);
 
             context.LogInfo("Number of files found: {0}", filelist.Length);
@@ -101,20 +101,22 @@ namespace BizUnit.TestSteps.File
             if (0 < ExpectedNumberOfFiles && filelist.Length != ExpectedNumberOfFiles)
             {
                 // Expecting a specified number of files
-                throw new InvalidOperationException(String.Format("Directory contained: {0} files, but the step expected: {1} files", filelist.Length, ExpectedNumberOfFiles));
+                throw new InvalidOperationException(
+                    string.Format("Directory contained: {0} files, but the step expected: {1} files", filelist.Length,
+                        ExpectedNumberOfFiles));
             }
 
             // For each file in the file list
-            foreach (string filePath in filelist)
+            foreach (var filePath in filelist)
             {
                 context.LogInfo("FileReadMultipleStep validating file: {0}", filePath);
 
-                Stream fileData = StreamHelper.LoadFileToStream(filePath, Timeout);
+                var fileData = StreamHelper.LoadFileToStream(filePath, Timeout);
                 context.LogData("File: " + filePath, fileData);
                 fileData.Seek(0, SeekOrigin.Begin);
 
                 // Check it against the validate steps to see if it matches one of them
-                foreach(var subStep in SubSteps)
+                foreach (var subStep in SubSteps)
                 {
                     try
                     {
@@ -126,9 +128,9 @@ namespace BizUnit.TestSteps.File
                         context.LogException(ex);
                         throw;
                     }
-                }   
+                }
 
-                if(DeleteFiles)
+                if (DeleteFiles)
                 {
                     System.IO.File.Delete(filePath);
                 }
@@ -136,16 +138,16 @@ namespace BizUnit.TestSteps.File
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name='context'></param>
         public override void Validate(Context context)
         {
             ArgumentValidation.CheckForEmptyString(DirectoryPath, "DirectoryPath");
             ArgumentValidation.CheckForEmptyString(SearchPattern, "SearchPattern");
-            if(ExpectedNumberOfFiles < 1)
-                throw new ArgumentException(string.Format("ExpectedNumberOfFiles should be greater than zero, but was set to: {0}", ExpectedNumberOfFiles));
-
+            if (ExpectedNumberOfFiles < 1)
+                throw new ArgumentException(
+                    string.Format("ExpectedNumberOfFiles should be greater than zero, but was set to: {0}",
+                        ExpectedNumberOfFiles));
         }
     }
 }

@@ -19,57 +19,57 @@ using System.Text.RegularExpressions;
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
     /// <summary>
-	/// Summary description for Pop3Statics.
-	/// </summary>
-	internal class Pop3Statics
-	{
-		internal const string DataFolder = @"c:\POP3Temp";
+    ///     Summary description for Pop3Statics.
+    /// </summary>
+    internal class Pop3Statics
+    {
+        internal const string DataFolder = @"c:\POP3Temp";
 
-		internal static string FromQuotedPrintable(string inString)
-		{
-			string outputString;
-			string inputString = inString.Replace("=\n","");
+        internal static string FromQuotedPrintable(string inString)
+        {
+            string outputString;
+            var inputString = inString.Replace("=\n", "");
 
-			if(inputString.Length > 3)
-			{
-				// initialise output string ...
-				outputString = "";
+            if (inputString.Length > 3)
+            {
+                // initialise output string ...
+                outputString = "";
 
-				for(int x=0; x<inputString.Length;)
-				{
-					string s1 = inputString.Substring(x,1);
+                for (var x = 0; x < inputString.Length;)
+                {
+                    var s1 = inputString.Substring(x, 1);
 
-					if( (s1.Equals("=")) && ((x+2) < inputString.Length) )
-					{
-						string hexString = inputString.Substring(x+1,2);
+                    if ((s1.Equals("=")) && ((x + 2) < inputString.Length))
+                    {
+                        var hexString = inputString.Substring(x + 1, 2);
 
-						// if hexadecimal ...
-						if( Regex.Match(hexString.ToUpper()
-							,@"^[A-F|0-9]+[A-F|0-9]+$").Success )
-						{
-							// convert to string representation ...
-							outputString += Encoding.ASCII.GetString(new[] {Convert.ToByte(hexString,16)});
-							x+= 3;
-						}
-						else
-						{
-							outputString += s1;
-							++x;
-						}
-					}
-					else
-					{
-						outputString += s1;
-						++x;
-					}
-				}
-			}
-			else
-			{
-				outputString = inputString;
-			}
+                        // if hexadecimal ...
+                        if (Regex.Match(hexString.ToUpper()
+                            , @"^[A-F|0-9]+[A-F|0-9]+$").Success)
+                        {
+                            // convert to string representation ...
+                            outputString += Encoding.ASCII.GetString(new[] {Convert.ToByte(hexString, 16)});
+                            x += 3;
+                        }
+                        else
+                        {
+                            outputString += s1;
+                            ++x;
+                        }
+                    }
+                    else
+                    {
+                        outputString += s1;
+                        ++x;
+                    }
+                }
+            }
+            else
+            {
+                outputString = inputString;
+            }
 
-			return outputString.Replace("\n","\r\n");
-		}
-	}
+            return outputString.Replace("\n", "\r\n");
+        }
+    }
 }

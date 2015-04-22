@@ -20,13 +20,12 @@ using System.Web.UI;
 namespace BizUnit.BizUnitOM
 {
     /// <summary>
-    /// 
     /// </summary>
-    [Obsolete("ComplexTypeParameterFormatter has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
+    [Obsolete("ComplexTypeParameterFormatter has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")
+    ]
     public class ComplexTypeParameterFormatter : ITestStepParameterFormatter
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="type"></param>
         /// <param name="args"></param>
@@ -37,23 +36,24 @@ namespace BizUnit.BizUnitOM
         {
             object[] retVal;
 
-            if (typeof(IList<string>) == type)
+            if (typeof (IList<string>) == type)
             {
                 IList<string> argsAsstringList = args.Select(arg => ctx.ReadArgument(arg).ToString()).ToList();
-                retVal = new object[] { argsAsstringList };
+                retVal = new object[] {argsAsstringList};
             }
-            else if (typeof(IList<Pair>) == type)
+            else if (typeof (IList<Pair>) == type)
             {
                 IList<Pair> argsAsPairList = new List<Pair>();
-                for (int c = 0; c < args.Length; c += 2)
+                for (var c = 0; c < args.Length; c += 2)
                 {
                     argsAsPairList.Add(new Pair(ctx.ReadArgument(args[c]), ctx.ReadArgument(args[c + 1])));
                 }
-                retVal = new object[] { argsAsPairList };
+                retVal = new object[] {argsAsPairList};
             }
             else
             {
-                throw new ArgumentException(string.Format("The type {0} is not supported in the BizBizUnit object model", type.FullName), "type");
+                throw new ArgumentException(
+                    string.Format("The type {0} is not supported in the BizBizUnit object model", type.FullName), "type");
             }
 
             return retVal;

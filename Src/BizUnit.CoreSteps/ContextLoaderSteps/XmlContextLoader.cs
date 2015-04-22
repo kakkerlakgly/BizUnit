@@ -22,83 +22,78 @@ using BizUnit.BizUnitOM;
 namespace BizUnit.CoreSteps.ContextLoaderSteps
 {
     /// <summary>
-	/// The XmlContextLoader evaluates an XPath expression to the source data and adds the value into the context.
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
-	///	<ContextLoaderStep assemblyPath="" typeName="BizUnit.XmlContextLoader">
-	///		<XPath contextKey="HTTP_Url">/def:html/def:body/def:p[2]/def:form</XPath>
-	///		<XPath contextKey="ActionID">/def:html/def:body/def:p[2]/def:form/def:input[3]</XPath>
-	///		<XPath contextKey="ActionType">/def:html/def:body/def:p[2]/def:form/def:input[4]</XPath>
-	///		<XPath contextKey="HoldEvent">/def:html/def:body/def:p[2]/def:form/def:input[2]</XPath>
-	///	</ContextLoaderStep>
-	///	</code>
-	///	
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>XPath</term>
-	///			<description>The XPAth expression to evaluate against the input data <para>(repeating)</para></description>
-	///		</item>
-	///		<item>
-	///			<term>XPath/contextKey</term>
-	///			<description>The name of context key which will be used when addin the new context item</description>
-	///		</item>
-	///	</list>
-	///	</remarks>	
+    ///     The XmlContextLoader evaluates an XPath expression to the source data and adds the value into the context.
+    /// </summary>
+    /// <remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<ContextLoaderStep assemblyPath="" typeName="BizUnit.XmlContextLoader">
+    ///             <XPath contextKey="HTTP_Url">/def:html/def:body/def:p[2]/def:form</XPath>
+    ///             <XPath contextKey="ActionID">/def:html/def:body/def:p[2]/def:form/def:input[3]</XPath>
+    ///             <XPath contextKey="ActionType">/def:html/def:body/def:p[2]/def:form/def:input[4]</XPath>
+    ///             <XPath contextKey="HoldEvent">/def:html/def:body/def:p[2]/def:form/def:input[2]</XPath>
+    ///         </ContextLoaderStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>XPath</term>
+    ///             <description>The XPAth expression to evaluate against the input data
+    ///                 <para>(repeating)</para>
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <term>XPath/contextKey</term>
+    ///             <description>The name of context key which will be used when addin the new context item</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     [Obsolete("XmlContextLoader has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
-	public class XmlContextLoader : IContextLoaderStepOM
-	{
-	    private IList<Pair> _xPathExpressions = new List<Pair>();
-
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    public IList<Pair> XPathExpressions
-	    {
-	        set
-	        {
-	            _xPathExpressions = value;
-	        }
-	    }
-
-		/// <summary>
-		/// IContextLoaderStep.ExecuteContextLoader() implementation
-		/// </summary>
-		/// <param name="data">The data which the values are read from.</param>
-		/// <param name="contextConfig">The configuration for the context loader test step.</param>
-		/// <param name="context">The context object into which the values will be written.</param>
-		public void ExecuteContextLoader(Stream data, XmlNode contextConfig, Context context)
-		{
-			var contextNodes = contextConfig.SelectNodes("XPath");
-
-			foreach (XmlNode contextNode in contextNodes)
-			{
-                var xPathPair = new Pair(contextNode.SelectSingleNode("@contextKey").Value, contextNode.SelectSingleNode(".").InnerText);
-			    _xPathExpressions.Add(xPathPair);
-			}
-
-            ExecuteContextLoader(data, context);
-		}
+    public class XmlContextLoader : IContextLoaderStepOM
+    {
+        private IList<Pair> _xPathExpressions = new List<Pair>();
 
         /// <summary>
-        /// 
+        /// </summary>
+        public IList<Pair> XPathExpressions
+        {
+            set { _xPathExpressions = value; }
+        }
+
+        /// <summary>
+        ///     IContextLoaderStep.ExecuteContextLoader() implementation
+        /// </summary>
+        /// <param name="data">The data which the values are read from.</param>
+        /// <param name="contextConfig">The configuration for the context loader test step.</param>
+        /// <param name="context">The context object into which the values will be written.</param>
+        public void ExecuteContextLoader(Stream data, XmlNode contextConfig, Context context)
+        {
+            var contextNodes = contextConfig.SelectNodes("XPath");
+
+            foreach (XmlNode contextNode in contextNodes)
+            {
+                var xPathPair = new Pair(contextNode.SelectSingleNode("@contextKey").Value,
+                    contextNode.SelectSingleNode(".").InnerText);
+                _xPathExpressions.Add(xPathPair);
+            }
+
+            ExecuteContextLoader(data, context);
+        }
+
+        /// <summary>
         /// </summary>
         public void ExecuteContextLoader(Stream data, Context context)
-	    {
+        {
             var doc = new XmlDocument();
             doc.Load(data);
 
             foreach (var xPathExpression in _xPathExpressions)
             {
-                var contextKey = (string)xPathExpression.First;
-                var xpathExp = (string)xPathExpression.Second;
+                var contextKey = (string) xPathExpression.First;
+                var xpathExp = (string) xPathExpression.Second;
                 string val;
 
                 context.LogInfo("XmlContextLoader loading key:{0} with value:\"{1}\"", contextKey, xpathExp);
@@ -119,11 +114,10 @@ namespace BizUnit.CoreSteps.ContextLoaderSteps
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Validate(Context context)
-	    {
+        {
             // No validation for _xPathExpressions
-	    }
-	}
+        }
+    }
 }

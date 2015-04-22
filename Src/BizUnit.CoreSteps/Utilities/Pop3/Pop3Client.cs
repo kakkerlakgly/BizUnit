@@ -23,68 +23,91 @@ using System.Text.RegularExpressions;
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
     internal class Pop3Client : IEnumerable<Pop3Component>
-	{
-		private Pop3Credential _credential;
-		private const int Pop3Port = 110;
-		private const int MaxBufferReadSize = 256;
-		private long _inboxPosition;
-		private long _directPosition = -1;
-		private Socket _socket;
-		private Pop3Message _pop3Message;
+    {
+        private const int Pop3Port = 110;
+        private const int MaxBufferReadSize = 256;
+        private long _directPosition = -1;
+        private long _inboxPosition;
+        private Pop3Message _pop3Message;
+        private Socket _socket;
 
-		internal Pop3Credential UserDetails
-		{
-			set { _credential = value; }
-			get { return _credential; }
-		}
+        internal Pop3Client(string user, string pass, string server)
+        {
+            UserDetails = new Pop3Credential(user, pass, server);
+        }
 
-		internal string From
-		{
-			get { return _pop3Message.From; }
-		}
+        internal Pop3Credential UserDetails { set; get; }
 
-		internal string To
-		{
-			get { return _pop3Message.To; }
-		}
+        internal string From
+        {
+            get { return _pop3Message.From; }
+        }
 
-		internal string Subject
-		{
-			get { return _pop3Message.Subject; }
-		}
+        internal string To
+        {
+            get { return _pop3Message.To; }
+        }
 
-		internal string Body
-		{
-			get { return _pop3Message.Body; }
-		}
+        internal string Subject
+        {
+            get { return _pop3Message.Subject; }
+        }
+
+        internal string Body
+        {
+            get { return _pop3Message.Body; }
+        }
+
+        internal bool IsMultipart
+        {
+            get { return _pop3Message.IsMultipart; }
+        }
+
+        internal long MessageCount
+        {
+            get
+            {
+                long count = 0;
+
+                if (_socket == null)
+                {
+                    throw new Pop3MessageException("Pop3 server not connected");
+                }
+
+                Send("stat");
+
+                var returned = GetPop3String();
+
+                // if values returned ...
+                if (Regex.Match(returned,
+                    @"^.*\+OK[ |	]+([0-9]+)[ |	]+.*$").Success)
+                {
+                    // get number of emails ...
+                    count = long.Parse(Regex
+                        .Replace(returned.Replace("\r\n", "")
+                            , @"^.*\+OK[ |	]+([0-9]+)[ |	]+.*$", "$1"));
+                }
+
+                return (count);
+            }
+        }
 
         public IEnumerator<Pop3Component> GetEnumerator()
-		{
-			return _pop3Message.GetEnumerator();
-		}
+        {
+            return _pop3Message.GetEnumerator();
+        }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-        internal bool IsMultipart
-		{
-			get { return _pop3Message.IsMultipart; }
-		}
-
-
-		internal Pop3Client(string user, string pass, string server)
-		{
-			_credential = new Pop3Credential(user,pass,server);
-		}
-
         private Socket GetClientSocket()
         {
             try
             {
                 // Get host related information.
-                IPHostEntry hostEntry = Dns.GetHostEntry(_credential.Server);
+                var hostEntry = Dns.GetHostEntry(UserDetails.Server);
 
                 // Loop through the AddressList to obtain the supported 
                 // AddressFamily. This is to avoid an exception that 
@@ -92,7 +115,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
                 // with the address family 
                 // (typical in the IPv6 case).
 
-                foreach (IPAddress address in hostEntry.AddressList)
+                foreach (var address in hostEntry.AddressList)
                 {
                     var ipe = new IPEndPoint(address, Pop3Port);
 
@@ -125,224 +148,194 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
             // throw exception if can't connect ...
             throw new Pop3ConnectException("Error : connecting to "
-                + _credential.Server);
+                                           + UserDetails.Server);
         }
 
-		//send the data to server
-		private void Send(String data) 
-		{
-			if(_socket == null)
-			{
-				throw new Pop3MessageException("Pop3 connection is closed");
-			}
+        //send the data to server
+        private void Send(string data)
+        {
+            if (_socket == null)
+            {
+                throw new Pop3MessageException("Pop3 connection is closed");
+            }
 
-			try
-			{
-				// Convert the string data to byte data 
-				// using ASCII encoding.
-				
-				byte[] byteData = Encoding.ASCII.GetBytes(data+"\r\n");
-				
-				// Begin sending the data to the remote device.
-				_socket.Send(byteData);
-			}
-			catch(Exception e)
-			{
-				throw new Pop3SendException(e.ToString());
-			}
-		}
+            try
+            {
+                // Convert the string data to byte data 
+                // using ASCII encoding.
 
-		private string GetPop3String()
-		{
-			if(_socket == null)
-			{
-				throw new 
-					Pop3MessageException("Connection to POP3 server is closed");
-			}
+                var byteData = Encoding.ASCII.GetBytes(data + "\r\n");
 
-			var buffer = new byte[MaxBufferReadSize];
-			string line;
+                // Begin sending the data to the remote device.
+                _socket.Send(byteData);
+            }
+            catch (Exception e)
+            {
+                throw new Pop3SendException(e.ToString());
+            }
+        }
 
-			try
-			{
-				int byteCount = 
-					_socket.Receive(buffer,buffer.Length,0);
+        private string GetPop3String()
+        {
+            if (_socket == null)
+            {
+                throw new
+                    Pop3MessageException("Connection to POP3 server is closed");
+            }
 
-				line = 
-					Encoding.ASCII.GetString(buffer, 0, byteCount);
-			}
-			catch(Exception e)
-			{
-				throw new Pop3ReceiveException(e.ToString());
-			}
+            var buffer = new byte[MaxBufferReadSize];
+            string line;
 
-			return line;
-		}
+            try
+            {
+                var byteCount =
+                    _socket.Receive(buffer, buffer.Length, 0);
 
-		private void LoginToInbox()
-		{
-		    // send username ...
-			Send("user "+_credential.User);
-		
-			// get response ...
-			string returned = GetPop3String();
+                line =
+                    Encoding.ASCII.GetString(buffer, 0, byteCount);
+            }
+            catch (Exception e)
+            {
+                throw new Pop3ReceiveException(e.ToString());
+            }
 
-			if( !returned.Substring(0,3).Equals("+OK") )
-			{
-				throw new Pop3LoginException("login not excepted");
-			}
+            return line;
+        }
 
-			// send password ...
-			Send("pass "+_credential.Pass);
+        private void LoginToInbox()
+        {
+            // send username ...
+            Send("user " + UserDetails.User);
 
-			// get response ...
-			returned = GetPop3String();
+            // get response ...
+            var returned = GetPop3String();
 
-			if( !returned.Substring(0,3).Equals("+OK") )
-			{
-				throw new 
-					Pop3LoginException("login/password not accepted");
-			}
-		}
+            if (!returned.Substring(0, 3).Equals("+OK"))
+            {
+                throw new Pop3LoginException("login not excepted");
+            }
 
-		internal long MessageCount
-		{
-			get 
-			{
-				long count = 0;
-			
-				if(_socket==null)
-				{
-					throw new Pop3MessageException("Pop3 server not connected");
-				}
+            // send password ...
+            Send("pass " + UserDetails.Pass);
 
-				Send("stat");
+            // get response ...
+            returned = GetPop3String();
 
-				string returned = GetPop3String();
+            if (!returned.Substring(0, 3).Equals("+OK"))
+            {
+                throw new
+                    Pop3LoginException("login/password not accepted");
+            }
+        }
 
-				// if values returned ...
-				if( Regex.Match(returned,
-					@"^.*\+OK[ |	]+([0-9]+)[ |	]+.*$").Success )
-				{
-						// get number of emails ...
-						count = long.Parse( Regex
-						.Replace(returned.Replace("\r\n","")
-						, @"^.*\+OK[ |	]+([0-9]+)[ |	]+.*$" ,"$1") );
-				}
+        internal void CloseConnection()
+        {
+            Send("quit");
 
-				return(count);
-			}
-		}
+            _socket = null;
+            _pop3Message = null;
+        }
 
+        internal bool DeleteEmail()
+        {
+            var ret = false;
 
-		internal void CloseConnection()
-		{			
-			Send("quit");
+            Send("dele " + _inboxPosition);
 
-			_socket = null;
-			_pop3Message = null;
-		}
+            var returned = GetPop3String();
 
-		internal bool DeleteEmail()
-		{
-			bool ret = false;
+            if (Regex.Match(returned,
+                @"^.*\+OK.*$").Success)
+            {
+                ret = true;
+            }
 
-			Send("dele "+_inboxPosition);
+            return ret;
+        }
 
-			string returned = GetPop3String();
+        internal bool NextEmail(long directPosition)
+        {
+            bool ret;
 
-			if( Regex.Match(returned,
-				@"^.*\+OK.*$").Success )
-			{
-				ret = true;
-			}
+            if (directPosition >= 0)
+            {
+                _directPosition = directPosition;
+                ret = NextEmail();
+            }
+            else
+            {
+                throw new Pop3MessageException("Position less than zero");
+            }
 
-			return ret;
-		}
+            return ret;
+        }
 
-		internal bool NextEmail(long directPosition)
-		{
-			bool ret;
+        internal bool NextEmail()
+        {
+            long pos;
 
-			if( directPosition >= 0 )
-			{
-				_directPosition = directPosition;
-				ret = NextEmail();
-			}
-			else
-			{
-				throw new Pop3MessageException("Position less than zero");
-			}
+            if (_directPosition == -1)
+            {
+                if (_inboxPosition == 0)
+                {
+                    pos = 1;
+                }
+                else
+                {
+                    pos = _inboxPosition + 1;
+                }
+            }
+            else
+            {
+                pos = _directPosition + 1;
+                _directPosition = -1;
+            }
 
-			return ret;
-		}
+            // send username ...
+            Send("list " + pos);
 
-		internal bool NextEmail()
-		{
-		    long pos;
+            // get response ...
+            var returned = GetPop3String();
 
-			if(_directPosition == -1)
-			{
-				if(_inboxPosition == 0)
-				{
-					pos = 1;
-				}
-				else
-				{
-					pos = _inboxPosition + 1;
-				}
-			}
-			else
-			{
-				pos = _directPosition+1;
-				_directPosition = -1;
-			}
+            // if email does not exist at this position
+            // then return false ...
 
-			// send username ...
-			Send("list "+pos);
-		
-			// get response ...
-			var returned = GetPop3String();
+            if (returned.Substring(0, 4).ToUpper().Equals("-ERR"))
+            {
+                return false;
+            }
 
-			// if email does not exist at this position
-			// then return false ...
+            _inboxPosition = pos;
 
-			if( returned.Substring(0,4).ToUpper().Equals("-ERR") )
-			{
-				return false;
-			}
+            // strip out CRLF ...
+            var noCr = returned.Split('\r');
 
-			_inboxPosition = pos;
+            // get size ...
+            var elements = noCr[0].Split(' ');
 
-			// strip out CRLF ...
-			string[] noCr = returned.Split('\r');
+            var size = long.Parse(elements[2]);
 
-			// get size ...
-			string[] elements = noCr[0].Split(' ');
+            // ... else read email data
+            _pop3Message = new Pop3Message(_inboxPosition, size, _socket);
 
-			long size = long.Parse(elements[2]);
+            return true;
+        }
 
-			// ... else read email data
-			_pop3Message = new Pop3Message(_inboxPosition,size,_socket);
+        internal void OpenInbox()
+        {
+            // get a socket ...
+            _socket = GetClientSocket();
 
-			return true;
-		}
+            // get initial header from POP3 server ...
+            var header = GetPop3String();
 
-		internal void OpenInbox()
-		{
-			// get a socket ...
-			_socket = GetClientSocket();
+            if (!header.Substring(0, 3).Equals("+OK"))
+            {
+                throw new InvalidOperationException("Invalid initial POP3 response");
+            }
 
-			// get initial header from POP3 server ...
-			string header = GetPop3String();
-
-			if( !header.Substring(0,3).Equals("+OK") )
-			{
-				throw new InvalidOperationException("Invalid initial POP3 response");
-			}
-		
-			// send login details ...
-			LoginToInbox();
-		}
-	}
+            // send login details ...
+            LoginToInbox();
+        }
+    }
 }

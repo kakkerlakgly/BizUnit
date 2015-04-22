@@ -27,83 +27,79 @@ using Microsoft.RuleEngine;
 namespace BizUnit.TestSteps.BizTalk.Bre
 {
     /// <summary>
-    /// Summary description for FactBasedRuleEngineStep.
+    ///     Summary description for FactBasedRuleEngineStep.
     /// </summary>
-    /// 
     /// <remarks>
-    /// The following shows an example of the Xml representation of this test step.
-    ///
-    /// <code escaped="true">
-    ///	<TestStep assemblyPath="" typeName="BizUnit.BizTalkSteps.FactBasedRuleEngineStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
-    ///		<RuleStoreName>C:\Program Files\Microsoft BizTalk Server 2004\SDK\Utilities\TestFramework\SDK\SampleSolution\Test\BiztalkFunctionalTests\RulesTestCases\LoanProcessing.xml</RuleStoreName>
-    ///     <RuleSetInfoCollectionName>LoanProcessing</RuleSetInfoCollectionName>
-    ///     <DebugTracking>C:\Program Files\Microsoft BizTalk Server 2004\SDK\Utilities\TestFramework\SDK\SampleSolution\Test\BiztalkFunctionalTests\RulesTestCases\outputtraceforLoanPocessing.txt</DebugTracking>
-    ///     <ResultFilePath>C:\Program Files\Microsoft BizTalk Server 2004\SDK\Utilities\TestFramework\SDK\SampleSolution\Test\BiztalkFunctionalTests\RulesTestCases</ResultFilePath>
-    ///     <Facts>
-    ///        <Fact type="document" schemaType="LoanProcessing" instanceDocument="C:\Program Files\Microsoft BizTalk Server 2004\SDK\Utilities\TestFramework\SDK\SampleSolution\Test\BiztalkFunctionalTests\RulesTestCases\SampleLoan.xml"/>
-    ///        <Fact type="object" assemblyPath="C:\Program Files\Microsoft Biztalk Server\SDK\Samples\Business Rules\Business Rules Hello World1\MySampleLibrary\bin\Debug\MySampleLibrary.dll" typeName="Microsoft.Samples.BizTalk.BusinessRulesHelloWorld1.MySampleLibrary.MySampleBusinessObject"/>
-    ///        <Fact type="dataConnection" connectionString="" dataset="" tableName=""/>
-    ///        <Fact type="dataTable" connectionString="" command="" dataset="" tableName=""/>
-    ///        <Fact type="dataRow" connectionString="" command="" dataset="" tableName=""/>
-    ///     </Facts>
-    /// 
-    ///		<!-- Note: Validation step could be any generic validation step -->	
-    ///		<ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
-    ///			<XmlSchemaPath>.\TestData\PurchaseOrder.xsd</XmlSchemaPath>
-    ///			<XmlSchemaNameSpace>http://SendMail.PurchaseOrder</XmlSchemaNameSpace>
-    ///			<XPathList>
-    ///				<XPathValidation query="/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']">PONumber_0</XPathValidation>
-    ///			</XPathList>
-    ///		</ValidationStep>			
-    /// 
-    ///	</TestStep>
-    ///	</code>
-    ///	
-    ///	<list type="table">
-    ///		<listheader>
-    ///			<term>Tag</term>
-    ///			<description>Description</description>
-    ///		</listheader>
-    ///		<item>
-    ///			<term>RuleStoreName</term>
-    ///			<description>The location of the rule store</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>RuleSetInfoCollectionName</term>
-    ///			<description>The name of the rule set List</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>DebugTracking</term>
-    ///			<description>Location of the debug tracking</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>ResultFilePath</term>
-    ///			<description>The path used to write updated fact documents to</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>Facts</term>
-    ///			<description>Facts to pass to rules engine prior to ruleset execution</description>
-    ///		</item>	
-    ///	</list>
-    ///	</remarks>
-
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath=""
+    ///             typeName="BizUnit.BizTalkSteps.FactBasedRuleEngineStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
+    ///             <RuleStoreName>
+    ///                 C:\Program Files\Microsoft BizTalk Server
+    ///                 2004\SDK\Utilities\TestFramework\SDK\SampleSolution\Test\BiztalkFunctionalTests\RulesTestCases\LoanProcessing.xml
+    ///             </RuleStoreName>
+    ///             <RuleSetInfoCollectionName>LoanProcessing</RuleSetInfoCollectionName>
+    ///             <DebugTracking>
+    ///                 C:\Program Files\Microsoft BizTalk Server
+    ///                 2004\SDK\Utilities\TestFramework\SDK\SampleSolution\Test\BiztalkFunctionalTests\RulesTestCases\outputtraceforLoanPocessing.txt
+    ///             </DebugTracking>
+    ///             <ResultFilePath>
+    ///                 C:\Program Files\Microsoft BizTalk Server
+    ///                 2004\SDK\Utilities\TestFramework\SDK\SampleSolution\Test\BiztalkFunctionalTests\RulesTestCases
+    ///             </ResultFilePath>
+    ///             <Facts>
+    ///                 <Fact type="document" schemaType="LoanProcessing"
+    ///                     instanceDocument="C:\Program Files\Microsoft BizTalk Server 2004\SDK\Utilities\TestFramework\SDK\SampleSolution\Test\BiztalkFunctionalTests\RulesTestCases\SampleLoan.xml" />
+    ///                 <Fact type="object"
+    ///                     assemblyPath="C:\Program Files\Microsoft Biztalk Server\SDK\Samples\Business Rules\Business Rules Hello World1\MySampleLibrary\bin\Debug\MySampleLibrary.dll"
+    ///                     typeName="Microsoft.Samples.BizTalk.BusinessRulesHelloWorld1.MySampleLibrary.MySampleBusinessObject" />
+    ///                 <Fact type="dataConnection" connectionString="" dataset="" tableName="" />
+    ///                 <Fact type="dataTable" connectionString="" command="" dataset="" tableName="" />
+    ///                 <Fact type="dataRow" connectionString="" command="" dataset="" tableName="" />
+    ///             </Facts>
+    ///             <!-- Note: Validation step could be any generic validation step -->
+    ///             <ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
+    ///                 <XmlSchemaPath>.\TestData\PurchaseOrder.xsd</XmlSchemaPath>
+    ///                 <XmlSchemaNameSpace>http://SendMail.PurchaseOrder</XmlSchemaNameSpace>
+    ///                 <XPathList>
+    ///                     <XPathValidation
+    ///                         query="/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']">
+    ///                         PONumber_0
+    ///                     </XPathValidation>
+    ///                 </XPathList>
+    ///             </ValidationStep>
+    ///         </TestStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>RuleStoreName</term>
+    ///             <description>The location of the rule store</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>RuleSetInfoCollectionName</term>
+    ///             <description>The name of the rule set List</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>DebugTracking</term>
+    ///             <description>Location of the debug tracking</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>ResultFilePath</term>
+    ///             <description>The path used to write updated fact documents to</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>Facts</term>
+    ///             <description>Facts to pass to rules engine prior to ruleset execution</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     public class FactBasedRuleEngineStep : TestStepBase
     {
         /// <summary>
-        /// 
-        /// </summary>
-        public string RuleStoreName { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string RuleSetInfoCollectionName { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string DebugTracking { get; set; }
-
-        /// <summary>
-        /// 
         /// </summary>
         public FactBasedRuleEngineStep()
         {
@@ -112,12 +108,23 @@ namespace BizUnit.TestSteps.BizTalk.Bre
         }
 
         /// <summary>
-        /// 
+        /// </summary>
+        public string RuleStoreName { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public string RuleSetInfoCollectionName { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public string DebugTracking { get; set; }
+
+        /// <summary>
         /// </summary>
         public IList<Fact> FactsList { get; set; }
 
         /// <summary>
-        /// TestStepBase.Execute() implementation
+        ///     TestStepBase.Execute() implementation
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
@@ -134,11 +141,11 @@ namespace BizUnit.TestSteps.BizTalk.Bre
             if (rsInfo.Count != 1)
             {
                 // oops ... error
-                throw new InvalidOperationException(String.Format("RuleStore {0} did not contain RuleSet {1}", RuleStoreName, RuleSetInfoCollectionName));
+                throw new InvalidOperationException(string.Format("RuleStore {0} did not contain RuleSet {1}",
+                    RuleStoreName, RuleSetInfoCollectionName));
             }
 
             var ruleset = ruleStore.GetRuleSet(rsInfo[0]);
-
 
 
             // load the facts into array
@@ -153,78 +160,78 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                     switch (currentFact.GetType().ToString())
                     {
                         case "ObjectFact":
+                        {
+                            var fact = currentFact as ObjectFact;
+
+                            object[] objectArgs = null;
+                            if (null != fact.Args)
                             {
-                                var fact = currentFact as ObjectFact;
-
-                                object[] objectArgs = null;
-                                if (null != fact.Args)
-                                {
-                                    objectArgs = fact.Args.Split(',');
-                                }
-
-                                Type type;
-                                if (fact.AssemblyPath.Length > 0)
-                                {
-                                    var asm = Assembly.Load(fact.AssemblyPath);
-                                    if (asm == null)
-                                    {
-                                        // fail
-                                        throw (new InvalidOperationException("failed to create type " + fact.Type));
-                                    }
-                                    type = asm.GetType(fact.Type, true, false);
-                                }
-                                else
-                                {
-                                    // must be in path
-                                    type = Type.GetType(fact.Type);
-                                }
-
-                                facts[i] = Activator.CreateInstance(type, objectArgs);
-                                break;
+                                objectArgs = fact.Args.Split(',');
                             }
+
+                            Type type;
+                            if (fact.AssemblyPath.Length > 0)
+                            {
+                                var asm = Assembly.Load(fact.AssemblyPath);
+                                if (asm == null)
+                                {
+                                    // fail
+                                    throw (new InvalidOperationException("failed to create type " + fact.Type));
+                                }
+                                type = asm.GetType(fact.Type, true, false);
+                            }
+                            else
+                            {
+                                // must be in path
+                                type = Type.GetType(fact.Type);
+                            }
+
+                            facts[i] = Activator.CreateInstance(type, objectArgs);
+                            break;
+                        }
                         case "DocumentFact":
-                            {
-                                var fact = currentFact as DocumentFact;
-                                var xd1 = new XmlDocument();
-                                xd1.Load(fact.InstanceDocument);
-                                var txd = new TypedXmlDocument(fact.SchemaType, xd1);
-                                facts[i] = txd;
-                                break;
-                            }
+                        {
+                            var fact = currentFact as DocumentFact;
+                            var xd1 = new XmlDocument();
+                            xd1.Load(fact.InstanceDocument);
+                            var txd = new TypedXmlDocument(fact.SchemaType, xd1);
+                            facts[i] = txd;
+                            break;
+                        }
                         case "DataConnectionFact":
-                            {
-                                var fact = currentFact as DataConnectionFact;
-                                var conn = new SqlConnection(fact.ConnectionString);
-                                conn.Open();
-                                var dc = new DataConnection(fact.Dataset, fact.TableName, conn);
-                                facts[i] = dc;
-                                break;
-                            }
+                        {
+                            var fact = currentFact as DataConnectionFact;
+                            var conn = new SqlConnection(fact.ConnectionString);
+                            conn.Open();
+                            var dc = new DataConnection(fact.Dataset, fact.TableName, conn);
+                            facts[i] = dc;
+                            break;
+                        }
                         case "dataTable":
                         case "dataRow":
-                            {
-                                var fact = currentFact as DataTableFact;
+                        {
+                            var fact = currentFact as DataTableFact;
 
-                                var conn = new SqlConnection(fact.ConnectionString);
-                                conn.Open();
-                                var myCommand = new SqlCommand(fact.Command, conn) { CommandType = CommandType.Text };
-                                var dAdapt = new SqlDataAdapter();
-                                dAdapt.TableMappings.Add("Table", fact.TableName);
-                                dAdapt.SelectCommand = myCommand;
-                                var ds = new DataSet(fact.Dataset);
-                                dAdapt.Fill(ds);
-                                var tdt = new TypedDataTable(ds.Tables[fact.TableName]);
-                                if (fact.Type == "dataRow")
-                                {
-                                    var tdr = new TypedDataRow(ds.Tables[fact.TableName].Rows[0], tdt);
-                                    facts[i] = tdr;
-                                }
-                                else
-                                {
-                                    facts[i] = tdt;
-                                }
-                                break;
+                            var conn = new SqlConnection(fact.ConnectionString);
+                            conn.Open();
+                            var myCommand = new SqlCommand(fact.Command, conn) {CommandType = CommandType.Text};
+                            var dAdapt = new SqlDataAdapter();
+                            dAdapt.TableMappings.Add("Table", fact.TableName);
+                            dAdapt.SelectCommand = myCommand;
+                            var ds = new DataSet(fact.Dataset);
+                            dAdapt.Fill(ds);
+                            var tdt = new TypedDataTable(ds.Tables[fact.TableName]);
+                            if (fact.Type == "dataRow")
+                            {
+                                var tdr = new TypedDataRow(ds.Tables[fact.TableName].Rows[0], tdt);
+                                facts[i] = tdr;
                             }
+                            else
+                            {
+                                facts[i] = tdt;
+                            }
+                            break;
+                        }
                     }
                     i++;
                 }
@@ -246,49 +253,48 @@ namespace BizUnit.TestSteps.BizTalk.Bre
             }
 
             // write out all document instances passed in
-            foreach (object fact in facts)
+            foreach (var fact in facts)
             {
                 switch (fact.GetType().Name)
                 {
                     case "TypedXmlDocument":
+                    {
+                        var txd = (TypedXmlDocument) fact;
+
+                        context.LogData("TypedXmlDocument result: ", txd.Document.OuterXml);
+                        var data = StreamHelper.LoadMemoryStream(txd.Document.OuterXml);
+                        // Validate if configured...
+                        // HACK: We need to prevent ExecuteValidator for /each/ TypedXmlDocument
+                        if (txd.DocumentType == "UBS.CLAS.PoC.Schemas.INSERTS")
                         {
-                            var txd = (TypedXmlDocument)fact;
-
-                            context.LogData("TypedXmlDocument result: ", txd.Document.OuterXml);
-                            Stream data = StreamHelper.LoadMemoryStream(txd.Document.OuterXml);
-                            // Validate if configured...
-                            // HACK: We need to prevent ExecuteValidator for /each/ TypedXmlDocument
-                            if (txd.DocumentType == "UBS.CLAS.PoC.Schemas.INSERTS")
-                            {
-                                data = SubSteps.Aggregate(data, (current, subStep) => subStep.Execute(current, context));
-                            }
-
-                            break;
+                            data = SubSteps.Aggregate(data, (current, subStep) => subStep.Execute(current, context));
                         }
+
+                        break;
+                    }
                     case "DataConnection":
-                        {
-                            var dc = (DataConnection)fact;
-                            dc.Update(); // persist any changes
-                            break;
-                        }
+                    {
+                        var dc = (DataConnection) fact;
+                        dc.Update(); // persist any changes
+                        break;
+                    }
                     case "TypedDataTable":
-                        {
-                            var tdt = (TypedDataTable)fact;
-                            tdt.DataTable.AcceptChanges();
-                            break;
-                        }
+                    {
+                        var tdt = (TypedDataTable) fact;
+                        tdt.DataTable.AcceptChanges();
+                        break;
+                    }
                     case "TypedDataRow":
-                        {
-                            var tdr = (TypedDataRow)fact;
-                            tdr.DataRow.AcceptChanges();
-                            break;
-                        }
+                    {
+                        var tdr = (TypedDataRow) fact;
+                        tdr.DataRow.AcceptChanges();
+                        break;
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public override void Validate(Context context)
         {
