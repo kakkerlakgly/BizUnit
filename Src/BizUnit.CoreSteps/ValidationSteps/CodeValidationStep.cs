@@ -258,27 +258,29 @@ namespace BizUnit.CoreSteps.ValidationSteps
 					// find index of parameter in the arguments to retrieve by name
 					if (methodDetails != null)
 					{
-						int p = 0;
+						
 						ParameterInfo[] pi = methodDetails.GetParameters();
-						for(;p < methodDetails.GetParameters().Length;p++)
+                        bool found = false;
+                        foreach (var parameterInfo in pi)
 						{
-							if (pi[p].Name == resultName)
+                            if (parameterInfo.Name == resultName)
 							{
 								// compare
 								resultValue = results[i].Attributes.GetNamedItem("value").Value;
 								context.LogInfo("CodeValidationStep evaluating result {0} equals \"{1}\"", resultName, resultValue, args[i].ToString());					
-								if (resultValue != args[p].ToString())
+								if (resultValue != args[i].ToString())
 								{
 									throw new InvalidOperationException(string.Format( "CodeValidationStep failed, compare {0} != {1}, parameter name used: {2}", resultValue, args[i], resultName));
 								}
+                                found = true;
 								break;
 							}
 						}
-						if (p == methodDetails.GetParameters().Length)
-						{
-							// not found
-							throw new InvalidOperationException(string.Format("Parameter {0} not found in member {1}",resultName, methodDetails.Name));
-						}
+                        if (!found)
+                        {
+                            // not found
+                            throw new InvalidOperationException(string.Format("Parameter {0} not found in member {1}", resultName, methodDetails.Name));
+                        }
 					}
 					else 
 					{

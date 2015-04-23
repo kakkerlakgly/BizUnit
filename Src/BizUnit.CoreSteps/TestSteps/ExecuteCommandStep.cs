@@ -117,13 +117,11 @@ namespace BizUnit.CoreSteps.TestSteps
 
             using (var process = new Process())
             {
-                process.StartInfo = new ProcessStartInfo
+                process.StartInfo = new ProcessStartInfo(_processName, _processParams)
                 {
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true,
-                    Arguments = _processParams,
-                    FileName = _processName,
                     WorkingDirectory = _workingDirectory
                 };
 

@@ -262,8 +262,10 @@ namespace BizUnit.Xaml
             string testCase;
             using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                var sr = new StreamReader(fs);
-                testCase = sr.ReadToEnd();
+                using (var sr = new StreamReader(fs))
+                {
+                    testCase = sr.ReadToEnd();
+                }
             }
             return (TestCase)BizUnitSerializationHelper.Deserialize(testCase);
         }

@@ -62,7 +62,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
                     }
                 }
 
-                for (var i = startOfBody; i < stopOfBody; i++)
+                for (int i = startOfBody; i < stopOfBody; i++)
                 {
                     sbText.Append(lines[i]); //.Replace("\n","").Replace("\r",""));
                 }

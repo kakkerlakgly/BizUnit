@@ -332,10 +332,9 @@ namespace BizUnit.CoreSteps.TestSteps
                     var uniqueCell = row.UniqueCell;
                     if (null != uniqueCell)
                     {
-                        var bamDbRowArray =
+                        bamDbRow =
                             ds.Tables[0].Select(
-                                string.Format("{0} = '{1}'", uniqueCell.ColumnName, uniqueCell.ExpectedValue));
-                        bamDbRow = bamDbRowArray[0];
+                                string.Format("{0} = '{1}'", uniqueCell.ColumnName, uniqueCell.ExpectedValue)).First();
                     }
                     else
                     {

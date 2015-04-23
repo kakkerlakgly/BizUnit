@@ -37,8 +37,6 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 		{
 			get 
 			{
-				string extension = null;
-
 				// if file has a filename and the filename
 				// has an extension ...
 
@@ -46,13 +44,12 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 					Regex.Match(_filename,@"^.*\..*$").Success)
 				{
 					// get extension ...
-					extension =  
-					Regex.Replace(_name,@"^[^\.]*\.([^\.]+)$","$1");
+					return Regex.Replace(_name,@"^[^\.]*\.([^\.]+)$","$1");
 				}
 
 				// NOTE: return null if extension
 				// not found ...
-				return extension;
+				return null;
 			}
 		}
 
@@ -60,8 +57,6 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 		{
 			get 
 			{
-				string extension = null;
-
 				// if file has a filename and the filename
 				// has an extension ...
 
@@ -69,13 +64,12 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 					Regex.Match(_filename,@"^.*\..*$").Success)
 				{
 					// get extension ...
-					extension =  
-						Regex.Replace(_name,@"^([^\.]*)\.[^\.]+$","$1");
+					return Regex.Replace(_name,@"^([^\.]*)\.[^\.]+$","$1");
 				}
 
 				// NOTE: return null if extension
 				// not found ...
-				return extension;
+				return null;
 			}
 		}
 
@@ -139,46 +133,40 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 		{
 			get 
 			{ 
-				bool ret = false;
-
 				if(_contentDisposition != null)
 				{
-					ret =
+					return
 						Regex
 						.Match(_contentDisposition,
 						"^attachment.*$")
 						.Success;
 				}
 
-				return ret;
+				return false;
 			}
 		}
 
-		private void DecodeData()
-		{
-			// if this data is an attachment ...
-				// if BASE-64 data ...
-			if (_contentTransferEncoding != null)
-			{
-				if( _contentTransferEncoding.ToUpper()
-					.Equals("BASE64") )
-				{
-					// convert attachment from BASE64 ...
-					BinaryData = 
-						Convert.FromBase64String(_data.Replace("\n",""));
+        private void DecodeData()
+        {
+            // if this data is an attachment ...
+            // if BASE-64 data ...
+            if (_contentTransferEncoding != null)
+            {
+                if (_contentTransferEncoding.ToUpper().Equals("BASE64"))
+                {
+                    // convert attachment from BASE64 ...
+                    BinaryData = Convert.FromBase64String(_data.Replace("\n", ""));
 
-					_data = Encoding.ASCII.GetString(BinaryData);
-				}
-				else
-					// if PRINTABLE ...
-					if( 
-					_contentTransferEncoding.ToUpper()
-					.Equals("QUOTED-PRINTABLE") )
-				{
-					_data = Pop3Statics.FromQuotedPrintable(_data);
-				}
-			}
-		}
+                    _data = Encoding.ASCII.GetString(BinaryData);
+                }
+                else
+                    // if PRINTABLE ...
+                    if (_contentTransferEncoding.ToUpper().Equals("QUOTED-PRINTABLE"))
+                    {
+                        _data = Pop3Statics.FromQuotedPrintable(_data);
+                    }
+            }
+        }
 
 		internal Pop3Component(string contentType, string contentTransferEncoding, string data)
 		{

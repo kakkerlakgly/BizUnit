@@ -61,34 +61,23 @@ namespace BizUnit.CoreSteps.TestSteps
             var destinationPath = context.ReadConfigAsString(testConfig, "DestinationPath");
             var rawListOfServers = context.ReadConfigAsString(testConfig, "Server");
             
-            var listOfServers = new List<string>();
-            listOfServers.AddRange(rawListOfServers.Split(','));
+            var listOfServers = rawListOfServers.Split(',');
 
             foreach (var server in listOfServers)
             {
                 context.LogInfo("About to save the event on server: {0} to the following directory: {1}", server,
                                 destinationPath);
 
-                ManagementScope scope;
 
-                if ((server.ToUpper() != Environment.MachineName.ToUpper()))
+                var options = new ConnectionOptions
                 {
-                    var options = new ConnectionOptions
-                                      {
-                                          Impersonation = ImpersonationLevel.Impersonate,
-                                          EnablePrivileges = true
-                                      };
-                    scope = new ManagementScope(string.Format(@"\\{0}\root\cimv2", server), options);
-                }
-                else
-                {
-                    var options = new ConnectionOptions
-                                      {
-                                          Impersonation = ImpersonationLevel.Impersonate,
-                                          EnablePrivileges = true
-                                      };
-                    scope = new ManagementScope(@"root\cimv2", options);
-                }
+                    Impersonation = ImpersonationLevel.Impersonate,
+                    EnablePrivileges = true
+                };
+
+                string path = server.ToUpper() != Environment.MachineName.ToUpper() ? string.Format(@"\\{0}\root\cimv2", server) : @"root\cimv2";
+
+                ManagementScope scope = new ManagementScope(path, options);
 
                 var query = new SelectQuery("Select * from Win32_NTEventLogFile");
                 using (var searcher = new ManagementObjectSearcher(scope, query))

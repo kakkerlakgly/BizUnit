@@ -77,11 +77,6 @@ namespace BizUnit.LoadGenSteps
                 loadGen.LoadGenStopped += LoadGenStopped;
                 loadGen.Start();
             }
-            catch (ConfigException cex)
-            {
-                context.LogError(cex.Message);
-                throw;
-            }
             catch (Exception ex)
             {
                 context.LogError(ex.Message);

@@ -121,7 +121,6 @@ namespace BizUnit.CoreSteps.TestSteps
 
 		static private object CreateObject(string typeName, string assemblyPath, Context context)
 		{
-			object comp = null;
 			Type ty;
 
 			context.LogInfo("About to create the folowing .Net type: {0}", typeName);
@@ -140,10 +139,10 @@ namespace BizUnit.CoreSteps.TestSteps
 
 			if (ty != null) 
 			{
-				comp = Activator.CreateInstance(ty);
+				return Activator.CreateInstance(ty);
 			}
 			
-			return comp;
+			return null;
 		}
 	}
 }
