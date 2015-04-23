@@ -177,10 +177,10 @@ namespace BizUnit.CoreSteps.TestSteps
                             dt.Columns.Add(new DataColumn(column.ColumnName, column.DataType));
                         }
 
-                        foreach (var row in dtImport.Rows)
+                        for (int rowCount = 0; rowCount < dtImport.Rows.Count; rowCount++)
                         {
                             DataRow dr = dt.NewRow();
-                            dr.ItemArray = ((DataRow)row).ItemArray;
+                            dr.ItemArray = dtImport.Rows[rowCount].ItemArray;
                             dt.Rows.Add(dr);
                         }
 

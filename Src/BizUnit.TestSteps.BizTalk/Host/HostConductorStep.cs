@@ -181,18 +181,29 @@ namespace BizUnit.TestSteps.BizTalk.Host
 			const int hostType = 1;
 
             var options = new ConnectionOptions
+                              {
+                                  Impersonation = ImpersonationLevel.Impersonate,
+                                  EnablePrivileges = true
+                              };
+
+            using (var searcher = new ManagementObjectSearcher())
             {
-                Impersonation = ImpersonationLevel.Impersonate,
-                EnablePrivileges = true
-            };
 
-            ManagementScope scope = null == server ? new ManagementScope("root\\MicrosoftBizTalkServer", options) : new ManagementScope("\\\\" + server + "\\root\\MicrosoftBizTalkServer", options);
+                ManagementScope scope = null == server ? new ManagementScope("root\\MicrosoftBizTalkServer", options) : new ManagementScope("\\\\" + server + "\\root\\MicrosoftBizTalkServer", options);
 
-            // Build a Query to enumerate the MSBTS_hostInstance instances 
-            var query = new SelectQuery(String.Format("SELECT * FROM MSBTS_HostInstance where HostName='" + hostName + "' AND HostType=" + hostType.ToString()));
+                searcher.Scope = scope;
 
-            using (var searcher = new ManagementObjectSearcher(scope, query))
-            {
+                // Build a Query to enumerate the MSBTS_hostInstance instances 
+                var query = new SelectQuery
+                                {
+                                    QueryString =
+                                        String.Format("SELECT * FROM MSBTS_HostInstance where HostName='" + hostName +
+                                                      "' AND HostType=" + hostType.ToString())
+                                };
+
+                // Set the query for the searcher.
+                searcher.Query = query;
+
                 // Execute the query and determine if any results were obtained.
                 try
                 {

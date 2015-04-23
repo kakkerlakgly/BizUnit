@@ -161,17 +161,22 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 			}
 
 			var buffer = new byte[MaxBufferReadSize];
+			string line;
 
 			try
 			{
-				int byteCount = _socket.Receive(buffer,buffer.Length,0);
+				int byteCount = 
+					_socket.Receive(buffer,buffer.Length,0);
 
-				return Encoding.ASCII.GetString(buffer, 0, byteCount);
+				line = 
+					Encoding.ASCII.GetString(buffer, 0, byteCount);
 			}
 			catch(Exception e)
 			{
 				throw new Pop3ReceiveException(e.ToString());
 			}
+
+			return line;
 		}
 
 		private void LoginToInbox()

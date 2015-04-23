@@ -37,7 +37,8 @@ namespace BizUnit.TestSteps.Sql
         {
             if (QueryParameters.Count > 0)
             {
-                var objParams = new List<object>();
+                var objParams = new object[QueryParameters.Count];
+                int c = 0;
 
                 foreach (var obj in QueryParameters)
                 {
@@ -46,15 +47,15 @@ namespace BizUnit.TestSteps.Sql
                     if (objValue is DateTime)
                     {
                         // Convert to SQL Datetime
-                        objParams.Add(((DateTime)objValue).ToString("yyyy-MM-dd HH:mm:ss.fff"));
+                        objParams[c++] = ((DateTime)objValue).ToString("yyyy-MM-dd HH:mm:ss.fff");
                     }
                     else
                     {
-                        objParams.Add(objValue);
+                        objParams[c++] = objValue;
                     }
                 }
 
-                return string.Format(RawSqlQuery, objParams.ToArray());
+                return string.Format(RawSqlQuery, objParams);
             }
             
             return RawSqlQuery;
@@ -73,16 +74,13 @@ namespace BizUnit.TestSteps.Sql
                 throw new ArgumentNullException("The Sql Query cannot be formmatted correctly");
             }
 
-            var tempList = new List<object>();
-            foreach (var parameter in QueryParameters)
+            for (int c = 0; c < QueryParameters.Count; c++)
             {
-                if (parameter is string)
+                if (QueryParameters[c] is string)
                 {
-                    tempList.Add(context.SubstituteWildCards(parameter.ToString()));
+                    QueryParameters[c] = context.SubstituteWildCards((string)QueryParameters[c]);
                 }
-                else tempList.Add(parameter);
             }
-            QueryParameters = tempList;
 
             RawSqlQuery = context.SubstituteWildCards(RawSqlQuery);
         }

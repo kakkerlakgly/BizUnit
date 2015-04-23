@@ -70,17 +70,13 @@ namespace BizUnit.CoreSteps.TestSteps
             context.LogInfo("About to load the context property: {0} with the contents of the file: (1)", contextPropertyName, filePath);
 		    
             // Read the FILE from disc...
-            using (var ms = StreamHelper.LoadFileToStream(filePath, timeOut))
-            {
-                ms.Seek(0, SeekOrigin.Begin);
-                using (var sr = new StreamReader(ms))
-                {
-                    string fileData = sr.ReadToEnd();
+            var ms = StreamHelper.LoadFileToStream(filePath, timeOut);
+            ms.Seek(0, SeekOrigin.Begin);
+            var sr = new StreamReader(ms);
+            string fileData = sr.ReadToEnd();
 
-                    // Write FILE contents to the context...
-                    context.Add(contextPropertyName, fileData);
-                }
-            }
+            // Write FILE contents to the context...
+            context.Add(contextPropertyName, fileData);
         }
     }
 }

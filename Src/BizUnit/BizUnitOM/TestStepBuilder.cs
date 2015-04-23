@@ -137,7 +137,8 @@ namespace BizUnit.BizUnitOM
             PropertyInfo pi = GetProperty(t);
             if (null != pi)
             {
-                var args = new []{ value};
+                var args = new object[1];
+                args[0] = value;
                 pi.GetSetMethod().Invoke(TestStep, args);
             }
         }
