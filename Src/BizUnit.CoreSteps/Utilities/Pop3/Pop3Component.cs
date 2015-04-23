@@ -83,8 +83,6 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
         {
             get
             {
-                string extension = null;
-
                 // if file has a filename and the filename
                 // has an extension ...
 
@@ -92,13 +90,13 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
                     Regex.Match(_filename, @"^.*\..*$").Success)
                 {
                     // get extension ...
-                    extension =
+                    return
                         Regex.Replace(_name, @"^([^\.]*)\.[^\.]+$", "$1");
                 }
 
                 // NOTE: return null if extension
                 // not found ...
-                return extension;
+                return null;
             }
         }
 
@@ -147,18 +145,16 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
         {
             get
             {
-                var ret = false;
-
                 if (_contentDisposition != null)
                 {
-                    ret =
+                    return
                         Regex
                             .Match(_contentDisposition,
                                 "^attachment.*$")
                             .Success;
                 }
 
-                return ret;
+                return false;
             }
         }
 

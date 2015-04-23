@@ -325,10 +325,10 @@ namespace BizUnit.CoreSteps.TestSteps
 
             if (null != sqlParams)
             {
-                var paramArray = (from XmlNode sqlParam in sqlParams select context.ReadConfigAsString(sqlParam, "."));
                 //context
 
-                var paramObjs = paramArray.Cast<object>().ToArray();
+                var paramObjs = sqlParams.Cast<XmlNode>()
+                    .Select(sqlParam => context.ReadConfigAsString(sqlParam, ".")).Cast<object>().ToArray();
                 return new SqlQuery(rawSQLQuery, paramObjs);
             }
 
@@ -360,8 +360,7 @@ namespace BizUnit.CoreSteps.TestSteps
                     argsFetchedFromCtx[c++] = ctx.ReadArgument(arg);
                 }
 
-                retVal = new object[1];
-                retVal[0] = new SqlQuery(argsFetchedFromCtx);
+                retVal = new object[] {new SqlQuery(argsFetchedFromCtx)};
             }
             else
             {

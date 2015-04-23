@@ -236,8 +236,7 @@ namespace BizUnit.BizUnitOM
                 var name = (string) prop.First;
                 var ctxPropName = (string) prop.Second;
 
-                var args = new object[1];
-                args[0] = ctx.GetObject(ctxPropName);
+                var args = new []{ctx.GetObject(ctxPropName)};
                 SetPropertyOnStep(name, args, ctx);
             }
         }
@@ -263,8 +262,7 @@ namespace BizUnit.BizUnitOM
         /// <returns>PropertyInfo for the property with the name specified.</returns>
         public PropertyInfo GetPropertyInfo(string propertyName)
         {
-            var propertiesInfo = TestStep.GetType().GetProperties();
-            return propertiesInfo.FirstOrDefault(propertyInfo => propertyName == propertyInfo.Name);
+            return TestStep.GetType().GetProperties().FirstOrDefault(propertyInfo => propertyName == propertyInfo.Name);
         }
     }
 }

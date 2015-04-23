@@ -79,7 +79,11 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
     public class ExecuteSendPipelineStep : TestStepBase
     {
         private Type[] _docSpecs;
-        private IList<DocSpecDefinition> _docSpecsRawList = new List<DocSpecDefinition>();
+
+        public ExecuteSendPipelineStep()
+        {
+            DocSpecs = new List<DocSpecDefinition>();
+        }
 
         /// <summary>
         ///     Gets and sets the assembly path for the .NET type of the pipeline to be executed
@@ -94,11 +98,7 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
         /// <summary>
         ///     Gets and sets the docspecs for the pipeline to be executed. Pairs of typeName, assemblyPath.
         /// </summary>
-        public IList<DocSpecDefinition> DocSpecs
-        {
-            get { return _docSpecsRawList; }
-            private set { _docSpecsRawList = value; }
-        }
+        public IList<DocSpecDefinition> DocSpecs { get; private set; }
 
         /// <summary>
         ///     Gets and sets the pipeline instance configuration for the pipeline to be executed
@@ -146,10 +146,10 @@ namespace BizUnit.TestSteps.BizTalk.Pipeline
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
         {
-            if (_docSpecsRawList.Count > 0)
+            if (DocSpecs.Count > 0)
             {
-                var ds = new List<Type>(_docSpecsRawList.Count);
-                foreach (var docSpec in _docSpecsRawList)
+                var ds = new List<Type>(DocSpecs.Count);
+                foreach (var docSpec in DocSpecs)
                 {
                     var ass = AssemblyHelper.LoadAssembly(docSpec.AssemblyPath);
                     context.LogInfo("Loading DocumentSpec {0} from location {1}.", docSpec.TypeName, ass.Location);

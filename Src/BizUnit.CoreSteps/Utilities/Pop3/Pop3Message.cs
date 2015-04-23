@@ -190,26 +190,22 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
         private int GetHeaderLineType(string line)
         {
-            var lineType = NotKnownState;
-
             for (var i = 0; i < _lineTypeString.Length; i++)
             {
                 var match = _lineTypeString[i];
 
                 if (Regex.Match(line, "^" + match + ":" + ".*$").Success)
                 {
-                    lineType = i;
-                    break;
+                    return i;
                 }
 
                 if (line.Length == 0)
                 {
-                    lineType = EndOfHeader;
-                    break;
+                    return EndOfHeader;
                 }
             }
 
-            return lineType;
+            return NotKnownState;
         }
 
         private int ParseHeader(string[] lines)

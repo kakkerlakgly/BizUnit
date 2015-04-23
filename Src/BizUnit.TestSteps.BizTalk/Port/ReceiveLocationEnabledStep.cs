@@ -70,11 +70,11 @@ namespace BizUnit.TestSteps.BizTalk.Port
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
         {
-            var mo = GetreceiveLocationWmiObject(ReceiveLocationName);
+            
 
             bool isActualDisabled;
 
-            using (mo)
+            using (var mo = GetreceiveLocationWmiObject(ReceiveLocationName))
             {
                 isActualDisabled = (bool) mo.GetPropertyValue("IsDisabled");
             }
@@ -105,11 +105,7 @@ namespace BizUnit.TestSteps.BizTalk.Port
 
                 // Build a Query to enumerate the MSBTS_ReceiveLocation instances if an argument
                 // is supplied use it to select only the matching RL.
-                var query = new SelectQuery
-                {
-                    QueryString =
-                        string.Format("SELECT * FROM MSBTS_ReceiveLocation WHERE Name =\"{0}\"", receiveLocation)
-                };
+                var query = new SelectQuery(string.Format("SELECT * FROM MSBTS_ReceiveLocation WHERE Name =\"{0}\"", receiveLocation));
 
                 // Set the query for the searcher.
                 searcher.Query = query;

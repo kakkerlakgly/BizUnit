@@ -371,10 +371,10 @@ namespace BizUnit.CoreSteps.TestSteps
 
             if (null != sqlParams)
             {
-                var paramArray = (from XmlNode sqlParam in sqlParams select context.ReadConfigAsString(sqlParam, "."));
                 //context
 
-                var paramObjs = paramArray.Cast<object>().ToArray();
+                var paramObjs = sqlParams.Cast<XmlNode>()
+                    .Select(sqlParam => context.ReadConfigAsString(sqlParam, ".")).Cast<object>().ToArray();
                 return string.Format(rawSqlQuery, paramObjs);
             }
 

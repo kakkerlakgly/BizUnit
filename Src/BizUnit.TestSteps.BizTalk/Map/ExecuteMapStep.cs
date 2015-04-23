@@ -135,14 +135,15 @@ namespace BizUnit.TestSteps.BizTalk.Map
             var bmt = new BizTalkMapTester(mapType);
             bmt.Execute(Source, Destination);
 
-            Stream data;
             using (var fs = new FileStream(Destination, FileMode.Open, FileAccess.Read))
             {
-                data = StreamHelper.LoadMemoryStream(fs);
+                using (var data = StreamHelper.LoadMemoryStream(fs))
+                {
+                    data.Seek(0, SeekOrigin.Begin);
+                    SubSteps.Aggregate(data, (current, subStep) => subStep.Execute(current, context));
+                }
             }
 
-            data.Seek(0, SeekOrigin.Begin);
-            data = SubSteps.Aggregate(data, (current, subStep) => subStep.Execute(current, context));
         }
 
         /// <summary>

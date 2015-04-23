@@ -67,8 +67,6 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
         {
             get
             {
-                long count = 0;
-
                 if (_socket == null)
                 {
                     throw new Pop3MessageException("Pop3 server not connected");
@@ -83,12 +81,12 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
                     @"^.*\+OK[ |	]+([0-9]+)[ |	]+.*$").Success)
                 {
                     // get number of emails ...
-                    count = long.Parse(Regex
+                    return long.Parse(Regex
                         .Replace(returned.Replace("\r\n", "")
                             , @"^.*\+OK[ |	]+([0-9]+)[ |	]+.*$", "$1"));
                 }
 
-                return (count);
+                return 0;
             }
         }
 
@@ -184,22 +182,19 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
             }
 
             var buffer = new byte[MaxBufferReadSize];
-            string line;
 
             try
             {
                 var byteCount =
                     _socket.Receive(buffer, buffer.Length, 0);
 
-                line =
+                return
                     Encoding.ASCII.GetString(buffer, 0, byteCount);
             }
             catch (Exception e)
             {
                 throw new Pop3ReceiveException(e.ToString());
             }
-
-            return line;
         }
 
         private void LoginToInbox()
@@ -235,8 +230,6 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
         internal bool DeleteEmail()
         {
-            var ret = false;
-
             Send("dele " + _inboxPosition);
 
             var returned = GetPop3String();
@@ -244,10 +237,10 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
             if (Regex.Match(returned,
                 @"^.*\+OK.*$").Success)
             {
-                ret = true;
+                return true;
             }
 
-            return ret;
+            return false;
         }
 
         internal bool NextEmail(long directPosition)
@@ -313,6 +306,7 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
             var size = long.Parse(elements[2]);
 
             // ... else read email data
+            _pop3Message.Dispose();
             _pop3Message = new Pop3Message(_inboxPosition, size, _socket);
 
             return true;

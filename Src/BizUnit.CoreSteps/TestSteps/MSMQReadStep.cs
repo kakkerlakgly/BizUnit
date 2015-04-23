@@ -92,27 +92,27 @@ namespace BizUnit.CoreSteps.TestSteps
             using (var queue = new MessageQueue(queuePath))
             {
                 // Receive msg from queue...
-                var msg = queue.Receive(TimeSpan.FromMilliseconds(timeout), MessageQueueTransactionType.Single);
-
-                // Dump msg content to console...
-                using (var msgData = StreamHelper.LoadMemoryStream(msg.BodyStream))
+                using (var msg = queue.Receive(TimeSpan.FromMilliseconds(timeout), MessageQueueTransactionType.Single))
                 {
-                    StreamHelper.WriteStreamToConsole("MSMQ message data", msgData, context);
+                    using (var msgData = StreamHelper.LoadMemoryStream(msg.BodyStream))
+                    {
+                        StreamHelper.WriteStreamToConsole("MSMQ message data", msgData, context);
 
-                    // Validate data...
-                    try
-                    {
-                        msgData.Seek(0, SeekOrigin.Begin);
-                        context.ExecuteValidator(msgData, validationConfig);
-                    }
-                    catch (Exception e)
-                    {
-                        throw new InvalidOperationException("MSMQReadStep message data was not correct!", e);
-                    }
+                        // Validate data...
+                        try
+                        {
+                            msgData.Seek(0, SeekOrigin.Begin);
+                            context.ExecuteValidator(msgData, validationConfig);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new InvalidOperationException("MSMQReadStep message data was not correct!", e);
+                        }
 
-                    if (null != ctxProps && ctxProps.Count > 0)
-                    {
-                        ProcessContextProperties(context, ctxProps, msg);
+                        if (null != ctxProps && ctxProps.Count > 0)
+                        {
+                            ProcessContextProperties(context, ctxProps, msg);
+                        }
                     }
                 }
             }

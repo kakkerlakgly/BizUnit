@@ -149,8 +149,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
 
 
             // load the facts into array
-            var facts = new object[FactsList.Count];
-            var i = 0;
+            var facts = new List<object>(FactsList.Count);
 
             // Create an instance of the Policy Tester class
             using (var policyTester = new PolicyTester(ruleset))
@@ -166,7 +165,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                             object[] objectArgs = null;
                             if (null != fact.Args)
                             {
-                                objectArgs = fact.Args.Split(',');
+                                objectArgs = fact.Args.Split(',').Cast<object>().ToArray();
                             }
 
                             Type type;
@@ -186,7 +185,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                                 type = Type.GetType(fact.Type);
                             }
 
-                            facts[i] = Activator.CreateInstance(type, objectArgs);
+                            facts.Add(Activator.CreateInstance(type, objectArgs));
                             break;
                         }
                         case "DocumentFact":
@@ -195,7 +194,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                             var xd1 = new XmlDocument();
                             xd1.Load(fact.InstanceDocument);
                             var txd = new TypedXmlDocument(fact.SchemaType, xd1);
-                            facts[i] = txd;
+                            facts.Add(txd);
                             break;
                         }
                         case "DataConnectionFact":
@@ -204,7 +203,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                             var conn = new SqlConnection(fact.ConnectionString);
                             conn.Open();
                             var dc = new DataConnection(fact.Dataset, fact.TableName, conn);
-                            facts[i] = dc;
+                            facts.Add(dc);
                             break;
                         }
                         case "dataTable":
@@ -224,16 +223,15 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                             if (fact.Type == "dataRow")
                             {
                                 var tdr = new TypedDataRow(ds.Tables[fact.TableName].Rows[0], tdt);
-                                facts[i] = tdr;
+                                facts.Add(tdr);
                             }
                             else
                             {
-                                facts[i] = tdt;
+                                facts.Add(tdt);
                             }
                             break;
                         }
                     }
-                    i++;
                 }
 
                 // Create an instance of the DebugTrackingInterceptor
@@ -242,7 +240,7 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                     // Execute Policy Tester
                     try
                     {
-                        policyTester.Execute(facts, dti);
+                        policyTester.Execute(facts.ToArray(), dti);
                     }
                     catch (Exception e)
                     {
@@ -262,12 +260,12 @@ namespace BizUnit.TestSteps.BizTalk.Bre
                         var txd = (TypedXmlDocument) fact;
 
                         context.LogData("TypedXmlDocument result: ", txd.Document.OuterXml);
-                        var data = StreamHelper.LoadMemoryStream(txd.Document.OuterXml);
-                        // Validate if configured...
-                        // HACK: We need to prevent ExecuteValidator for /each/ TypedXmlDocument
-                        if (txd.DocumentType == "UBS.CLAS.PoC.Schemas.INSERTS")
+                        using (var data = StreamHelper.LoadMemoryStream(txd.Document.OuterXml))
                         {
-                            data = SubSteps.Aggregate(data, (current, subStep) => subStep.Execute(current, context));
+                            if (txd.DocumentType == "UBS.CLAS.PoC.Schemas.INSERTS")
+                            {
+                                SubSteps.Aggregate(data, (current, subStep) => subStep.Execute(current, context));
+                            }
                         }
 
                         break;

@@ -71,18 +71,13 @@ namespace BizUnit.CoreSteps.Utilities
         /// <returns>MemoryStream containing the data in the FILE</returns>
         public static Stream LoadFileToStream(string filePath, double timeout)
         {
-            Stream ms = null;
-            var loaded = false;
-
             var now = DateTime.Now;
 
             do
             {
                 try
                 {
-                    ms = LoadFileToStream(filePath);
-                    loaded = true;
-                    break;
+                    return LoadFileToStream(filePath);
                 }
                 catch (Exception)
                 {
@@ -93,14 +88,8 @@ namespace BizUnit.CoreSteps.Utilities
                 }
             } while (DateTime.Now < now.AddMilliseconds(timeout));
 
-
-            if (!loaded)
-            {
-                throw new InvalidOperationException(
-                    string.Format("The file: {0} was not found within the timeout period!", filePath));
-            }
-
-            return ms;
+            throw new InvalidOperationException(
+                string.Format("The file: {0} was not found within the timeout period!", filePath));
         }
 
         /// <summary>

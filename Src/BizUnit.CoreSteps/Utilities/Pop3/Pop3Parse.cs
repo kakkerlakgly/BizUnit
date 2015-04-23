@@ -94,11 +94,11 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
                 if (match.Groups["encoding"].Value == "B")
                 {
                     var data = Convert.FromBase64String(match.Groups["data"].Value);
-                    subject = Encoding.ASCII.GetString(data);
+                    return Encoding.ASCII.GetString(data);
                 }
                 else
                 {
-                    subject = Pop3Statics.FromQuotedPrintable(match.Groups["data"].Value);
+                    return Pop3Statics.FromQuotedPrintable(match.Groups["data"].Value);
                 }
             }
             return subject;
@@ -172,84 +172,70 @@ namespace BizUnit.CoreSteps.Utilities.Pop3
 
         internal static int GetSubHeaderNextLineType(string line)
         {
-            var lineType = UnknownType;
-
             for (var i = 0; i < NextLineTypeString.Length; i++)
             {
                 var match = NextLineTypeString[i];
 
                 if (Regex.Match(line, "^[ |	]+" + match + "=" + ".*$").Success)
                 {
-                    lineType = i;
-                    break;
+                    return i;
                 }
                 if (line.Length == 0)
                 {
-                    lineType = EndOfHeader;
-                    break;
+                    return EndOfHeader;
                 }
             }
 
-            return lineType;
+            return UnknownType;
         }
 
         internal static int GetSubHeaderLineType(string line)
         {
-            var lineType = UnknownType;
-
             for (var i = 0; i < LineSubTypeString.Length; i++)
             {
                 var match = LineSubTypeString[i];
 
                 if (Regex.Match(line, "^" + match + ":" + ".*$").Success)
                 {
-                    lineType = i;
-                    break;
+                    return i;
                 }
                 if (line.Length == 0)
                 {
-                    lineType = EndOfHeader;
-                    break;
+                    return EndOfHeader;
                 }
             }
 
-            return lineType;
+            return UnknownType;
         }
 
         internal static int GetSubHeaderLineType(string line, string boundary)
         {
-            var lineType = UnknownType;
-
             for (var i = 0; i < LineSubTypeString.Length; i++)
             {
                 var match = LineSubTypeString[i];
 
                 if (Regex.Match(line, "^" + match + ":" + ".*$").Success)
                 {
-                    lineType = i;
-                    break;
+                    return i;
                 }
 
                 if (line.Equals("--" + boundary))
                 {
-                    lineType = MultipartBoundaryFound;
-                    break;
+                    return MultipartBoundaryFound;
                 }
 
                 if (line.Equals("--" + boundary + "--"))
                 {
-                    lineType = ComponetsDone;
-                    break;
+                    return ComponetsDone;
                 }
 
                 if (line.Length == 0)
                 {
-                    lineType = EndOfHeader;
-                    break;
+                    return EndOfHeader;
                 }
             }
 
-            return lineType;
+            return UnknownType;
         }
     }
 }
