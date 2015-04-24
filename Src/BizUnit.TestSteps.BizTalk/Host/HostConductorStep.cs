@@ -13,95 +13,99 @@
 //---------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Management;
 using BizUnit.Xaml;
-using System.Linq;
 
 namespace BizUnit.TestSteps.BizTalk.Host
 {
     /// <summary>
-	/// The HostConductorStep test step maybe used to start or stop a BizTalk host
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
-    ///	<TestStep assemblyPath="" typeName="BizUnit.BizTalkSteps.HostConductorStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
-	///		<Action>start|stop</Action>
-    ///		<HostInstanceName>BizTalkServerApplication</HostInstanceName>
-    ///		<Server>RecvHost</Server>
-    ///     <Logon>zeus\\administrator</Logon>
-    ///     <PassWord>appollo*1</PassWord>
-    ///     <GrantLogOnAsService>true</GrantLogOnAsService>
-	///	</TestStep>
-	///	</code>
-	///	
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>HostInstanceName</term>
-	///			<description>The name of the host instance to start|stop</description>
-	///		</item>
-	///		<item>
-	///			<term>Action</term>
-    ///			<description>A value of start or stop<para>(start|stop)</para></description>
-	///		</item>
-    ///		<item>
-    ///			<term>Server</term>
-    ///			<description>The server(s) where the Biztalk host instance is running, a commer delimeted list of servers may be supplied (optional)</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>Logon</term>
-    ///			<description>String containing the logon information used by the host instance (optional - unless Server is supplied)</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>PassWord</term>
-    ///			<description>String containing the password for the host (optional - unless Logon is supplied)</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>GrantLogOnAsService (optional - unless Logon is supplied)</term>
-    ///			<description>Boolean determining whether the 'Log On As Service' privilege should be automatically granted to the specified logon user or not. This flag only has effect when the HostType property is set to In-process</description>
-    ///		</item>
-    ///	</list>
-	///	</remarks>	
+    ///     The HostConductorStep test step maybe used to start or stop a BizTalk host
+    /// </summary>
+    /// <remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath=""
+    ///             typeName="BizUnit.BizTalkSteps.HostConductorStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
+    ///             <Action>start|stop</Action>
+    ///             <HostInstanceName>BizTalkServerApplication</HostInstanceName>
+    ///             <Server>RecvHost</Server>
+    ///             <Logon>zeus\\administrator</Logon>
+    ///             <PassWord>appollo*1</PassWord>
+    ///             <GrantLogOnAsService>true</GrantLogOnAsService>
+    ///         </TestStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>HostInstanceName</term>
+    ///             <description>The name of the host instance to start|stop</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>Action</term>
+    ///             <description>
+    ///                 A value of start or stop
+    ///                 <para>(start|stop)</para>
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <term>Server</term>
+    ///             <description>
+    ///                 The server(s) where the Biztalk host instance is running, a commer delimeted list of servers
+    ///                 may be supplied (optional)
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <term>Logon</term>
+    ///             <description>
+    ///                 String containing the logon information used by the host instance (optional - unless Server is
+    ///                 supplied)
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <term>PassWord</term>
+    ///             <description>String containing the password for the host (optional - unless Logon is supplied)</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>GrantLogOnAsService (optional - unless Logon is supplied)</term>
+    ///             <description>
+    ///                 Boolean determining whether the 'Log On As Service' privilege should be automatically granted
+    ///                 to the specified logon user or not. This flag only has effect when the HostType property is set to
+    ///                 In-process
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     public class HostConductorStep : TestStepBase
-	{
+    {
         /// <summary>
-	    /// 
-	    /// </summary>
-	    public string Action { get; set; }
+        /// </summary>
+        public string Action { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         public string HostInstanceName { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         public string Servers { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         public string Logon { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         public string PassWord { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         public bool GrantLogOnAsService { get; set; }
 
         /// <summary>
-        /// 
         /// </summary>
         public override void Execute(Context context)
         {
@@ -114,7 +118,7 @@ namespace BizUnit.TestSteps.BizTalk.Host
                     {
                         if (!string.IsNullOrEmpty(Logon))
                         {
-                            var creds = new object[] { Logon, PassWord, GrantLogOnAsService };
+                            var creds = new object[] {Logon, PassWord, GrantLogOnAsService};
                             mo.InvokeMethod("Install", creds);
                         }
 
@@ -146,60 +150,60 @@ namespace BizUnit.TestSteps.BizTalk.Host
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public override void Validate(Context context)
         {
             if (string.IsNullOrEmpty(Action))
             {
-                throw new ArgumentNullException("Action is either null or an empty string");
+                throw new InvalidOperationException("Action is either null or an empty string");
             }
 
             if (string.IsNullOrEmpty(HostInstanceName))
             {
-                throw new ArgumentNullException("HostName is either null or an empty string");
+                throw new InvalidOperationException("HostName is either null or an empty string");
             }
 
             if (string.IsNullOrEmpty(Servers))
             {
-                throw new ArgumentNullException("Servers is either null or an empty string");
+                throw new InvalidOperationException("Servers is either null or an empty string");
             }
 
             if (null != Logon && 0 < Servers.Length)
             {
                 if (string.IsNullOrEmpty(PassWord))
                 {
-                    throw new ArgumentNullException("PassWord is either null or an empty string");
+                    throw new InvalidOperationException("PassWord is either null or an empty string");
                 }
             }
         }
 
         private static ManagementObject GetHostInstanceWmiObject(string server, string hostName)
-		{
+        {
             // 2 represents an isolated host and 1 represents an in-process hosts, only an in-process 
             // can be stopped...
-			const int hostType = 1;
+            const int hostType = 1;
 
             var options = new ConnectionOptions
-                              {
-                                  Impersonation = ImpersonationLevel.Impersonate,
-                                  EnablePrivileges = true
-                              };
+            {
+                Impersonation = ImpersonationLevel.Impersonate,
+                EnablePrivileges = true
+            };
 
             using (var searcher = new ManagementObjectSearcher())
             {
-
-                ManagementScope scope = null == server ? new ManagementScope("root\\MicrosoftBizTalkServer", options) : new ManagementScope("\\\\" + server + "\\root\\MicrosoftBizTalkServer", options);
+                var scope = null == server
+                    ? new ManagementScope("root\\MicrosoftBizTalkServer", options)
+                    : new ManagementScope("\\\\" + server + "\\root\\MicrosoftBizTalkServer", options);
 
                 searcher.Scope = scope;
 
                 // Build a Query to enumerate the MSBTS_hostInstance instances 
                 var query = new SelectQuery
-                                {
-                                    QueryString =
-                                        String.Format("SELECT * FROM MSBTS_HostInstance where HostName='" + hostName +
-                                                      "' AND HostType=" + hostType.ToString())
-                                };
+                {
+                    QueryString =
+                        string.Format("SELECT * FROM MSBTS_HostInstance where HostName='" + hostName +
+                                      "' AND HostType=" + hostType)
+                };
 
                 // Set the query for the searcher.
                 searcher.Query = query;
@@ -211,10 +215,10 @@ namespace BizUnit.TestSteps.BizTalk.Host
                 }
                 catch (InvalidOperationException ex)
                 {
-                    throw new InvalidOperationException(string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName));
+                    throw new InvalidOperationException(
+                        string.Format("The WMI object for the Host Instance:{0} could not be retrieved.", hostName));
                 }
             }
-		}
-	}
+        }
+    }
 }
-

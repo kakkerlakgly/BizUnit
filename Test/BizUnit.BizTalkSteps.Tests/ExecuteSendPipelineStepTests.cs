@@ -1,4 +1,3 @@
-
 using BizUnit.TestSteps.BizTalk.Pipeline;
 using BizUnit.TestSteps.File;
 using BizUnit.TestSteps.ValidationSteps.Xml;
@@ -72,7 +71,7 @@ namespace BizUnit.BizTalkSteps.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(TestStepExecutionException))]
+        [ExpectedException(typeof (TestStepExecutionException))]
         public void ExecuteSendPipelineWithDefaultXmlAsmWithImportedSchemaTest()
         {
             // Create test case...
@@ -97,7 +96,7 @@ namespace BizUnit.BizTalkSteps.Tests
                     @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
                 TypeName = "BizUnit.BizTalkTestArtifacts.Schema3Env"
             };
-            pipeStep.DocSpecs.Add(ds); 
+            pipeStep.DocSpecs.Add(ds);
             pipeStep.SourceDir = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\";
             pipeStep.SearchPattern = "Child*.xml";
             pipeStep.Destination = "Output.021.xml";
@@ -142,7 +141,8 @@ namespace BizUnit.BizTalkSteps.Tests
             TestCase.SaveToFile(tc, "ExecuteSendPipelineWithDefaultXmlAsmWithImportedSchemaTest.xaml");
 
             // Execute test csse using serialised test case to test round tripping of serialisation...
-            var bu = new BizUnit(TestCase.LoadFromFile("ExecuteSendPipelineWithDefaultXmlAsmWithImportedSchemaTest.xaml"));
+            var bu =
+                new BizUnit(TestCase.LoadFromFile("ExecuteSendPipelineWithDefaultXmlAsmWithImportedSchemaTest.xaml"));
             bu.RunTest();
         }
 
@@ -203,7 +203,8 @@ namespace BizUnit.BizTalkSteps.Tests
             TestCase.SaveToFile(tc, "ExecuteSendPipelineConfiguredDocSpecXmlAsmWithSimpleSchema.xaml");
 
             // Execute test csse using serialised test case to test round tripping of serialisation...
-            var bu = new BizUnit(TestCase.LoadFromFile("ExecuteSendPipelineConfiguredDocSpecXmlAsmWithSimpleSchema.xaml"));
+            var bu =
+                new BizUnit(TestCase.LoadFromFile("ExecuteSendPipelineConfiguredDocSpecXmlAsmWithSimpleSchema.xaml"));
             bu.RunTest();
         }
     }

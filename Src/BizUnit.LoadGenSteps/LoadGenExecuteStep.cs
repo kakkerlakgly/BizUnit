@@ -23,43 +23,41 @@ using LoadGen;
 namespace BizUnit.LoadGenSteps
 {
     /// <summary>
-    /// The LoadGenExecuteStep step executes a LoadGen test
+    ///     The LoadGenExecuteStep step executes a LoadGen test
     /// </summary>
-    ///  
     /// <remarks>
-    /// 
-    /// <code escaped="true">
-    ///	<TestStep assemblyPath="" typeName="BizUnit.LoadGenSteps.LoadGenExecuteStep, BizUnit.LoadGenSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
-    ///		<LoadGenTestConfig>c:\LoadTests\MemphisFeedPerfTest001.xml</LoadGenTestConfig>
-    ///	</TestStep>
-    /// </code>
-    ///
-    ///	<list type="table">
-    ///		<listheader>
-    ///			<term>Tag</term>
-    ///			<description>Description</description>
-    ///		</listheader>
-    ///		<item>
-    ///			<term>LoadGenTestConfig</term>
-    ///			<description>The path to the LoadGen test configuration</description>
-    ///		</item>
-    ///	</list>
-    ///	</remarks>
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath=""
+    ///             typeName="BizUnit.LoadGenSteps.LoadGenExecuteStep, BizUnit.LoadGenSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
+    ///             <LoadGenTestConfig>c:\LoadTests\MemphisFeedPerfTest001.xml</LoadGenTestConfig>
+    ///         </TestStep>
+    ///  </code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>LoadGenTestConfig</term>
+    ///             <description>The path to the LoadGen test configuration</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     [Obsolete("LoadGenExecuteStep has been deprecated.")]
     public class LoadGenExecuteStep : ITestStep
     {
-        private Context _ctx;
         private bool _bExitApp;
+        private Context _ctx;
 
-		/// <summary>
-		/// ITestStep.Execute() implementation
-		/// </summary>
-		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(XmlNode testConfig, Context context)
-		{
+        /// <summary>
+        ///     ITestStep.Execute() implementation
+        /// </summary>
+        /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        public void Execute(XmlNode testConfig, Context context)
+        {
             _ctx = context;
-            string loadGenTestConfig = context.ReadConfigAsString(testConfig, "LoadGenTestConfig");
+            var loadGenTestConfig = context.ReadConfigAsString(testConfig, "LoadGenTestConfig");
 
             try
             {
@@ -97,12 +95,12 @@ namespace BizUnit.LoadGenSteps
 
         private void LoadGenStopped(object sender, LoadGenStopEventArgs e)
         {
-            TimeSpan span1 = e.LoadGenStopTime.Subtract(e.LoadGenStartTime);
+            var span1 = e.LoadGenStopTime.Subtract(e.LoadGenStartTime);
             _ctx.LogInfo("FilesSent: " + e.NumFilesSent);
             _ctx.LogInfo("StartTime: " + e.LoadGenStartTime);
             _ctx.LogInfo("StopTime:  " + e.LoadGenStopTime);
             _ctx.LogInfo("DeltaTime: " + span1.TotalSeconds + "Secs.");
-            _ctx.LogInfo("Rate:      " + ((e.NumFilesSent) / span1.TotalSeconds));
+            _ctx.LogInfo("Rate:      " + ((e.NumFilesSent)/span1.TotalSeconds));
 
             _bExitApp = true;
         }

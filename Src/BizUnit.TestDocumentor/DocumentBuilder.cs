@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -8,19 +7,16 @@ using BizUnit.Xaml;
 
 namespace BizUnit.TestDocumentor
 {
-    
     /// <summary>
-    /// 
     /// </summary>
     public class DocumentBuilder
     {
         private const string XmlExtension = "*.xml";
-        readonly IDictionary<string, IList<TestCase>> _testCases = new Dictionary<string, IList<TestCase>>();
-        readonly IDictionary<string, Exception> _testCaseLoadErrors = new Dictionary<string, Exception>();
         private readonly ILogger _logger;
+        private readonly IDictionary<string, Exception> _testCaseLoadErrors = new Dictionary<string, Exception>();
+        private readonly IDictionary<string, IList<TestCase>> _testCases = new Dictionary<string, IList<TestCase>>();
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="logger"></param>
         public DocumentBuilder(ILogger logger)
@@ -29,7 +25,6 @@ namespace BizUnit.TestDocumentor
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="templateReportPath"></param>
         /// <param name="templateCategoryPath"></param>
@@ -46,12 +41,12 @@ namespace BizUnit.TestDocumentor
             string outpurFileName,
             bool searchRecursively)
         {
-            return GenerateDocumentation(templateReportPath, templateCategoryPath, templateTestCasePath, testCaseDirectory,
-                                  outpurFileName, null, searchRecursively);
+            return GenerateDocumentation(templateReportPath, templateCategoryPath, templateTestCasePath,
+                testCaseDirectory,
+                outpurFileName, null, searchRecursively);
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="templateReportPath"></param>
         /// <param name="templateCategoryPath"></param>
@@ -62,26 +57,27 @@ namespace BizUnit.TestDocumentor
         /// <param name="searchRecursively"></param>
         /// <returns></returns>
         public string GenerateDocumentation(
-            string templateReportPath, 
-            string templateCategoryPath, 
-            string templateTestCasePath, 
-            string testCaseDirectory, 
+            string templateReportPath,
+            string templateCategoryPath,
+            string templateTestCasePath,
+            string testCaseDirectory,
             string outpurFileName,
             string bizUnitAssemblyPath,
             bool searchRecursively)
         {
             LoadBizUnitAssemblies(bizUnitAssemblyPath);
             LoadTestCases(testCaseDirectory, searchRecursively);
-            BuildReport(templateReportPath, templateCategoryPath, templateTestCasePath, testCaseDirectory, outpurFileName, searchRecursively);
+            BuildReport(templateReportPath, templateCategoryPath, templateTestCasePath, testCaseDirectory,
+                outpurFileName, searchRecursively);
 
             return null;
         }
 
         private static void LoadBizUnitAssemblies(string bizUnitAssemblyPath)
         {
-            if(string.IsNullOrEmpty(bizUnitAssemblyPath))
+            if (string.IsNullOrEmpty(bizUnitAssemblyPath))
             {
-                return; 
+                return;
             }
 
             var assemblies = Directory.GetFiles(bizUnitAssemblyPath, "*.dll");
@@ -104,15 +100,18 @@ namespace BizUnit.TestDocumentor
         {
             var sb = new StringBuilder();
             _logger.Info("Loading TemplateReport: {0}", templateReportPath);
-            string templateReport = new StreamReader(File.Open(templateReportPath, FileMode.Open, FileAccess.Read)).ReadToEnd();
+            var templateReport =
+                new StreamReader(File.Open(templateReportPath, FileMode.Open, FileAccess.Read)).ReadToEnd();
 
             _logger.Info("Loading TemplateCategory: {0}", templateCategoryPath);
-            string categoryTemplate = new StreamReader(File.Open(templateCategoryPath, FileMode.Open, FileAccess.Read)).ReadToEnd();
+            var categoryTemplate =
+                new StreamReader(File.Open(templateCategoryPath, FileMode.Open, FileAccess.Read)).ReadToEnd();
 
             _logger.Info("Loading TemplateTestCase: {0}", templateTestCasePath);
-            string testCaseTemplate = new StreamReader(File.Open(templateTestCasePath, FileMode.Open, FileAccess.Read)).ReadToEnd();
+            var testCaseTemplate =
+                new StreamReader(File.Open(templateTestCasePath, FileMode.Open, FileAccess.Read)).ReadToEnd();
 
-            foreach(var category in _testCases)
+            foreach (var category in _testCases)
             {
                 sb.Append(categoryTemplate.Replace("##Category##", category.Key));
 
@@ -130,17 +129,19 @@ namespace BizUnit.TestDocumentor
                     sw.WriteLine(report);
                 }
             }
-       }
+        }
 
-        private static string BuildTestCaseFragment(string testCaseTemplate, TestCase test, string testCaseDirectory, bool searchRecursively)
+        private static string BuildTestCaseFragment(string testCaseTemplate, TestCase test, string testCaseDirectory,
+            bool searchRecursively)
         {
-            string result = testCaseTemplate.Replace("##TestCaseName##", test.Name);
+            var result = testCaseTemplate.Replace("##TestCaseName##", test.Name);
             result = result.Replace("##TestCaseDescription##", test.Description);
             result = result.Replace("##TestCasePurpose##", test.Purpose);
             result = result.Replace("##TestCaseReference##", test.Reference);
             result = result.Replace("##TestCasePreconditions##", test.Preconditions);
 
-            result = result.Replace("##TestCaseDependancies##", GetTestCaseDependancies(test, testCaseDirectory, searchRecursively));
+            result = result.Replace("##TestCaseDependancies##",
+                GetTestCaseDependancies(test, testCaseDirectory, searchRecursively));
 
             result = result.Replace("##BizUnitVersion##", test.BizUnitVersion);
             return result.Replace("##TestCaseExpectedResults##", test.ExpectedResults);
@@ -150,16 +151,20 @@ namespace BizUnit.TestDocumentor
         {
             var sb = new StringBuilder();
 
-            bool importFound = AddImportedTestCases(test.SetupSteps, sb, "Setup test cases: ", false, testCaseDirectory, searchRecursively);
-            importFound = AddImportedTestCases(test.ExecutionSteps, sb, "Execution test cases: ", importFound, testCaseDirectory, searchRecursively);
-            importFound = AddImportedTestCases(test.CleanupSteps, sb, "Cleanup test cases: ", importFound, testCaseDirectory, searchRecursively);
+            var importFound = AddImportedTestCases(test.SetupSteps, sb, "Setup test cases: ", false, testCaseDirectory,
+                searchRecursively);
+            importFound = AddImportedTestCases(test.ExecutionSteps, sb, "Execution test cases: ", importFound,
+                testCaseDirectory, searchRecursively);
+            importFound = AddImportedTestCases(test.CleanupSteps, sb, "Cleanup test cases: ", importFound,
+                testCaseDirectory, searchRecursively);
 
             return (0 < sb.Length) ? sb.ToString() : "None";
         }
 
-        private static bool AddImportedTestCases(IEnumerable<TestStepBase> testCollection, StringBuilder sb, string importLabel, bool importFound, string testCaseDirectory, bool searchRecursively)
+        private static bool AddImportedTestCases(IEnumerable<TestStepBase> testCollection, StringBuilder sb,
+            string importLabel, bool importFound, string testCaseDirectory, bool searchRecursively)
         {
-            bool found = false;
+            var found = false;
 
             foreach (var step in testCollection)
             {
@@ -194,27 +199,32 @@ namespace BizUnit.TestDocumentor
             return found;
         }
 
-        private static TestCase GetBizUnitTestCase(ImportTestCaseStep importContainer, string testCaseDirectory, bool searchRecursively)
+        private static TestCase GetBizUnitTestCase(ImportTestCaseStep importContainer, string testCaseDirectory,
+            bool searchRecursively)
         {
             TestCase itc = null;
             try
             {
                 itc = TestCase.LoadFromFile(importContainer.TestCasePath);
             }
-            catch (DirectoryNotFoundException) {}
+            catch (DirectoryNotFoundException)
+            {
+            }
 
-            if(null == itc)
+            if (null == itc)
             {
                 var fileName = Path.GetFileName(importContainer.TestCasePath);
 
-                var filePath = Directory.GetFiles(testCaseDirectory, fileName, searchRecursively ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
-                if(1 == filePath.Length)
+                var filePath = Directory.GetFiles(testCaseDirectory, fileName,
+                    searchRecursively ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+                if (1 == filePath.Length)
                 {
                     itc = TestCase.LoadFromFile(filePath[0]);
                 }
                 else if (1 < filePath.Length)
                 {
-                    throw new InvalidOperationException(string.Format("Ambiguous file name specified as import: {0}", fileName));
+                    throw new InvalidOperationException(string.Format("Ambiguous file name specified as import: {0}",
+                        fileName));
                 }
             }
 
@@ -223,10 +233,11 @@ namespace BizUnit.TestDocumentor
 
         private void LoadTestCases(string testCaseDirectory, bool searchRecursively)
         {
-            var files = Directory.GetFiles(testCaseDirectory, XmlExtension, searchRecursively ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
+            var files = Directory.GetFiles(testCaseDirectory, XmlExtension,
+                searchRecursively ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
             _logger.Info("{0} test cases found.", files.Length);
 
-            foreach(var file in files)
+            foreach (var file in files)
             {
                 try
                 {

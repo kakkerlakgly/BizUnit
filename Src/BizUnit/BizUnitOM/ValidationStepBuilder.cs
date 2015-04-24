@@ -19,8 +19,8 @@ using BizUnit.Common;
 namespace BizUnit.BizUnitOM
 {
     /// <summary>
-    /// The ValidationStepBuilder abstracts a validation sub step, it is responsible for 
-    /// creating and configuring a validation sub step that implements IValidationStepOM.
+    ///     The ValidationStepBuilder abstracts a validation sub step, it is responsible for
+    ///     creating and configuring a validation sub step that implements IValidationStepOM.
     /// </summary>
     [Obsolete("ValidationStepBuilder has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
     public class ValidationStepBuilder : TestStepBuilderBase
@@ -28,18 +28,20 @@ namespace BizUnit.BizUnitOM
         private readonly IValidationStepOM _validationStep;
 
         /// <summary>
-        /// ValidationStepBuilder constructor.
+        ///     ValidationStepBuilder constructor.
         /// </summary>
-        /// 
-        /// <param name='config'>The Xml configuration for a test step that 
-        /// implements the ITestStep interface.</param>
+        /// <param name='config'>
+        ///     The Xml configuration for a test step that
+        ///     implements the ITestStep interface.
+        /// </param>
         public ValidationStepBuilder(XmlNode config)
-            : base(config) {}
+            : base(config)
+        {
+        }
 
         /// <summary>
-        /// ValidationStepBuilder constructor.
+        ///     ValidationStepBuilder constructor.
         /// </summary>
-        /// 
         /// <param name='typeName'>The type name of the test step to be created by the builder.</param>
         /// <param name='assemblyPath'>The assembly path name of the test step to be created by the builder.</param>
         public ValidationStepBuilder(string typeName, string assemblyPath)
@@ -51,19 +53,18 @@ namespace BizUnit.BizUnitOM
             _validationStep = TestStep as IValidationStepOM;
             if (null == _validationStep)
             {
-                throw new ArgumentException(string.Format("The validation step type: {0}, created is invalid: IValidationStepOM is not implemented", typeName));
+                throw new ArgumentException(
+                    string.Format(
+                        "The validation step type: {0}, created is invalid: IValidationStepOM is not implemented",
+                        typeName));
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public IValidationStepOM ValidationStep
         {
-            get
-            {
-                return _validationStep;
-            }
+            get { return _validationStep; }
         }
     }
 }

@@ -19,6 +19,7 @@ using System.Reflection;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
+
 [assembly: AssemblyTitle("MQSeriesSteps")]
 [assembly: AssemblyDescription("MQSeriesSteps for BizUnit Test Framework")]
 [assembly: AssemblyConfiguration("")]
@@ -27,4 +28,3 @@ using System.Reflection;
 [assembly: AssemblyCopyright("Copyright © 2004-2011, Kevin B. Smith. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-

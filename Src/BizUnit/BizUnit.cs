@@ -25,127 +25,117 @@ using BizUnit.Xaml;
 namespace BizUnit
 {
     /// <summary>
-    /// BizUnit test framework for the rapid development of automated test cases. Test cases may be created as 'coded tests'
-    /// or in XAML. 
-    /// <para>
-    ///	Test cases have three stages:
-    ///	<para>1. TestSetup - used to setup the conditions ready to execute the test</para>
-    ///	<para>2. TestExecution - the main execution stage of the test</para>
-    ///	<para>3: TestCleanup - the final stage is always executed regardless of whether the test passes 
-    ///	or fails in order to leave the system in the state prior to executing the test</para>
-    ///	</para>
-    /// 
+    ///     BizUnit test framework for the rapid development of automated test cases. Test cases may be created as 'coded
+    ///     tests'
+    ///     or in XAML.
+    ///     <para>
+    ///         Test cases have three stages:
+    ///         <para>1. TestSetup - used to setup the conditions ready to execute the test</para>
+    ///         <para>2. TestExecution - the main execution stage of the test</para>
+    ///         <para>
+    ///             3: TestCleanup - the final stage is always executed regardless of whether the test passes
+    ///             or fails in order to leave the system in the state prior to executing the test
+    ///         </para>
+    ///     </para>
     /// </summary>
-    /// 
     /// <remarks>
-    /// The following example demonstrates how to create a BizUnit coded test and execute it:
+    ///     The following example demonstrates how to create a BizUnit coded test and execute it:
+    ///     <code escaped="true">
+    ///  namespace WoodgroveBank.BVTs
+    /// 	{
+    ///      using System;
+    ///      using NUnit.Framework;
+    ///      using BizUnit;
     /// 
-    /// <code escaped="true">
-    /// namespace WoodgroveBank.BVTs
-    ///	{
-    ///     using System;
-    ///     using NUnit.Framework;
-    ///     using BizUnit;
-    ///
-    ///     // This is an example of calling BizUnit from NUnit...
-    ///     [TestFixture]
-    ///     public class SmokeTests
-    ///     {
-    ///         // Create the test case
-    ///         var testCase = new TestCase();
-    ///     
-    ///         // Create test steps...
-    ///         var delayStep = new DelayStep {DelayMilliSeconds = 500};
-    ///     
-    ///         // Add test steps to the required test stage
-    ///         testCase.ExecutionSteps.Add(delayStep);
-    ///     
-    ///         // Create a new instance of BizUnit and run the test
-    ///         var bizUnit = new BizUnit(testCase);
-    ///         bizUnit.RunTest();
-    ///     }
-    /// }		
-    ///	</code>
-    /// 
-    /// <para>
-    ///	The following XML shows the XAML for the coded test case shown above: 
-    /// </para> 
-    /// <code escaped="true">
-    /// <TestCase 
-    ///   Description="{x:Null}" 
-    ///   ExpectedResults="{x:Null}" 
-    ///   Name="{x:Null}" Preconditions="{x:Null}" 
-    ///   Purpose="{x:Null}" Reference="{x:Null}" 
-    ///   BizUnitVersion="4.0.133.0" 
-    ///   xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit" 
-    ///   xmlns:btt="clr-namespace:BizUnit.TestSteps.Time;assembly=BizUnit.TestSteps" 
-    ///   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    ///   <TestCase.ExecutionSteps>
-    ///     <btt:DelayStep 
-    ///       SubSteps="{x:Null}" 
-    ///       DelayMilliSeconds="500" 
-    ///       FailOnError="True" 
-    ///       RunConcurrently="False" />
-    ///     </TestCase.ExecutionSteps>
-    ///   </TestCase>    
-    /// </code>
+    ///      // This is an example of calling BizUnit from NUnit...
+    ///      [TestFixture]
+    ///      public class SmokeTests
+    ///      {
+    ///          // Create the test case
+    ///          var testCase = new TestCase();
+    ///      
+    ///          // Create test steps...
+    ///          var delayStep = new DelayStep {DelayMilliSeconds = 500};
+    ///      
+    ///          // Add test steps to the required test stage
+    ///          testCase.ExecutionSteps.Add(delayStep);
+    ///      
+    ///          // Create a new instance of BizUnit and run the test
+    ///          var bizUnit = new BizUnit(testCase);
+    ///          bizUnit.RunTest();
+    ///      }
+    ///  }		
+    /// 	</code>
+    ///     <para>
+    ///         The following XML shows the XAML for the coded test case shown above:
+    ///     </para>
+    ///     <code escaped="true">
+    ///  <TestCase
+    ///             Description="{x:Null}"
+    ///             ExpectedResults="{x:Null}"
+    ///             Name="{x:Null}" Preconditions="{x:Null}"
+    ///             Purpose="{x:Null}" Reference="{x:Null}"
+    ///             BizUnitVersion="4.0.133.0"
+    ///             xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit"
+    ///             xmlns:btt="clr-namespace:BizUnit.TestSteps.Time;assembly=BizUnit.TestSteps"
+    ///             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    ///             <TestCase.ExecutionSteps>
+    ///                 <btt:DelayStep
+    ///                     SubSteps="{x:Null}"
+    ///                     DelayMilliSeconds="500"
+    ///                     FailOnError="True"
+    ///                     RunConcurrently="False" />
+    ///             </TestCase.ExecutionSteps>
+    ///         </TestCase>    
+    ///  </code>
     /// </remarks>
     public class BizUnit
     {
-        XmlNodeList _setupSteps;
-        XmlNodeList _executeSteps;
-        XmlNodeList _teardownSteps;
-        string _testName = "Unknown";
-        Exception _executionException;
-        Context _context;
-        internal ILogger Logger;
-        readonly ConcurrentQueue<ConcurrentTestStepWrapper> _completedConcurrentSteps = new ConcurrentQueue<ConcurrentTestStepWrapper>();
-        int _inflightQueueDepth;
-        TestGroupPhase _testGroupPhase = TestGroupPhase.Unknown;
-        private BizUnitTestCase _testCaseObjectModel;
-        private TestCase _xamlTestCase;
         internal const string BizUnitTestCaseStartTime = "BizUnitTestCaseStartTime";
         private const string BizUnitTestCaseName = "BizUnitTestCaseName";
 
+        private readonly ConcurrentQueue<ConcurrentTestStepWrapper> _completedConcurrentSteps =
+            new ConcurrentQueue<ConcurrentTestStepWrapper>();
+
+        private XmlNodeList _executeSteps;
+        private Exception _executionException;
+        private int _inflightQueueDepth;
+        private XmlNodeList _setupSteps;
+        private XmlNodeList _teardownSteps;
+        private BizUnitTestCase _testCaseObjectModel;
+        private TestGroupPhase _testGroupPhase = TestGroupPhase.Unknown;
+        private string _testName = "Unknown";
+        private TestCase _xamlTestCase;
+        internal ILogger Logger;
+
         /// <summary>
-        /// 
-        /// </summary>
-        public event EventHandler<TestStepEventArgs> TestStepStartEvent;
-        /// <summary>
-        /// 
-        /// </summary>
-        public event EventHandler<TestStepEventArgs> TestStepStopEvent;
-        
-        /// <summary>
-        /// BizUnit constructor.
+        ///     BizUnit constructor.
         /// </summary>
         /// <param name="configFile">The path of the test case file, maybe a relavtive path.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit:
+        ///     The following example demonstrates how to create and call BizUnit:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///		[Test]
-        ///		public void Test_01_Adapter_MSMQ()
-        ///		{
-        ///			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_01_Adapter_MSMQ.xml");
-        ///			bizUnit.RunTest();
-        ///		}
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        /// 		[Test]
+        /// 		public void Test_01_Adapter_MSMQ()
+        /// 		{
+        /// 			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_01_Adapter_MSMQ.xml");
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(string configFile)
         {
             ArgumentValidation.CheckForNullReference(configFile, "configFile");
@@ -153,51 +143,49 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor.
+        ///     BizUnit constructor.
         /// </summary>
         /// <param name="configFile">The path of the test case file, maybe a relavtive path.</param>
         /// <param name="ctx">The BizUnit _context object may be flowed from an previous test case.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit. 
-        /// Note: the BizUnit _context object may be created and passed into
-        /// BizUnit, any _context properties set on the _context object may be
-        /// used by BizUnit steps. Context properties may be of any type, i.e. any 
-        /// .Net type, of course the consumer of that _context object will need to know
-        /// what type to expect. 
-        /// Also note that many test steps have the ability to fetch their configuration 
-        /// from the BizUnit _context if their configuration is decorated with the 
-        /// attribute takeFromCtx.
+        ///     The following example demonstrates how to create and call BizUnit.
+        ///     Note: the BizUnit _context object may be created and passed into
+        ///     BizUnit, any _context properties set on the _context object may be
+        ///     used by BizUnit steps. Context properties may be of any type, i.e. any
+        ///     .Net type, of course the consumer of that _context object will need to know
+        ///     what type to expect.
+        ///     Also note that many test steps have the ability to fetch their configuration
+        ///     from the BizUnit _context if their configuration is decorated with the
+        ///     attribute takeFromCtx.
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///     AddressBook addressBook = new AddressBook("Redmond");
-        /// 
-        ///     Context ctx = new Context();
-        ///     ctx.Add("CorrelationId", "1110023");
-        ///     ctx.Add("SomeStateToFlow", "Joe.Blogs@thunderbolt.com");
-        ///     ctx.Add("AddressBook", addressBook);
-        /// 
-        ///		[Test]
-        ///		public void Test_02_Adapter_MSMQ()
-        ///		{
-        ///			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_01_Adapter_MSMQ.xml", ctx);
-        ///			bizUnit.RunTest();
-        ///		}
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        ///      AddressBook addressBook = new AddressBook("Redmond");
+        ///  
+        ///      Context ctx = new Context();
+        ///      ctx.Add("CorrelationId", "1110023");
+        ///      ctx.Add("SomeStateToFlow", "Joe.Blogs@thunderbolt.com");
+        ///      ctx.Add("AddressBook", addressBook);
+        ///  
+        /// 		[Test]
+        /// 		public void Test_02_Adapter_MSMQ()
+        /// 		{
+        /// 			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_01_Adapter_MSMQ.xml", ctx);
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(string configFile, Context ctx)
         {
             ArgumentValidation.CheckForNullReference(configFile, "configFile");
@@ -208,36 +196,34 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor.
+        ///     BizUnit constructor.
         /// </summary>
         /// <param name="configStream">The path of the test case file, maybe a relavtive path.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit:
+        ///     The following example demonstrates how to create and call BizUnit:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///		[Test]
-        ///		public void Test_03_Adapter_MSMQ()
-        ///		{
-        ///         // The test case is an embeded resource...
-        ///			BizUnit bizUnit = new BizUnit(Assembly.GetExecutingAssembly().GetManifestResourceStream("BizUnit.SampleTests.BizUnitFunctionalTests.Test_04_MQSeriesTest.xml"));
-        ///			bizUnit.RunTest();
-        ///		}
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        /// 		[Test]
+        /// 		public void Test_03_Adapter_MSMQ()
+        /// 		{
+        ///          // The test case is an embeded resource...
+        /// 			BizUnit bizUnit = new BizUnit(Assembly.GetExecutingAssembly().GetManifestResourceStream("BizUnit.SampleTests.BizUnitFunctionalTests.Test_04_MQSeriesTest.xml"));
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(Stream configStream)
         {
             ArgumentValidation.CheckForNullReference(configStream, "configStream");
@@ -246,43 +232,41 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor.
+        ///     BizUnit constructor.
         /// </summary>
         /// <param name="testCase">The BizUnit test case object model that has been built to represent the test to be executed.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit using 
-        /// the BizUnit Test Case Object Model:
+        ///     The following example demonstrates how to create and call BizUnit using
+        ///     the BizUnit Test Case Object Model:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        ///	[TestMethod]
-        ///	public class SmokeTests
-        ///	{
-        ///		[Test]
-        ///		public void Test_03_Adapter_MSMQ()
-        ///		{
-        ///         // The test case is an embeded resource...
-        ///         BizUnitTestCase testCase = new BizUnitTestCase();
-        ///
-        ///         FileCreateStep fcs = new FileCreateStep();
-        ///         fcs.SourcePath = @"C:\Tests\BizUnit.Tests\Data\PO_MSFT001.xml";
-        ///         fcs.CreationPath = @"C:\Tests\BizUnit.Tests\Data\PO_MSFT001_%Guid%.xml";
-        ///         testCase.AddTestStep(fcs, TestStage.Execution);
-        ///
-        ///         BizUnit bizUnit = new BizUnit(testCase);
-        ///         bizUnit.RunTest();
-        ///		}
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        /// 	[TestMethod]
+        /// 	public class SmokeTests
+        /// 	{
+        /// 		[Test]
+        /// 		public void Test_03_Adapter_MSMQ()
+        /// 		{
+        ///          // The test case is an embeded resource...
+        ///          BizUnitTestCase testCase = new BizUnitTestCase();
+        /// 
+        ///          FileCreateStep fcs = new FileCreateStep();
+        ///          fcs.SourcePath = @"C:\Tests\BizUnit.Tests\Data\PO_MSFT001.xml";
+        ///          fcs.CreationPath = @"C:\Tests\BizUnit.Tests\Data\PO_MSFT001_%Guid%.xml";
+        ///          testCase.AddTestStep(fcs, TestStage.Execution);
+        /// 
+        ///          BizUnit bizUnit = new BizUnit(testCase);
+        ///          bizUnit.RunTest();
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(BizUnitTestCase testCase)
         {
             ArgumentValidation.CheckForNullReference(testCase, "testCase");
@@ -291,47 +275,45 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor.
+        ///     BizUnit constructor.
         /// </summary>
         /// <param name="testCase">The BizUnit test case object model that has been built to represent the test to be executed.</param>
         /// <param name="ctx">The BizUnit _context object may be flowed from an previous test case.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit using 
-        /// the BizUnit Test Case Object Model:
+        ///     The following example demonstrates how to create and call BizUnit using
+        ///     the BizUnit Test Case Object Model:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        ///	[TestMethod]
-        ///	public class SmokeTests
-        ///	{
-        ///		[Test]
-        ///		public void Test_03_Adapter_MSMQ()
-        ///		{
-        ///         // The test case is an embeded resource...
-        ///         BizUnitTestCase testCase = new BizUnitTestCase();
-        ///
-        ///         Context ctx = new Context();
-        ///         ctx.Add("PathToWriteFileTo", testDirectory + @"\Data_%Guid%.xml");
+        /// 	[TestMethod]
+        /// 	public class SmokeTests
+        /// 	{
+        /// 		[Test]
+        /// 		public void Test_03_Adapter_MSMQ()
+        /// 		{
+        ///          // The test case is an embeded resource...
+        ///          BizUnitTestCase testCase = new BizUnitTestCase();
         /// 
-        ///         FileCreateStep fcs = new FileCreateStep();
-        ///         fcs.SourcePath = @"C:\Tests\BizUnit.Tests\Data\PO_MSFT001.xml";
-        ///         fcs.CreationPath = "takeFromCtx:PathToWriteFileTo";
-        ///         testCase.AddTestStep(fcs, TestStage.Execution);
-        ///
-        ///         BizUnit bizUnit = new BizUnit(testCase, ctx);
-        ///         bizUnit.RunTest();
-        ///		}
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        ///          Context ctx = new Context();
+        ///          ctx.Add("PathToWriteFileTo", testDirectory + @"\Data_%Guid%.xml");
+        ///  
+        ///          FileCreateStep fcs = new FileCreateStep();
+        ///          fcs.SourcePath = @"C:\Tests\BizUnit.Tests\Data\PO_MSFT001.xml";
+        ///          fcs.CreationPath = "takeFromCtx:PathToWriteFileTo";
+        ///          testCase.AddTestStep(fcs, TestStage.Execution);
+        /// 
+        ///          BizUnit bizUnit = new BizUnit(testCase, ctx);
+        ///          bizUnit.RunTest();
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(BizUnitTestCase testCase, Context ctx)
         {
             ArgumentValidation.CheckForNullReference(testCase, "testCase");
@@ -341,52 +323,50 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor.
+        ///     BizUnit constructor.
         /// </summary>
         /// <param name="configStream">The path of the test case file, maybe a relavtive path.</param>
         /// <param name="ctx">The BizUnit _context object may be flowed from an previous test case.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit. 
-        /// Note: the BizUnit _context object may be created and passed into
-        /// BizUnit, any _context properties set on the _context object may be
-        /// used by BizUnit steps. Context properties may be of any type, i.e. any 
-        /// .Net type, of course the consumer of that _context object will need to know
-        /// what type to expect. 
-        /// Also note that many test steps have the ability to fetch their configuration 
-        /// from the BizUnit _context if their configuration is decorated with the 
-        /// attribute takeFromCtx.
+        ///     The following example demonstrates how to create and call BizUnit.
+        ///     Note: the BizUnit _context object may be created and passed into
+        ///     BizUnit, any _context properties set on the _context object may be
+        ///     used by BizUnit steps. Context properties may be of any type, i.e. any
+        ///     .Net type, of course the consumer of that _context object will need to know
+        ///     what type to expect.
+        ///     Also note that many test steps have the ability to fetch their configuration
+        ///     from the BizUnit _context if their configuration is decorated with the
+        ///     attribute takeFromCtx.
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///     AddressBook addressBook = new AddressBook("Redmond");
-        /// 
-        ///     Context ctx = new Context();
-        ///     ctx.Add("CorrelationId", "1110023");
-        ///     ctx.Add("SomeStateToFlow", "Joe.Blogs@thunderbolt.com");
-        ///     ctx.Add("AddressBook", addressBook);
-        /// 
-        ///		[Test]
-        ///		public void Test_04_Adapter_MSMQ()
-        ///		{
-        ///         // The test case is an embeded resource...
-        ///			BizUnit bizUnit = new BizUnit(Assembly.GetExecutingAssembly().GetManifestResourceStream("BizUnit.SampleTests.BizUnitFunctionalTests.Test_04_MQSeriesTest.xml"), ctx);
-        ///			bizUnit.RunTest();
-        ///		}
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        ///      AddressBook addressBook = new AddressBook("Redmond");
+        ///  
+        ///      Context ctx = new Context();
+        ///      ctx.Add("CorrelationId", "1110023");
+        ///      ctx.Add("SomeStateToFlow", "Joe.Blogs@thunderbolt.com");
+        ///      ctx.Add("AddressBook", addressBook);
+        ///  
+        /// 		[Test]
+        /// 		public void Test_04_Adapter_MSMQ()
+        /// 		{
+        ///          // The test case is an embeded resource...
+        /// 			BizUnit bizUnit = new BizUnit(Assembly.GetExecutingAssembly().GetManifestResourceStream("BizUnit.SampleTests.BizUnitFunctionalTests.Test_04_MQSeriesTest.xml"), ctx);
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(Stream configStream, Context ctx)
         {
             ArgumentValidation.CheckForNullReference(configStream, "configStream");
@@ -396,40 +376,41 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor for the setup and teardown of a test group.
+        ///     BizUnit constructor for the setup and teardown of a test group.
         /// </summary>
         /// <param name="configFile">The path of the test case file, maybe a relavtive path.</param>
-        /// <param name="testGroupPhase">The test group phase (TestGroupPhase.TestGroupSetup|TestGroupPhase.TestGroupTearDown). This 
-        /// constructor is used during the initialization or termination of a group of test cases, for example when using the NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].</param>
-        /// 
+        /// <param name="testGroupPhase">
+        ///     The test group phase (TestGroupPhase.TestGroupSetup|TestGroupPhase.TestGroupTearDown). This
+        ///     constructor is used during the initialization or termination of a group of test cases, for example when using the
+        ///     NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].
+        /// </param>
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit:
+        ///     The following example demonstrates how to create and call BizUnit:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///		[TestFixtureSetUp]
-        ///		public void Test_Group_Setup()
-        ///		{
-        ///			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup);
-        ///			bizUnit.RunTest();
-        ///		}
-        ///		
-        ///		...
-        ///		
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        /// 		[TestFixtureSetUp]
+        /// 		public void Test_Group_Setup()
+        /// 		{
+        /// 			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup);
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 		
+        /// 		...
+        /// 		
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(string configFile, TestGroupPhase testGroupPhase)
         {
             ArgumentValidation.CheckForNullReference(configFile, "configFile");
@@ -439,56 +420,57 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor for the setup and teardown of a test group.
+        ///     BizUnit constructor for the setup and teardown of a test group.
         /// </summary>
         /// <param name="configFile">The path of the test case file, maybe a relavtive path.</param>
-        /// <param name="testGroupPhase">The test group phase (TestGroupPhase.TestGroupSetup|TestGroupPhase.TestGroupTearDown). This 
-        /// constructor is used during the initialization or termination of a group of test cases, for example when using the NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].</param>
+        /// <param name="testGroupPhase">
+        ///     The test group phase (TestGroupPhase.TestGroupSetup|TestGroupPhase.TestGroupTearDown). This
+        ///     constructor is used during the initialization or termination of a group of test cases, for example when using the
+        ///     NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].
+        /// </param>
         /// <param name="ctx">The BizUnit _context object may be flowed from an previous test case.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit. 
-        /// Note: the BizUnit _context object may be created and passed into
-        /// BizUnit, any _context properties set on the _context object may be
-        /// used by BizUnit steps. Context properties may be of any type, i.e. any 
-        /// .Net type, of course the consumer of that _context object will need to know
-        /// what type to expect. 
-        /// Also note that many test steps have the ability to fetch their configuration 
-        /// from the BizUnit _context if their configuration is decorated with the 
-        /// attribute takeFromCtx.
-        /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        /// 
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///     AddressBook addressBook = new AddressBook("Redmond");
-        /// 
-        ///     Context ctx = new Context();
-        ///     ctx.Add("CorrelationId", "1110023");
-        ///     ctx.Add("SomeStateToFlow", "Joe.Blogs@thunderbolt.com");
-        ///     ctx.Add("AddressBook", addressBook);
-        /// 
-        ///		[TestFixtureSetUp]
-        ///		public void Test_Group_Setup()
-        ///		{
-        ///			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup, ctx);
-        ///			bizUnit.RunTest();
-        ///		}
-        ///		
-        ///		...
-        ///		
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        ///     The following example demonstrates how to create and call BizUnit.
+        ///     Note: the BizUnit _context object may be created and passed into
+        ///     BizUnit, any _context properties set on the _context object may be
+        ///     used by BizUnit steps. Context properties may be of any type, i.e. any
+        ///     .Net type, of course the consumer of that _context object will need to know
+        ///     what type to expect.
+        ///     Also note that many test steps have the ability to fetch their configuration
+        ///     from the BizUnit _context if their configuration is decorated with the
+        ///     attribute takeFromCtx.
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
+        ///  
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        ///      AddressBook addressBook = new AddressBook("Redmond");
+        ///  
+        ///      Context ctx = new Context();
+        ///      ctx.Add("CorrelationId", "1110023");
+        ///      ctx.Add("SomeStateToFlow", "Joe.Blogs@thunderbolt.com");
+        ///      ctx.Add("AddressBook", addressBook);
+        ///  
+        /// 		[TestFixtureSetUp]
+        /// 		public void Test_Group_Setup()
+        /// 		{
+        /// 			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup, ctx);
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 		
+        /// 		...
+        /// 		
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(string configFile, TestGroupPhase testGroupPhase, Context ctx)
         {
             ArgumentValidation.CheckForNullReference(configFile, "configFile");
@@ -499,41 +481,42 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor for the setup and teardown of a test group.
+        ///     BizUnit constructor for the setup and teardown of a test group.
         /// </summary>
         /// <param name="configStream">The path of the test case file, maybe a relavtive path.</param>
-        /// <param name="testGroupPhase">The test group phase (TestGroupPhase.TestGroupSetup|TestGroupPhase.TestGroupTearDown). This 
-        /// constructor is used during the initialization or termination of a group of test cases, for example when using the NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].</param>
-        /// 
+        /// <param name="testGroupPhase">
+        ///     The test group phase (TestGroupPhase.TestGroupSetup|TestGroupPhase.TestGroupTearDown). This
+        ///     constructor is used during the initialization or termination of a group of test cases, for example when using the
+        ///     NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].
+        /// </param>
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit:
+        ///     The following example demonstrates how to create and call BizUnit:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///		[TestFixtureSetUp]
-        ///		public void Test_Group_Setup()
-        ///		{
-        ///         // The test case is an embeded resource...
-        ///			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup);
-        ///			bizUnit.RunTest();
-        ///		}
-        ///		
-        ///		...
-        ///		
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        /// 		[TestFixtureSetUp]
+        /// 		public void Test_Group_Setup()
+        /// 		{
+        ///          // The test case is an embeded resource...
+        /// 			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup);
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 		
+        /// 		...
+        /// 		
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(Stream configStream, TestGroupPhase testGroupPhase)
         {
             ArgumentValidation.CheckForNullReference(configStream, "configStream");
@@ -543,57 +526,58 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor for the setup and teardown of a test group.
+        ///     BizUnit constructor for the setup and teardown of a test group.
         /// </summary>
         /// <param name="configStream">The path of the test case file, maybe a relavtive path.</param>
-        /// <param name="testGroupPhase">The test group phase (TestGroupPhase.TestGroupSetup|TestGroupPhase.TestGroupTearDown). This 
-        /// constructor is used during the initialization or termination of a group of test cases, for example when using the NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].</param>
+        /// <param name="testGroupPhase">
+        ///     The test group phase (TestGroupPhase.TestGroupSetup|TestGroupPhase.TestGroupTearDown). This
+        ///     constructor is used during the initialization or termination of a group of test cases, for example when using the
+        ///     NUnit attributes: [TestFixtureSetUp] or [TestFixtureTearDown].
+        /// </param>
         /// <param name="ctx">The BizUnit _context object may be flowed from an previous test case.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit. 
-        /// Note: the BizUnit _context object may be created and passed into
-        /// BizUnit, any _context properties set on the _context object may be
-        /// used by BizUnit steps. Context properties may be of any type, i.e. any 
-        /// .Net type, of course the consumer of that _context object will need to know
-        /// what type to expect. 
-        /// Also note that many test steps have the ability to fetch their configuration 
-        /// from the BizUnit _context if their configuration is decorated with the 
-        /// attribute takeFromCtx.
+        ///     The following example demonstrates how to create and call BizUnit.
+        ///     Note: the BizUnit _context object may be created and passed into
+        ///     BizUnit, any _context properties set on the _context object may be
+        ///     used by BizUnit steps. Context properties may be of any type, i.e. any
+        ///     .Net type, of course the consumer of that _context object will need to know
+        ///     what type to expect.
+        ///     Also note that many test steps have the ability to fetch their configuration
+        ///     from the BizUnit _context if their configuration is decorated with the
+        ///     attribute takeFromCtx.
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///     AddressBook addressBook = new AddressBook("Redmond");
-        /// 
-        ///     Context ctx = new Context();
-        ///     ctx.Add("CorrelationId", "1110023");
-        ///     ctx.Add("SomeStateToFlow", "Joe.Blogs@thunderbolt.com");
-        ///     ctx.Add("AddressBook", addressBook);
-        /// 
-        ///		[TestFixtureSetUp]
-        ///		public void Test_Group_Setup()
-        ///		{
-        ///         // The test case is an embeded resource...
-        ///			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup, ctx);
-        ///			bizUnit.RunTest();
-        ///		}
-        ///		
-        ///		...
-        ///		
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        [Obsolete("BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        ///      AddressBook addressBook = new AddressBook("Redmond");
+        ///  
+        ///      Context ctx = new Context();
+        ///      ctx.Add("CorrelationId", "1110023");
+        ///      ctx.Add("SomeStateToFlow", "Joe.Blogs@thunderbolt.com");
+        ///      ctx.Add("AddressBook", addressBook);
+        ///  
+        /// 		[TestFixtureSetUp]
+        /// 		public void Test_Group_Setup()
+        /// 		{
+        ///          // The test case is an embeded resource...
+        /// 			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup, ctx);
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 		
+        /// 		...
+        /// 		
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        [Obsolete(
+            "BizUnitTestCase has been deprecated. Please investigate the use of public BizUnit(TestCase testCase).")]
         public BizUnit(Stream configStream, TestGroupPhase testGroupPhase, Context ctx)
         {
             ArgumentValidation.CheckForNullReference(configStream, "configStream");
@@ -604,175 +588,163 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// BizUnit constructor, introduced in BizUnit 4.0 
+        ///     BizUnit constructor, introduced in BizUnit 4.0
         /// </summary>
         /// <param name="testCase">The BizUnit test case object model that has been built to represent the test to be executed.</param>
-        /// 
         /// <remarks>
-        /// From BizUnit 4.0 test case maybe programatically created by creating
-        /// test steps, configuring them and then adding them to a test case or 
-        /// by loading Xaml test cases. Test cases developed programatically 
-        /// maybe serialised to Xaml using TestCase.SaveToFile(), 
-        /// similarly Xaml test cases maybe deserialised into a 
-        /// TestCase using TestCase.LoadFromFile(). 
+        ///     From BizUnit 4.0 test case maybe programatically created by creating
+        ///     test steps, configuring them and then adding them to a test case or
+        ///     by loading Xaml test cases. Test cases developed programatically
+        ///     maybe serialised to Xaml using TestCase.SaveToFile(),
+        ///     similarly Xaml test cases maybe deserialised into a
+        ///     TestCase using TestCase.LoadFromFile().
+        ///     The exmaple below illustrates loading and running a Xaml test case:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// The exmaple below illustrates loading and running a Xaml test case:
+        /// 	[TestMethod]
+        /// 	public class SampleTests
+        /// 	{
+        /// 		[Test]
+        /// 		public void ExecuteXamlTestCase()
+        /// 		{
+        ///          // Load the Xaml test case...
+        ///          var bu = new BizUnit(TestCase.LoadFromFile("DelayTestCaseTest.xaml"));
+        ///          
+        ///          // Run the test...
+        ///          bu.RunTest();
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        ///     The exmaple below illustrates programtically creating a test case and subsequently running it:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        ///	[TestMethod]
-        ///	public class SampleTests
-        ///	{
-        ///		[Test]
-        ///		public void ExecuteXamlTestCase()
-        ///		{
-        ///         // Load the Xaml test case...
-        ///         var bu = new BizUnit(TestCase.LoadFromFile("DelayTestCaseTest.xaml"));
-        ///         
-        ///         // Run the test...
-        ///         bu.RunTest();
-        ///		}
-        ///	}		
-        ///	</code>
-        ///	
-        /// The exmaple below illustrates programtically creating a test case and subsequently running it:
+        /// 	[TestMethod]
+        /// 	public class SampleTests
+        /// 	{
+        /// 		[Test]
+        /// 		public void ExecuteProgramaticallyCreatedTestCase()
+        /// 		{
+        ///          int stepDelayDuration = 500;
+        ///          var step = new DelayStep();
+        ///          step.DelayMilliSeconds = stepDelayDuration;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        ///	[TestMethod]
-        ///	public class SampleTests
-        ///	{
-        ///		[Test]
-        ///		public void ExecuteProgramaticallyCreatedTestCase()
-        ///		{
-        ///         int stepDelayDuration = 500;
-        ///         var step = new DelayStep();
-        ///         step.DelayMilliSeconds = stepDelayDuration;
-        ///
-        ///         var sw = new Stopwatch();
-        ///         sw.Start();
-        ///
-        ///         var tc = new TestCase();
-        ///         tc.ExecutionSteps.Add(step);
-        ///         
-        ///         // If we wanted to serialise the test case:
-        ///         // TestCase.SaveToFile(tc, "DelayTestCaseTest.xaml");
+        ///          var sw = new Stopwatch();
+        ///          sw.Start();
         /// 
-        ///         var bu = new BizUnit(tc));
-        ///
-        ///         sw = new Stopwatch().Start();
-        ///
-        ///         // Run the test case...
-        ///         bu.RunTest();
-        ///
-        ///         var actualDuration = sw.ElapsedMilliseconds;
-        ///         Console.WriteLine("Observed delay: {0}", actualDuration);
-        ///         Assert.AreEqual(actualDuration, stepDelayDuration, 20);
-        ///		}
-        ///	}		
-        ///	</code>
+        ///          var tc = new TestCase();
+        ///          tc.ExecutionSteps.Add(step);
+        ///          
+        ///          // If we wanted to serialise the test case:
+        ///          // TestCase.SaveToFile(tc, "DelayTestCaseTest.xaml");
+        ///  
+        ///          var bu = new BizUnit(tc));
         /// 
-        ///	</remarks>
+        ///          sw = new Stopwatch().Start();
+        /// 
+        ///          // Run the test case...
+        ///          bu.RunTest();
+        /// 
+        ///          var actualDuration = sw.ElapsedMilliseconds;
+        ///          Console.WriteLine("Observed delay: {0}", actualDuration);
+        ///          Assert.AreEqual(actualDuration, stepDelayDuration, 20);
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
         public BizUnit(TestCase testCase)
         {
             ArgumentValidation.CheckForNullReference(testCase, "testCase");
 
-            _context = new Context(this);
-            Logger = _context.Logger;
-            LoadXamlTestCaseAndInit(testCase, TestGroupPhase.Unknown, _context);
+            Ctx = new Context(this);
+            Logger = Ctx.Logger;
+            LoadXamlTestCaseAndInit(testCase, TestGroupPhase.Unknown, Ctx);
         }
 
         /// <summary>
-        /// BizUnit constructor, introduced in BizUnit 4.0 
+        ///     BizUnit constructor, introduced in BizUnit 4.0
         /// </summary>
         /// <param name="testCase">The BizUnit test case object model that has been built to represent the test to be executed.</param>
         /// <param name="ctx">The BizUnit test context to be used. If this is not supplied a new contxt will created.</param>
-        /// 
         /// <remarks>
-        /// From BizUnit 4.0 test case maybe programatically created by creating
-        /// test steps, configuring them and then adding them to a test case or 
-        /// by loading Xaml test cases. Test cases developed programatically 
-        /// maybe serialised to Xaml using TestCase.SaveToFile(), 
-        /// similarly Xaml test cases maybe deserialised into a 
-        /// TestCase using TestCase.LoadFromFile(). 
+        ///     From BizUnit 4.0 test case maybe programatically created by creating
+        ///     test steps, configuring them and then adding them to a test case or
+        ///     by loading Xaml test cases. Test cases developed programatically
+        ///     maybe serialised to Xaml using TestCase.SaveToFile(),
+        ///     similarly Xaml test cases maybe deserialised into a
+        ///     TestCase using TestCase.LoadFromFile().
+        ///     The exmaple below illustrates loading and running a Xaml test case:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// The exmaple below illustrates loading and running a Xaml test case:
+        /// 	[TestMethod]
+        /// 	public class SampleTests
+        /// 	{
+        /// 		[Test]
+        /// 		public void ExecuteXamlTestCase()
+        /// 		{
+        ///          // Load the Xaml test case...
+        ///          var bu = new BizUnit(TestCase.LoadFromFile("DelayTestCaseTest.xaml"));
+        ///          
+        ///          // Run the test...
+        ///          bu.RunTest();
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        ///     The exmaple below illustrates programtically creating a test case and subsequently running it:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        ///	[TestMethod]
-        ///	public class SampleTests
-        ///	{
-        ///		[Test]
-        ///		public void ExecuteXamlTestCase()
-        ///		{
-        ///         // Load the Xaml test case...
-        ///         var bu = new BizUnit(TestCase.LoadFromFile("DelayTestCaseTest.xaml"));
-        ///         
-        ///         // Run the test...
-        ///         bu.RunTest();
-        ///		}
-        ///	}		
-        ///	</code>
-        ///	
-        /// The exmaple below illustrates programtically creating a test case and subsequently running it:
+        /// 	[TestMethod]
+        /// 	public class SampleTests
+        /// 	{
+        /// 		[Test]
+        /// 		public void ExecuteProgramaticallyCreatedTestCase()
+        /// 		{
+        ///          int stepDelayDuration = 500;
+        ///          var step = new DelayStep();
+        ///          step.DelayMilliSeconds = stepDelayDuration;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        ///	[TestMethod]
-        ///	public class SampleTests
-        ///	{
-        ///		[Test]
-        ///		public void ExecuteProgramaticallyCreatedTestCase()
-        ///		{
-        ///         int stepDelayDuration = 500;
-        ///         var step = new DelayStep();
-        ///         step.DelayMilliSeconds = stepDelayDuration;
-        ///
-        ///         var sw = new Stopwatch();
-        ///         sw.Start();
-        ///
-        ///         var tc = new TestCase();
-        ///         tc.ExecutionSteps.Add(step);
-        ///         
-        ///         // If we wanted to serialise the test case:
-        ///         // TestCase.SaveToFile(tc, "DelayTestCaseTest.xaml");
+        ///          var sw = new Stopwatch();
+        ///          sw.Start();
         /// 
-        ///         var bu = new BizUnit(tc));
-        ///
-        ///         sw = new Stopwatch().Start();
-        ///
-        ///         // Run the test case...
-        ///         bu.RunTest();
-        ///
-        ///         var actualDuration = sw.ElapsedMilliseconds;
-        ///         Console.WriteLine("Observed delay: {0}", actualDuration);
-        ///         Assert.AreEqual(actualDuration, stepDelayDuration, 20);
-        ///		}
-        ///	}		
-        ///	</code>
+        ///          var tc = new TestCase();
+        ///          tc.ExecutionSteps.Add(step);
+        ///          
+        ///          // If we wanted to serialise the test case:
+        ///          // TestCase.SaveToFile(tc, "DelayTestCaseTest.xaml");
+        ///  
+        ///          var bu = new BizUnit(tc));
         /// 
-        ///	</remarks>
+        ///          sw = new Stopwatch().Start();
+        /// 
+        ///          // Run the test case...
+        ///          bu.RunTest();
+        /// 
+        ///          var actualDuration = sw.ElapsedMilliseconds;
+        ///          Console.WriteLine("Observed delay: {0}", actualDuration);
+        ///          Assert.AreEqual(actualDuration, stepDelayDuration, 20);
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
         public BizUnit(TestCase testCase, Context ctx)
         {
             ArgumentValidation.CheckForNullReference(testCase, "testCase");
@@ -782,6 +754,49 @@ namespace BizUnit
             LoadXamlTestCaseAndInit(testCase, TestGroupPhase.Unknown, ctx);
         }
 
+        /// <summary>
+        ///     Gets the BizUnit _context for the current test.
+        /// </summary>
+        /// <remarks>
+        ///     The following example demonstrates how to create and call BizUnit:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
+        /// 
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        ///      Context ctx;
+        ///  
+        /// 		[TestFixtureSetUp]
+        /// 		public void Test_Group_Setup()
+        /// 		{
+        ///          // The test case is an embeded resource...
+        /// 			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup);
+        ///          ctx = bizUnit.Ctx;
+        ///  
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 		
+        /// 		...
+        /// 		
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
+        public Context Ctx { get; private set; }
+
+        /// <summary>
+        /// </summary>
+        public event EventHandler<TestStepEventArgs> TestStepStartEvent;
+
+        /// <summary>
+        /// </summary>
+        public event EventHandler<TestStepEventArgs> TestStepStopEvent;
+
         private void LoadXamlTestCaseAndInit(TestCase testCase, TestGroupPhase phase, Context ctx)
         {
             ArgumentValidation.CheckForNullReference(testCase, "testCase");
@@ -789,27 +804,27 @@ namespace BizUnit
 
             if (null != ctx)
             {
-                _context = ctx;
-                _context.Initialize(this);
+                Ctx = ctx;
+                Ctx.Initialize(this);
             }
             else
             {
-                _context = new Context(this);
-                Logger = _context.Logger;
+                Ctx = new Context(this);
+                Logger = Ctx.Logger;
             }
 
             _xamlTestCase = testCase;
             _testGroupPhase = phase;
             _testName = testCase.Name;
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             // Validate test case...
-            testCase.Validate(_context);
+            testCase.Validate(Ctx);
 
             if (phase == TestGroupPhase.Unknown)
             {
                 Logger.TestStart(_testName, now, GetUserName());
-                _context.Add(BizUnitTestCaseStartTime, now, true);
+                Ctx.Add(BizUnitTestCaseStartTime, now, true);
             }
             else
             {
@@ -821,23 +836,23 @@ namespace BizUnit
         {
             if (null != ctx)
             {
-                _context = ctx;
-                _context.Initialize(this);
+                Ctx = ctx;
+                Ctx.Initialize(this);
             }
             else
             {
-                _context = new Context(this);
-                Logger = _context.Logger;
+                Ctx = new Context(this);
+                Logger = Ctx.Logger;
             }
 
             _testGroupPhase = phase;
             _testName = testCase.Name;
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             if (phase == TestGroupPhase.Unknown)
             {
-                Logger.TestStart(_testName, now, GetUserName());                
-                _context.Add(BizUnitTestCaseStartTime, now);
+                Logger.TestStart(_testName, now, GetUserName());
+                Ctx.Add(BizUnitTestCaseStartTime, now);
             }
             else
             {
@@ -845,50 +860,6 @@ namespace BizUnit
             }
 
             _testCaseObjectModel = testCase;
-        }
-
-        /// <summary>
-        /// Gets the BizUnit _context for the current test.
-        /// </summary>
-        /// 
-        /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit:
-        /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///     Context ctx;
-        /// 
-        ///		[TestFixtureSetUp]
-        ///		public void Test_Group_Setup()
-        ///		{
-        ///         // The test case is an embeded resource...
-        ///			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_Group_Setup.xml", BizUnit.TestGroupPhase.TestGroupSetup);
-        ///         ctx = bizUnit.Ctx;
-        /// 
-        ///			bizUnit.RunTest();
-        ///		}
-        ///		
-        ///		...
-        ///		
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
-        public Context Ctx
-        {
-            get
-            {
-                return _context;
-            }
         }
 
         private void LoadXmlFromFileAndInit(
@@ -902,7 +873,8 @@ namespace BizUnit
             }
             catch (Exception ex)
             {
-                Logger.Log(LogLevel.ERROR, "Failed to load the step configuration file: \"{0}\", exception: {1}", configFile, ex.ToString());
+                Logger.Log(LogLevel.ERROR, "Failed to load the step configuration file: \"{0}\", exception: {1}",
+                    configFile, ex.ToString());
                 throw;
             }
 
@@ -933,31 +905,31 @@ namespace BizUnit
         {
             if (null != ctx)
             {
-                _context = ctx;
-                _context.Initialize(this);
+                Ctx = ctx;
+                Ctx.Initialize(this);
             }
             else
             {
-                _context = new Context(this);
-                Logger = _context.Logger;
+                Ctx = new Context(this);
+                Logger = Ctx.Logger;
             }
 
             _testGroupPhase = phase;
 
             // Get test name...
-            XmlNode nameNode = testConfig.SelectSingleNode("/TestCase/@_testName");
+            var nameNode = testConfig.SelectSingleNode("/TestCase/@_testName");
             if (null != nameNode)
             {
                 _testName = nameNode.Value;
-                _context.Add(BizUnitTestCaseName, _testName, true);
+                Ctx.Add(BizUnitTestCaseName, _testName, true);
             }
 
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             if (phase == TestGroupPhase.Unknown)
             {
                 Logger.TestStart(_testName, now, GetUserName());
-                _context.Add(BizUnitTestCaseStartTime, now, true);
+                Ctx.Add(BizUnitTestCaseStartTime, now, true);
             }
             else
             {
@@ -971,37 +943,34 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// Executes a test case.
+        ///     Executes a test case.
         /// </summary>
         /// <returns>Returns void</returns>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit:
+        ///     The following example demonstrates how to create and call BizUnit:
+        ///     <code escaped="true">
+        /// 	namespace WoodgroveBank.BVTs
+        /// 	{
+        /// 	using System;
+        /// 	using NUnit.Framework;
+        /// 	using BizUnit;
         /// 
-        /// <code escaped="true">
-        ///	namespace WoodgroveBank.BVTs
-        ///	{
-        ///	using System;
-        ///	using NUnit.Framework;
-        ///	using BizUnit;
-        ///
-        /// // This is an example of calling BizUnit from NUnit...
-        ///	[TestFixture]
-        ///	public class SmokeTests
-        ///	{
-        ///		[Test]
-        ///		public void Test_01_Adapter_MSMQ()
-        ///		{
-        ///			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_01_Adapter_MSMQ.xml");
-        ///			bizUnit.RunTest();
-        ///		}
-        ///	}		
-        ///	</code>
-        ///	
-        ///	</remarks>
+        ///  // This is an example of calling BizUnit from NUnit...
+        /// 	[TestFixture]
+        /// 	public class SmokeTests
+        /// 	{
+        /// 		[Test]
+        /// 		public void Test_01_Adapter_MSMQ()
+        /// 		{
+        /// 			BizUnit bizUnit = new BizUnit(@".\TestCases\Test_01_Adapter_MSMQ.xml");
+        /// 			bizUnit.RunTest();
+        /// 		}
+        /// 	}		
+        /// 	</code>
+        /// </remarks>
         public void RunTest()
         {
-            if(null != _xamlTestCase)
+            if (null != _xamlTestCase)
             {
                 RunTestInternal(_xamlTestCase);
             }
@@ -1015,7 +984,7 @@ namespace BizUnit
         {
             try
             {
-                _context.SetTestName(_testName);
+                Ctx.SetTestName(_testName);
 
                 Setup();
                 Execute();
@@ -1040,7 +1009,7 @@ namespace BizUnit
         {
             try
             {
-                _context.SetTestName(xamlTestCase.Name);
+                Ctx.SetTestName(xamlTestCase.Name);
 
                 Setup(xamlTestCase.SetupSteps);
                 Execute(xamlTestCase.ExecutionSteps);
@@ -1079,7 +1048,7 @@ namespace BizUnit
         private void ExecuteSteps(IEnumerable<TestStepBase> testSteps, TestStage stage)
         {
             Logger.TestStageStart(stage, DateTime.Now);
-            _context.SetTestStage(stage);
+            Ctx.SetTestStage(stage);
 
             try
             {
@@ -1112,9 +1081,9 @@ namespace BizUnit
                 // Should this step be executed concurrently?
                 if (testStep.RunConcurrently)
                 {
-                    _context.LogInfo("Queuing concurrent step: {0} for execution", testStep.GetType().ToString());
+                    Ctx.LogInfo("Queuing concurrent step: {0} for execution", testStep.GetType().ToString());
                     Interlocked.Increment(ref _inflightQueueDepth);
-                    ThreadPool.QueueUserWorkItem(WorkerThreadThunk, new ConcurrentTestStepWrapper(testStep, _context));
+                    ThreadPool.QueueUserWorkItem(WorkerThreadThunk, new ConcurrentTestStepWrapper(testStep, Ctx));
                 }
                 else
                 {
@@ -1122,11 +1091,11 @@ namespace BizUnit
                     var step = testStep as ImportTestCaseStep;
                     if (step != null)
                     {
-                        ExecuteImportedTestCase(step, _context);
+                        ExecuteImportedTestCase(step, Ctx);
                     }
                     else
                     {
-                        testStep.Execute(_context);
+                        testStep.Execute(Ctx);
                     }
                 }
             }
@@ -1141,7 +1110,8 @@ namespace BizUnit
                         throw;
                     }
 
-                    var tsee = new TestStepExecutionException("BizUnit encountered an error executing a test step", e, stage, _testName, testStep.GetType().ToString());
+                    var tsee = new TestStepExecutionException("BizUnit encountered an error executing a test step", e,
+                        stage, _testName, testStep.GetType().ToString());
                     throw tsee;
                 }
             }
@@ -1159,14 +1129,14 @@ namespace BizUnit
             var testCase = testStep.GetTestCase();
             var bu = new BizUnit(testCase, context);
             bu.RunTest();
-        } 
+        }
 
         private void Setup()
         {
             try
             {
                 Logger.TestStageStart(TestStage.Setup, DateTime.Now);
-                _context.SetTestStage(TestStage.Setup);
+                Ctx.SetTestStage(TestStage.Setup);
 
                 if (null != _testCaseObjectModel)
                 {
@@ -1177,7 +1147,7 @@ namespace BizUnit
                     ExecuteSteps(_setupSteps, TestStage.Setup);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Logger.TestStageEnd(TestStage.Setup, DateTime.Now, e);
                 throw;
@@ -1189,7 +1159,7 @@ namespace BizUnit
         private void Execute()
         {
             Logger.TestStageStart(TestStage.Execution, DateTime.Now);
-            _context.SetTestStage(TestStage.Execution);
+            Ctx.SetTestStage(TestStage.Execution);
 
             try
             {
@@ -1215,7 +1185,7 @@ namespace BizUnit
         private void TearDown()
         {
             Logger.TestStageStart(TestStage.Cleanup, DateTime.Now);
-            _context.SetTestStage(TestStage.Cleanup);
+            Ctx.SetTestStage(TestStage.Cleanup);
 
             try
             {
@@ -1228,7 +1198,7 @@ namespace BizUnit
                     ExecuteSteps(_teardownSteps, TestStage.Cleanup);
                 }
 
-                _context.Teardown();
+                Ctx.Teardown();
             }
             catch (Exception e)
             {
@@ -1240,10 +1210,7 @@ namespace BizUnit
                 {
                     throw _executionException;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             Logger.TestStageEnd(TestStage.Cleanup, DateTime.Now, null);
@@ -1265,7 +1232,7 @@ namespace BizUnit
                 return;
             }
 
-            foreach (BizUnitTestStepWrapper step in steps)
+            foreach (var step in steps)
             {
                 ExecuteTestStep(step, stage);
             }
@@ -1298,12 +1265,12 @@ namespace BizUnit
                 {
                     Logger.TestStepStart(stepWrapper.TypeName, DateTime.Now, true, stepWrapper.FailOnError);
                     Interlocked.Increment(ref _inflightQueueDepth);
-                    ThreadPool.QueueUserWorkItem(WorkerThreadThunk, new ConcurrentTestStepWrapper(stepWrapper, _context));
+                    ThreadPool.QueueUserWorkItem(WorkerThreadThunk, new ConcurrentTestStepWrapper(stepWrapper, Ctx));
                 }
                 else
                 {
                     Logger.TestStepStart(stepWrapper.TypeName, DateTime.Now, false, stepWrapper.FailOnError);
-                    stepWrapper.Execute(_context);
+                    stepWrapper.Execute(Ctx);
                 }
             }
             catch (Exception e)
@@ -1316,11 +1283,9 @@ namespace BizUnit
                     {
                         throw;
                     }
-                    else
-                    {
-                        var tsee = new TestStepExecutionException("BizUnit encountered an error executing a test step", e, stage, _testName, stepWrapper.TypeName);
-                        throw tsee;
-                    }
+                    var tsee = new TestStepExecutionException("BizUnit encountered an error executing a test step", e,
+                        stage, _testName, stepWrapper.TypeName);
+                    throw tsee;
                 }
             }
 
@@ -1361,11 +1326,11 @@ namespace BizUnit
                             {
                                 throw step.FailureException;
                             }
-                            else
-                            {
-                                var tsee = new TestStepExecutionException("BizUnit encountered an error concurrently executing a test step", step.FailureException, stage, _testName, step.StepName);
-                                throw tsee;
-                            }
+                            var tsee =
+                                new TestStepExecutionException(
+                                    "BizUnit encountered an error concurrently executing a test step",
+                                    step.FailureException, stage, _testName, step.StepName);
+                            throw tsee;
                         }
                     }
                     else
@@ -1385,23 +1350,23 @@ namespace BizUnit
             }
         }
 
-        private void WorkerThreadThunk(Object stateInfo)
+        private void WorkerThreadThunk(object stateInfo)
         {
-            var step = (ConcurrentTestStepWrapper)stateInfo;
+            var step = (ConcurrentTestStepWrapper) stateInfo;
             step.Execute();
 
             // This step is completed, add to queue
             _completedConcurrentSteps.Enqueue(step);
         }
 
-        static private IValidationStep CreateValidatorStep(string typeName, string assemblyPath)
+        private static IValidationStep CreateValidatorStep(string typeName, string assemblyPath)
         {
-            return (IValidationStep)ObjectCreator.CreateStep(typeName, assemblyPath);
+            return (IValidationStep) ObjectCreator.CreateStep(typeName, assemblyPath);
         }
 
-        static private IContextLoaderStep CreateContextLoaderStep(string typeName, string assemblyPath)
+        private static IContextLoaderStep CreateContextLoaderStep(string typeName, string assemblyPath)
         {
-            return (IContextLoaderStep)ObjectCreator.CreateStep(typeName, assemblyPath);
+            return (IContextLoaderStep) ObjectCreator.CreateStep(typeName, assemblyPath);
         }
 
         internal void ExecuteValidator(Stream data, IValidationStepOM validationStep, Context ctx)
@@ -1417,11 +1382,13 @@ namespace BizUnit
             {
                 validationStep.ExecuteValidation(data, ctx);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.ValidatorEnd(validationStep.GetType().ToString(), DateTime.Now, ex);
 
-                var vsee = new ValidationStepExecutionException("BizUnit encountered an error executing a validation step", ex, _testName);
+                var vsee =
+                    new ValidationStepExecutionException("BizUnit encountered an error executing a validation step", ex,
+                        _testName);
                 throw vsee;
             }
 
@@ -1435,20 +1402,22 @@ namespace BizUnit
                 return;
             }
 
-            XmlNode assemblyPath = validatorConfig.SelectSingleNode("@assemblyPath");
-            XmlNode typeName = validatorConfig.SelectSingleNode("@typeName");
+            var assemblyPath = validatorConfig.SelectSingleNode("@assemblyPath");
+            var typeName = validatorConfig.SelectSingleNode("@typeName");
 
             Logger.ValidatorStart(typeName.Value, DateTime.Now);
 
             try
             {
-                IValidationStep v = CreateValidatorStep(typeName.Value, assemblyPath.Value);
+                var v = CreateValidatorStep(typeName.Value, assemblyPath.Value);
                 v.ExecuteValidation(data, validatorConfig, ctx);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.ValidatorEnd(typeName.Value, DateTime.Now, ex);
-                var vsee = new ValidationStepExecutionException("BizUnit encountered an error executing a validation step", ex, _testName);
+                var vsee =
+                    new ValidationStepExecutionException("BizUnit encountered an error executing a validation step", ex,
+                        _testName);
                 throw vsee;
             }
 
@@ -1484,20 +1453,20 @@ namespace BizUnit
                 return;
             }
 
-            XmlNode assemblyPath = contextConfig.SelectSingleNode("@assemblyPath");
-            XmlNode typeName = contextConfig.SelectSingleNode("@typeName");
+            var assemblyPath = contextConfig.SelectSingleNode("@assemblyPath");
+            var typeName = contextConfig.SelectSingleNode("@typeName");
 
             Logger.ContextLoaderStart(typeName.Value, DateTime.Now);
 
             try
             {
-                IContextLoaderStep cd = CreateContextLoaderStep(typeName.Value, assemblyPath.Value);
+                var cd = CreateContextLoaderStep(typeName.Value, assemblyPath.Value);
                 cd.ExecuteContextLoader(data, contextConfig, ctx);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.ContextLoaderEnd(typeName.Value, DateTime.Now, ex);
-                throw;                
+                throw;
             }
 
             Logger.ContextLoaderEnd(typeName.Value, DateTime.Now, null);
@@ -1510,17 +1479,17 @@ namespace BizUnit
 
         internal static string GetUserName()
         {
-            string usersDomain = Environment.UserDomainName;
-            string usersName = Environment.UserName;
+            var usersDomain = Environment.UserDomainName;
+            var usersName = Environment.UserName;
 
             return usersDomain + "\\" + usersName;
         }
 
         internal void OnTestStepStart(TestStepEventArgs e)
         {
-            if(null != TestStepStartEvent)
-            {                
-                EventHandler<TestStepEventArgs> testStepStartEvent = TestStepStartEvent;
+            if (null != TestStepStartEvent)
+            {
+                var testStepStartEvent = TestStepStartEvent;
                 testStepStartEvent(this, e);
             }
         }
@@ -1529,7 +1498,7 @@ namespace BizUnit
         {
             if (null != TestStepStopEvent)
             {
-                EventHandler<TestStepEventArgs> testStepStopEvent = TestStepStopEvent;
+                var testStepStopEvent = TestStepStopEvent;
                 testStepStopEvent(this, e);
             }
         }

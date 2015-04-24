@@ -20,26 +20,22 @@ using System.Xml;
 namespace BizUnit
 {
     /// <summary>
-	/// The BizUnit Logger is used to log data from BizUnit and test steps.
-	/// </summary>
-	public class Logger : ILogger
-	{
-		StringBuilder _sb;
-		bool _concurrentExecutionMode;
-		const string Crlf = "\r\n";
-        const string InfoLogLevel = "Info";
-        const string ErrorLogLevel = "Error";
-        const string WarningLogLevel = "Warning";
+    ///     The BizUnit Logger is used to log data from BizUnit and test steps.
+    /// </summary>
+    public class Logger : ILogger
+    {
+        private const string Crlf = "\r\n";
+        private const string InfoLogLevel = "Info";
+        private const string ErrorLogLevel = "Error";
+        private const string WarningLogLevel = "Warning";
+        private bool _concurrentExecutionMode;
+        private StringBuilder _sb;
 
         /// <summary>
-        /// 
         /// </summary>
         public bool ConcurrentExecutionMode
-	    {
-	        get
-	        {
-	            return _concurrentExecutionMode;
-	        }
+        {
+            get { return _concurrentExecutionMode; }
 
             set
             {
@@ -50,14 +46,13 @@ namespace BizUnit
                     _sb = new StringBuilder();
                 }
             }
-	    }
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         public void TestStageStart(TestStage stage, DateTime time)
         {
-            switch(stage)
+            switch (stage)
             {
                 case TestStage.Setup:
                     WriteLine(" ");
@@ -77,7 +72,6 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void TestStageEnd(TestStage stage, DateTime time, Exception stageException)
         {
@@ -92,35 +86,32 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void LogException(Exception e)
-		{
+        {
             if (null == e)
             {
-                return;    
+                return;
             }
 
-			WriteLine(new string('*', 79));
+            WriteLine(new string('*', 79));
             WriteLine("{0}: {1}", ErrorLogLevel, "Exception caught!");
-            WriteLine( e.ToString() );
-			WriteLine(new string('*', 79));
-		}
+            WriteLine(e.ToString());
+            WriteLine(new string('*', 79));
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         public void LogData(string description, string data)
-		{
-			WriteLine(new string('~', 79));
-			WriteLine( "Data: {0}", description );
-			WriteLine(new string('~', 79));
-			WriteLine( data );
-			WriteLine(new string('~', 79));
-		}
+        {
+            WriteLine(new string('~', 79));
+            WriteLine("Data: {0}", description);
+            WriteLine(new string('~', 79));
+            WriteLine(data);
+            WriteLine(new string('~', 79));
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         public void LogXmlData(string description, string data)
         {
@@ -132,12 +123,11 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Log(LogLevel logLevel, string text)
-		{
-			switch(logLevel)
-			{
+        {
+            switch (logLevel)
+            {
                 case (LogLevel.INFO):
                     WriteLine("{0}: {1}", InfoLogLevel, text);
                     break;
@@ -150,53 +140,46 @@ namespace BizUnit
                     WriteLine("{0}: {1}", ErrorLogLevel, text);
                     break;
 
-				default:
-			        throw new InvalidOperationException("Invalid log level was set!");
-			}
-		}
+                default:
+                    throw new InvalidOperationException("Invalid log level was set!");
+            }
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Log(LogLevel logLevel, string text, params object[] args)
-		{
-            string formattedText = string.Format(text, args);
+        {
+            var formattedText = string.Format(text, args);
             Log(logLevel, formattedText);
-		}
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         public void LogBufferedText(ILogger logger)
-		{
+        {
             if (!logger.ConcurrentExecutionMode)
-			{
-				throw new InvalidOperationException("This instance is not a concurrent test step!");
-			}
+            {
+                throw new InvalidOperationException("This instance is not a concurrent test step!");
+            }
 
             WriteLine(logger.BufferedText);
-		}
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         public string BufferedText
-	    {
-	        get
-	        {
+        {
+            get
+            {
                 if (null != _sb)
                 {
                     return _sb.ToString();
                 }
-                else
-                {
-                    return null;
-                }
-	        }
-	    }
+                return null;
+            }
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         public void TestStepStart(string testStepName, DateTime time, bool runConcurrently, bool failOnError)
         {
@@ -205,18 +188,17 @@ namespace BizUnit
             {
                 WriteLine(
                     string.Format("Step: {0} started  c o n c u r r e n t l y  @ {1}, failOnError = {2}", testStepName,
-                                  FormatDate(time), failOnError));
+                        FormatDate(time), failOnError));
             }
             else
             {
                 WriteLine(
                     string.Format("Step: {0} started  @ {1}, failOnError = {2}", testStepName,
-                                  FormatDate(time), failOnError));
+                        FormatDate(time), failOnError));
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void TestStepEnd(string testStepName, DateTime time, Exception ex)
         {
@@ -227,17 +209,15 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void ValidateTestSteps(TestStage stage, string testStepName, Exception ex)
-	    {
-	        WriteLine(null == ex
-	            ? string.Format("Test step validation for stage: {0}, step: {1} was successful.", stage, testStepName)
-	            : string.Format("Test step validation for stage: {0}, step: {1} failed: {2}", stage, testStepName, ex));
-	    }
+        {
+            WriteLine(null == ex
+                ? string.Format("Test step validation for stage: {0}, step: {1} was successful.", stage, testStepName)
+                : string.Format("Test step validation for stage: {0}, step: {1} failed: {2}", stage, testStepName, ex));
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         public void TestGroupStart(string testGroupName, TestGroupPhase testGroupPhase, DateTime time, string userName)
         {
@@ -247,7 +227,8 @@ namespace BizUnit
                 WriteLine(new string('-', 79));
                 WriteLine("                        T E S T   G R O U P   S E T U P");
                 WriteLine(" ");
-                WriteLine(string.Format("Test Group Setup: {0} started @ {1} by {2}", testGroupName, FormatDate(time), userName));
+                WriteLine(string.Format("Test Group Setup: {0} started @ {1} by {2}", testGroupName, FormatDate(time),
+                    userName));
                 WriteLine(new string('-', 79));
             }
             else
@@ -262,7 +243,6 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void TestGroupEnd(TestGroupPhase testGroupPhase, DateTime time, Exception executionException)
         {
@@ -295,7 +275,6 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void TestStart(string testName, DateTime time, string userName)
         {
@@ -308,7 +287,6 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void TestEnd(string testName, DateTime time, Exception ex)
         {
@@ -324,7 +302,6 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void ValidatorStart(string validatorName, DateTime time)
         {
@@ -333,7 +310,6 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void ValidatorEnd(string validatorName, DateTime time, Exception ex)
         {
@@ -345,7 +321,6 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void ContextLoaderStart(string contextLoaderName, DateTime time)
         {
@@ -354,7 +329,6 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void ContextLoaderEnd(string contextLoaderName, DateTime time, Exception ex)
         {
@@ -366,27 +340,24 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public object Clone()
-	    {
-	        return new Logger();
-	    }
+        {
+            return new Logger();
+        }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Flush()
         {
-            string buff = BufferedText;
-            if(null != buff)
+            var buff = BufferedText;
+            if (null != buff)
             {
                 WriteLine(buff);
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Close()
         {
@@ -414,7 +385,7 @@ namespace BizUnit
         {
             if (_concurrentExecutionMode)
             {
-                _sb.Append(String.Format(s, args));
+                _sb.Append(string.Format(s, args));
                 _sb.Append(Crlf);
             }
             else
@@ -435,7 +406,7 @@ namespace BizUnit
         {
             using (var ms = new MemoryStream())
             {
-                var tw = new XmlTextWriter(ms, Encoding.Unicode) { Formatting = Formatting.Indented };
+                var tw = new XmlTextWriter(ms, Encoding.Unicode) {Formatting = Formatting.Indented};
 
                 doc.WriteContentTo(tw);
                 tw.Flush();

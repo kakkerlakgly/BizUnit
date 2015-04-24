@@ -20,14 +20,12 @@ using System.Web.UI;
 namespace BizUnit.BizUnitOM
 {
     /// <summary>
-    /// 
     /// </summary>
     [Obsolete(
         "DefaultTestStepParameterFormatter has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
     public class DefaultTestStepParameterFormatter : ITestStepParameterFormatter
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="type"></param>
         /// <param name="args"></param>
@@ -36,27 +34,27 @@ namespace BizUnit.BizUnitOM
         /// <exception cref="ArgumentException"></exception>
         public object[] FormatParameters(Type type, object[] args, Context ctx)
         {
-            if (typeof (Double) == type)
+            if (typeof (double) == type)
             {
                 return new object[] {Convert.ToDouble(ctx.ReadArgument(args[0]))};
             }
-            if (typeof (Boolean) == type)
+            if (typeof (bool) == type)
             {
                 return new object[] {Convert.ToBoolean(ctx.ReadArgument(args[0]))};
             }
-            if (typeof (Int16) == type)
+            if (typeof (short) == type)
             {
                 return new object[] {Convert.ToInt16(ctx.ReadArgument(args[0]))};
             }
-            if (typeof (Int32) == type)
+            if (typeof (int) == type)
             {
                 return new object[] {Convert.ToInt32(ctx.ReadArgument(args[0]))};
             }
-            if (typeof (Int64) == type)
+            if (typeof (long) == type)
             {
                 return new object[] {Convert.ToInt64(ctx.ReadArgument(args[0]))};
             }
-            if (typeof (String) == type)
+            if (typeof (string) == type)
             {
                 return new[] {ctx.ReadArgument(args[0])};
             }
@@ -68,7 +66,7 @@ namespace BizUnit.BizUnitOM
             if (typeof (IList<Pair>) == type)
             {
                 IList<Pair> argsAsPairList = new List<Pair>();
-                for (int c = 0; c < args.Length; c += 2)
+                for (var c = 0; c < args.Length; c += 2)
                 {
                     argsAsPairList.Add(new Pair(ctx.ReadArgument(args[c]), ctx.ReadArgument(args[c + 1])));
                 }

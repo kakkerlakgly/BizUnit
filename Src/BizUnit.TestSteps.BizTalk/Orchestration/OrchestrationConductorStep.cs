@@ -20,81 +20,79 @@ using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.BizTalk.Orchestration
 {
-	/// <summary>
-	/// The OrchestrationConductorStep may be used to stop/start an orchestration.
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
-    /// <TestStep assemblyPath="" typeName="BizUnit.BizTalkSteps.OrchestrationConductorStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
-	///		<DelayForCompletion>5</DelayForCompletion> <!-- Optional, seconds to delay for this step to complete -->
-	///		<AssemblyName>BizUnitTest.Process</AssemblyName>
-	///		<OrchestrationName>BizUnitTest.Process.SubmitToLedger</OrchestrationName>
-	///		<Action>Start</Action>
-	/// </TestStep>
-	/// </code>
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>DelayForCompletion</term>
-	///			<description>The delay before executing the step <para>(optional)</para></description>
-	///		</item>
-	///		<item>
-	///			<term>AssemblyName</term>
-	///			<description>The name of the assembly containing the orchestration, e.g. BizUnitTest.Process</description>
-	///		</item>
-	///		<item>
-	///			<term>OrchestrationName</term>
-	///			<description>The name of the orchestration to start/stop</description>
-	///		</item>
-	///		<item>
-	///			<term>Action</term>
-	///			<description>Start|Stop</description>
-	///		</item>
-	///	</list>
-	///	</remarks>	
-
+    /// <summary>
+    ///     The OrchestrationConductorStep may be used to stop/start an orchestration.
+    /// </summary>
+    /// <remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    ///  <TestStep assemblyPath=""
+    ///             typeName="BizUnit.BizTalkSteps.OrchestrationConductorStep, BizUnit.BizTalkSteps, Version=3.1.0.0, Culture=neutral, PublicKeyToken=7eb7d82981ae5162">
+    ///             <DelayForCompletion>5</DelayForCompletion> <!-- Optional, seconds to delay for this step to complete -->
+    ///             <AssemblyName>BizUnitTest.Process</AssemblyName>
+    ///             <OrchestrationName>BizUnitTest.Process.SubmitToLedger</OrchestrationName>
+    ///             <Action>Start</Action>
+    ///         </TestStep>
+    ///  </code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>DelayForCompletion</term>
+    ///             <description>
+    ///                 The delay before executing the step
+    ///                 <para>(optional)</para>
+    ///             </description>
+    ///         </item>
+    ///         <item>
+    ///             <term>AssemblyName</term>
+    ///             <description>The name of the assembly containing the orchestration, e.g. BizUnitTest.Process</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>OrchestrationName</term>
+    ///             <description>The name of the orchestration to start/stop</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>Action</term>
+    ///             <description>Start|Stop</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     public class OrchestrationConductorStep : TestStepBase
-	{
+    {
         /// <summary>
-        /// 
+        /// </summary>
+        public enum OrchestrationAction
+        {
+            /// <summary>
+            /// </summary>
+            Start,
+
+            /// <summary>
+            /// </summary>
+            Stop
+        }
+
+        /// <summary>
         /// </summary>
         public string AssemblyName { get; set; }
+
         /// <summary>
-        /// 
         /// </summary>
         public string OrchestrationName { get; set; }
+
         /// <summary>
-        /// 
         /// </summary>
         public OrchestrationAction Action { get; set; }
+
         /// <summary>
-        /// 
         /// </summary>
         public int DelayForCompletion { get; set; }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public enum OrchestrationAction 
-		{
-			/// <summary>
-			/// 
-			/// </summary>
-			Start,
-			/// <summary>
-			/// 
-			/// </summary>
-			Stop,
-		}
-
-        /// <summary>
-        /// ITestStep.Execute() implementation
+        ///     ITestStep.Execute() implementation
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
@@ -114,7 +112,7 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
                 if (DelayForCompletion > 0)
                 {
                     context.LogInfo("Waiting for {0} seconds before recommencing testing.", DelayForCompletion);
-                    Thread.Sleep(DelayForCompletion * 1000);
+                    Thread.Sleep(DelayForCompletion*1000);
                 }
             }
             catch (COMException e)
@@ -125,67 +123,74 @@ namespace BizUnit.TestSteps.BizTalk.Orchestration
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public override void Validate(Context context)
-	    {
-	    }
+        {
+        }
 
-	    private static void Start(string assemblyName, string orchestrationName, Context context)
-		{
-			var started = false;
-			var wmiQuery = 
-				String.Format("Select * from MSBTS_Orchestration where Name=\"{0}\" and AssemblyName=\"{1}\"", orchestrationName, assemblyName);
+        private static void Start(string assemblyName, string orchestrationName, Context context)
+        {
+            var started = false;
+            var wmiQuery =
+                string.Format("Select * from MSBTS_Orchestration where Name=\"{0}\" and AssemblyName=\"{1}\"",
+                    orchestrationName, assemblyName);
 
-			var enumOptions = new EnumerationOptions {ReturnImmediately = false};
+            var enumOptions = new EnumerationOptions {ReturnImmediately = false};
 
-	        using (var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", wmiQuery, enumOptions))
-	        {
-	            foreach( var o in orchestrationSearcher.Get())
-	            {
-                    using (var orchestrationInstance = (ManagementObject)o)
+            using (
+                var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", wmiQuery,
+                    enumOptions))
+            {
+                foreach (var o in orchestrationSearcher.Get())
+                {
+                    using (var orchestrationInstance = (ManagementObject) o)
                     {
                         context.LogInfo("Starting Orchestration: {0}", orchestrationName);
-                        orchestrationInstance.InvokeMethod("Start", new object[] { 2, 2 });
+                        orchestrationInstance.InvokeMethod("Start", new object[] {2, 2});
 
                         context.LogInfo("Orchestration: {0} was successfully started", orchestrationName);
                         started = true;
                     }
-	            }
-	        }
+                }
+            }
 
-	        if ( !started )
-			{
-				throw new InvalidOperationException(string.Format("Failed to start the orchestration: \"{0}\"", orchestrationName));
-			}							
-		}
+            if (!started)
+            {
+                throw new InvalidOperationException(string.Format("Failed to start the orchestration: \"{0}\"",
+                    orchestrationName));
+            }
+        }
 
-		private static void Stop( string assemblyName, string orchestrationName, Context context )
-		{
-			bool stopped = false;
-			string wmiQuery = 
-				String.Format( "Select * from MSBTS_Orchestration where Name=\"{0}\" and AssemblyName=\"{1}\"", orchestrationName, assemblyName);
+        private static void Stop(string assemblyName, string orchestrationName, Context context)
+        {
+            var stopped = false;
+            var wmiQuery =
+                string.Format("Select * from MSBTS_Orchestration where Name=\"{0}\" and AssemblyName=\"{1}\"",
+                    orchestrationName, assemblyName);
 
-			var enumOptions = new EnumerationOptions {ReturnImmediately = false};
+            var enumOptions = new EnumerationOptions {ReturnImmediately = false};
 
-		    using (var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", wmiQuery, enumOptions))
-		    {
-		        foreach( var o in orchestrationSearcher.Get())
-		        {
-                    using (var orchestrationInstance = (ManagementObject)o)
+            using (
+                var orchestrationSearcher = new ManagementObjectSearcher("root\\MicrosoftBizTalkServer", wmiQuery,
+                    enumOptions))
+            {
+                foreach (var o in orchestrationSearcher.Get())
+                {
+                    using (var orchestrationInstance = (ManagementObject) o)
                     {
-                        orchestrationInstance.InvokeMethod("Stop", new object[] { 2, 2 });
+                        orchestrationInstance.InvokeMethod("Stop", new object[] {2, 2});
 
                         context.LogInfo("Orchestration: {0} was successfully stopped", orchestrationName);
                         stopped = true;
                     }
-		        }
-		    }
+                }
+            }
 
-		    if ( !stopped )
-			{
-				throw new InvalidOperationException(string.Format("Failed to stop the orchestration: \"{0}\"", orchestrationName));
-			}																									
-		}
-	}
+            if (!stopped)
+            {
+                throw new InvalidOperationException(string.Format("Failed to stop the orchestration: \"{0}\"",
+                    orchestrationName));
+            }
+        }
+    }
 }

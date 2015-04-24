@@ -21,27 +21,11 @@ namespace BizUnit.TestSteps.BizTalk
 {
     public partial class MessageInfo
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="message"></param>
-        public void MergeIntoMessage(IBaseMessage message)
-        {
-            foreach (MessageInfoContextInfoProperty prop in MessageContextProperties)
-            {
-                if (prop.Promoted)
-                {
-                    message.Context.Promote(prop.Name, prop.Namespace, prop.Value);
-                }
-                else
-                {
-                    message.Context.Write(prop.Name, prop.Namespace, prop.Value);
-                }
-            }
-        }
+        private static XmlSerializer _messageInfoSerializer = new XmlSerializer(typeof (MessageInfo));
+        private MessageInfoContextInfo _mici;
+        private MessageInfoPartInfo _mipi;
 
         /// <summary>
-        /// 
         /// </summary>
         public MessageInfoContextInfoProperty[] MessageContextProperties
         {
@@ -55,9 +39,7 @@ namespace BizUnit.TestSteps.BizTalk
             }
         }
 
-        private MessageInfoContextInfo _mici;
         /// <summary>
-        /// 
         /// </summary>
         public MessageInfoContextInfo MessageInfoContextInfo
         {
@@ -65,8 +47,8 @@ namespace BizUnit.TestSteps.BizTalk
             {
                 if (null == _mici)
                 {
-                    bool found = false;
-                    int index = 0;
+                    var found = false;
+                    var index = 0;
                     while (!found && (index < Items.Length))
                     {
                         _mici = Items[index] as MessageInfoContextInfo;
@@ -78,9 +60,7 @@ namespace BizUnit.TestSteps.BizTalk
             }
         }
 
-        private MessageInfoPartInfo _mipi;
         /// <summary>
-        /// 
         /// </summary>
         public MessageInfoPartInfo MessageInfoPartInfo
         {
@@ -88,8 +68,8 @@ namespace BizUnit.TestSteps.BizTalk
             {
                 if (null == _mipi)
                 {
-                    bool found = false;
-                    int index = 0;
+                    var found = false;
+                    var index = 0;
                     while (!found && (index < Items.Length))
                     {
                         _mipi = Items[index] as MessageInfoPartInfo;
@@ -101,16 +81,32 @@ namespace BizUnit.TestSteps.BizTalk
             }
         }
 
-        private static XmlSerializer _messageInfoSerializer = new XmlSerializer(typeof(MessageInfo));
         /// <summary>
-        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        public void MergeIntoMessage(IBaseMessage message)
+        {
+            foreach (var prop in MessageContextProperties)
+            {
+                if (prop.Promoted)
+                {
+                    message.Context.Promote(prop.Name, prop.Namespace, prop.Value);
+                }
+                else
+                {
+                    message.Context.Write(prop.Name, prop.Namespace, prop.Value);
+                }
+            }
+        }
+
+        /// <summary>
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
         public static MessageInfo Deserialize(string path)
         {
             object obj = null;
-            using (XmlReader reader = XmlReader.Create(path))
+            using (var reader = XmlReader.Create(path))
             {
                 obj = _messageInfoSerializer.Deserialize(reader);
             }
@@ -119,13 +115,12 @@ namespace BizUnit.TestSteps.BizTalk
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="mi"></param>
         /// <param name="path"></param>
         public static void Serialize(MessageInfo mi, string path)
         {
-            using (XmlWriter writer = XmlWriter.Create(path, BizTalkMapTester.WriterSettings))
+            using (var writer = XmlWriter.Create(path, BizTalkMapTester.WriterSettings))
             {
                 _messageInfoSerializer.Serialize(writer, mi);
             }

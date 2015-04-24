@@ -132,6 +132,7 @@
     <Compile Include="Utilities\Pop3\Pop3Component.cs" />
     <Compile Include="Utilities\Pop3\Pop3ConnectException.cs" />
     <Compile Include="Utilities\Pop3\Pop3Credential.cs" />
+    <Compile Include="Utilities\Pop3\Pop3Exception.cs" />
     <Compile Include="Utilities\Pop3\Pop3LoginException.cs" />
     <Compile Include="Utilities\Pop3\Pop3Message.cs" />
     <Compile Include="Utilities\Pop3\Pop3MessageComponents.cs" />

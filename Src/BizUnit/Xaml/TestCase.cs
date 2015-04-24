@@ -21,179 +21,165 @@ using BizUnit.Common;
 
 namespace BizUnit.Xaml
 {
-    ///<summary>
-    /// TestCase maybe used to create a test case programatically. Test steps 
-    /// should be added to the appropriate stage for subsequent execution.
-    /// The TestCase is executed via BizUnit.
-    /// A TestCase maybe serialised into Xaml using TestCase.SaveToFile() or
-    /// loaded from a Xaml file using TestCase.LoadFromFile().
-    ///</summary>
-    /// 
+    /// <summary>
+    ///     TestCase maybe used to create a test case programatically. Test steps
+    ///     should be added to the appropriate stage for subsequent execution.
+    ///     The TestCase is executed via BizUnit.
+    ///     A TestCase maybe serialised into Xaml using TestCase.SaveToFile() or
+    ///     loaded from a Xaml file using TestCase.LoadFromFile().
+    /// </summary>
     /// <remarks>
-    /// The exmaple below illustrates loading and running a Xaml TestCase:
+    ///     The exmaple below illustrates loading and running a Xaml TestCase:
+    ///     <code escaped="true">
+    /// 	namespace WoodgroveBank.BVTs
+    /// 	{
+    /// 	using System;
+    /// 	using NUnit.Framework;
+    /// 	using BizUnit;
     /// 
-    /// <code escaped="true">
-    ///	namespace WoodgroveBank.BVTs
-    ///	{
-    ///	using System;
-    ///	using NUnit.Framework;
-    ///	using BizUnit;
-    ///
-    ///	[TestMethod]
-    ///	public class SampleTests
-    ///	{
-    ///		[Test]
-    ///		public void ExecuteXamlTestCase()
-    ///		{
-    ///         // Load the Xaml test case...
-    ///         var bu = new BizUnit(TestCase.LoadFromFile("DelayTestCaseTest.xaml"));
-    ///         
-    ///         // Run the test...
-    ///         bu.RunTest();
-    ///		}
-    ///	}		
-    ///	</code>
-    ///	
-    /// The exmaple below illustrates programtically creating a TestCase and subsequently running it:
+    /// 	[TestMethod]
+    /// 	public class SampleTests
+    /// 	{
+    /// 		[Test]
+    /// 		public void ExecuteXamlTestCase()
+    /// 		{
+    ///          // Load the Xaml test case...
+    ///          var bu = new BizUnit(TestCase.LoadFromFile("DelayTestCaseTest.xaml"));
+    ///          
+    ///          // Run the test...
+    ///          bu.RunTest();
+    /// 		}
+    /// 	}		
+    /// 	</code>
+    ///     The exmaple below illustrates programtically creating a TestCase and subsequently running it:
+    ///     <code escaped="true">
+    /// 	namespace WoodgroveBank.BVTs
+    /// 	{
+    /// 	using System;
+    /// 	using NUnit.Framework;
+    /// 	using BizUnit;
     /// 
-    /// <code escaped="true">
-    ///	namespace WoodgroveBank.BVTs
-    ///	{
-    ///	using System;
-    ///	using NUnit.Framework;
-    ///	using BizUnit;
-    ///
-    ///	[TestMethod]
-    ///	public class SampleTests
-    ///	{
-    ///		[Test]
-    ///		public void ExecuteProgramaticallyCreatedTestCase()
-    ///		{
-    ///         int stepDelayDuration = 500;
-    ///         var step = new DelayStep();
-    ///         step.DelayMilliSeconds = stepDelayDuration;
-    ///
-    ///         var sw = new Stopwatch();
-    ///         sw.Start();
-    ///
-    ///         var tc = new TestCase();
-    ///         tc.ExecutionSteps.Add(step);
-    ///         
-    ///         // If we wanted to serialise the test case:
-    ///         // TestCase.SaveToFile(tc, "DelayTestCaseTest.xaml");
+    /// 	[TestMethod]
+    /// 	public class SampleTests
+    /// 	{
+    /// 		[Test]
+    /// 		public void ExecuteProgramaticallyCreatedTestCase()
+    /// 		{
+    ///          int stepDelayDuration = 500;
+    ///          var step = new DelayStep();
+    ///          step.DelayMilliSeconds = stepDelayDuration;
     /// 
-    ///         var bu = new BizUnit(tc));
-    ///
-    ///         sw = new Stopwatch().Start();
-    ///
-    ///         // Run the test case...
-    ///         bu.RunTest();
-    ///
-    ///         var actualDuration = sw.ElapsedMilliseconds;
-    ///         Console.WriteLine("Observed delay: {0}", actualDuration);
-    ///         Assert.AreEqual(actualDuration, stepDelayDuration, 20);
-    ///		}
-    ///	}		
-    ///	</code>
+    ///          var sw = new Stopwatch();
+    ///          sw.Start();
     /// 
-    ///	</remarks>
+    ///          var tc = new TestCase();
+    ///          tc.ExecutionSteps.Add(step);
+    ///          
+    ///          // If we wanted to serialise the test case:
+    ///          // TestCase.SaveToFile(tc, "DelayTestCaseTest.xaml");
+    ///  
+    ///          var bu = new BizUnit(tc));
+    /// 
+    ///          sw = new Stopwatch().Start();
+    /// 
+    ///          // Run the test case...
+    ///          bu.RunTest();
+    /// 
+    ///          var actualDuration = sw.ElapsedMilliseconds;
+    ///          Console.WriteLine("Observed delay: {0}", actualDuration);
+    ///          Assert.AreEqual(actualDuration, stepDelayDuration, 20);
+    /// 		}
+    /// 	}		
+    /// 	</code>
+    /// </remarks>
     public class TestCase
     {
-        private List<TestStepBase> _setupSteps;
-        private List<TestStepBase> _executionSteps;
         private List<TestStepBase> _cleanupSteps;
+        private List<TestStepBase> _executionSteps;
+        private List<TestStepBase> _setupSteps;
 
-        ///<summary>
-        /// The name of the test case
-        ///</summary>
-        public string Name { get; set; }
-
-        ///<summary>
-        /// The description of what the test case does
-        ///</summary>
-        public string Description { get; set; }
-
-        ///<summary>
-        /// The category of the test case, for example Build Varification 
-        /// Test (BVT), System Integration Test, User Acceptance Test, etc.
-        ///</summary>
-        public string Category { get; set; }
-
-        ///<summary>
-        /// The description of what the test case is designed to test
-        ///</summary>
-        public string Purpose { get; set; }
-
-        ///<summary>
-        /// A reference for the test, e.g. Usecase 101
-        ///</summary>
-        public string Reference { get; set; }
-
-        ///<summary>
-        /// Details of any preconditions required prior to running the test
-        ///</summary>
-        public string Preconditions { get; set; }
-
-        ///<summary>
-        /// The expected results from execution of the test
-        ///</summary>
-        public string ExpectedResults { get; set; }
-
-        ///<summary>
-        /// The version of BizUnit that was used to generate this test
-        ///</summary>
-        public string BizUnitVersion { get; set; }
-
-        ///<summary>
-        /// Default constructor
-        ///</summary>
+        /// <summary>
+        ///     Default constructor
+        /// </summary>
         public TestCase()
         {
             BizUnitVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
-        ///<summary>
-        /// The test steps to be executed in the Setup stage of the test
-        ///</summary>
+        /// <summary>
+        ///     The name of the test case
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        ///     The description of what the test case does
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        ///     The category of the test case, for example Build Varification
+        ///     Test (BVT), System Integration Test, User Acceptance Test, etc.
+        /// </summary>
+        public string Category { get; set; }
+
+        /// <summary>
+        ///     The description of what the test case is designed to test
+        /// </summary>
+        public string Purpose { get; set; }
+
+        /// <summary>
+        ///     A reference for the test, e.g. Usecase 101
+        /// </summary>
+        public string Reference { get; set; }
+
+        /// <summary>
+        ///     Details of any preconditions required prior to running the test
+        /// </summary>
+        public string Preconditions { get; set; }
+
+        /// <summary>
+        ///     The expected results from execution of the test
+        /// </summary>
+        public string ExpectedResults { get; set; }
+
+        /// <summary>
+        ///     The version of BizUnit that was used to generate this test
+        /// </summary>
+        public string BizUnitVersion { get; set; }
+
+        /// <summary>
+        ///     The test steps to be executed in the Setup stage of the test
+        /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-        public IList<TestStepBase> SetupSteps 
+        public IList<TestStepBase> SetupSteps
         {
-            get 
-            {
-                return _setupSteps ?? (_setupSteps = new List<TestStepBase>()); 
-            } 
+            get { return _setupSteps ?? (_setupSteps = new List<TestStepBase>()); }
         }
 
-        ///<summary>
-        /// The test steps to be executed in the Execution stage of the test
-        ///</summary>
+        /// <summary>
+        ///     The test steps to be executed in the Execution stage of the test
+        /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public IList<TestStepBase> ExecutionSteps
         {
-            get
-            {
-                return _executionSteps ?? (_executionSteps = new List<TestStepBase>());
-            }
+            get { return _executionSteps ?? (_executionSteps = new List<TestStepBase>()); }
         }
 
-        ///<summary>
-        /// The test steps to be executed in the Cleanup stage of the test, 
-        /// these will always be executed even if the test fails
-        ///</summary>
+        /// <summary>
+        ///     The test steps to be executed in the Cleanup stage of the test,
+        ///     these will always be executed even if the test fails
+        /// </summary>
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public IList<TestStepBase> CleanupSteps
         {
-            get
-            {
-                return _cleanupSteps ?? (_cleanupSteps = new List<TestStepBase>());
-            }
+            get { return _cleanupSteps ?? (_cleanupSteps = new List<TestStepBase>()); }
         }
 
-        ///<summary>
-        /// Validates that the test has been correctly setup, this is called 
-        /// by BizUnit, though may also be called from user code if required.
-        ///</summary>
-        ///<param name="ctx"></param>
+        /// <summary>
+        ///     Validates that the test has been correctly setup, this is called
+        ///     by BizUnit, though may also be called from user code if required.
+        /// </summary>
+        /// <param name="ctx"></param>
         public void Validate(Context ctx)
         {
             ArgumentValidation.CheckForNullReference(ctx, "ctx");
@@ -208,55 +194,51 @@ namespace BizUnit.Xaml
             // Validate test Setup Steps
             foreach (var step in steps)
             {
-                Exception caughtEx = null;
                 try
                 {
                     step.Validate(ctx);
-                    if(null != step.SubSteps)
+                    if (null != step.SubSteps)
                     {
                         foreach (var subStep in step.SubSteps)
                         {
                             subStep.Validate(ctx);
                         }
                     }
+                    ctx.Logger.ValidateTestSteps(stage, step.GetType().ToString(), null);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    caughtEx = ex;
+                    ctx.Logger.ValidateTestSteps(stage, step.GetType().ToString(), ex);
                     throw;
-                }
-                finally
-                {
-                    ctx.Logger.ValidateTestSteps(stage, step.GetType().ToString(), caughtEx);
                 }
             }
         }
 
-        ///<summary>
-        /// Used to save a TestCase to disc in Xaml format
-        ///</summary>
-        ///<param name="testCase">The TestCase to be saved to disc</param>
-        ///<param name="filePath">The file path of the Xaml test case representaiton.</param>
+        /// <summary>
+        ///     Used to save a TestCase to disc in Xaml format
+        /// </summary>
+        /// <param name="testCase">The TestCase to be saved to disc</param>
+        /// <param name="filePath">The file path of the Xaml test case representaiton.</param>
         public static void SaveToFile(TestCase testCase, string filePath)
         {
             BizUnitSerializationHelper.SaveToFile(testCase, filePath);
         }
 
-        ///<summary>
-        /// Used to save a TestCase to a string in Xaml format
-        ///</summary>
-        ///<param name="testCase">The TestCase to be saved to disc</param>
-        ///<returns>The test case in Xaml format</returns>
+        /// <summary>
+        ///     Used to save a TestCase to a string in Xaml format
+        /// </summary>
+        /// <param name="testCase">The TestCase to be saved to disc</param>
+        /// <returns>The test case in Xaml format</returns>
         public static string Save(TestCase testCase)
         {
             return BizUnitSerializationHelper.Serialize(testCase);
         }
 
-        ///<summary>
-        /// Used to deserialise a Xaml test case stored on disc into a TestCase 
-        ///</summary>
-        ///<param name="filePath">The file path of the Xaml test case to deserialise.</param>
-        ///<returns>The TestCase object</returns>
+        /// <summary>
+        ///     Used to deserialise a Xaml test case stored on disc into a TestCase
+        /// </summary>
+        /// <param name="filePath">The file path of the Xaml test case to deserialise.</param>
+        /// <returns>The TestCase object</returns>
         public static TestCase LoadFromFile(string filePath)
         {
             string testCase;
@@ -265,15 +247,15 @@ namespace BizUnit.Xaml
                 var sr = new StreamReader(fs);
                 testCase = sr.ReadToEnd();
             }
-            return (TestCase)BizUnitSerializationHelper.Deserialize(testCase);
+            return (TestCase) BizUnitSerializationHelper.Deserialize(testCase);
         }
 
-        ///<summary>
-        /// Used to deserialise a Xaml test case into a TestCase 
-        ///</summary>
-        ///<param name="xamlTestCase">The Xaml test case</param>
-        ///<returns>The TestCase object</returns>
-        ///<exception cref="NotImplementedException"></exception>
+        /// <summary>
+        ///     Used to deserialise a Xaml test case into a TestCase
+        /// </summary>
+        /// <param name="xamlTestCase">The Xaml test case</param>
+        /// <returns>The TestCase object</returns>
+        /// <exception cref="NotImplementedException"></exception>
         public static TestCase LoadXaml(string xamlTestCase)
         {
             throw new NotImplementedException();

@@ -18,24 +18,22 @@ using System.Reflection;
 namespace BizUnit
 {
     /// <summary>
-    /// 
     /// </summary>
-    public class ObjectCreator
+    public static class ObjectCreator
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="assemblyPath"></param>
         /// <returns></returns>
-        static public object CreateStep(string typeName, string assemblyPath)
+        public static object CreateStep(string typeName, string assemblyPath)
         {
             object comp = null;
             Type ty;
 
             if (!string.IsNullOrEmpty(assemblyPath))
             {
-                Assembly assembly = Assembly.LoadFrom(assemblyPath);
+                var assembly = Assembly.LoadFrom(assemblyPath);
                 ty = assembly.GetType(typeName, true, false);
             }
             else
@@ -52,18 +50,17 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="typeName"></param>
         /// <param name="assemblyPath"></param>
         /// <returns></returns>
-        static public Type GetType(string typeName, string assemblyPath)
+        public static Type GetType(string typeName, string assemblyPath)
         {
             Type t;
 
             if (!string.IsNullOrEmpty(assemblyPath))
             {
-                Assembly assembly = Assembly.LoadFrom(assemblyPath);
+                var assembly = Assembly.LoadFrom(assemblyPath);
                 t = assembly.GetType(typeName, true, false);
             }
             else

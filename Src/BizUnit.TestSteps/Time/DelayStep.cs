@@ -17,23 +17,21 @@ using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.Time
 {
-	/// <summary>
-	/// The DelayStep is used to perform a delay/sleep.
-	/// </summary>
-
+    /// <summary>
+    ///     The DelayStep is used to perform a delay/sleep.
+    /// </summary>
     public class DelayStep : TestStepBase
-	{
-	    /// <summary>
-	    /// 
-	    /// </summary>
-	    public int DelayMilliSeconds { set; get; }
+    {
+        /// <summary>
+        /// </summary>
+        public int DelayMilliSeconds { set; get; }
 
-	    /// <summary>
-        /// TestStepBase.Execute() implementation
+        /// <summary>
+        ///     TestStepBase.Execute() implementation
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
-	    {
+        {
             context.LogInfo("About to wait for {0} milli seconds...", DelayMilliSeconds.ToString());
 
             Thread.Sleep(DelayMilliSeconds);
@@ -42,12 +40,11 @@ namespace BizUnit.TestSteps.Time
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name='context'></param>
         public override void Validate(Context context)
-	    {
-	        // _timeOut - no validation required
-	    }
-	}
+        {
+            // _timeOut - no validation required
+        }
+    }
 }

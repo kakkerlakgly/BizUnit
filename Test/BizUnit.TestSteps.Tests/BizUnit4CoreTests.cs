@@ -1,54 +1,31 @@
-﻿
-using BizUnit.TestSteps.Time;
+﻿using BizUnit.TestSteps.Time;
 using BizUnit.Xaml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BizUnit.TestSteps.Tests
 {
     /// <summary>
-    /// Summary description for UnitTest1
+    ///     Summary description for UnitTest1
     /// </summary>
     [TestClass]
     public class BizUnit4CoreTests
     {
         /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        ///     Gets or sets the test context which provides
+        ///     information about and functionality for the current test run.
+        /// </summary>
         public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         [Ignore]
         public void SerializationV4TestStepsOnly()
         {
-            TestCase btc = new TestCase {Name = "Serialization Test"};
+            var btc = new TestCase {Name = "Serialization Test"};
 
             var fm = new DelayStep {DelayMilliSeconds = 35};
             btc.SetupSteps.Add(fm);
 
-            string testCase = TestCase.Save(btc);
+            var testCase = TestCase.Save(btc);
             var btcNew = TestCase.LoadXaml(testCase);
         }
 
@@ -76,7 +53,7 @@ namespace BizUnit.TestSteps.Tests
         [TestMethod]
         public void ExecuteTestCase()
         {
-            TestCase btc = new TestCase
+            var btc = new TestCase
             {
                 Name = "Serialization Test",
                 Description = "Test to blah blah blah, yeah really!",
@@ -86,8 +63,32 @@ namespace BizUnit.TestSteps.Tests
             var fm = new DelayStep {DelayMilliSeconds = 35};
             btc.SetupSteps.Add(fm);
 
-            BizUnit bu = new BizUnit(btc);
+            var bu = new BizUnit(btc);
             bu.RunTest();
         }
+
+        #region Additional test attributes
+
+        //
+        // You can use the following additional attributes as you write your tests:
+        //
+        // Use ClassInitialize to run code before running the first test in the class
+        // [ClassInitialize()]
+        // public static void MyClassInitialize(TestContext testContext) { }
+        //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
+
+        #endregion
     }
 }

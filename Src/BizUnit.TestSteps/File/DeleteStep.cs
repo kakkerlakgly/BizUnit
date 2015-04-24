@@ -19,19 +19,24 @@ using BizUnit.Xaml;
 
 namespace BizUnit.TestSteps.File
 {
-    ///<summary>
-    /// Given a file path, the step deletes the files
-    ///</summary>
+    /// <summary>
+    ///     Given a file path, the step deletes the files
+    /// </summary>
     public class DeleteStep : TestStepBase
     {
-        private IList<string> _filePathsToDelete = new List<string>();
-        ///<summary>
-        /// Collection of file paths to delete. May be the full file path, or a directory path with a wild card to search for. e.g. C:\Temp\Foo.xml or C:\Temp\*.xml
-        ///</summary>
-        public IList<string> FilePathsToDelete { get {return _filePathsToDelete;} }
+        private readonly IList<string> _filePathsToDelete = new List<string>();
 
         /// <summary>
-        /// TestStepBase.Execute() implementation
+        ///     Collection of file paths to delete. May be the full file path, or a directory path with a wild card to search for.
+        ///     e.g. C:\Temp\Foo.xml or C:\Temp\*.xml
+        /// </summary>
+        public IList<string> FilePathsToDelete
+        {
+            get { return _filePathsToDelete; }
+        }
+
+        /// <summary>
+        ///     TestStepBase.Execute() implementation
         /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
@@ -58,7 +63,8 @@ namespace BizUnit.TestSteps.File
                 var di = new DirectoryInfo(directory);
                 var files = di.GetFiles(fileName);
 
-                context.LogInfo("{0} files were found matching the File Mask: \"{1}\" in the directory: \"{2}\"", files.Length, fileName, directory);
+                context.LogInfo("{0} files were found matching the File Mask: \"{1}\" in the directory: \"{2}\"",
+                    files.Length, fileName, directory);
 
                 foreach (var file in files)
                 {
@@ -74,19 +80,19 @@ namespace BizUnit.TestSteps.File
             context.LogInfo("File.Delete has deleted file: {0}", filePathToDelete);
         }
 
-        ///<summary>
-        /// TestStepBase.Validate() implementation
-        ///</summary>
+        /// <summary>
+        ///     TestStepBase.Validate() implementation
+        /// </summary>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-        ///<exception cref="ArgumentNullException"></exception>
+        /// <exception cref="InvalidOperationException "></exception>
         public override void Validate(Context context)
         {
             if (null == FilePathsToDelete || 0 == FilePathsToDelete.Count)
             {
-                throw new ArgumentNullException("FilePathsToDelete is either null or of zero length");
+                throw new InvalidOperationException("FilePathsToDelete is either null or of zero length");
             }
 
-            for (int c = 0; c < FilePathsToDelete.Count; c++)
+            for (var c = 0; c < FilePathsToDelete.Count; c++)
             {
                 FilePathsToDelete[c] = context.SubstituteWildCards(FilePathsToDelete[c]);
             }

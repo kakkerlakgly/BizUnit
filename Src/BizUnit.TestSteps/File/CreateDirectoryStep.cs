@@ -19,29 +19,27 @@ using BizUnit.Xaml;
 namespace BizUnit.TestSteps.File
 {
     /// <summary>
-    /// The CreateDirectory creates a new Directory.
+    ///     The CreateDirectory creates a new Directory.
     /// </summary>
     public class CreateDirectoryStep : TestStepBase
     {
-        ///<summary>
-        /// The name of the directory to create.
-        ///</summary>
-        public string DirectoryName { get; set; }
-        
         /// <summary>
-        /// TestStepBase.Execute() implementation
-		/// </summary>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        ///     The name of the directory to create.
+        /// </summary>
+        public string DirectoryName { get; set; }
+
+        /// <summary>
+        ///     TestStepBase.Execute() implementation
+        /// </summary>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public override void Execute(Context context)
         {
-
             context.LogInfo("About to create the directory: {0}", DirectoryName);
 
             Directory.CreateDirectory(DirectoryName);
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public override void Validate(Context context)
         {

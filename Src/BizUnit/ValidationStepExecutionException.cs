@@ -17,25 +17,26 @@ using System;
 namespace BizUnit
 {
     /// <summary>
-    /// ValidationStepExecutionException is thrown by BizUnit to indicate a validation step failed.
+    ///     ValidationStepExecutionException is thrown by BizUnit to indicate a validation step failed.
     /// </summary>
-    /// <remarks>The ValidationStepExecutionException is thrown by BizUnit when a validation step fails, the 
-    /// framework automatically wraps the exception thrown by the validaiton step with an 
-    /// ValidationStepExecutionException</remarks>
+    /// <remarks>
+    ///     The ValidationStepExecutionException is thrown by BizUnit when a validation step fails, the
+    ///     framework automatically wraps the exception thrown by the validaiton step with an
+    ///     ValidationStepExecutionException
+    /// </remarks>
     public class ValidationStepExecutionException : Exception
     {
         private readonly string _testCaseName;
 
         /// <summary>
-        /// ValidationStepExecutionException constructor.
+        ///     ValidationStepExecutionException constructor.
         /// </summary>
         /// <param name="message">The message associated with this exception.</param>
         /// <param name="testCaseName">The name of the BizUnit test case executing whilst the validation step failed.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit using 
-        /// the BizUnit Test Case Object Model:
-        ///	</remarks>
+        ///     The following example demonstrates how to create and call BizUnit using
+        ///     the BizUnit Test Case Object Model:
+        /// </remarks>
         public ValidationStepExecutionException(string message, string testCaseName)
             : base(message)
         {
@@ -43,16 +44,15 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// ValidationStepExecutionException constructor.
+        ///     ValidationStepExecutionException constructor.
         /// </summary>
         /// <param name="message">The message associated with this exception.</param>
         /// <param name="innerException">The exception thrown by the validation step.</param>
         /// <param name="testCaseName">The name of the BizUnit test case executing whilst the validation step failed.</param>
-        /// 
         /// <remarks>
-        /// The following example demonstrates how to create and call BizUnit using 
-        /// the BizUnit Test Case Object Model:
-        ///	</remarks>
+        ///     The following example demonstrates how to create and call BizUnit using
+        ///     the BizUnit Test Case Object Model:
+        /// </remarks>
         public ValidationStepExecutionException(string message, Exception innerException, string testCaseName)
             : base(message, innerException)
         {
@@ -60,7 +60,7 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// The name of the test case
+        ///     The name of the test case
         /// </summary>
         public string TestCaseName
         {

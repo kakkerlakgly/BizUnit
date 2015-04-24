@@ -14,34 +14,34 @@
 
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-	/// <summary>
-	/// Summary description for Credentials.
-	/// </summary>
-	internal class Pop3Credential
-	{
-	    private readonly string[] _sendStrings = { "user", "pass" };
+    /// <summary>
+    ///     Summary description for Credentials.
+    /// </summary>
+    internal class Pop3Credential
+    {
+        private readonly string[] _sendStrings = {"user", "pass"};
 
-		internal string[] SendStrings
-		{
-			get { return _sendStrings; }
-		}
+        internal Pop3Credential(string user, string pass, string server)
+        {
+            User = user;
+            Pass = pass;
+            Server = server;
+        }
 
-	    internal string User { get; set; }
-	    internal string Pass { get; set; }
-	    internal string Server { get; set; }
+        internal Pop3Credential()
+        {
+            User = null;
+            Pass = null;
+            Server = null;
+        }
 
-	    internal Pop3Credential(string user, string pass, string server)
-		{
-			User = user;
-			Pass = pass;
-			Server = server;
-		}
+        internal string[] SendStrings
+        {
+            get { return _sendStrings; }
+        }
 
-		internal Pop3Credential()
-		{
-			User = null;
-			Pass = null;
-			Server = null;
-		}
-	}
+        internal string User { get; set; }
+        internal string Pass { get; set; }
+        internal string Server { get; set; }
+    }
 }

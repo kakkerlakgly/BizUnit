@@ -17,7 +17,6 @@ using System;
 namespace BizUnit.BizUnitOM
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="type"></param>
     /// <param name="args"></param>
@@ -25,13 +24,11 @@ namespace BizUnit.BizUnitOM
     public delegate object[] TestStepParameterFormatter(Type type, object[] args, Context ctx);
 
     /// <summary>
-    /// 
     /// </summary>
     [Obsolete("ITestStepParameterFormatter has been deprecated. Please investigate the use of BizUnit.Xaml.TestCase.")]
     public interface ITestStepParameterFormatter
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="type"></param>
         /// <param name="args"></param>

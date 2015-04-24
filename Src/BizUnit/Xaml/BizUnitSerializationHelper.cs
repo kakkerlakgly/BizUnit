@@ -58,7 +58,7 @@ namespace BizUnit.Xaml
 
                 using (var fs = File.Open(filePath, FileMode.Create, FileAccess.ReadWrite))
                 {
-                    int read = ms.Read(buff, 0, buff.Length);
+                    var read = ms.Read(buff, 0, buff.Length);
                     do
                     {
                         fs.Write(buff, 0, read);

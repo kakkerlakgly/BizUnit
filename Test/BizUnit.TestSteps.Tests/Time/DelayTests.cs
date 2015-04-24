@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Diagnostics;
 using BizUnit.TestSteps.DataLoaders.File;
 using BizUnit.TestSteps.File;
@@ -10,43 +9,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BizUnit.TestSteps.Tests.Time
 {
     /// <summary>
-    /// Summary description for DelayTest
+    ///     Summary description for DelayTest
     /// </summary>
     [TestClass]
     public class DelayTests
     {
         /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        ///     Gets or sets the test context which provides
+        ///     information about and functionality for the current test run.
+        /// </summary>
         public TestContext TestContext { get; set; }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         public void DelayTest()
         {
-            int stepDelayDuration = 500;
+            var stepDelayDuration = 500;
             var step = new DelayStep {DelayMilliSeconds = stepDelayDuration};
 
             var sw = new Stopwatch();
@@ -74,7 +51,7 @@ namespace BizUnit.TestSteps.Tests.Time
         [TestMethod]
         public void DelayTestCaseTest()
         {
-            int stepDelayDuration = 500;
+            var stepDelayDuration = 500;
             var step = new DelayStep {DelayMilliSeconds = stepDelayDuration};
 
             var sw = new Stopwatch();
@@ -143,5 +120,29 @@ namespace BizUnit.TestSteps.Tests.Time
             // Save Test Case
             TestCase.SaveToFile(testCase, "DelaySampleTest.xml");
         }
+
+        #region Additional test attributes
+
+        //
+        // You can use the following additional attributes as you write your tests:
+        //
+        // Use ClassInitialize to run code before running the first test in the class
+        // [ClassInitialize()]
+        // public static void MyClassInitialize(TestContext testContext) { }
+        //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
+
+        #endregion
     }
 }

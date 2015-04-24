@@ -1,12 +1,11 @@
-﻿
-using System.IO;
+﻿using System.IO;
 
 namespace BizUnit.TestSteps.Tests
 {
     internal static class TestHelper
     {
         /// <summary>
-        /// Deletes the file.
+        ///     Deletes the file.
         /// </summary>
         /// <param name="filePath">The file path.</param>
         internal static void DeleteFile(string filePath)

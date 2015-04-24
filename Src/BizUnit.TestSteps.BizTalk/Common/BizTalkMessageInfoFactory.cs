@@ -20,23 +20,21 @@ using Microsoft.Test.BizTalk.PipelineObjects;
 namespace BizUnit.TestSteps.BizTalk.Common
 {
     /// <summary>
-    /// 
     /// </summary>
     public static class BizTalkMessageInfoFactory
     {
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="message"></param>
         /// <param name="destination"></param>
         /// <returns></returns>
         public static MessageInfo CreateMessageInfo(IBaseMessage message, string destination)
         {
-            var mc = (MessageContext)message.Context;
+            var mc = (MessageContext) message.Context;
 
             var miciapael = new List<MessageInfoContextInfoArrayPropertyArrayElement1>(message.PartCount);
             var mipimpl = new List<MessageInfoPartInfoMessagePart>(message.PartCount);
-            for (int partIndex = 0; partIndex < message.PartCount; partIndex++)
+            for (var partIndex = 0; partIndex < message.PartCount; partIndex++)
             {
                 string partName;
                 var mp = message.GetPartByIndex(partIndex, out partName);
@@ -57,16 +55,16 @@ namespace BizUnit.TestSteps.BizTalk.Common
             var micipl = new List<MessageInfoContextInfoProperty>(mc.Properties.Count);
             foreach (DictionaryEntry pde in mc.Properties)
             {
-                string key = pde.Key.ToString();
-                string val = pde.Value.ToString();
-                int at = key.IndexOf('@');
+                var key = pde.Key.ToString();
+                var val = pde.Value.ToString();
+                var at = key.IndexOf('@');
 
                 var micip = new MessageInfoContextInfoProperty
-                                {
-                                    Name = key.Substring(0, at),
-                                    Namespace = key.Substring(at + 1),
-                                    Value = val
-                                };
+                {
+                    Name = key.Substring(0, at),
+                    Namespace = key.Substring(at + 1),
+                    Value = val
+                };
                 micip.Promoted = mc.IsPromoted(micip.Name, micip.Namespace);
                 micip.PromotedSpecified = true;
 
@@ -74,26 +72,26 @@ namespace BizUnit.TestSteps.BizTalk.Common
             }
 
             var miciap = new MessageInfoContextInfoArrayProperty
-                             {
-                                 Name = "PartNames",
-                                 Namespace = "http://schemas.microsoft.com/BizTalk/2003/messageagent-properties",
-                                 ArrayElement1 = miciapael.ToArray()
-                             };
+            {
+                Name = "PartNames",
+                Namespace = "http://schemas.microsoft.com/BizTalk/2003/messageagent-properties",
+                ArrayElement1 = miciapael.ToArray()
+            };
 
             var mici = new MessageInfoContextInfo
-                           {
-                               PropertiesCount = message.Context.CountProperties.ToString(),
-                               ArrayProperty = new[] {miciap},
-                               Property = micipl.ToArray()
-                           };
+            {
+                PropertiesCount = message.Context.CountProperties.ToString(),
+                ArrayProperty = new[] {miciap},
+                Property = micipl.ToArray()
+            };
 
             var mipi = new MessageInfoPartInfo
-                           {
-                               PartsCount = message.PartCount.ToString(),
-                               MessagePart = mipimpl.ToArray()
-                           };
+            {
+                PartsCount = message.PartCount.ToString(),
+                MessagePart = mipimpl.ToArray()
+            };
 
-            var items = new object[]{mici, mipi};
+            var items = new object[] {mici, mipi};
 
             var mi = new MessageInfo {Items = items};
             return mi;

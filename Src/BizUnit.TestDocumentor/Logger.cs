@@ -1,15 +1,12 @@
-﻿
-using System;
+﻿using System;
 
 namespace BizUnit.TestDocumentor
 {
     /// <summary>
-    /// 
     /// </summary>
     public class Logger : ILogger
     {
         /// <summary>
-        /// 
         /// </summary>
         public void Info(string message, params object[] args)
         {
@@ -17,7 +14,6 @@ namespace BizUnit.TestDocumentor
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Warning(string message, params object[] args)
         {
@@ -25,7 +21,6 @@ namespace BizUnit.TestDocumentor
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Error(Exception ex)
         {

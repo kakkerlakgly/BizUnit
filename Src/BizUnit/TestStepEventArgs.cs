@@ -1,10 +1,8 @@
-
 using System;
 
 namespace BizUnit
 {
     /// <summary>
-    /// 
     /// </summary>
     public class TestStepEventArgs : EventArgs
     {
@@ -20,36 +18,24 @@ namespace BizUnit
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public TestStage Stage
         {
-            get
-            {
-                return _stage;
-            }
+            get { return _stage; }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public string TestCaseName
         {
-            get
-            {
-                return _testCaseName;
-            }
+            get { return _testCaseName; }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public string TestStepTypeName
         {
-            get
-            {
-                return _testStepTypeName;
-            }
+            get { return _testStepTypeName; }
         }
     }
 }

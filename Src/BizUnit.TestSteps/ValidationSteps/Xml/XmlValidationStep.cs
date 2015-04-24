@@ -25,49 +25,50 @@ using BizUnit.Xaml;
 namespace BizUnit.TestSteps.ValidationSteps.Xml
 {
     /// <summary>
-    /// The XmlValidationStep validates an Xml document, it may validate against a given schema, and also evaluate XPath queries.
-    /// The Xpath query is extended from XmlValidationStep to allow Xpath functions to be used which may not return a node set.
+    ///     The XmlValidationStep validates an Xml document, it may validate against a given schema, and also evaluate XPath
+    ///     queries.
+    ///     The Xpath query is extended from XmlValidationStep to allow Xpath functions to be used which may not return a node
+    ///     set.
     /// </summary>
-    /// 
     /// <remarks>
-    /// The following shows an example of the Xml representation of this test step.
-    /// 
-    /// <code escaped="true">
-    ///	<SubSteps assemblyPath="" typeName="BizUnit.XmlValidationStep">
-    ///		<XmlSchemaPath>.\TestData\PurchaseOrder.xsd</XmlSchemaPath>
-    ///		<XmlSchemaNameSpace>urn:bookstore-schema</XmlSchemaNameSpace>
-    ///		<XPathList>
-    ///			<XPathValidation query="/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']">PONumber_0</XPathValidation>
-    ///		</XPathList>
-    ///	</SubSteps>
-    ///	</code>
-    ///	
-    ///	<list type="table">
-    ///		<listheader>
-    ///			<term>Tag</term>
-    ///			<description>Description</description>
-    ///		</listheader>
-    ///		<item>
-    ///			<term>XmlSchemaPath</term>
-    ///			<description>The XSD schema to use to validate the XML data (optional)</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>XmlSchemaNameSpace</term>
-    ///			<description>The XSD schema namespace to validate the XML data against (optional)</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>XPathList/XPathValidation</term>
-    ///			<description>XPath expression to evaluate against the XML document (optional)(repeating).</description>
-    ///		</item>
-    ///	</list>
-    ///	</remarks>	
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<SubSteps assemblyPath="" typeName="BizUnit.XmlValidationStep">
+    ///             <XmlSchemaPath>.\TestData\PurchaseOrder.xsd</XmlSchemaPath>
+    ///             <XmlSchemaNameSpace>urn:bookstore-schema</XmlSchemaNameSpace>
+    ///             <XPathList>
+    ///                 <XPathValidation
+    ///                     query="/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']">
+    ///                     PONumber_0
+    ///                 </XPathValidation>
+    ///             </XPathList>
+    ///         </SubSteps>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>XmlSchemaPath</term>
+    ///             <description>The XSD schema to use to validate the XML data (optional)</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>XmlSchemaNameSpace</term>
+    ///             <description>The XSD schema namespace to validate the XML data against (optional)</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>XPathList/XPathValidation</term>
+    ///             <description>XPath expression to evaluate against the XML document (optional)(repeating).</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     public class XmlValidationStep : SubStepBase
     {
-        private Exception _validationException;
         private Context _context;
+        private Exception _validationException;
 
         /// <summary>
-        /// 
         /// </summary>
         public XmlValidationStep()
         {
@@ -76,17 +77,15 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public IList<SchemaDefinition> XmlSchemas { set; get; }
+        public IList<SchemaDefinition> XmlSchemas { private set; get; }
 
         /// <summary>
-        /// 
         /// </summary>
-        public IList<XPathDefinition> XPathValidations { get; set; }
+        public IList<XPathDefinition> XPathValidations { get; private set; }
 
         /// <summary>
-        /// ITestStep.Execute() implementation
+        ///     ITestStep.Execute() implementation
         /// </summary>
         /// <param name='data'>The stream cintaining the data to be validated.</param>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
@@ -102,18 +101,17 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name='context'></param>
         public override void Validate(Context context)
         {
-            foreach(var schema in XmlSchemas)
+            foreach (var schema in XmlSchemas)
             {
                 ArgumentValidation.CheckForNullReference(schema.XmlSchemaPath, "schema.XmlSchemaPath");
                 ArgumentValidation.CheckForNullReference(schema.XmlSchemaNameSpace, "schema.XmlSchemaNameSpace");
             }
 
-            foreach(var xpath in XPathValidations)
+            foreach (var xpath in XPathValidations)
             {
                 ArgumentValidation.CheckForNullReference(xpath.XPath, "xpath.XPath");
                 ArgumentValidation.CheckForNullReference(xpath.Value, "xpath.Value");
@@ -131,7 +129,7 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
                 }
                 settings.ValidationType = ValidationType.Schema;
 
-                XmlReader reader = XmlReader.Create(data, settings);
+                var reader = XmlReader.Create(data, settings);
                 var document = new XmlDocument();
                 document.Load(reader);
 
@@ -150,7 +148,7 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
 
         private void ValidateXPathExpressions(XmlDocument doc, Context context)
         {
-            foreach (XPathDefinition validation in XPathValidations)
+            foreach (var validation in XPathValidations)
             {
                 var xpathExp = validation.XPath;
                 var expectedValue = validation.Value;
@@ -161,9 +159,9 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
                 }
                 context.LogInfo("Evaluting XPath {0} equals \"{1}\"", xpathExp, expectedValue);
 
-                XPathNavigator xpn = doc.CreateNavigator();
-                object result = xpn.Evaluate(xpathExp);
-                
+                var xpn = doc.CreateNavigator();
+                var result = xpn.Evaluate(xpathExp);
+
                 string actualValue = null;
                 if (result.GetType().Name == "XPathSelectionIterator")
                 {
@@ -183,22 +181,23 @@ namespace BizUnit.TestSteps.ValidationSteps.Xml
 
                 if (!string.IsNullOrEmpty(expectedValue))
                 {
-
                     if (0 != expectedValue.CompareTo(actualValue))
                     {
-                        context.LogError("XPath evaluation failed. Expected:<{0}>. Actual:<{1}>.", expectedValue, actualValue);
+                        context.LogError("XPath evaluation failed. Expected:<{0}>. Actual:<{1}>.", expectedValue,
+                            actualValue);
 
                         throw new InvalidOperationException(
                             string.Format("XmlValidationStep failed, compare {0} != {1}, xpath query used: {2}",
-                                          expectedValue, actualValue, xpathExp));
+                                expectedValue, actualValue, xpathExp));
                     }
 
-                    context.LogInfo("XPath evaluation succeeded. Expected:<{0}>. Actual:<{1}>.", expectedValue, actualValue);
+                    context.LogInfo("XPath evaluation succeeded. Expected:<{0}>. Actual:<{1}>.", expectedValue,
+                        actualValue);
                 }
             }
         }
 
-        void ValidationEventHandler(object sender, ValidationEventArgs e)
+        private void ValidationEventHandler(object sender, ValidationEventArgs e)
         {
             switch (e.Severity)
             {

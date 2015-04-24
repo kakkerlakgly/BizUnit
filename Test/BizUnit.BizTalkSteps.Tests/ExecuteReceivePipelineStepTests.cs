@@ -1,4 +1,3 @@
-
 using BizUnit.TestSteps.BizTalk.Pipeline;
 using BizUnit.TestSteps.File;
 using BizUnit.TestSteps.ValidationSteps.Xml;
@@ -23,11 +22,11 @@ namespace BizUnit.BizTalkSteps.Tests
                 PipelineTypeName = "BizUnit.BizTalkTestArtifacts.ReceivePipeline1"
             };
             var ds = new DocSpecDefinition
-                         {
-                             AssemblyPath =
-                                 @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
-                             TypeName = "BizUnit.BizTalkTestArtifacts.Schema2"
-                         };
+            {
+                AssemblyPath =
+                    @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\bin\Debug\BizUnit.BizTalkTestArtifacts.dll",
+                TypeName = "BizUnit.BizTalkTestArtifacts.Schema2"
+            };
             pipeStep.DocSpecs.Add(ds);
             pipeStep.Source = @"..\..\..\..\Test\BizUnit.BizTalkTestArtifacts\Instances\Schema2.xml";
             pipeStep.DestinationFileFormat = "Output010.{0}.xml";
@@ -231,7 +230,8 @@ namespace BizUnit.BizTalkSteps.Tests
             TestCase.SaveToFile(tc, "ExecuteReceivePipeDocSpecEnvSpecXmlDisAsmWithImportedSchemaTest.xaml");
 
             // Execute test csse using serialised test case to test round tripping of serialisation...
-            var bu = new BizUnit(TestCase.LoadFromFile("ExecuteReceivePipeDocSpecEnvSpecXmlDisAsmWithImportedSchemaTest.xaml"));
+            var bu =
+                new BizUnit(TestCase.LoadFromFile("ExecuteReceivePipeDocSpecEnvSpecXmlDisAsmWithImportedSchemaTest.xaml"));
             bu.RunTest();
         }
     }

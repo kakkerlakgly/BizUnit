@@ -20,78 +20,81 @@ using BizUnit.CoreSteps.Utilities;
 namespace BizUnit.CoreSteps.TestSteps
 {
     /// <summary>
-    /// The HttpRequestResponseStep is used to post a two way HTTP request-response.
+    ///     The HttpRequestResponseStep is used to post a two way HTTP request-response.
     /// </summary>
-    /// 
     /// <remarks>
-    /// The following shows an example of the Xml representation of this test step.
-    /// 
-    /// <code escaped="true">
-    ///	<TestStep assemblyPath="" typeName="BizUnit.HttpRequestResponseStep">
-    ///		<SourcePath>.\TestData\InDoc1.xml</SourcePath>
-    ///		<DestinationUrl>http://localhost/TestFrameworkDemo/BTSHTTPReceive.dll?ReqResp</DestinationUrl>
-    ///		<RequestTimeout>10000</RequestTimeout>
-    ///
-    ///		<ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
-    ///			<XmlSchemaPath>.\TestData\PurchaseOrder.xsd</XmlSchemaPath>
-    ///			<XmlSchemaNameSpace>http://SendMail.PurchaseOrder</XmlSchemaNameSpace>
-    ///			<XPathList>
-    ///				<XPathValidation query="/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']">PONumber_0</XPathValidation>
-    ///			</XPathList>
-    ///		</ValidationStep>			
-    ///	</TestStep>
-    ///	</code>
-    ///	
-    ///	<list type="table">
-    ///		<listheader>
-    ///			<term>Tag</term>
-    ///			<description>Description</description>
-    ///		</listheader>
-    ///		<item>
-    ///			<term>SourcePath</term>
-    ///			<description>The location of the data to be posted over HTTP</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>DestinationUrl</term>
-    ///			<description>The Url which the data will be posted to</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>RequestTimeout</term>
-    ///			<description>The length of time to wait to the HTTP return code</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>ValidationStep</term>
-    ///			<description>Determines which validation test step to use, the HTTP response will be validated using this step<para>(Optional)</para></description>
-    ///		</item>
-    ///	</list>
-    ///	</remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath="" typeName="BizUnit.HttpRequestResponseStep">
+    ///             <SourcePath>.\TestData\InDoc1.xml</SourcePath>
+    ///             <DestinationUrl>http://localhost/TestFrameworkDemo/BTSHTTPReceive.dll?ReqResp</DestinationUrl>
+    ///             <RequestTimeout>10000</RequestTimeout>
+    ///             <ValidationStep assemblyPath="" typeName="BizUnit.XmlValidationStep">
+    ///                 <XmlSchemaPath>.\TestData\PurchaseOrder.xsd</XmlSchemaPath>
+    ///                 <XmlSchemaNameSpace>http://SendMail.PurchaseOrder</XmlSchemaNameSpace>
+    ///                 <XPathList>
+    ///                     <XPathValidation
+    ///                         query="/*[local-name()='PurchaseOrder' and namespace-uri()='http://SendMail.PurchaseOrder']/*[local-name()='PONumber' and namespace-uri()='']">
+    ///                         PONumber_0
+    ///                     </XPathValidation>
+    ///                 </XPathList>
+    ///             </ValidationStep>
+    ///         </TestStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>SourcePath</term>
+    ///             <description>The location of the data to be posted over HTTP</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>DestinationUrl</term>
+    ///             <description>The Url which the data will be posted to</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>RequestTimeout</term>
+    ///             <description>The length of time to wait to the HTTP return code</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>ValidationStep</term>
+    ///             <description>
+    ///                 Determines which validation test step to use, the HTTP response will be validated using this
+    ///                 step
+    ///                 <para>(Optional)</para>
+    ///             </description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     [Obsolete("HttpRequestResponseStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
     public class HttpRequestResponseStep : ITestStep
     {
         /// <summary>
-        /// ITestStep.Execute() implementation
+        ///     ITestStep.Execute() implementation
         /// </summary>
         /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
         public void Execute(XmlNode testConfig, Context context)
         {
             // read test config...
-            string sourcePath = context.ReadConfigAsString(testConfig, "SourcePath");
-            string destinationUrl = context.ReadConfigAsString(testConfig, "DestinationUrl");
-            int requestTimeout = context.ReadConfigAsInt32(testConfig, "RequestTimeout");
-            XmlNode validationConfig = testConfig.SelectSingleNode("ValidationStep");
+            var sourcePath = context.ReadConfigAsString(testConfig, "SourcePath");
+            var destinationUrl = context.ReadConfigAsString(testConfig, "DestinationUrl");
+            var requestTimeout = context.ReadConfigAsInt32(testConfig, "RequestTimeout");
+            var validationConfig = testConfig.SelectSingleNode("ValidationStep");
 
-            context.LogInfo("HttpRequestResponseStep about to post data from File: {0} to the Url: {1}", sourcePath, destinationUrl);
+            context.LogInfo("HttpRequestResponseStep about to post data from File: {0} to the Url: {1}", sourcePath,
+                destinationUrl);
 
             // Get the data to post...
             using (var request = StreamHelper.LoadFileToStream(sourcePath))
             {
-                byte[] data = request.GetBuffer();
+                var data = request.GetBuffer();
 
                 // Post the data...
                 using (var response = HttpHelper.SendRequestData(destinationUrl, data, requestTimeout, context))
                 {
-
                     // Dump the respons to the console...
                     StreamHelper.WriteStreamToConsole("HttpRequestResponseStep response data", response, context);
 
@@ -103,7 +106,8 @@ namespace BizUnit.CoreSteps.TestSteps
                     }
                     catch (Exception e)
                     {
-                        throw new InvalidOperationException("HttpRequestResponseStep response stream was not correct!", e);
+                        throw new InvalidOperationException("HttpRequestResponseStep response stream was not correct!",
+                            e);
                     }
                 }
             }

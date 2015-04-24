@@ -1,4 +1,3 @@
-
 using System;
 using System.ComponentModel;
 using System.Web.Services;
@@ -6,24 +5,23 @@ using System.Web.Services;
 namespace SoapTestWebService
 {
     /// <summary>
-    /// Summary description for StockQuoteService
+    ///     Summary description for StockQuoteService
     /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [ToolboxItem(false)]
     public class StockQuoteService : WebService
     {
-
         [WebMethod]
         public void VoidMethod()
         {
             Console.WriteLine("VoidMethod called...");
         }
-        
+
         [WebMethod]
         public string GetQuote(string symbol)
         {
-            switch(symbol)
+            switch (symbol)
             {
                 case "MSFT":
                     return "29.98";

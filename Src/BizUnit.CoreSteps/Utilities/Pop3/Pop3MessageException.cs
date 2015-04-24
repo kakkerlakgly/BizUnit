@@ -16,27 +16,27 @@ using System;
 
 namespace BizUnit.CoreSteps.Utilities.Pop3
 {
-    internal class Pop3MessageException : Exception
-	{
-		private readonly string _exceptionString;
+    internal class Pop3MessageException : Pop3Exception
+    {
+        private readonly string _exceptionString;
 
-		internal Pop3MessageException()
-		{
-			_exceptionString = null;
-		}
+        internal Pop3MessageException()
+        {
+            _exceptionString = null;
+        }
 
-		internal Pop3MessageException(string exceptionString)
-		{
-			_exceptionString = exceptionString;
-		}
+        internal Pop3MessageException(string exceptionString)
+        {
+            _exceptionString = exceptionString;
+        }
 
-		internal Pop3MessageException(string exceptionString, Exception ex) : base(exceptionString,ex)
-		{
-		}
+        internal Pop3MessageException(string exceptionString, Exception ex) : base(exceptionString, ex)
+        {
+        }
 
-		public override string ToString()
-		{
-			return _exceptionString;
-		}
-	}
+        public override string ToString()
+        {
+            return _exceptionString;
+        }
+    }
 }

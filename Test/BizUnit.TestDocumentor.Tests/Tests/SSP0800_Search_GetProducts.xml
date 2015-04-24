@@ -6,14 +6,14 @@
   Reference="Use case: 101"
   Preconditions="ASS Databases should be setup, Search web services should be installed"
   ExpectedResults="GetProducts succeeds"
-  BizUnitVersion="4.0.0.0" 
-  xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit" 
-  xmlns:butss="clr-namespace:BizUnit.TestSteps.Soap;assembly=BizUnit.TestSteps" 
-  xmlns:butsdlf="clr-namespace:BizUnit.TestSteps.DataLoaders.File;assembly=BizUnit.TestSteps" 
-  xmlns:butsdlx="clr-namespace:BizUnit.TestSteps.DataLoaders.Xml;assembly=BizUnit.TestSteps" 
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-  xmlns:butsx="clr-namespace:BizUnit.TestSteps.Xml;assembly=BizUnit.TestSteps" 
-  xmlns:butsc="clr-namespace:BizUnit.TestSteps.Common;assembly=BizUnit.TestSteps" 
+  BizUnitVersion="4.0.0.0"
+  xmlns="clr-namespace:BizUnit.Xaml;assembly=BizUnit"
+  xmlns:butss="clr-namespace:BizUnit.TestSteps.Soap;assembly=BizUnit.TestSteps"
+  xmlns:butsdlf="clr-namespace:BizUnit.TestSteps.DataLoaders.File;assembly=BizUnit.TestSteps"
+  xmlns:butsdlx="clr-namespace:BizUnit.TestSteps.DataLoaders.Xml;assembly=BizUnit.TestSteps"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:butsx="clr-namespace:BizUnit.TestSteps.Xml;assembly=BizUnit.TestSteps"
+  xmlns:butsc="clr-namespace:BizUnit.TestSteps.Common;assembly=BizUnit.TestSteps"
   xmlns:vaaassu="clr-namespace:VAA.ASS.Utils;assembly=VAA.ASS.Utils">
   <TestCase.ExecutionSteps>
     <butss:WebServiceStep
@@ -35,7 +35,7 @@
               ContextKey="DepartureDate" />
           </butsdlx:XmlDataLoader.UpdateXml>
         </butsdlx:XmlDataLoader>
-        
+
       </butss:WebServiceStep.RequestBody>
       <butss:WebServiceStep.SubSteps>
         <butsx:XmlValidationStep>

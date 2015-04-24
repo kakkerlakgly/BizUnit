@@ -20,65 +20,54 @@ using BizUnit.BizUnitOM;
 namespace BizUnit.CoreSteps.TestSteps
 {
     /// <summary>
-    /// The FileCreateStep creates a new FILE in the specified directory.
+    ///     The FileCreateStep creates a new FILE in the specified directory.
     /// </summary>
-    /// 
     /// <remarks>
-    /// The following shows an example of the Xml representation of this test step.
-    /// 
-    /// <code escaped="true">
-    ///	<TestStep assemblyPath="" typeName="BizUnit.FileCreateStep">
-    ///		<SourcePath>.\TestData\InDoc1.xml</SourcePath>
-    ///		<CreationPath>.\Rec_01\InDoc1.xml</CreationPath>
-    ///	</TestStep>
-    ///	</code>
-    ///	
-    ///	<list type="table">
-    ///		<listheader>
-    ///			<term>Tag</term>
-    ///			<description>Description</description>
-    ///		</listheader>
-    ///		<item>
-    ///			<term>SourcePath</term>
-    ///			<description>The location of the input FILE to be copied to the CreationPath</description>
-    ///		</item>
-    ///		<item>
-    ///			<term>CreationPath</term>
-    ///			<description>The location of the destination FILE</description>
-    ///		</item>
-    ///	</list>
-    ///	</remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath="" typeName="BizUnit.FileCreateStep">
+    ///             <SourcePath>.\TestData\InDoc1.xml</SourcePath>
+    ///             <CreationPath>.\Rec_01\InDoc1.xml</CreationPath>
+    ///         </TestStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>SourcePath</term>
+    ///             <description>The location of the input FILE to be copied to the CreationPath</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>CreationPath</term>
+    ///             <description>The location of the destination FILE</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     [Obsolete("FileCreateStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
     public class FileCreateStep : ITestStepOM
     {
+        private const string FileCreationPathContextKey = "FileCreateStep-CreationPath";
         private string _creationPath;
         private string _sourcePath;
-        private const string FileCreationPathContextKey = "FileCreateStep-CreationPath";
 
         /// <summary>
-        /// 
         /// </summary>
         public string SourcePath
         {
-           set
-           {
-               _sourcePath = value;
-           }
+            set { _sourcePath = value; }
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public string CreationPath
         {
-            set
-            {
-                _creationPath = value;
-            }
+            set { _creationPath = value; }
         }
 
         /// <summary>
-        /// ITestStep.Execute() implementation
+        ///     ITestStep.Execute() implementation
         /// </summary>
         /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
         /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
@@ -91,16 +80,17 @@ namespace BizUnit.CoreSteps.TestSteps
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Execute(Context context)
         {
-            context.LogInfo("FileCreateStep about to copy the data from File: {0} to the File: {1}", _sourcePath, _creationPath);
+            context.LogInfo("FileCreateStep about to copy the data from File: {0} to the File: {1}", _sourcePath,
+                _creationPath);
 
             var buff = new byte[4096];
-            using (Stream srcFs = File.Open(_sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read), dstFs = File.Create(_creationPath))
+            using (
+                Stream srcFs = File.Open(_sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read),
+                    dstFs = File.Create(_creationPath))
             {
-
                 var read = srcFs.Read(buff, 0, 4096);
 
                 while (read > 0)
@@ -114,19 +104,18 @@ namespace BizUnit.CoreSteps.TestSteps
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public void Validate(Context context)
         {
             if (string.IsNullOrEmpty(_creationPath))
             {
-                throw new ArgumentNullException("CreationPath is either null or of zero length");
+                throw new InvalidOperationException("CreationPath is either null or of zero length");
             }
             _creationPath = context.SubstituteWildCards(_creationPath);
 
             if (string.IsNullOrEmpty(_sourcePath))
             {
-                throw new ArgumentNullException("SourcePath is either null or of zero length");
+                throw new InvalidOperationException("SourcePath is either null or of zero length");
             }
             _sourcePath = context.SubstituteWildCards(_sourcePath);
         }

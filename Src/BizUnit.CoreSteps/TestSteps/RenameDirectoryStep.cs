@@ -18,51 +18,48 @@ using System.Xml;
 namespace BizUnit.CoreSteps.TestSteps
 {
     /// <summary>
-	/// The RenameDirectoryStep renames a directory, this test step is often used for negative test scenarios
-	/// </summary>
-	/// 
-	/// <remarks>
-	/// The following shows an example of the Xml representation of this test step.
-	/// 
-	/// <code escaped="true">
-	///	<TestStep assemblyPath="" typeName="BizUnit.RenameDirectoryStep">
-	///		<SourceDirectory>.\Send_01</SourceDirectory>
-	///		<DestinationDirectory>.\Send_01x</DestinationDirectory>
-	///	</TestStep>
-	///	</code>
-	///	
-	///	<list type="table">
-	///		<listheader>
-	///			<term>Tag</term>
-	///			<description>Description</description>
-	///		</listheader>
-	///		<item>
-	///			<term>SourceDirectory</term>
-	///			<description>The current path of the directory to rename</description>
-	///		</item>
-	///		<item>
-	///			<term>DestinationDirectory</term>
-	///			<description>The new path of the directory being renamed</description>
-	///		</item>
-	///	</list>
-	///	</remarks>
+    ///     The RenameDirectoryStep renames a directory, this test step is often used for negative test scenarios
+    /// </summary>
+    /// <remarks>
+    ///     The following shows an example of the Xml representation of this test step.
+    ///     <code escaped="true">
+    /// 	<TestStep assemblyPath="" typeName="BizUnit.RenameDirectoryStep">
+    ///             <SourceDirectory>.\Send_01</SourceDirectory>
+    ///             <DestinationDirectory>.\Send_01x</DestinationDirectory>
+    ///         </TestStep>
+    /// 	</code>
+    ///     <list type="table">
+    ///         <listheader>
+    ///             <term>Tag</term>
+    ///             <description>Description</description>
+    ///         </listheader>
+    ///         <item>
+    ///             <term>SourceDirectory</term>
+    ///             <description>The current path of the directory to rename</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>DestinationDirectory</term>
+    ///             <description>The new path of the directory being renamed</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
     [Obsolete("RenameDirectoryStep has been deprecated. Investigate the BizUnit.TestSteps namespace.")]
-	public class RenameDirectoryStep : ITestStep
-	{
-		/// <summary>
-		/// ITestStep.Execute() implementation
-		/// </summary>
-		/// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
-		/// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
-		public void Execute(XmlNode testConfig, Context context)
-		{
-			string srcDirectory = context.ReadConfigAsString( testConfig, "SourceDirectory");
-			string dstDirectory = context.ReadConfigAsString( testConfig, "DestinationDirectory");
+    public class RenameDirectoryStep : ITestStep
+    {
+        /// <summary>
+        ///     ITestStep.Execute() implementation
+        /// </summary>
+        /// <param name='testConfig'>The Xml fragment containing the configuration for this test step</param>
+        /// <param name='context'>The context for the test, this holds state that is passed beteen tests</param>
+        public void Execute(XmlNode testConfig, Context context)
+        {
+            var srcDirectory = context.ReadConfigAsString(testConfig, "SourceDirectory");
+            var dstDirectory = context.ReadConfigAsString(testConfig, "DestinationDirectory");
 
-			context.LogInfo("About to renme the directory \"{0}\" to \"{1}\"", srcDirectory, dstDirectory);
+            context.LogInfo("About to renme the directory \"{0}\" to \"{1}\"", srcDirectory, dstDirectory);
 
-			var di = new DirectoryInfo(srcDirectory);
-			di.MoveTo(dstDirectory);
-		}
-	}
+            var di = new DirectoryInfo(srcDirectory);
+            di.MoveTo(dstDirectory);
+        }
+    }
 }
